@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1067217921612",
+    "project_id": "felicash-stg",
+    "storage_bucket": "felicash-stg.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067217921612:android:bb32b874795e0736d9f6e9",
+        "android_client_info": {
+          "package_name": "com.quimblelabs.felicash.stg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSq_0FEdp7S2ZtFWckL0o22zantVkDuyQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

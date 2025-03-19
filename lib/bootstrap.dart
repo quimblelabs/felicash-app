@@ -3,6 +3,9 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+typedef AppBuilder = FutureOr<Widget> Function();
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -20,14 +23,24 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
-Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
-  FlutterError.onError = (details) {
-    log(details.exceptionAsString(), stackTrace: details.stack);
-  };
+Future<void> bootstrap(AppBuilder builder) async {
+  await runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  Bloc.observer = const AppBlocObserver();
+    await Supabase.initialize(
+      url: const String.fromEnvironment('SUPABASE_URL'),
+      anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY'),
+    );
+    FlutterError.onError = (details) {
+      log(details.exceptionAsString(), stackTrace: details.stack);
+    };
 
-  // Add cross-flavor configuration here
+    Bloc.observer = const AppBlocObserver();
 
-  runApp(await builder());
+    // Add cross-flavor configuration here
+
+    runApp(await builder());
+  }, (error, stackTrace) {
+    log(error.toString(), stackTrace: stackTrace);
+  });
 }
