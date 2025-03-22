@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1067217921612',
     projectId: 'felicash-stg',
     storageBucket: 'felicash-stg.firebasestorage.app',
+    iosClientId: '1067217921612-osan4c4trooarpcr3hd5t78sjph8l2nj.apps.googleusercontent.com',
     iosBundleId: 'com.quimblelabs.felicash.stg',
   );
+
 }
