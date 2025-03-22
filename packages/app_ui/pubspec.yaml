@@ -10,9 +10,27 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.5
+  intl: ^0.20.0
+  mockingjay: ^0.6.0
 
 dev_dependencies:
+  build_runner: ^2.0.3
+  flutter_gen_runner: ^5.2.0
   flutter_test:
     sdk: flutter
-  mocktail: ^1.0.4
   very_good_analysis: ^6.0.0
+flutter:
+  assets:
+    - assets/images/
+
+flutter_gen:
+  assets:
+    enabled: true
+    outputs:
+      package_parameter_enabled: true
+  output: lib/src/generated/
+  line_length: 80
+
+  integrations:
+    flutter_svg: true

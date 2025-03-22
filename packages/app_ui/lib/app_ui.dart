@@ -2,7 +2,11 @@
 /// application.
 library;
 
-export 'src/border_radius/app_border_radius.dart';
-export 'src/colors/app_color_scheme.dart';
-export 'src/spacing/app_spacing.dart';
-export 'src/theme/app_theme.dart';
+export 'src/border_radius/border_radius.dart';
+export 'src/colors/colors.dart';
+export 'src/extensions/extensions.dart';
+export 'src/generated/assets.gen.dart';
+export 'src/sizings/sizings.dart';
+export 'src/spacing/spacing.dart';
+export 'src/theme/theme.dart';
+export 'src/widgets/widgets.dart';

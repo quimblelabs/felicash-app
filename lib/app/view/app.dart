@@ -9,9 +9,9 @@ import 'package:user_repository/user_repository.dart';
 
 class App extends StatelessWidget {
   const App({
-    super.key,
     required UserRepository userRepository,
     required User user,
+    super.key,
   })  : _userRepository = userRepository,
         _user = user;
 
@@ -35,7 +35,10 @@ class App extends StatelessWidget {
             ),
           ),
         ],
-        child: const AppView(),
+        child: RepositoryProvider(
+          create: (context) => AppRouter(context.read()),
+          child: const AppView(),
+        ),
       ),
     );
   }
@@ -51,8 +54,7 @@ class AppView extends StatelessWidget {
   Widget build(BuildContext context) {
     final interTextTheme = GoogleFonts.interTextTheme();
     final theme = AppTheme(interTextTheme);
-    final router = routerBuilder(context.read<AppBloc>());
-
+    final router = context.read<AppRouter>().router;
     return MaterialApp.router(
       theme: theme.light(),
       darkTheme: theme.dark(),

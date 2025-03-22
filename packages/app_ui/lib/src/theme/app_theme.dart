@@ -1,4 +1,7 @@
+import 'package:app_ui/src/border_radius/app_border_radius.dart';
 import 'package:app_ui/src/colors/app_color_scheme.dart';
+import 'package:app_ui/src/sizings/sizings.dart';
+import 'package:app_ui/src/spacing/app_spacing.dart';
 import 'package:flutter/material.dart';
 
 /// {@template app_theme}
@@ -31,76 +34,53 @@ class AppTheme {
       useMaterial3: true,
       brightness: colorScheme.brightness,
       colorScheme: colorScheme,
+      bottomAppBarTheme: BottomAppBarTheme(
+        // backgroundColor: colorScheme.primary,
+        // selectedItemColor: colorScheme.onPrimary,
+        // unselectedItemColor: colorScheme.onPrimaryContainer,
+        // showUnselectedLabels: false,
+        // showSelectedLabels: false,
+        elevation: 1,
+        color: colorScheme.primary,
+        surfaceTintColor: colorScheme.primary,
+        // type: BottomNavigationBarType.fixed,
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(AppBorderRadius.lg),
+            ),
+          ),
+          minimumSize: AppButtonSizes.defaultMinimumSize,
+          maximumSize: AppButtonSizes.defaultMaximumSize,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(AppBorderRadius.lg),
+            ),
+          ),
+          minimumSize: AppButtonSizes.defaultMinimumSize,
+          maximumSize: AppButtonSizes.defaultMaximumSize,
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.xlg,
+          vertical: AppSpacing.lg,
+        ),
+        fillColor: colorScheme.surfaceContainer,
+        filled: true,
+        border: const OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.all(
+            Radius.circular(AppBorderRadius.xlg),
+          ),
+        ),
+      ),
     );
   }
-
-  /// Extend the theme with a custom [ColorScheme].
-  List<ExtendedColor> get extendedColors => [];
-}
-
-/// {@template extended_color}
-/// The data of the extended color.
-/// {@endtemplate}
-class ExtendedColor {
-  /// {@macro extended_color}
-  const ExtendedColor({
-    required this.seed,
-    required this.value,
-    required this.light,
-    required this.lightHighContrast,
-    required this.lightMediumContrast,
-    required this.dark,
-    required this.darkHighContrast,
-    required this.darkMediumContrast,
-  });
-
-  /// The seed color of the extended color.
-  final Color seed;
-
-  /// The value of the extended color.
-  final Color value;
-
-  /// The light color blend of the extended color.
-  final ColorFamily light;
-
-  /// The light color blend of the extended color with high contrast.
-  final ColorFamily lightHighContrast;
-
-  /// The light color blend of the extended color with medium contrast.
-  final ColorFamily lightMediumContrast;
-
-  /// The dark color blend of the extended color.
-  final ColorFamily dark;
-
-  /// The dark color blend of the extended color with high contrast.
-  final ColorFamily darkHighContrast;
-
-  /// The dark color blend of the extended color with medium contrast.
-  final ColorFamily darkMediumContrast;
-}
-
-/// {@template color_family}
-/// The data of the color family. The color family is the color and its
-/// variants.
-/// {@endtemplate}
-class ColorFamily {
-  /// {@macro color_family}
-  const ColorFamily({
-    required this.color,
-    required this.onColor,
-    required this.colorContainer,
-    required this.onColorContainer,
-  });
-
-  /// The color of the color family.
-  final Color color;
-
-  /// The on color of the color family.
-  final Color onColor;
-
-  /// The color container of the color family.
-  final Color colorContainer;
-
-  /// The on color container of the color family.
-  final Color onColorContainer;
 }
