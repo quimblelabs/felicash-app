@@ -45,6 +45,12 @@
         "--dart-define-from-file",
         "configurations.prod.json"
       ]
+    },
+    {
+      "name": "Launch app_ui example",
+      "request": "launch",
+      "type": "dart",
+      "program": "packages/app_ui/example/lib/main.dart",
     }
   ]
 }
