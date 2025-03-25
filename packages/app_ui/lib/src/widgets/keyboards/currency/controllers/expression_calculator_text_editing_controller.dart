@@ -40,9 +40,12 @@ class ExpressionCalculatorTextEditingController extends TextEditingController {
       _expression = value;
     } else {
       if (_isOperator(value) || value == '(' || value == ')') {
-        final lastChar = _expression[_expression.length - 2];
-        if (_isOperator(lastChar) || lastChar == '(' || lastChar == ')') {
-          _expression = _expression.substring(0, _expression.length - 3);
+        String lastChar;
+        if (_expression.length > 2) {
+          lastChar = _expression[_expression.length - 2];
+          if (_isOperator(lastChar) || lastChar == '(' || lastChar == ')') {
+            _expression = _expression.substring(0, _expression.length - 3);
+          }
         }
         _expression += ' $value ';
       } else {
@@ -101,13 +104,34 @@ class ExpressionCalculatorTextEditingController extends TextEditingController {
   /// controller.addDecimalPoint();
   /// ```
   void addDecimalPoint() {
-    final trimmed = _expression.trim();
-    final lastChar = trimmed.isNotEmpty ? trimmed[trimmed.length - 1] : '';
+    if (_expression.isEmpty || _expression == '0') {
+      _expression = '0.';
+      _updateText();
+      return;
+    }
 
-    if (_expression.isEmpty || RegExp(r'[+\-*/(]').hasMatch(lastChar)) {
-      _expression += '0.';
-    } else if (!lastChar.contains('.')) {
-      _expression += '.';
+    // Check if the last character is an operator
+    final trimmed = _expression.trim();
+    if (trimmed.isNotEmpty) {
+      final lastChar = trimmed[trimmed.length - 1];
+
+      // If the last character is an operator or opening parenthesis
+      if (_isOperator(lastChar) || lastChar == '(') {
+        _expression += ' 0.';
+        _updateText();
+        return;
+      }
+
+      // Check if we're adding to a number that already has a decimal point
+      final parts = trimmed.split(RegExp(r'\s+'));
+      if (parts.isNotEmpty) {
+        final lastPart = parts.last;
+        if (!lastPart.contains('.')) {
+          _expression += '.';
+        }
+      }
+    } else {
+      _expression = '0.';
     }
 
     _updateText();
@@ -151,6 +175,9 @@ class ExpressionCalculatorTextEditingController extends TextEditingController {
       _expression = _expression.trimRight();
       _expression = _expression.substring(0, _expression.length - 1);
     }
+    if (_expression.isEmpty) {
+      _expression = '0';
+    }
     _updateText();
   }
 
@@ -187,22 +214,53 @@ class ExpressionCalculatorTextEditingController extends TextEditingController {
   }
 
   void _updateText() {
-    final pattern = RegExp(r'(\d+(\.\d+)?|[()+\-*/])');
-    final matches = pattern.allMatches(_expression);
+    // Split the expression into tokens (numbers, operators, parentheses)
+    final tokens = _expression.split(RegExp(r'\s+'));
 
-    final formatted = matches.map((match) {
-      final token = match.group(0)!;
+    final formattedTokens = tokens.map((token) {
+      // If token is an operator or parenthesis, return it as is
+      if (_isOperator(token) || token == '(' || token == ')') {
+        return token;
+      }
+
+      // For numbers, we need special handling to preserve decimal points
+      if (token.isEmpty) return token;
+
+      // Special case for "0." to preserve it exactly
+      if (token == '0.') {
+        return '0.';
+      }
+
       final number = double.tryParse(token);
       if (number != null) {
+        // If the original token has a decimal point, we need to preserve it
+        if (token.contains('.')) {
+          // Get the parts before and after decimal point
+          final parts = token.split('.');
+
+          // Handle the case where the integer part is 0
+          final integerPart = parts[0] == '0' ? '0' : _formatter.format(double.parse(parts[0]));
+
+          // If there's nothing after the decimal point, just return with a decimal point
+          if (parts.length > 1 && parts[1].isEmpty) {
+            return '$integerPart.';
+          }
+
+          // Otherwise format with the decimal part
+          return '$integerPart.${parts[1]}';
+        }
+
+        // No decimal point in the original token
         return _formatter.format(number);
       }
+
       return token;
     }).join(' ');
 
-    text = formatted.replaceAll(RegExp(r'\s+'), ' ').trim();
+    text = formattedTokens.trim();
     selection = TextSelection.collapsed(offset: text.length);
     notifyListeners();
-    log('Expression: $_expression');
+    log('text: $text, expression: $_expression');
   }
 
   bool _isOperator(String ch) => ['+', '-', '*', '/'].contains(ch);
