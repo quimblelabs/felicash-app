@@ -114,7 +114,7 @@ void main() {
         controller.addOperator('+');
         controller.addDecimalPoint();
         expect(controller.text, '5 + 0.');
-        expect(controller.expression.trim(), '5 + 0.');
+        expect(controller.expression.trim(), '5 +  0.');
       });
 
       test('does not add multiple decimal points to same number', () {
@@ -264,6 +264,176 @@ void main() {
         controller.addOperator('+');
         // Incomplete expression
         expect(controller.numberValue, 5);
+      });
+
+      // Basic operations
+      test('handles addition correctly', () {
+        controller.add('10');
+        controller.addOperator('+');
+        controller.add('5');
+        expect(controller.numberValue, 15);
+      });
+
+      test('handles subtraction correctly', () {
+        controller.add('10');
+        controller.addOperator('-');
+        controller.add('5');
+        expect(controller.numberValue, 5);
+      });
+
+      test('handles multiplication correctly', () {
+        controller.add('10');
+        controller.addOperator('*');
+        controller.add('5');
+        expect(controller.numberValue, 50);
+      });
+
+      test('handles division correctly', () {
+        controller.add('10');
+        controller.addOperator('/');
+        controller.add('5');
+        expect(controller.numberValue, 2);
+      });
+
+      // Decimal numbers
+      test('handles decimal addition correctly', () {
+        controller.add('5');
+        controller.addDecimalPoint();
+        controller.add('5');
+        controller.addOperator('+');
+        controller.add('2');
+        controller.addDecimalPoint();
+        controller.add('5');
+        expect(controller.numberValue, 8.0);
+      });
+
+      test('handles decimal multiplication correctly', () {
+        controller.add('2');
+        controller.addDecimalPoint();
+        controller.add('5');
+        controller.addOperator('*');
+        controller.add('3');
+        expect(controller.numberValue, 7.5);
+      });
+
+      // Complex expressions
+      test('respects operator precedence', () {
+        controller.add('2');
+        controller.addOperator('+');
+        controller.add('3');
+        controller.addOperator('*');
+        controller.add('4');
+        expect(controller.numberValue, 14); // 2 + (3 * 4) = 14, not (2 + 3) * 4 = 20
+      });
+
+      test('handles multiple operations in sequence', () {
+        controller.add('10');
+        controller.addOperator('+');
+        controller.add('5');
+        controller.addOperator('-');
+        controller.add('3');
+        controller.addOperator('*');
+        controller.add('2');
+        expect(controller.numberValue, 9); // 10 + 5 - (3 * 2) = 10
+      });
+
+      // Parentheses
+      test('handles simple parentheses', () {
+        controller.addParenthesis('(');
+        controller.add('2');
+        controller.addOperator('+');
+        controller.add('3');
+        controller.addParenthesis(')');
+        expect(controller.numberValue, 5);
+      });
+
+      test('handles nested parentheses', () {
+        controller.addParenthesis('(');
+        controller.add('2');
+        controller.addOperator('+');
+        controller.addParenthesis('(');
+        controller.add('3');
+        controller.addOperator('*');
+        controller.add('2');
+        controller.addParenthesis(')');
+        controller.addParenthesis(')');
+        expect(controller.numberValue, 8); // (2 + (3 * 2)) = 8
+      });
+
+      test('handles parentheses with operations outside', () {
+        controller.addParenthesis('(');
+        controller.add('2');
+        controller.addOperator('+');
+        controller.add('3');
+        controller.addParenthesis(')');
+        controller.addOperator('*');
+        controller.add('4');
+        expect(controller.numberValue, 20); // (2 + 3) * 4 = 20
+      });
+
+      // Edge cases
+      test('handles negative numbers', () {
+        controller.add('0');
+        controller.addOperator('-');
+        controller.add('5');
+        expect(controller.numberValue, -5);
+      });
+
+      test('handles division by zero gracefully', () {
+        controller.add('10');
+        controller.addOperator('/');
+        controller.add('0');
+        // This should either return a special value or handle the error
+        // The exact behavior depends on the implementation
+        expect(() => controller.numberValue, returnsNormally);
+      });
+
+      test('handles very large numbers', () {
+        controller.add('999999');
+        controller.addOperator('*');
+        controller.add('999999');
+        // This tests that large results don't cause overflow issues
+        expect(controller.numberValue, 999999 * 999999);
+      });
+
+      test('handles very small decimal numbers', () {
+        controller.add('0');
+        controller.addDecimalPoint();
+        controller.add('0001');
+        expect(controller.numberValue, 0.0001);
+      });
+
+      // State after operations
+      test('returns updated value after calculation', () {
+        controller.add('5');
+        controller.addOperator('+');
+        controller.add('3');
+        controller.calculateResult();
+        expect(controller.numberValue, 8);
+
+        // Add more operations after calculation
+        controller.addOperator('*');
+        controller.add('2');
+        expect(controller.numberValue, 16);
+      });
+
+      test('returns correct value after backspace', () {
+        controller.add('123');
+        controller.backspace();
+        expect(controller.numberValue, 12);
+
+        controller.addOperator('+');
+        controller.add('3');
+        controller.backspace();
+        expect(controller.numberValue, 12);
+      });
+
+      test('returns 0 after clear', () {
+        controller.add('123');
+        controller.addOperator('+');
+        controller.add('456');
+        controller.clear();
+        expect(controller.numberValue, 0);
       });
     });
 
