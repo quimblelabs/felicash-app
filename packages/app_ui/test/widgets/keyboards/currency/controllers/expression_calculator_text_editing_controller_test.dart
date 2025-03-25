@@ -1,7 +1,7 @@
 // ignore_for_file: cascade_invocations
 
-import 'package:flutter_test/flutter_test.dart';
 import 'package:app_ui/src/widgets/keyboards/currency/controllers/expression_calculator_text_editing_controller.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('ExpressionCalculatorTextEditingController', () {
