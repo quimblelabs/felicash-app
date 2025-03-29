@@ -65,7 +65,7 @@ class _AppLogo extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(
-            Radius.circular(AppBorderRadius.lg),
+            Radius.circular(AppRadius.lg),
           ),
           color: theme.colorScheme.primary,
         ),
@@ -159,7 +159,9 @@ class _ContinueWithAppleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
-      onPressed: () {},
+      onPressed: () {
+        context.read<LoginBloc>().add(LoginWithAppleSubmitted());
+      },
       icon: const Icon(FontAwesomeIcons.apple),
       label: const Text('Continue with Apple'),
     );

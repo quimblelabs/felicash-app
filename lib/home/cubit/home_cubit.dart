@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeState.home);
+  HomeCubit() : super(const HomeState());
 
   void changeTab(int index) {
-    emit(HomeState.values[index]);
+    emit(state.copyWith(tabIndex: index));
   }
 }

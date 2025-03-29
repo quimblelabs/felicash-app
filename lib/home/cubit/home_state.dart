@@ -1,11 +1,20 @@
 part of 'home_cubit.dart';
 
-enum HomeState {
-  home(0),
-  transaction(1),
-  wallet(2),
-  personal(3);
+class HomeState extends Equatable {
+  const HomeState({
+    this.tabIndex = 0,
+  });
 
-  const HomeState(this.tabIndex);
   final int tabIndex;
+
+  HomeState copyWith({
+    int? tabIndex,
+  }) {
+    return HomeState(
+      tabIndex: tabIndex ?? this.tabIndex,
+    );
+  }
+
+  @override
+  List<Object?> get props => [tabIndex];
 }
