@@ -6,9 +6,10 @@ import 'package:supabase_authentication_client/supabase_authentication_client.da
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:token_storage/token_storage.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 void main() {
-  bootstrap(() async {
+  bootstrap((dataClient) async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
@@ -21,9 +22,13 @@ void main() {
     final userRepository = UserRepository(
       authenticationClient: authenticationClient,
     );
+    final walletRepository = WalletRepository(
+      client: dataClient,
+    );
     return App(
       userRepository: userRepository,
       user: await userRepository.user.first,
+      walletRepository: walletRepository,
     );
   });
 }
