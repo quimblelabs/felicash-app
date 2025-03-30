@@ -61,17 +61,17 @@ class ModalScaffold extends StatelessWidget {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: AppBar(
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                    scrolledUnderElevation: 0,
-                    automaticallyImplyLeading: false,
-                    title: header,
-                    actions: canPop
-                        ? [
-                            IconButton.filled(
+                AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  scrolledUnderElevation: 0,
+                  automaticallyImplyLeading: false,
+                  title: header,
+                  actions: canPop
+                      ? [
+                          Padding(
+                            padding: const EdgeInsets.all(AppSpacing.xs),
+                            child: IconButton.filled(
                               style: IconButton.styleFrom(
                                 backgroundColor:
                                     theme.colorScheme.surfaceContainerHighest,
@@ -82,9 +82,9 @@ class ModalScaffold extends StatelessWidget {
                               },
                               icon: const Icon(Icons.close),
                             ),
-                          ]
-                        : null,
-                  ),
+                          ),
+                        ]
+                      : null,
                 ),
                 Flexible(child: content),
               ],

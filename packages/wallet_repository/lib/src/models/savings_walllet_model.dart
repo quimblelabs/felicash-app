@@ -11,6 +11,8 @@ class SavingsWallletModel extends BaseWalletModel {
     required super.name,
     required super.baseCurrency,
     required super.balance,
+    required super.icon,
+    required super.color,
     required super.createdAt,
     required super.updatedAt,
     required super.excludeFromTotal,

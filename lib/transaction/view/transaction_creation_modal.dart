@@ -1,41 +1,33 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:currency_repository/currency_repository.dart';
-import 'package:felicash/wallet_creation/bloc/wallet_creation_bloc.dart';
-import 'package:felicash/wallet_creation/widgets/wallet_creation_form.dart';
+import 'package:felicash/transaction/bloc/transaction_creation_bloc.dart';
+import 'package:felicash/transaction/widgets/transaction_creation_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:wallet_repository/wallet_repository.dart' show WalletTypeEnum;
 
-class WalletCreationModal extends StatelessWidget {
-  const WalletCreationModal({required this.walletType, super.key});
+class TransactionCreationModal extends StatelessWidget {
+  const TransactionCreationModal({super.key, this.walletId});
 
-  final WalletTypeEnum walletType;
+  /// The target wallet id for the transaction.
+  ///
+  /// If not provided, the default wallet from setting will be used.
+  final String? walletId;
 
   @override
   Widget build(BuildContext context) {
-    final secondaryFixed = Theme.of(context).colorScheme.secondaryFixed;
     return BlocProvider(
-      create: (context) => WalletCreationBloc(
-        walletType: walletType,
-        //TODO: Change to the current user currency
-        currency: CurrencyModel(
-          code: 'USD',
-          name: 'United States Dollar',
-          symbol: r'$',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
+      create: (context) => TransactionCreationBloc()
+        ..add(
+          //TODO: Add default fallback target wallet if not provided
+          TransactionCreationWalletChanged(id: walletId ?? ''),
         ),
-        color: secondaryFixed,
-      ),
-      child: const _WalletCreationView(),
+      child: const _TransactionCreationView(),
     );
   }
 }
 
-class _WalletCreationView extends HookWidget {
-  const _WalletCreationView();
+class _TransactionCreationView extends HookWidget {
+  const _TransactionCreationView();
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +66,6 @@ class _WalletCreationView extends HookWidget {
         if (!didPop) {
           _checkAndShowPopConfirmation(context);
         }
-        return;
       },
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -90,7 +81,7 @@ class _WalletCreationView extends HookWidget {
             return Padding(
               padding: EdgeInsets.only(bottom: viewPadding.bottom),
               child: ModalScaffold(
-                header: const _Title(),
+                header: Text('New Transaction'.hardCoded),
                 content: Column(
                   children: [
                     Expanded(
@@ -99,10 +90,10 @@ class _WalletCreationView extends HookWidget {
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
                         ),
-                        child: const WalletCreationForm(),
+                        child: const TransactionCreationForm(),
                       ),
                     ),
-                    const _CreateWalletButton(),
+                    const _AddTransactionButton(),
                   ],
                 ),
               ),
@@ -143,24 +134,8 @@ class _WalletCreationView extends HookWidget {
   }
 }
 
-class _Title extends StatelessWidget {
-  const _Title();
-
-  @override
-  Widget build(BuildContext context) {
-    final walletType = context.read<WalletCreationBloc>().state.walletType;
-    return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.md),
-      child: Text(
-        'Create ${walletType.name} wallet'.hardCoded,
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
-    );
-  }
-}
-
-class _CreateWalletButton extends StatelessWidget {
-  const _CreateWalletButton();
+class _AddTransactionButton extends StatelessWidget {
+  const _AddTransactionButton();
 
   @override
   Widget build(BuildContext context) {
@@ -173,12 +148,13 @@ class _CreateWalletButton extends StatelessWidget {
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm,
         ),
-        child: BlocSelector<WalletCreationBloc, WalletCreationState, bool>(
+        child: BlocSelector<TransactionCreationBloc, TransactionCreationState,
+            bool>(
           selector: (state) => state.isValid,
           builder: (context, isValid) {
             return FilledButton(
               onPressed: isValid ? () => _createWallet(context) : null,
-              child: Text('Create wallet'.hardCoded),
+              child: Text('Add Transation'.hardCoded),
             );
           },
         ),
@@ -187,6 +163,6 @@ class _CreateWalletButton extends StatelessWidget {
   }
 
   void _createWallet(BuildContext context) {
-    context.read<WalletCreationBloc>().add(const WalletCreationSubmitted());
+    // context.read<WalletCreationBloc>().add(const WalletCreationSubmitted());
   }
 }

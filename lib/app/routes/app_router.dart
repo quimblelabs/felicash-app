@@ -8,7 +8,7 @@ import 'package:felicash/login/view/login_page.dart';
 import 'package:felicash/onboarding/view/onboarding_page.dart';
 import 'package:felicash/overview/view/overview_page.dart';
 import 'package:felicash/personal/view/personal_page.dart';
-import 'package:felicash/transaction/view/add_transaction_modal.dart';
+import 'package:felicash/transaction/view/transaction_creation_modal.dart';
 import 'package:felicash/transaction/view/transactions_page.dart';
 import 'package:felicash/wallet/view/wallets_page.dart';
 import 'package:felicash/wallet_creation/view/monetary_input_modal.dart';
@@ -30,11 +30,11 @@ abstract class AppRoutes {
   static const wallets = '/wallets';
   // Creatation flow
   static const String walletTypeSelector = '/select-type';
-  static const String createWallet = '/create/:type';
+  static const String walletUpdation = '/create/:type';
   static const String balanceUpdation = '/update-balance';
 
   // Create transaction
-  static const String creteTransaction = '/create-transaction';
+  static const String transactionCreation = '/create-transaction';
 }
 
 abstract class AppRouteNames {
@@ -51,7 +51,7 @@ abstract class AppRouteNames {
   static const balanceUpdation = 'updateBalance';
 
   // Create transaction
-  static const creteTransaction = 'createTransaction';
+  static const transactionCreation = 'createTransaction';
 }
 
 class AppRouter {
@@ -90,6 +90,21 @@ class AppRouter {
                   path: AppRoutes.overview,
                   pageBuilder: (context, state) =>
                       const NoTransitionPage(child: OverviewPage()),
+                  routes: [
+                    GoRoute(
+                      path: AppRoutes.transactionCreation,
+                      name: AppRouteNames.transactionCreation,
+                      parentNavigatorKey: _rootNavigatorKey,
+                      pageBuilder: (context, state) {
+                        return ModalPage(
+                          isScrollControlled: true,
+                          useSafeArea: true,
+                          builder: (context) =>
+                              const TransactionCreationModal(),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -124,7 +139,7 @@ class AppRouter {
                     ),
                     GoRoute(
                       name: AppRouteNames.walletCreation,
-                      path: AppRoutes.createWallet,
+                      path: AppRoutes.walletUpdation,
                       parentNavigatorKey: _rootNavigatorKey,
                       pageBuilder: (context, state) {
                         final type = state.pathParameters['type'];
@@ -177,18 +192,6 @@ class AppRouter {
             ),
           ],
         ),
-        GoRoute(
-          path: AppRoutes.creteTransaction,
-          name: AppRouteNames.creteTransaction,
-          parentNavigatorKey: _rootNavigatorKey,
-          pageBuilder: (context, state) {
-            return ModalPage(
-              isScrollControlled: true,
-              useSafeArea: true,
-              builder: (context) => const AddTransactionModal(),
-            );
-          },
-        ),
       ],
     );
   }
@@ -210,12 +213,17 @@ class AppRouter {
     final loggingIn = loginLoc == currentLoc;
 
     final overviewLoc = state.namedLocation(AppRouteNames.overview);
+    final transactionCreationLoc = state.namedLocation(
+      AppRouteNames.transactionCreation,
+    );
 
     if (!isAuthenticated && !onboardingIn && !loggingIn) {
       return onboardingLoc;
     }
     if (isAuthenticated && onboardingIn) {
-      return overviewLoc;
+      //TODO: Uncomment this after test the transaction creation
+      // return overviewLoc;
+      return transactionCreationLoc;
     }
 
     return null;
