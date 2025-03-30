@@ -18,6 +18,7 @@ dependencies:
   bloc_concurrency: ^0.3.0
   currency_repository:
     path: packages/currency_repository
+  dropdown_button2: ^2.3.9
   equatable: ^2.0.7
   felicash_data_client:
     path: packages/felicash_data_client
@@ -45,6 +46,8 @@ dependencies:
   supabase_flutter: ^2.8.4
   token_storage:
     path: packages/authentication_client/token_storage
+  transaction_repository:
+    path: packages/transaction_repository
   user_repository:
     path: packages/user_repository
   wallet_repository:

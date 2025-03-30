@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/app/routes/app_router.dart';
@@ -126,20 +127,19 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
       alignment: Alignment.bottomCenter,
       children: [
         GestureDetector(
-          onTap: () => _toggle(visible: false),
-          child: AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, child) {
-              return Opacity(
-                opacity: _animationController.value,
-                child: child,
-              );
-            },
+          onTap: () {
+            _toggle(visible: false);
+          },
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 5,
+              sigmaY: 4,
+            ),
             child: Container(
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface.withValues(
-                  alpha: .5,
-                ),
+              height: size.height,
+              width: size.width,
+              color: theme.colorScheme.surface.withValues(
+                alpha: .45 * _animationController.value,
               ),
             ),
           ),
@@ -203,7 +203,7 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
                           onPressed: () {
                             _onClosedCallback = () async {
                               final result = await context.pushNamed(
-                                AppRouteNames.creteTransaction,
+                                AppRouteNames.transactionCreation,
                               );
                             };
                             _toggle(visible: false);

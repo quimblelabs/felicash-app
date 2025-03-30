@@ -28,6 +28,18 @@ class CurrencyModel extends Equatable {
   /// Date of update of the currency
   final DateTime updatedAt;
 
+  /// Empty currency model
+  static final empty = CurrencyModel(
+    code: '',
+    name: '',
+    symbol: '',
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
+
+  ///  Check if the currency is empty
+  bool get isEmpty => this == CurrencyModel.empty;
+
   @override
   List<Object?> get props => [
         code,
