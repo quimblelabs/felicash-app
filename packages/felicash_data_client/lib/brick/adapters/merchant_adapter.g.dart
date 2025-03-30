@@ -1,68 +1,55 @@
 // GENERATED CODE DO NOT EDIT
 part of '../brick.g.dart';
 
-Future<Wallet> _$WalletFromSupabase(
+Future<Merchant> _$MerchantFromSupabase(
   Map<String, dynamic> data, {
   required SupabaseProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
-  return Wallet(
+  return Merchant(
     id: data['id'] as String?,
     profile: await ProfileAdapter().fromSupabase(
       data['user_id'] as Map<String, dynamic>,
       provider: provider,
       repository: repository,
     ),
-    walletType: WalletType.values.byName(data['wallet_type'] as String),
     name: data['name'] as String,
-    description: data['description'] as String,
-    baseCurrency: data['base_currency'] as String,
-    balance: data['balance'] as double,
+    address: data['address'] == null ? null : data['address'] as String?,
+    lat: data['lat'] == null ? null : data['lat'] as double?,
+    lng: data['lng'] == null ? null : data['lng'] as double?,
+    metadata:
+        data['metadata'] == null
+            ? null
+            : data['metadata'] as Map<String, dynamic>,
     createdAt: DateTime.parse(data['created_at'] as String),
     updatedAt: DateTime.parse(data['updated_at'] as String),
-    excludeFromTotal: data['exclude_from_total'] as bool,
-    archived: data['archived'] as bool,
-    archivedAt:
-        data['archived_at'] == null
-            ? null
-            : data['archived_at'] == null
-            ? null
-            : DateTime.tryParse(data['archived_at'] as String),
-    archiveReason:
-        data['archive_reason'] == null
-            ? null
-            : data['archive_reason'] as String? ?? null,
   );
 }
 
-Future<Map<String, dynamic>> _$WalletToSupabase(
-  Wallet instance, {
+Future<Map<String, dynamic>> _$MerchantToSupabase(
+  Merchant instance, {
   required SupabaseProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
   return {
     'id': instance.id,
     'user_id': instance.profile.id,
-    'wallet_type': instance.walletType.toSupabase(),
     'name': instance.name,
-    'description': instance.description,
-    'base_currency': instance.baseCurrency,
-    'balance': instance.balance,
+    'address': instance.address,
+    'lat': instance.lat,
+    'lng': instance.lng,
+    'metadata': instance.metadata,
     'created_at': instance.createdAt.toIso8601String(),
     'updated_at': instance.updatedAt.toIso8601String(),
-    'exclude_from_total': instance.excludeFromTotal,
-    'archived': instance.archived,
-    'archived_at': instance.archivedAt?.toIso8601String(),
-    'archive_reason': instance.archiveReason,
   };
 }
 
-Future<Wallet> _$WalletFromSqlite(
+Future<Merchant> _$MerchantFromSqlite(
   Map<String, dynamic> data, {
   required SqliteProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
-  return Wallet(
+  return Merchant(
     id: data['id'] as String,
     profile:
         (await repository!.getAssociation<Profile>(
@@ -72,30 +59,21 @@ Future<Wallet> _$WalletFromSqlite(
             limit1: true,
           ),
         ))!.first,
-    walletType: WalletType.values.byName(data['wallet_type'] as String),
     name: data['name'] as String,
-    description: data['description'] as String,
-    baseCurrency: data['base_currency'] as String,
-    balance: data['balance'] as double,
+    address: data['address'] == null ? null : data['address'] as String?,
+    lat: data['lat'] == null ? null : data['lat'] as double?,
+    lng: data['lng'] == null ? null : data['lng'] as double?,
+    metadata:
+        data['metadata'] == null
+            ? null
+            : jsonDecode(data['metadata'] as String) as Map<String, dynamic>,
     createdAt: DateTime.parse(data['created_at'] as String),
     updatedAt: DateTime.parse(data['updated_at'] as String),
-    excludeFromTotal: data['exclude_from_total'] == 1,
-    archived: data['archived'] == 1,
-    archivedAt:
-        data['archived_at'] == null
-            ? null
-            : data['archived_at'] == null
-            ? null
-            : DateTime.tryParse(data['archived_at'] as String),
-    archiveReason:
-        data['archive_reason'] == null
-            ? null
-            : data['archive_reason'] as String? ?? null,
   )..primaryKey = data['_brick_id'] as int;
 }
 
-Future<Map<String, dynamic>> _$WalletToSqlite(
-  Wallet instance, {
+Future<Map<String, dynamic>> _$MerchantToSqlite(
+  Merchant instance, {
   required SqliteProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
@@ -107,26 +85,23 @@ Future<Map<String, dynamic>> _$WalletToSqlite(
           instance.profile,
           repository: repository,
         ),
-    'wallet_type': instance.walletType.name,
     'name': instance.name,
-    'description': instance.description,
-    'base_currency': instance.baseCurrency,
-    'balance': instance.balance,
+    'address': instance.address,
+    'lat': instance.lat,
+    'lng': instance.lng,
+    'metadata':
+        instance.metadata != null ? jsonEncode(instance.metadata) : null,
     'created_at': instance.createdAt.toIso8601String(),
     'updated_at': instance.updatedAt.toIso8601String(),
-    'exclude_from_total': instance.excludeFromTotal ? 1 : 0,
-    'archived': instance.archived ? 1 : 0,
-    'archived_at': instance.archivedAt?.toIso8601String(),
-    'archive_reason': instance.archiveReason,
   };
 }
 
-/// Construct a [Wallet]
-class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
-  WalletAdapter();
+/// Construct a [Merchant]
+class MerchantAdapter extends OfflineFirstWithSupabaseAdapter<Merchant> {
+  MerchantAdapter();
 
   @override
-  final supabaseTableName = 'wallets';
+  final supabaseTableName = 'merchants';
   @override
   final defaultToNull = true;
   @override
@@ -142,25 +117,25 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
       associationIsNullable: false,
       foreignKey: 'user_id',
     ),
-    'walletType': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'wallet_type',
-    ),
     'name': const RuntimeSupabaseColumnDefinition(
       association: false,
       columnName: 'name',
     ),
-    'description': const RuntimeSupabaseColumnDefinition(
+    'address': const RuntimeSupabaseColumnDefinition(
       association: false,
-      columnName: 'description',
+      columnName: 'address',
     ),
-    'baseCurrency': const RuntimeSupabaseColumnDefinition(
+    'lat': const RuntimeSupabaseColumnDefinition(
       association: false,
-      columnName: 'base_currency',
+      columnName: 'lat',
     ),
-    'balance': const RuntimeSupabaseColumnDefinition(
+    'lng': const RuntimeSupabaseColumnDefinition(
       association: false,
-      columnName: 'balance',
+      columnName: 'lng',
+    ),
+    'metadata': const RuntimeSupabaseColumnDefinition(
+      association: false,
+      columnName: 'metadata',
     ),
     'createdAt': const RuntimeSupabaseColumnDefinition(
       association: false,
@@ -169,22 +144,6 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
     'updatedAt': const RuntimeSupabaseColumnDefinition(
       association: false,
       columnName: 'updated_at',
-    ),
-    'excludeFromTotal': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'exclude_from_total',
-    ),
-    'archived': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'archived',
-    ),
-    'archivedAt': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'archived_at',
-    ),
-    'archiveReason': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'archive_reason',
     ),
     'userId': const RuntimeSupabaseColumnDefinition(
       association: false,
@@ -215,35 +174,35 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
       iterable: false,
       type: Profile,
     ),
-    'walletType': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'wallet_type',
-      iterable: false,
-      type: WalletType,
-    ),
     'name': const RuntimeSqliteColumnDefinition(
       association: false,
       columnName: 'name',
       iterable: false,
       type: String,
     ),
-    'description': const RuntimeSqliteColumnDefinition(
+    'address': const RuntimeSqliteColumnDefinition(
       association: false,
-      columnName: 'description',
+      columnName: 'address',
       iterable: false,
       type: String,
     ),
-    'baseCurrency': const RuntimeSqliteColumnDefinition(
+    'lat': const RuntimeSqliteColumnDefinition(
       association: false,
-      columnName: 'base_currency',
-      iterable: false,
-      type: String,
-    ),
-    'balance': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'balance',
+      columnName: 'lat',
       iterable: false,
       type: double,
+    ),
+    'lng': const RuntimeSqliteColumnDefinition(
+      association: false,
+      columnName: 'lng',
+      iterable: false,
+      type: double,
+    ),
+    'metadata': const RuntimeSqliteColumnDefinition(
+      association: false,
+      columnName: 'metadata',
+      iterable: false,
+      type: Map,
     ),
     'createdAt': const RuntimeSqliteColumnDefinition(
       association: false,
@@ -257,30 +216,6 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
       iterable: false,
       type: DateTime,
     ),
-    'excludeFromTotal': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'exclude_from_total',
-      iterable: false,
-      type: bool,
-    ),
-    'archived': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'archived',
-      iterable: false,
-      type: bool,
-    ),
-    'archivedAt': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'archived_at',
-      iterable: false,
-      type: DateTime,
-    ),
-    'archiveReason': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'archive_reason',
-      iterable: false,
-      type: String,
-    ),
     'userId': const RuntimeSqliteColumnDefinition(
       association: false,
       columnName: 'user_id',
@@ -290,12 +225,12 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
   };
   @override
   Future<int?> primaryKeyByUniqueColumns(
-    Wallet instance,
+    Merchant instance,
     DatabaseExecutor executor,
   ) async {
     final results = await executor.rawQuery(
       '''
-        SELECT * FROM `Wallet` WHERE id = ? LIMIT 1''',
+        SELECT * FROM `Merchant` WHERE id = ? LIMIT 1''',
       [instance.id],
     );
 
@@ -308,43 +243,46 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
   }
 
   @override
-  final String tableName = 'Wallet';
+  final String tableName = 'Merchant';
 
   @override
-  Future<Wallet> fromSupabase(
+  Future<Merchant> fromSupabase(
     Map<String, dynamic> input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$WalletFromSupabase(
+  }) async => await _$MerchantFromSupabase(
     input,
     provider: provider,
     repository: repository,
   );
   @override
   Future<Map<String, dynamic>> toSupabase(
-    Wallet input, {
+    Merchant input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$WalletToSupabase(
+  }) async => await _$MerchantToSupabase(
     input,
     provider: provider,
     repository: repository,
   );
   @override
-  Future<Wallet> fromSqlite(
+  Future<Merchant> fromSqlite(
     Map<String, dynamic> input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$WalletFromSqlite(
+  }) async => await _$MerchantFromSqlite(
     input,
     provider: provider,
     repository: repository,
   );
   @override
   Future<Map<String, dynamic>> toSqlite(
-    Wallet input, {
+    Merchant input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async =>
-      await _$WalletToSqlite(input, provider: provider, repository: repository);
+  }) async => await _$MerchantToSqlite(
+    input,
+    provider: provider,
+    repository: repository,
+  );
 }

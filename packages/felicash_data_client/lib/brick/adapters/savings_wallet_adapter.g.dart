@@ -1,25 +1,23 @@
 // GENERATED CODE DO NOT EDIT
 part of '../brick.g.dart';
 
-Future<CreditWallet> _$CreditWalletFromSupabase(
+Future<SavingsWallet> _$SavingsWalletFromSupabase(
   Map<String, dynamic> data, {
   required SupabaseProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
-  return CreditWallet(
+  return SavingsWallet(
     wallet: await WalletAdapter().fromSupabase(
       data['wallet'] as Map<String, dynamic>,
       provider: provider,
       repository: repository,
     ),
-    creditLimit: data['credit_limit'] as double,
-    stateDayOfMonth: data['state_day_of_month'] as int,
-    paymentDueDayOfMonth: data['payment_due_day_of_month'] as int,
+    savingsGoal: data['savings_goal'] as double,
   );
 }
 
-Future<Map<String, dynamic>> _$CreditWalletToSupabase(
-  CreditWallet instance, {
+Future<Map<String, dynamic>> _$SavingsWalletToSupabase(
+  SavingsWallet instance, {
   required SupabaseProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
@@ -29,19 +27,17 @@ Future<Map<String, dynamic>> _$CreditWalletToSupabase(
       provider: provider,
       repository: repository,
     ),
-    'credit_limit': instance.creditLimit,
-    'state_day_of_month': instance.stateDayOfMonth,
-    'payment_due_day_of_month': instance.paymentDueDayOfMonth,
+    'savings_goal': instance.savingsGoal,
     'wallet_id': instance.walletId,
   };
 }
 
-Future<CreditWallet> _$CreditWalletFromSqlite(
+Future<SavingsWallet> _$SavingsWalletFromSqlite(
   Map<String, dynamic> data, {
   required SqliteProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
-  return CreditWallet(
+  return SavingsWallet(
     wallet:
         (await repository!.getAssociation<Wallet>(
           Query.where(
@@ -50,14 +46,12 @@ Future<CreditWallet> _$CreditWalletFromSqlite(
             limit1: true,
           ),
         ))!.first,
-    creditLimit: data['credit_limit'] as double,
-    stateDayOfMonth: data['state_day_of_month'] as int,
-    paymentDueDayOfMonth: data['payment_due_day_of_month'] as int,
+    savingsGoal: data['savings_goal'] as double,
   )..primaryKey = data['_brick_id'] as int;
 }
 
-Future<Map<String, dynamic>> _$CreditWalletToSqlite(
-  CreditWallet instance, {
+Future<Map<String, dynamic>> _$SavingsWalletToSqlite(
+  SavingsWallet instance, {
   required SqliteProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
@@ -65,20 +59,18 @@ Future<Map<String, dynamic>> _$CreditWalletToSqlite(
     'wallet_Wallet_brick_id':
         instance.wallet.primaryKey ??
         await provider.upsert<Wallet>(instance.wallet, repository: repository),
-    'credit_limit': instance.creditLimit,
-    'state_day_of_month': instance.stateDayOfMonth,
-    'payment_due_day_of_month': instance.paymentDueDayOfMonth,
+    'savings_goal': instance.savingsGoal,
     'wallet_id': instance.walletId,
   };
 }
 
-/// Construct a [CreditWallet]
-class CreditWalletAdapter
-    extends OfflineFirstWithSupabaseAdapter<CreditWallet> {
-  CreditWalletAdapter();
+/// Construct a [SavingsWallet]
+class SavingsWalletAdapter
+    extends OfflineFirstWithSupabaseAdapter<SavingsWallet> {
+  SavingsWalletAdapter();
 
   @override
-  final supabaseTableName = 'credit_wallets';
+  final supabaseTableName = 'savings_wallets';
   @override
   final defaultToNull = true;
   @override
@@ -90,17 +82,9 @@ class CreditWalletAdapter
       associationIsNullable: false,
       foreignKey: 'wallet_id',
     ),
-    'creditLimit': const RuntimeSupabaseColumnDefinition(
+    'savingsGoal': const RuntimeSupabaseColumnDefinition(
       association: false,
-      columnName: 'credit_limit',
-    ),
-    'stateDayOfMonth': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'state_day_of_month',
-    ),
-    'paymentDueDayOfMonth': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'payment_due_day_of_month',
+      columnName: 'savings_goal',
     ),
     'walletId': const RuntimeSupabaseColumnDefinition(
       association: false,
@@ -125,23 +109,11 @@ class CreditWalletAdapter
       iterable: false,
       type: Wallet,
     ),
-    'creditLimit': const RuntimeSqliteColumnDefinition(
+    'savingsGoal': const RuntimeSqliteColumnDefinition(
       association: false,
-      columnName: 'credit_limit',
+      columnName: 'savings_goal',
       iterable: false,
       type: double,
-    ),
-    'stateDayOfMonth': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'state_day_of_month',
-      iterable: false,
-      type: int,
-    ),
-    'paymentDueDayOfMonth': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'payment_due_day_of_month',
-      iterable: false,
-      type: int,
     ),
     'walletId': const RuntimeSqliteColumnDefinition(
       association: false,
@@ -152,12 +124,12 @@ class CreditWalletAdapter
   };
   @override
   Future<int?> primaryKeyByUniqueColumns(
-    CreditWallet instance,
+    SavingsWallet instance,
     DatabaseExecutor executor,
   ) async {
     final results = await executor.rawQuery(
       '''
-        SELECT * FROM `CreditWallet` WHERE wallet_id = ? LIMIT 1''',
+        SELECT * FROM `SavingsWallet` WHERE wallet_id = ? LIMIT 1''',
       [instance.walletId],
     );
 
@@ -170,44 +142,44 @@ class CreditWalletAdapter
   }
 
   @override
-  final String tableName = 'CreditWallet';
+  final String tableName = 'SavingsWallet';
 
   @override
-  Future<CreditWallet> fromSupabase(
+  Future<SavingsWallet> fromSupabase(
     Map<String, dynamic> input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$CreditWalletFromSupabase(
+  }) async => await _$SavingsWalletFromSupabase(
     input,
     provider: provider,
     repository: repository,
   );
   @override
   Future<Map<String, dynamic>> toSupabase(
-    CreditWallet input, {
+    SavingsWallet input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$CreditWalletToSupabase(
+  }) async => await _$SavingsWalletToSupabase(
     input,
     provider: provider,
     repository: repository,
   );
   @override
-  Future<CreditWallet> fromSqlite(
+  Future<SavingsWallet> fromSqlite(
     Map<String, dynamic> input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$CreditWalletFromSqlite(
+  }) async => await _$SavingsWalletFromSqlite(
     input,
     provider: provider,
     repository: repository,
   );
   @override
   Future<Map<String, dynamic>> toSqlite(
-    CreditWallet input, {
+    SavingsWallet input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$CreditWalletToSqlite(
+  }) async => await _$SavingsWalletToSqlite(
     input,
     provider: provider,
     repository: repository,
