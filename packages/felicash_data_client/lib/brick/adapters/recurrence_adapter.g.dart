@@ -1,68 +1,52 @@
 // GENERATED CODE DO NOT EDIT
 part of '../brick.g.dart';
 
-Future<Wallet> _$WalletFromSupabase(
+Future<Recurrence> _$RecurrenceFromSupabase(
   Map<String, dynamic> data, {
   required SupabaseProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
-  return Wallet(
+  return Recurrence(
     id: data['id'] as String?,
     profile: await ProfileAdapter().fromSupabase(
       data['user_id'] as Map<String, dynamic>,
       provider: provider,
       repository: repository,
     ),
-    walletType: WalletType.values.byName(data['wallet_type'] as String),
-    name: data['name'] as String,
-    description: data['description'] as String,
-    baseCurrency: data['base_currency'] as String,
-    balance: data['balance'] as double,
+    cronString:
+        data['cron_string'] == null ? null : data['cron_string'] as String?,
+    recurrenceType: RecurrenceType.fromSupabase(
+      data['recurrence_type'] as String,
+    ),
+    description:
+        data['description'] == null ? null : data['description'] as String?,
     createdAt: DateTime.parse(data['created_at'] as String),
     updatedAt: DateTime.parse(data['updated_at'] as String),
-    excludeFromTotal: data['exclude_from_total'] as bool,
-    archived: data['archived'] as bool,
-    archivedAt:
-        data['archived_at'] == null
-            ? null
-            : data['archived_at'] == null
-            ? null
-            : DateTime.tryParse(data['archived_at'] as String),
-    archiveReason:
-        data['archive_reason'] == null
-            ? null
-            : data['archive_reason'] as String? ?? null,
   );
 }
 
-Future<Map<String, dynamic>> _$WalletToSupabase(
-  Wallet instance, {
+Future<Map<String, dynamic>> _$RecurrenceToSupabase(
+  Recurrence instance, {
   required SupabaseProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
   return {
     'id': instance.id,
     'user_id': instance.profile.id,
-    'wallet_type': instance.walletType.toSupabase(),
-    'name': instance.name,
+    'cron_string': instance.cronString,
+    'recurrence_type': instance.recurrenceType.toSupabase(),
     'description': instance.description,
-    'base_currency': instance.baseCurrency,
-    'balance': instance.balance,
     'created_at': instance.createdAt.toIso8601String(),
     'updated_at': instance.updatedAt.toIso8601String(),
-    'exclude_from_total': instance.excludeFromTotal,
-    'archived': instance.archived,
-    'archived_at': instance.archivedAt?.toIso8601String(),
-    'archive_reason': instance.archiveReason,
   };
 }
 
-Future<Wallet> _$WalletFromSqlite(
+Future<Recurrence> _$RecurrenceFromSqlite(
   Map<String, dynamic> data, {
   required SqliteProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
-  return Wallet(
+  return Recurrence(
     id: data['id'] as String,
     profile:
         (await repository!.getAssociation<Profile>(
@@ -72,30 +56,20 @@ Future<Wallet> _$WalletFromSqlite(
             limit1: true,
           ),
         ))!.first,
-    walletType: WalletType.values.byName(data['wallet_type'] as String),
-    name: data['name'] as String,
-    description: data['description'] as String,
-    baseCurrency: data['base_currency'] as String,
-    balance: data['balance'] as double,
+    cronString:
+        data['cron_string'] == null ? null : data['cron_string'] as String?,
+    recurrenceType: RecurrenceType.values.byName(
+      data['recurrence_type'] as String,
+    ),
+    description:
+        data['description'] == null ? null : data['description'] as String?,
     createdAt: DateTime.parse(data['created_at'] as String),
     updatedAt: DateTime.parse(data['updated_at'] as String),
-    excludeFromTotal: data['exclude_from_total'] == 1,
-    archived: data['archived'] == 1,
-    archivedAt:
-        data['archived_at'] == null
-            ? null
-            : data['archived_at'] == null
-            ? null
-            : DateTime.tryParse(data['archived_at'] as String),
-    archiveReason:
-        data['archive_reason'] == null
-            ? null
-            : data['archive_reason'] as String? ?? null,
   )..primaryKey = data['_brick_id'] as int;
 }
 
-Future<Map<String, dynamic>> _$WalletToSqlite(
-  Wallet instance, {
+Future<Map<String, dynamic>> _$RecurrenceToSqlite(
+  Recurrence instance, {
   required SqliteProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
@@ -107,26 +81,20 @@ Future<Map<String, dynamic>> _$WalletToSqlite(
           instance.profile,
           repository: repository,
         ),
-    'wallet_type': instance.walletType.name,
-    'name': instance.name,
+    'cron_string': instance.cronString,
+    'recurrence_type': instance.recurrenceType.name,
     'description': instance.description,
-    'base_currency': instance.baseCurrency,
-    'balance': instance.balance,
     'created_at': instance.createdAt.toIso8601String(),
     'updated_at': instance.updatedAt.toIso8601String(),
-    'exclude_from_total': instance.excludeFromTotal ? 1 : 0,
-    'archived': instance.archived ? 1 : 0,
-    'archived_at': instance.archivedAt?.toIso8601String(),
-    'archive_reason': instance.archiveReason,
   };
 }
 
-/// Construct a [Wallet]
-class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
-  WalletAdapter();
+/// Construct a [Recurrence]
+class RecurrenceAdapter extends OfflineFirstWithSupabaseAdapter<Recurrence> {
+  RecurrenceAdapter();
 
   @override
-  final supabaseTableName = 'wallets';
+  final supabaseTableName = 'recurrences';
   @override
   final defaultToNull = true;
   @override
@@ -142,25 +110,17 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
       associationIsNullable: false,
       foreignKey: 'user_id',
     ),
-    'walletType': const RuntimeSupabaseColumnDefinition(
+    'cronString': const RuntimeSupabaseColumnDefinition(
       association: false,
-      columnName: 'wallet_type',
+      columnName: 'cron_string',
     ),
-    'name': const RuntimeSupabaseColumnDefinition(
+    'recurrenceType': const RuntimeSupabaseColumnDefinition(
       association: false,
-      columnName: 'name',
+      columnName: 'recurrence_type',
     ),
     'description': const RuntimeSupabaseColumnDefinition(
       association: false,
       columnName: 'description',
-    ),
-    'baseCurrency': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'base_currency',
-    ),
-    'balance': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'balance',
     ),
     'createdAt': const RuntimeSupabaseColumnDefinition(
       association: false,
@@ -169,22 +129,6 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
     'updatedAt': const RuntimeSupabaseColumnDefinition(
       association: false,
       columnName: 'updated_at',
-    ),
-    'excludeFromTotal': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'exclude_from_total',
-    ),
-    'archived': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'archived',
-    ),
-    'archivedAt': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'archived_at',
-    ),
-    'archiveReason': const RuntimeSupabaseColumnDefinition(
-      association: false,
-      columnName: 'archive_reason',
     ),
     'userId': const RuntimeSupabaseColumnDefinition(
       association: false,
@@ -215,35 +159,23 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
       iterable: false,
       type: Profile,
     ),
-    'walletType': const RuntimeSqliteColumnDefinition(
+    'cronString': const RuntimeSqliteColumnDefinition(
       association: false,
-      columnName: 'wallet_type',
-      iterable: false,
-      type: WalletType,
-    ),
-    'name': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'name',
+      columnName: 'cron_string',
       iterable: false,
       type: String,
+    ),
+    'recurrenceType': const RuntimeSqliteColumnDefinition(
+      association: false,
+      columnName: 'recurrence_type',
+      iterable: false,
+      type: RecurrenceType,
     ),
     'description': const RuntimeSqliteColumnDefinition(
       association: false,
       columnName: 'description',
       iterable: false,
       type: String,
-    ),
-    'baseCurrency': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'base_currency',
-      iterable: false,
-      type: String,
-    ),
-    'balance': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'balance',
-      iterable: false,
-      type: double,
     ),
     'createdAt': const RuntimeSqliteColumnDefinition(
       association: false,
@@ -257,30 +189,6 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
       iterable: false,
       type: DateTime,
     ),
-    'excludeFromTotal': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'exclude_from_total',
-      iterable: false,
-      type: bool,
-    ),
-    'archived': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'archived',
-      iterable: false,
-      type: bool,
-    ),
-    'archivedAt': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'archived_at',
-      iterable: false,
-      type: DateTime,
-    ),
-    'archiveReason': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'archive_reason',
-      iterable: false,
-      type: String,
-    ),
     'userId': const RuntimeSqliteColumnDefinition(
       association: false,
       columnName: 'user_id',
@@ -290,12 +198,12 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
   };
   @override
   Future<int?> primaryKeyByUniqueColumns(
-    Wallet instance,
+    Recurrence instance,
     DatabaseExecutor executor,
   ) async {
     final results = await executor.rawQuery(
       '''
-        SELECT * FROM `Wallet` WHERE id = ? LIMIT 1''',
+        SELECT * FROM `Recurrence` WHERE id = ? LIMIT 1''',
       [instance.id],
     );
 
@@ -308,43 +216,46 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
   }
 
   @override
-  final String tableName = 'Wallet';
+  final String tableName = 'Recurrence';
 
   @override
-  Future<Wallet> fromSupabase(
+  Future<Recurrence> fromSupabase(
     Map<String, dynamic> input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$WalletFromSupabase(
+  }) async => await _$RecurrenceFromSupabase(
     input,
     provider: provider,
     repository: repository,
   );
   @override
   Future<Map<String, dynamic>> toSupabase(
-    Wallet input, {
+    Recurrence input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$WalletToSupabase(
+  }) async => await _$RecurrenceToSupabase(
     input,
     provider: provider,
     repository: repository,
   );
   @override
-  Future<Wallet> fromSqlite(
+  Future<Recurrence> fromSqlite(
     Map<String, dynamic> input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$WalletFromSqlite(
+  }) async => await _$RecurrenceFromSqlite(
     input,
     provider: provider,
     repository: repository,
   );
   @override
   Future<Map<String, dynamic>> toSqlite(
-    Wallet input, {
+    Recurrence input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async =>
-      await _$WalletToSqlite(input, provider: provider, repository: repository);
+  }) async => await _$RecurrenceToSqlite(
+    input,
+    provider: provider,
+    repository: repository,
+  );
 }
