@@ -2,7 +2,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 class WalletCard extends StatelessWidget {
-  const WalletCard({super.key, required this.block});
+  const WalletCard({required this.block, super.key});
   final WalletBlock block;
 
   @override

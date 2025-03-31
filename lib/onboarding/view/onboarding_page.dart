@@ -51,7 +51,7 @@ class _AppLogo extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(
-            Radius.circular(AppBorderRadius.xxlg),
+            Radius.circular(AppRadius.xxlg),
           ),
           color: theme.colorScheme.primary,
         ),
@@ -93,7 +93,7 @@ class _AppSlogan extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.secondaryContainer,
-                    borderRadius: BorderRadius.circular(AppBorderRadius.md),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Text(
                     'financial'.hardCoded,
@@ -123,7 +123,7 @@ class _AppSlogan extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.tertiaryContainer,
-                    borderRadius: BorderRadius.circular(AppBorderRadius.md),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Text(
                     'AI'.hardCoded,

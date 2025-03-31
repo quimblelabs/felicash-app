@@ -17,6 +17,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       _onLoginWithEmailPasswordSubmitted,
     );
     on<LoginWithGoogleSubmitted>(_onLoginWithGoogleSubmitted);
+    on<LoginWithAppleSubmitted>(_onLoginWithAppleSubmitted);
   }
 
   late final UserRepository _userRepository;
@@ -73,6 +74,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       await _userRepository.loginWithGoogle();
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
+    } catch (e, stackTrace) {
+      emit(state.copyWith(status: FormzSubmissionStatus.failure));
+      addError(e, stackTrace);
+    }
+  }
+
+  Future<void> _onLoginWithAppleSubmitted(
+    LoginWithAppleSubmitted event,
+    Emitter<LoginState> emit,
+  ) async {
+    try {
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+      await _userRepository.loginWithApple();
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e, stackTrace) {
       emit(state.copyWith(status: FormzSubmissionStatus.failure));
