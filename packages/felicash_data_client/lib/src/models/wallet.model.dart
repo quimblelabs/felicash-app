@@ -2,31 +2,9 @@ import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supab
 import 'package:brick_sqlite/brick_sqlite.dart';
 import 'package:brick_supabase/brick_supabase.dart';
 import 'package:equatable/equatable.dart';
+import 'package:felicash_data_client/src/enums/wallet_type.enum.dart';
+import 'package:felicash_data_client/src/models/profile.model.dart';
 import 'package:uuid/uuid.dart';
-
-/// Type of wallet
-
-enum WalletType {
-  /// Basic wallet, for general use
-  basic,
-
-  /// Credit card wallet, for credit card payments or account payments that
-  /// have a credit limit
-  credit,
-
-  /// Savings wallet, for savings accounts
-  savings;
-
-  factory WalletType.fromRest(String direction) {
-    return WalletType.values.firstWhere(
-      (e) => e.name == direction,
-      orElse: () => WalletType.basic,
-    );
-  }
-
-  /// Convert to sqlite value
-  int toSqlite() => WalletType.values.indexOf(this);
-}
 
 ///{@template wallet_model}
 /// Wallet model
@@ -38,7 +16,7 @@ enum WalletType {
 class Wallet extends OfflineFirstWithSupabaseModel with EquatableMixin {
   /// {@macro wallet_model}
   Wallet({
-    required this.userId,
+    required this.profile,
     required this.walletType,
     required this.name,
     required this.description,
@@ -46,11 +24,11 @@ class Wallet extends OfflineFirstWithSupabaseModel with EquatableMixin {
     required this.balance,
     required this.createdAt,
     required this.updatedAt,
-    String? id,
     this.archived = false,
     this.archivedAt,
     this.archiveReason,
     this.excludeFromTotal = false,
+    String? id,
   }) : id = id ?? const Uuid().v4();
 
   /// Id of the wallet
@@ -58,8 +36,20 @@ class Wallet extends OfflineFirstWithSupabaseModel with EquatableMixin {
   @Sqlite(index: true, unique: true)
   final String id;
 
-  /// Id of the user who owns the wallet
-  final String userId;
+  /// Profile of the wallet
+  /// This is the profile of the user who created the wallet
+  @Supabase(
+    foreignKey: 'user_id',
+    name: 'user_id',
+    fromGenerator:
+        'await ProfileAdapter().fromSupabase( '
+        '%DATA_PROPERTY% as Map<String, dynamic>, '
+        'provider: provider, '
+        'repository: repository,)',
+    toGenerator: 'instance.profile.id',
+  )
+  @Sqlite(onDeleteCascade: true)
+  final Profile profile;
 
   /// Type of the wallet
   @Supabase(
@@ -87,41 +77,30 @@ class Wallet extends OfflineFirstWithSupabaseModel with EquatableMixin {
   /// Timestamp when the wallet was last updated
   final DateTime updatedAt;
 
-  //   Table wallets {
-  //   id UUID [pk, note: 'Primary key for the wallet']
-  //   user_id UUID [not null, note: 'Reference to the user who owns the wallet']
-  //   wallet_type WALLET_TYPE [not null, note: 'Type of the wallet']
-  //   name VARCHAR(100) [not null, note: 'Name of the wallet']
-  //   description TEXT [note: 'Description of the wallet']
-  //   base_currency VARCHAR(10) [not null, note: 'Base currency of the wallet']
-  //   balance NUMERIC(15, 2) [not null, default: 0, note: 'Current balance of the wallet']
-  //   created_at TIMESTAMP [default: `now()`, note: 'Timestamp when the wallet was created']
-  //   updated_at TIMESTAMP [default: `now()`, note: 'Timestamp when the wallet was last updated']
-  //   exclude_from_total BOOLEAN [default: false, note: 'Flag to exclude the wallet balance from the total']
-  //   archived BOOLEAN [default: false, note: 'Flag to mark the wallet as archived']
-  //   archived_at TIMESTAMP [null, note: 'Timestamp when the wallet was archived']
-  //   archive_reason TEXT [null, note: 'Reason for archiving the wallet']
-  //   Note: 'Stores common wallet information.'
-  // }
-
   /// Flag to exclude the wallet balance from the total
-  bool excludeFromTotal;
+  final bool excludeFromTotal;
 
   /// Flag to mark the wallet as archived
-  bool archived;
+  final bool archived;
 
   /// Timestamp when the wallet was archived
-  DateTime? archivedAt;
+  final DateTime? archivedAt;
 
   /// Reason for archiving the wallet
   @Supabase(defaultValue: 'null')
   @Sqlite(defaultValue: 'null')
-  String? archiveReason;
+  final String? archiveReason;
+
+  /// User id of the wallet
+  @Supabase(ignoreTo: true)
+  @Sqlite(ignoreTo: true)
+  String get userId => profile.id;
+
   @override
   List<Object?> get props {
     return [
       id,
-      userId,
+      profile,
       walletType,
       name,
       description,
