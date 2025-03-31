@@ -1,6 +1,8 @@
 import 'package:ai_client/ai_client.dart';
 import 'package:ai_client/src/models/post_extract_transaction_from_ocr_invoice_response.dart';
+import 'package:ai_client/src/models/post_query_response.dart';
 import 'package:ai_client/src/requests/post_extract_transaction_from_ocr_invoice_body.dart';
+import 'package:ai_client/src/requests/post_query_body.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 part 'n8n_ai_client.g.dart';
@@ -26,4 +28,8 @@ abstract class N8nAiClient implements AiClient {
   postExtractTransactionFromOCRInvoice(
     @Body() PostExtractTransactionFromOCRInvoiceBody body,
   );
+
+  @POST('/query')
+  @override
+  Future<List<PostQueryResponse>> postQuery(@Body() PostQueryBody body);
 }

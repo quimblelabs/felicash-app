@@ -108,45 +108,13 @@ void main() {
       );
       expect(response, isNotNull);
     });
+
+    test('Post query successfully', () async {
+      final client = N8nAiClient(dio, baseUrl: Keys.BASE_URL);
+      final response = await client.postQuery(
+        PostQueryBody(queryText: 'Tôi có giao dịch gì trong tháng này không ?'),
+      );
+      expect(response, isNotNull);
+    });
   });
 }
-
-
-// {
-//     "query_text": "Hôm nay, lúc 15h tôi có ăn một tô hủ tiếu hết 40k tại tiệm hủ tiếu Thiên Kim, hủ tiếu khá là ngon á nha",
-//     "knowledge_base": {
-//         "categories": [
-//             {
-//                 "id": "751b0c10-d10e-472b-b953-d7463fecb819",
-//                 "name": "Ăn uống",
-//                 "description": "Các giao dịch chi trả cho việc ăn uống."
-//             },
-//             {
-//                 "id": "5346a559-7eab-4682-90da-ee8e510784d1",
-//                 "name": "Mua sắm",
-//                 "description": "Các giao dịch liên quan đến mua sắm, shopping,..."
-//             }
-//         ],
-//         "transaction_types": [
-//             "income",
-//             "re_payment",
-//             "lending",
-//             "borrowing",
-//             "expense",
-//             "debt_collecting",
-//             "transfer"
-//         ],
-//         "wallets": [
-//             {
-//                 "id": "0df79f43-efc2-42f7-8277-611bb752eba0",
-//                 "name": "Ví tiền mặt",
-//                 "description": "Ví dùng cho các chi tiêu và thu nhập bằng tiền mặt"
-//             },
-//             {
-//                 "id": "d88fe0bd-a91d-499a-898c-395e7e5c0c50",
-//                 "name": "Ví tiết kiệm",
-//                 "description": "Ví chứa các khoản tiết kiệm của tôi"
-//             }
-//         ]
-//     }
-// }

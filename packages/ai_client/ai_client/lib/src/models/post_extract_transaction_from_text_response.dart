@@ -5,11 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'post_extract_transaction_from_text_response.g.dart';
 
-@JsonSerializable(
-  createToJson: false,
-  fieldRename: FieldRename.snake,
-  includeIfNull: false,
-)
+@JsonSerializable(createToJson: false, fieldRename: FieldRename.snake)
 class PostExtractTransactionFromTextResponse extends Equatable {
   const PostExtractTransactionFromTextResponse({
     this.output,
@@ -31,11 +27,7 @@ class PostExtractTransactionFromTextResponse extends Equatable {
   List<Object?> get props => [output, startTime, executeTime];
 }
 
-@JsonSerializable(
-  createToJson: false,
-  fieldRename: FieldRename.snake,
-  includeIfNull: false,
-)
+@JsonSerializable(createToJson: false, fieldRename: FieldRename.snake)
 class PostExtractTransactionFromTextOutput extends Equatable {
   const PostExtractTransactionFromTextOutput({
     this.responseText,
