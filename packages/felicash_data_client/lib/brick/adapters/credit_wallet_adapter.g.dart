@@ -12,6 +12,9 @@ Future<CreditWallet> _$CreditWalletFromSupabase(
       provider: provider,
       repository: repository,
     ),
+    creditLimit: data['credit_limit'] as double,
+    stateDayOfMonth: data['state_day_of_month'] as int,
+    paymentDueDayOfMonth: data['payment_due_day_of_month'] as int,
   );
 }
 
@@ -26,6 +29,10 @@ Future<Map<String, dynamic>> _$CreditWalletToSupabase(
       provider: provider,
       repository: repository,
     ),
+    'credit_limit': instance.creditLimit,
+    'state_day_of_month': instance.stateDayOfMonth,
+    'payment_due_day_of_month': instance.paymentDueDayOfMonth,
+    'wallet_id': instance.walletId,
   };
 }
 
@@ -43,6 +50,9 @@ Future<CreditWallet> _$CreditWalletFromSqlite(
             limit1: true,
           ),
         ))!.first,
+    creditLimit: data['credit_limit'] as double,
+    stateDayOfMonth: data['state_day_of_month'] as int,
+    paymentDueDayOfMonth: data['payment_due_day_of_month'] as int,
   )..primaryKey = data['_brick_id'] as int;
 }
 
@@ -55,6 +65,10 @@ Future<Map<String, dynamic>> _$CreditWalletToSqlite(
     'wallet_Wallet_brick_id':
         instance.wallet.primaryKey ??
         await provider.upsert<Wallet>(instance.wallet, repository: repository),
+    'credit_limit': instance.creditLimit,
+    'state_day_of_month': instance.stateDayOfMonth,
+    'payment_due_day_of_month': instance.paymentDueDayOfMonth,
+    'wallet_id': instance.walletId,
   };
 }
 
@@ -76,11 +90,27 @@ class CreditWalletAdapter
       associationIsNullable: false,
       foreignKey: 'wallet_id',
     ),
+    'creditLimit': const RuntimeSupabaseColumnDefinition(
+      association: false,
+      columnName: 'credit_limit',
+    ),
+    'stateDayOfMonth': const RuntimeSupabaseColumnDefinition(
+      association: false,
+      columnName: 'state_day_of_month',
+    ),
+    'paymentDueDayOfMonth': const RuntimeSupabaseColumnDefinition(
+      association: false,
+      columnName: 'payment_due_day_of_month',
+    ),
+    'walletId': const RuntimeSupabaseColumnDefinition(
+      association: false,
+      columnName: 'wallet_id',
+    ),
   };
   @override
   final ignoreDuplicates = false;
   @override
-  final uniqueFields = {};
+  final uniqueFields = {'walletId'};
   @override
   final Map<String, RuntimeSqliteColumnDefinition> fieldsToSqliteColumns = {
     'primaryKey': const RuntimeSqliteColumnDefinition(
@@ -95,12 +125,50 @@ class CreditWalletAdapter
       iterable: false,
       type: Wallet,
     ),
+    'creditLimit': const RuntimeSqliteColumnDefinition(
+      association: false,
+      columnName: 'credit_limit',
+      iterable: false,
+      type: double,
+    ),
+    'stateDayOfMonth': const RuntimeSqliteColumnDefinition(
+      association: false,
+      columnName: 'state_day_of_month',
+      iterable: false,
+      type: int,
+    ),
+    'paymentDueDayOfMonth': const RuntimeSqliteColumnDefinition(
+      association: false,
+      columnName: 'payment_due_day_of_month',
+      iterable: false,
+      type: int,
+    ),
+    'walletId': const RuntimeSqliteColumnDefinition(
+      association: false,
+      columnName: 'wallet_id',
+      iterable: false,
+      type: String,
+    ),
   };
   @override
   Future<int?> primaryKeyByUniqueColumns(
     CreditWallet instance,
     DatabaseExecutor executor,
-  ) async => instance.primaryKey;
+  ) async {
+    final results = await executor.rawQuery(
+      '''
+        SELECT * FROM `CreditWallet` WHERE wallet_id = ? LIMIT 1''',
+      [instance.walletId],
+    );
+
+    // SQFlite returns [{}] when no results are found
+    if (results.isEmpty || (results.length == 1 && results.first.isEmpty)) {
+      return null;
+    }
+
+    return results.first['_brick_id'] as int;
+  }
+
   @override
   final String tableName = 'CreditWallet';
 

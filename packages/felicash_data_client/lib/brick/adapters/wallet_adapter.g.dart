@@ -8,7 +8,11 @@ Future<Wallet> _$WalletFromSupabase(
 }) async {
   return Wallet(
     id: data['id'] as String?,
-    userId: data['user_id'] as String,
+    profile: await ProfileAdapter().fromSupabase(
+      data['user_id'] as Map<String, dynamic>,
+      provider: provider,
+      repository: repository,
+    ),
     walletType: WalletType.values.byName(data['wallet_type'] as String),
     name: data['name'] as String,
     description: data['description'] as String,
@@ -38,8 +42,8 @@ Future<Map<String, dynamic>> _$WalletToSupabase(
 }) async {
   return {
     'id': instance.id,
-    'user_id': instance.userId,
-    'wallet_type': instance.walletType.name,
+    'user_id': instance.profile.id,
+    'wallet_type': instance.walletType.toSupabase(),
     'name': instance.name,
     'description': instance.description,
     'base_currency': instance.baseCurrency,
@@ -60,7 +64,14 @@ Future<Wallet> _$WalletFromSqlite(
 }) async {
   return Wallet(
     id: data['id'] as String,
-    userId: data['user_id'] as String,
+    profile:
+        (await repository!.getAssociation<Profile>(
+          Query.where(
+            'primaryKey',
+            data['profile_Profile_brick_id'] as int,
+            limit1: true,
+          ),
+        ))!.first,
     walletType: WalletType.values.byName(data['wallet_type'] as String),
     name: data['name'] as String,
     description: data['description'] as String,
@@ -90,8 +101,13 @@ Future<Map<String, dynamic>> _$WalletToSqlite(
 }) async {
   return {
     'id': instance.id,
-    'user_id': instance.userId,
-    'wallet_type': instance.walletType.toSqlite(),
+    'profile_Profile_brick_id':
+        instance.profile.primaryKey ??
+        await provider.upsert<Profile>(
+          instance.profile,
+          repository: repository,
+        ),
+    'wallet_type': instance.walletType.name,
     'name': instance.name,
     'description': instance.description,
     'base_currency': instance.baseCurrency,
@@ -119,9 +135,12 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
       association: false,
       columnName: 'id',
     ),
-    'userId': const RuntimeSupabaseColumnDefinition(
-      association: false,
+    'profile': const RuntimeSupabaseColumnDefinition(
+      association: true,
       columnName: 'user_id',
+      associationType: Profile,
+      associationIsNullable: false,
+      foreignKey: 'user_id',
     ),
     'walletType': const RuntimeSupabaseColumnDefinition(
       association: false,
@@ -167,6 +186,10 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
       association: false,
       columnName: 'archive_reason',
     ),
+    'userId': const RuntimeSupabaseColumnDefinition(
+      association: false,
+      columnName: 'user_id',
+    ),
   };
   @override
   final ignoreDuplicates = false;
@@ -186,11 +209,11 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
       iterable: false,
       type: String,
     ),
-    'userId': const RuntimeSqliteColumnDefinition(
-      association: false,
-      columnName: 'user_id',
+    'profile': const RuntimeSqliteColumnDefinition(
+      association: true,
+      columnName: 'profile_Profile_brick_id',
       iterable: false,
-      type: String,
+      type: Profile,
     ),
     'walletType': const RuntimeSqliteColumnDefinition(
       association: false,
@@ -255,6 +278,12 @@ class WalletAdapter extends OfflineFirstWithSupabaseAdapter<Wallet> {
     'archiveReason': const RuntimeSqliteColumnDefinition(
       association: false,
       columnName: 'archive_reason',
+      iterable: false,
+      type: String,
+    ),
+    'userId': const RuntimeSqliteColumnDefinition(
+      association: false,
+      columnName: 'user_id',
       iterable: false,
       type: String,
     ),

@@ -1141,8 +1141,8 @@ packages:
   transaction_repository:
     dependency: "direct main"
     description:
-      path: "/Users/huynhtuan/Documents/developemt/work/quimblelabs/projects/felicash/repositories/felicash/packages/transaction_repository"
-      relative: false
+      path: "packages/transaction_repository"
+      relative: true
     source: path
     version: "0.1.0+1"
   typed_data:
