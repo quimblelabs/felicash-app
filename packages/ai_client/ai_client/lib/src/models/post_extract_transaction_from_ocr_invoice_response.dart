@@ -6,11 +6,7 @@ import 'extracted_transaction.dart';
 
 part 'post_extract_transaction_from_ocr_invoice_response.g.dart';
 
-@JsonSerializable(
-  createToJson: false,
-  fieldRename: FieldRename.snake,
-  includeIfNull: false,
-)
+@JsonSerializable(createToJson: false, fieldRename: FieldRename.snake)
 class PostExtractTransactionFromOCRInvoiceResponse extends Equatable {
   const PostExtractTransactionFromOCRInvoiceResponse({
     this.output,
@@ -32,11 +28,7 @@ class PostExtractTransactionFromOCRInvoiceResponse extends Equatable {
   List<Object?> get props => [output, startTime, executeTime];
 }
 
-@JsonSerializable(
-  createToJson: false,
-  fieldRename: FieldRename.snake,
-  includeIfNull: false,
-)
+@JsonSerializable(createToJson: false, fieldRename: FieldRename.snake)
 class PostExtractTransactionFromOCRInvoiceOutput extends Equatable {
   const PostExtractTransactionFromOCRInvoiceOutput({
     this.responseText,
