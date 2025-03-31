@@ -1,4 +1,4 @@
-import 'package:app_ui/src/border_radius/app_border_radius.dart';
+import 'package:app_ui/src/border_radius/app_radius.dart';
 import 'package:app_ui/src/colors/app_color_scheme.dart';
 import 'package:app_ui/src/sizings/sizings.dart';
 import 'package:app_ui/src/spacing/app_spacing.dart';
@@ -49,7 +49,7 @@ class AppTheme {
         style: FilledButton.styleFrom(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
-              Radius.circular(AppBorderRadius.lg),
+              Radius.circular(AppRadius.lg),
             ),
           ),
           minimumSize: AppButtonSizes.defaultMinimumSize,
@@ -60,7 +60,7 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
-              Radius.circular(AppBorderRadius.lg),
+              Radius.circular(AppRadius.lg),
             ),
           ),
           minimumSize: AppButtonSizes.defaultMinimumSize,
@@ -75,9 +75,12 @@ class AppTheme {
         fillColor: colorScheme.surfaceContainer,
         filled: true,
         border: const OutlineInputBorder(
+          // borderSide: BorderSide(
+          //   color: colorScheme.outline,
+          // ),
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.all(
-            Radius.circular(AppBorderRadius.xlg),
+            Radius.circular(AppRadius.lg),
           ),
         ),
       ),

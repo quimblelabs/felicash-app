@@ -1,0 +1,21 @@
+name: transaction_repository
+description: The repository for transaction and it related domain data
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.5.0
+  flutter: ^3.24.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  equatable: ^2.0.7
+  wallet_repository:
+    path: ../wallet_repository
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  very_good_analysis: ^6.0.0

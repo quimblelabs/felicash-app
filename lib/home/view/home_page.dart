@@ -28,11 +28,38 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final selectedTab =
         context.select((HomeCubit cubit) => cubit.state.tabIndex);
+
+    return _TabChangedListener(
+      child: Scaffold(
+        body: child,
+        extendBody: true,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+        bottomNavigationBar: BottomNavBar(
+          selectedTab,
+          onTabChanged: (index) {
+            context.read<HomeCubit>().changeTab(index);
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _TabChangedListener extends StatelessWidget {
+  const _TabChangedListener({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
     return BlocListener<HomeCubit, HomeState>(
+      listenWhen: (previous, current) {
+        return previous.tabIndex != current.tabIndex;
+      },
       listener: (context, state) {
+        FocusManager.instance.primaryFocus?.unfocus();
         FocusManager.instance.primaryFocus?.unfocus();
         final location = switch (state.tabIndex) {
           0 => AppRoutes.overview,
@@ -43,18 +70,7 @@ class HomeView extends StatelessWidget {
         };
         context.go(location);
       },
-      child: Scaffold(
-        body: child,
-        extendBody: true,
-        floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
-        bottomNavigationBar: BottomNavBar(
-          selectedTab,
-          onTabChanged: (index) {
-            context.read<HomeCubit>().changeTab(index);
-          },
-          onAddPressed: () {},
-        ),
-      ),
+      child: child,
     );
   }
 }

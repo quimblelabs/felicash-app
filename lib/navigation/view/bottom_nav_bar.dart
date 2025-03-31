@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:felicash/transaction/widgets/add_transaction_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
@@ -7,13 +8,11 @@ class BottomNavBar extends StatelessWidget {
   const BottomNavBar(
     this.currentIndex, {
     required this.onTabChanged,
-    this.onAddPressed,
     super.key,
   });
 
   final int currentIndex;
   final ValueChanged<int> onTabChanged;
-  final VoidCallback? onAddPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class BottomNavBar extends StatelessWidget {
             height: 80,
             width: (screenWidth * .8).clamp(300.0, 400.0),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppBorderRadius.xlg),
+              borderRadius: BorderRadius.circular(AppRadius.xlg),
               child: BottomAppBar(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -52,17 +51,7 @@ class BottomNavBar extends StatelessWidget {
                       isSelected: currentIndex == 1,
                       onTap: () => onTabChanged(1),
                     ),
-                    IconButton.filled(
-                      style: IconButton.styleFrom(
-                        backgroundColor: theme.colorScheme.secondaryContainer,
-                        foregroundColor: theme.colorScheme.onSecondaryContainer,
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(12),
-                        elevation: 0,
-                      ),
-                      onPressed: onAddPressed,
-                      icon: const Icon(Icons.add),
-                    ),
+                    const AddTransactionMenuButton(),
                     _NavBarItem(
                       icon: currentIndex == 2
                           ? IconsaxPlusBold.wallet
