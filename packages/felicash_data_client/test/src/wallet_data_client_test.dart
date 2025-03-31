@@ -1,7 +1,6 @@
 import 'package:brick_offline_first_with_rest/offline_queue.dart';
 import 'package:felicash_data_client/felicash_data_client.dart';
 import 'package:felicash_data_client/src/enums/wallet_type.enum.dart';
-import 'package:felicash_data_client/src/models/credit_wallet.model.dart';
 import 'package:felicash_data_client/src/models/profile.model.dart';
 import 'package:felicash_data_client/src/models/wallet.model.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +58,7 @@ void main() {
 
     testWallet = Wallet(
       profile: Profile(id: KeyForTest.TEST_USER_ID),
-      walletType: WalletType.credit,
+      walletType: WalletType.basic,
       name: 'Ví tiền mặt',
       description: 'Ví tiền mặt của tôi',
       baseCurrency: 'VND',
