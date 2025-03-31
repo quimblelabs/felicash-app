@@ -113,3 +113,5 @@ app.*.map.json
 !.idea/dictionaries/
 !.idea/runConfigurations/
 configurations.*.json
+
+packages/felicash_data_client/test/src/_keys.dart
