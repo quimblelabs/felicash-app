@@ -1,0 +1,6 @@
+name: felicash
+
+packages:
+  - apps/**
+  - packages/**
+  - packages/**/example/**
