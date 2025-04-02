@@ -8,14 +8,11 @@ import 'package:intl/intl.dart';
 /// This controller extends the [TextEditingController] class and provides
 /// methods for performing currency calculations.
 ///
-/// The [SimpleTextEditingController] class is used to handle currency calculations
+/// The [SimpleCalculatorTextEditingController] class is used to handle currency calculations
 /// in a text field. It extends the [TextEditingController] class and provides methods
 /// for performing addition, subtraction, multiplication, and division operations.
 ///
-/// The following example demonstrates how to use the [SimpleTextEditingController]
-/// class to create a text field that handles currency calculations:
-///
-///  The [SimpleTextEditingController] class provides the following methods for
+///  The [SimpleCalculatorTextEditingController] class provides the following methods for
 ///  performing currency calculations:
 ///  - [plus]: Performs addition operation
 ///  - [minus]: Performs subtraction operation
@@ -27,13 +24,13 @@ import 'package:intl/intl.dart';
 ///  - [clear]: Clears the current number and operation
 ///  - [calculateResult]: Calculates the result of the current operation
 ///
-class SimpleTextEditingController extends TextEditingController {
+class SimpleCalculatorTextEditingController extends TextEditingController {
   /// Creates a currency text editing controller
   ///
   /// The [initialValue] parameter is the initial value of the text field.
   /// The default value is 0.
   ///
-  SimpleTextEditingController({
+  SimpleCalculatorTextEditingController({
     double initialValue = 0,
   }) : _formatter = NumberFormat('#,###.##') {
     _currentValue = initialValue;
@@ -150,7 +147,8 @@ class SimpleTextEditingController extends TextEditingController {
     } else {
       if (_isDecimalPointMode) {
         if (_decimalPlaces > 0) {
-          _currentValue = (_currentValue * _pow10(_decimalPlaces)).floorToDouble();
+          _currentValue =
+              (_currentValue * _pow10(_decimalPlaces)).floorToDouble();
           _decimalPlaces--;
           _currentValue = _currentValue / _pow10(_decimalPlaces);
         } else {
@@ -239,10 +237,12 @@ class SimpleTextEditingController extends TextEditingController {
 
   String get _formattedText {
     if (_isDecimalPointMode && _decimalPlaces == 0) {
-      final number = double.parse(_currentValue.toStringAsFixed(_decimalPlaces));
+      final number =
+          double.parse(_currentValue.toStringAsFixed(_decimalPlaces));
       return '${_formatter.format(number)}.';
     } else if (_decimalPlaces > 0) {
-      final number = double.parse(_currentValue.toStringAsFixed(_decimalPlaces));
+      final number =
+          double.parse(_currentValue.toStringAsFixed(_decimalPlaces));
       return _formatter.format(number);
     } else {
       final number = _currentValue;

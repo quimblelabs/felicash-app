@@ -38,12 +38,17 @@ class CurrencyKeyboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final operatorButtonBackgroundColor = this.operatorButtonBackgroundColor ?? Colors.white;
-    final operatorButtonTextColor = this.operatorButtonTextColor ?? Colors.black;
-    final numberButtonBackgroundColor = this.numberButtonBackgroundColor ?? Colors.grey.shade100;
+    final operatorButtonBackgroundColor =
+        this.operatorButtonBackgroundColor ?? Colors.white;
+    final operatorButtonTextColor =
+        this.operatorButtonTextColor ?? Colors.black;
+    final numberButtonBackgroundColor =
+        this.numberButtonBackgroundColor ?? Colors.grey.shade100;
     final numberButtonTextColor = this.numberButtonTextColor ?? Colors.black;
-    final backspaceButtonBackgroundColor = this.backspaceButtonBackgroundColor ?? Colors.white;
-    final backspaceButtonTextColor = this.backspaceButtonTextColor ?? Colors.black;
+    final backspaceButtonBackgroundColor =
+        this.backspaceButtonBackgroundColor ?? Colors.white;
+    final backspaceButtonTextColor =
+        this.backspaceButtonTextColor ?? Colors.black;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       decoration: const BoxDecoration(
@@ -51,31 +56,33 @@ class CurrencyKeyboard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _ButtonRow(buttons: [
-            _OperatorButton(
-              text: 'C',
-              onPressed: controller.clear,
-              backgroundColor: operatorButtonBackgroundColor,
-              textColor: operatorButtonTextColor,
-            ),
-            _OperatorButton(
-              text: '/',
-              onPressed: () => controller.add('/'),
-              backgroundColor: operatorButtonBackgroundColor,
-              textColor: operatorButtonTextColor,
-            ),
-            _OperatorButton(
-              text: '*',
-              onPressed: () => controller.add('*'),
-              backgroundColor: operatorButtonBackgroundColor,
-              textColor: operatorButtonTextColor,
-            ),
-            _BackSpaceButton(
-              onPressed: controller.backspace,
-              backgroundColor: backspaceButtonBackgroundColor,
-              textColor: backspaceButtonTextColor,
-            ),
-          ]),
+          _ButtonRow(
+            buttons: [
+              _OperatorButton(
+                text: 'C',
+                onPressed: controller.clear,
+                backgroundColor: operatorButtonBackgroundColor,
+                textColor: operatorButtonTextColor,
+              ),
+              _OperatorButton(
+                text: '/',
+                onPressed: () => controller.add('/'),
+                backgroundColor: operatorButtonBackgroundColor,
+                textColor: operatorButtonTextColor,
+              ),
+              _OperatorButton(
+                text: '*',
+                onPressed: () => controller.add('*'),
+                backgroundColor: operatorButtonBackgroundColor,
+                textColor: operatorButtonTextColor,
+              ),
+              _BackSpaceButton(
+                onPressed: controller.backspace,
+                backgroundColor: backspaceButtonBackgroundColor,
+                textColor: backspaceButtonTextColor,
+              ),
+            ],
+          ),
           const SizedBox(height: 12),
           _ButtonRow(
             buttons: [
