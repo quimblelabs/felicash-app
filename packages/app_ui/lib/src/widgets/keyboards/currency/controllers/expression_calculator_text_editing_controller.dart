@@ -173,9 +173,10 @@ class ExpressionCalculatorTextEditingController extends TextEditingController {
   /// ```
   void calculateResult() {
     try {
-      String cleanExpr = _expression.trim();
+      var cleanExpr = _expression.trim();
 
-      if (cleanExpr.isNotEmpty && RegExp(r'[+\-*/]').hasMatch(cleanExpr[cleanExpr.length - 1])) {
+      if (cleanExpr.isNotEmpty &&
+          RegExp(r'[+\-*/]').hasMatch(cleanExpr[cleanExpr.length - 1])) {
         final parts = cleanExpr.split(RegExp(r'\s+'))..removeLast();
         cleanExpr = parts.join(' ');
       }
@@ -185,7 +186,7 @@ class ExpressionCalculatorTextEditingController extends TextEditingController {
 
       // For the specific test case, we need to ensure the result has the correct decimal places
       // Count decimal places in the original expression
-      int decimalPlaces = 0;
+      var decimalPlaces = 0;
 
       // Extract all numbers from the expression
       final numberRegex = RegExp(r'\d+\.\d+|\d+');
@@ -208,7 +209,8 @@ class ExpressionCalculatorTextEditingController extends TextEditingController {
         if (resultStr.contains('.')) {
           final parts = resultStr.split('.');
           if (parts.length > 1) {
-            final actualDecimals = parts[1].replaceAll(RegExp(r'0+$'), '').length;
+            final actualDecimals =
+                parts[1].replaceAll(RegExp(r'0+$'), '').length;
             decimalPlaces = math.max(decimalPlaces, actualDecimals);
           }
         }
@@ -257,7 +259,8 @@ class ExpressionCalculatorTextEditingController extends TextEditingController {
           final parts = token.split('.');
 
           // Handle the case where the integer part is 0
-          final integerPart = parts[0] == '0' ? '0' : _formatter.format(double.parse(parts[0]));
+          final integerPart =
+              parts[0] == '0' ? '0' : _formatter.format(double.parse(parts[0]));
 
           // If there's nothing after the decimal point, just return with a decimal point
           if (parts.length > 1 && parts[1].isEmpty) {
@@ -292,14 +295,17 @@ class ExpressionCalculatorTextEditingController extends TextEditingController {
   List<String> _toPostfix(String infix) {
     final output = <String>[];
     final stack = <String>[];
-    final tokens = infix.split(RegExp(r'\s+')).where((t) => t.isNotEmpty).toList();
+    final tokens =
+        infix.split(RegExp(r'\s+')).where((t) => t.isNotEmpty).toList();
 
     for (final token in tokens) {
       if (_isNumber(token)) {
         output.add(token);
       } else if (_isOperator(token)) {
         // Pop operators with higher or equal precedence
-        while (stack.isNotEmpty && _isOperator(stack.last) && _precedence(stack.last) >= _precedence(token)) {
+        while (stack.isNotEmpty &&
+            _isOperator(stack.last) &&
+            _precedence(stack.last) >= _precedence(token)) {
           output.add(stack.removeLast());
         }
         stack.add(token);
@@ -360,7 +366,8 @@ class ExpressionCalculatorTextEditingController extends TextEditingController {
     try {
       var cleanExpr = _expression.trim();
 
-      if (cleanExpr.isNotEmpty && RegExp(r'[+\-*/]').hasMatch(cleanExpr[cleanExpr.length - 1])) {
+      if (cleanExpr.isNotEmpty &&
+          RegExp(r'[+\-*/]').hasMatch(cleanExpr[cleanExpr.length - 1])) {
         final parts = cleanExpr.split(RegExp(r'\s+'))..removeLast();
         cleanExpr = parts.join(' ');
       }
