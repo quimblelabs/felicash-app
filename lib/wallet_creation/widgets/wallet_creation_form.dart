@@ -98,7 +98,7 @@ class _WalletIcon extends StatelessWidget {
     );
     if (picked == null) return;
     if (context.mounted) {
-      context.read<WalletCreationBloc>().add(WalletIconChanged(picked));
+      context.read<WalletCreationBloc>().add(WalletCreationIconChanged(picked));
     }
   }
 }
@@ -119,7 +119,9 @@ class _WalletName extends StatelessWidget {
     return TextFormField(
       maxLength: maxLength,
       onChanged: (value) {
-        context.read<WalletCreationBloc>().add(WalletNameChanged(value));
+        context
+            .read<WalletCreationBloc>()
+            .add(WalletCreationNameChanged(value));
       },
       decoration: InputDecoration(
         hintText: 'Name your wallet'.hardCoded,
@@ -161,7 +163,7 @@ class _WalletColorPicker extends StatelessWidget {
                 onTap: () {
                   context
                       .read<WalletCreationBloc>()
-                      .add(WalletColorChanged(color));
+                      .add(WalletCreationColorChanged(color));
                 },
                 child: DecoratedBox(
                   decoration: BoxDecoration(
@@ -213,7 +215,9 @@ class _WalletDescription extends StatelessWidget {
       minLines: 3,
       maxLength: maxLength,
       onChanged: (value) {
-        context.read<WalletCreationBloc>().add(WalletDescriptionChanged(value));
+        context
+            .read<WalletCreationBloc>()
+            .add(WalletCreationDescriptionChanged(value));
       },
       decoration: InputDecoration(
         hintText: 'Describe your wallet for easier identification'.hardCoded,
@@ -249,7 +253,7 @@ class _WalletCurrency extends HookWidget {
   }
 
   Future<void> _pickCurrency(BuildContext context) async {
-    //TODO: add currency picker
+    // TODO(tuanhm): add currency picker
     // unawaited(HapticFeedback.lightImpact());
     // final picked = await showModalBottomSheet<Currency?>(
     //   context: context,
@@ -332,7 +336,9 @@ class _WalletBalance extends HookWidget {
     );
     if (updated == null) return;
     if (context.mounted) {
-      context.read<WalletCreationBloc>().add(WalletBalanceChanged(updated));
+      context
+          .read<WalletCreationBloc>()
+          .add(WalletCreationBalanceChanged(updated));
     }
   }
 }
@@ -366,7 +372,7 @@ class _ExclueFromToal extends StatelessWidget {
                 onChanged: (value) {
                   context
                       .read<WalletCreationBloc>()
-                      .add(WalletExcludeFromTotalChanged(value));
+                      .add(WalletCreationExcludeFromTotalChanged(value));
                 },
               );
             },
@@ -443,13 +449,15 @@ class _WalletCreditLimit extends HookWidget {
     );
     if (updated == null) return;
     if (context.mounted) {
-      context.read<WalletCreationBloc>().add(WalletCreditLimitChanged(updated));
+      context
+          .read<WalletCreationBloc>()
+          .add(WalletCreationCreditLimitChanged(updated));
     }
   }
 }
 
 class _WalletStateDayOfMonth extends StatelessWidget {
-  const _WalletStateDayOfMonth({super.key});
+  const _WalletStateDayOfMonth();
 
   @override
   Widget build(BuildContext context) {
@@ -487,7 +495,7 @@ class _WalletStateDayOfMonth extends StatelessWidget {
                 onChanged: (value) {
                   context
                       .read<WalletCreationBloc>()
-                      .add(WalletStateDayOfMonthChanged(value!));
+                      .add(WalletCreationStateDayOfMonthChanged(value!));
                 },
               );
             },
@@ -499,7 +507,7 @@ class _WalletStateDayOfMonth extends StatelessWidget {
 }
 
 class _WalletPaymentDayOfMonth extends StatelessWidget {
-  const _WalletPaymentDayOfMonth({super.key});
+  const _WalletPaymentDayOfMonth();
 
   @override
   Widget build(BuildContext context) {
@@ -540,7 +548,7 @@ class _WalletPaymentDayOfMonth extends StatelessWidget {
                 onChanged: (value) {
                   context
                       .read<WalletCreationBloc>()
-                      .add(WalletPaymentDayOfMonthChanged(value!));
+                      .add(WalletCreationPaymentDayOfMonthChanged(value!));
                 },
               );
             },
@@ -615,7 +623,9 @@ class _WalletSavingsGoal extends HookWidget {
     );
     if (updated == null) return;
     if (context.mounted) {
-      context.read<WalletCreationBloc>().add(WalletSavingGoalChanged(updated));
+      context
+          .read<WalletCreationBloc>()
+          .add(WalletCreationSavingGoalChanged(updated));
     }
   }
 }

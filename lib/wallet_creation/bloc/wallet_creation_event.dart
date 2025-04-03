@@ -7,8 +7,8 @@ sealed class WalletCreationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class WalletNameChanged extends WalletCreationEvent {
-  const WalletNameChanged(this.name);
+class WalletCreationNameChanged extends WalletCreationEvent {
+  const WalletCreationNameChanged(this.name);
 
   final String name;
 
@@ -16,8 +16,8 @@ class WalletNameChanged extends WalletCreationEvent {
   List<Object> get props => [name];
 }
 
-class WalletDescriptionChanged extends WalletCreationEvent {
-  const WalletDescriptionChanged(this.description);
+class WalletCreationDescriptionChanged extends WalletCreationEvent {
+  const WalletCreationDescriptionChanged(this.description);
 
   final String description;
 
@@ -25,8 +25,8 @@ class WalletDescriptionChanged extends WalletCreationEvent {
   List<Object> get props => [description];
 }
 
-class WalletTypeChanged extends WalletCreationEvent {
-  const WalletTypeChanged(this.walletType);
+class WalletCreationTypeChanged extends WalletCreationEvent {
+  const WalletCreationTypeChanged(this.walletType);
 
   final WalletTypeEnum walletType;
 
@@ -34,8 +34,8 @@ class WalletTypeChanged extends WalletCreationEvent {
   List<Object> get props => [walletType];
 }
 
-class WalletIconChanged extends WalletCreationEvent {
-  const WalletIconChanged(this.icon);
+class WalletCreationIconChanged extends WalletCreationEvent {
+  const WalletCreationIconChanged(this.icon);
 
   final IconData icon;
 
@@ -43,8 +43,8 @@ class WalletIconChanged extends WalletCreationEvent {
   List<Object> get props => [icon];
 }
 
-class WalletColorChanged extends WalletCreationEvent {
-  const WalletColorChanged(this.color);
+class WalletCreationColorChanged extends WalletCreationEvent {
+  const WalletCreationColorChanged(this.color);
 
   final Color color;
 
@@ -52,8 +52,8 @@ class WalletColorChanged extends WalletCreationEvent {
   List<Object> get props => [color];
 }
 
-class WalletBalanceChanged extends WalletCreationEvent {
-  const WalletBalanceChanged(this.balance);
+class WalletCreationBalanceChanged extends WalletCreationEvent {
+  const WalletCreationBalanceChanged(this.balance);
 
   final double balance;
 
@@ -61,8 +61,8 @@ class WalletBalanceChanged extends WalletCreationEvent {
   List<Object> get props => [balance];
 }
 
-class WalletCurrencyChanged extends WalletCreationEvent {
-  const WalletCurrencyChanged(this.currency);
+class WalletCreationCurrencyChanged extends WalletCreationEvent {
+  const WalletCreationCurrencyChanged(this.currency);
 
   final CurrencyModel currency;
 
@@ -70,37 +70,37 @@ class WalletCurrencyChanged extends WalletCreationEvent {
   List<Object> get props => [currency];
 }
 
-class WalletExcludeFromTotalChanged extends WalletCreationEvent {
+class WalletCreationExcludeFromTotalChanged extends WalletCreationEvent {
   // ignore: avoid_positional_boolean_parameters
-  const WalletExcludeFromTotalChanged(this.excludeFromTotal);
+  const WalletCreationExcludeFromTotalChanged(this.excludeFromTotal);
   final bool excludeFromTotal;
   @override
   List<Object> get props => [excludeFromTotal];
 }
 
-class WalletCreditLimitChanged extends WalletCreationEvent {
-  const WalletCreditLimitChanged(this.creditLimit);
+class WalletCreationCreditLimitChanged extends WalletCreationEvent {
+  const WalletCreationCreditLimitChanged(this.creditLimit);
   final double creditLimit;
   @override
   List<Object> get props => [creditLimit];
 }
 
-class WalletStateDayOfMonthChanged extends WalletCreationEvent {
-  const WalletStateDayOfMonthChanged(this.stateDayOfMonth);
+class WalletCreationStateDayOfMonthChanged extends WalletCreationEvent {
+  const WalletCreationStateDayOfMonthChanged(this.stateDayOfMonth);
   final int stateDayOfMonth;
   @override
   List<Object> get props => [stateDayOfMonth];
 }
 
-class WalletPaymentDayOfMonthChanged extends WalletCreationEvent {
-  const WalletPaymentDayOfMonthChanged(this.paymentDayOfMonth);
+class WalletCreationPaymentDayOfMonthChanged extends WalletCreationEvent {
+  const WalletCreationPaymentDayOfMonthChanged(this.paymentDayOfMonth);
   final int paymentDayOfMonth;
   @override
   List<Object> get props => [paymentDayOfMonth];
 }
 
-class WalletSavingGoalChanged extends WalletCreationEvent {
-  const WalletSavingGoalChanged(this.savingGoal);
+class WalletCreationSavingGoalChanged extends WalletCreationEvent {
+  const WalletCreationSavingGoalChanged(this.savingGoal);
   final double savingGoal;
   @override
   List<Object> get props => [savingGoal];

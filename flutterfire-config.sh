@@ -10,7 +10,7 @@ case $1 in
   dev)
     flutterfire config \
       --project=felicash-dev \
-      --out=lib/firebase_options_dev.dart \
+      --out=lib/main/firebase_options_dev.dart \
       --ios-bundle-id=com.quimblelabs.felicash.dev \
       --ios-out=ios/Runner/development/GoogleService-Info.plist \
       --android-package-name=com.quimblelabs.felicash.dev \
@@ -19,7 +19,7 @@ case $1 in
   stg)
     flutterfire config \
       --project=felicash-stg \
-      --out=lib/firebase_options_stg.dart \
+      --out=lib/main/firebase_options_stg.dart \
       --ios-bundle-id=com.quimblelabs.felicash.stg \
       --ios-out=ios/Runner/staging/GoogleService-Info.plist \
       --android-package-name=com.quimblelabs.felicash.stg \
@@ -28,7 +28,7 @@ case $1 in
   prod)
     flutterfire config \
       --project=felicash-prod \
-      --out=lib/firebase_options_prod.dart \
+      --out=lib/main/firebase_options_prod.dart \
       --ios-bundle-id=com.quimblelabs.felicash \
       --ios-out=ios/Runner/production/GoogleService-Info.plist \
       --android-package-name=com.quimblelabs.felicash \

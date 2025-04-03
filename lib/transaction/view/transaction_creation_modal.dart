@@ -18,7 +18,7 @@ class TransactionCreationModal extends StatelessWidget {
     return BlocProvider(
       create: (context) => TransactionCreationBloc()
         ..add(
-          //TODO: Add default fallback target wallet if not provided
+          // TODO(tuanhm): Add default fallback target wallet if not provided
           TransactionCreationWalletChanged(id: walletId ?? ''),
         ),
       child: const _TransactionCreationView(),
@@ -105,7 +105,7 @@ class _TransactionCreationView extends HookWidget {
   }
 
   Future<bool> _checkAndShowPopConfirmation(BuildContext context) async {
-    // TODO: Check if form is dirty, and show confirmation dialog
+    // TODO(tuanhm): Check if form is dirty, and show confirmation dialog
     final confirm = await showDialog<bool?>(
       context: context,
       builder: (context) => AlertDialog(
