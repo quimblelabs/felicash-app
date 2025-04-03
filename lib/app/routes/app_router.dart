@@ -30,10 +30,10 @@ abstract class AppRoutes {
   static const personal = '/personal';
 
   static const wallets = '/wallets';
-  // Creatation flow
+  // Creation flow
   static const String walletTypeSelector = '/select-type';
-  static const String walletUpdation = '/create/:type';
-  static const String balanceUpdation = '/update-balance';
+  static const String walletCreation = '/create/:type';
+  static const String balanceUpdate = '/update-balance';
 
   // Create transaction
   static const String transactionCreation = '/create-transaction';
@@ -53,7 +53,7 @@ abstract class AppRouteNames {
   // Creatation flow
   static const walletTypeSelector = 'selectWalletType';
   static const walletCreation = 'createWallet';
-  static const balanceUpdation = 'updateBalance';
+  static const balanceUpdate = 'updateBalance';
 
   // Create transaction
   static const transactionCreation = 'createTransaction';
@@ -170,7 +170,7 @@ class AppRouter {
                     ),
                     GoRoute(
                       name: AppRouteNames.walletCreation,
-                      path: AppRoutes.walletUpdation,
+                      path: AppRoutes.walletCreation,
                       parentNavigatorKey: _rootNavigatorKey,
                       pageBuilder: (context, state) {
                         final type = state.pathParameters['type'];
@@ -187,8 +187,8 @@ class AppRouter {
                       },
                       routes: [
                         GoRoute(
-                          name: AppRouteNames.balanceUpdation,
-                          path: AppRoutes.balanceUpdation,
+                          name: AppRouteNames.balanceUpdate,
+                          path: AppRoutes.balanceUpdate,
                           parentNavigatorKey: _rootNavigatorKey,
                           pageBuilder: (context, state) {
                             final initial =
