@@ -327,7 +327,7 @@ class _WalletBalance extends HookWidget {
     final type = context.read<WalletCreationBloc>().state.walletType;
 
     final updated = await context.pushNamed<double?>(
-      AppRouteNames.balanceUpdation,
+      AppRouteNames.balanceUpdate,
       pathParameters: {'type': type.name},
       queryParameters: {
         'initial': initial.toString(),
@@ -440,7 +440,7 @@ class _WalletCreditLimit extends HookWidget {
     final type = context.read<WalletCreationBloc>().state.walletType;
 
     final updated = await context.pushNamed<double?>(
-      AppRouteNames.balanceUpdation,
+      AppRouteNames.balanceUpdate,
       pathParameters: {'type': type.name},
       queryParameters: {
         'initial': initial.toString(),
@@ -614,7 +614,7 @@ class _WalletSavingsGoal extends HookWidget {
     final type = context.read<WalletCreationBloc>().state.walletType;
 
     final updated = await context.pushNamed<double?>(
-      AppRouteNames.balanceUpdation,
+      AppRouteNames.balanceUpdate,
       pathParameters: {'type': type.name},
       queryParameters: {
         'initial': initial.toString(),
