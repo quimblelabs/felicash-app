@@ -118,3 +118,4 @@ packages/felicash_data_client/test/src/_keys.dart
 packages/ai_client/n8n_ai_client/test/_keys.dart
 
 pubspec_overrides.yaml
+ai_workspace_reference.md
