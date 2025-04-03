@@ -8,12 +8,12 @@
       "name": "Launch development",
       "request": "launch",
       "type": "dart",
-      "program": "lib/main_development.dart",
+      "program": "lib/main/main_development.dart",
       "args": [
         "--flavor",
         "development",
         "--target",
-        "lib/main_development.dart",
+        "lib/main/main_development.dart",
         "--dart-define-from-file",
         "configurations.dev.json"
       ]
@@ -22,12 +22,12 @@
       "name": "Launch staging",
       "request": "launch",
       "type": "dart",
-      "program": "lib/main_staging.dart",
+      "program": "lib/main/main_staging.dart",
       "args": [
         "--flavor",
         "staging",
         "--target",
-        "lib/main_staging.dart",
+        "lib/main/main_staging.dart",
         "--dart-define-from-file",
         "configurations.stg.json"
       ]
@@ -36,12 +36,12 @@
       "name": "Launch production",
       "request": "launch",
       "type": "dart",
-      "program": "lib/main_production.dart",
+      "program": "lib/main/main_production.dart",
       "args": [
         "--flavor",
         "production",
         "--target",
-        "lib/main_production.dart",
+        "lib/main/main_production.dart",
         "--dart-define-from-file",
         "configurations.prod.json"
       ]
