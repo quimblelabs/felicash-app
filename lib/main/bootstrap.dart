@@ -42,7 +42,7 @@ Future<void> bootstrap(AppBuilder builder) async {
       queue: queue,
       dbName: 'felicash.sqlite',
     );
-    await dataClient.initialize();
+    // await dataClient.initialize();
     FlutterError.onError = (details) {
       log(details.exceptionAsString(), stackTrace: details.stack);
     };

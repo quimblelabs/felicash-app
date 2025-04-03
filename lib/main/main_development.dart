@@ -1,6 +1,6 @@
 import 'package:felicash/app/app.dart';
-import 'package:felicash/bootstrap.dart';
-import 'package:felicash/firebase_options_prod.dart';
+import 'package:felicash/main/bootstrap.dart';
+import 'package:felicash/main/firebase_options_dev.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:supabase_authentication_client/supabase_authentication_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
