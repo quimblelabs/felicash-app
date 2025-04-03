@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:transaction_repository/src/models/transaction_model.dart';
 
 /// {@template category_model}
@@ -39,10 +41,10 @@ class CategoryModel extends Equatable {
   final String name;
 
   /// Icon identifier for the category.
-  final String icon;
+  final RawIconData icon;
 
   /// Color code in hex format (e.g., '#FF0000').
-  final String color;
+  final Color color;
 
   /// Detailed description of the category.
   final String? description;
@@ -53,13 +55,38 @@ class CategoryModel extends Equatable {
   /// Timestamp when the category was last updated.
   final DateTime updatedAt;
 
+  /// Creates a copy of this [CategoryModel] with specified properties updated.
+  CategoryModel copyWith({
+    String? id,
+    String? parentCategoryId,
+    TransactionTypeEnum? transactionType,
+    String? name,
+    RawIconData? icon,
+    Color? color,
+    String? description,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return CategoryModel(
+      id: id ?? this.id,
+      parentCategoryId: parentCategoryId ?? this.parentCategoryId,
+      transactionType: transactionType ?? this.transactionType,
+      name: name ?? this.name,
+      icon: icon ?? this.icon,
+      color: color ?? this.color,
+      description: description ?? this.description,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
   /// Returns an empty [CategoryModel] instance.
   static CategoryModel empty = CategoryModel(
     id: '',
     transactionType: TransactionTypeEnum.expense,
     name: '',
-    icon: '',
-    color: '#000000',
+    icon: const IconDataIcon(raw: '', icon: Icons.forest_outlined),
+    color: Colors.black,
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
   );

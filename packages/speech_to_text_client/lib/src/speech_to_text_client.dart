@@ -112,6 +112,7 @@ class SpeechToTextClient {
   }
 
   void _onStatusChanged(String status) {
+    debugPrint('Client status - RAW: $status');
     switch (status) {
       case 'listening':
         _statusStreamController.add(SpeechToTextStatus.listening);
@@ -123,8 +124,9 @@ class SpeechToTextClient {
   }
 
   void _onError(SpeechRecognitionError error) {
+    debugPrint('Client status - RAW (ERROR): ${error.errorMsg}');
     if (error.permanent) {
-      _statusStreamController.add(SpeechToTextStatus.unavailable);
+      _statusStreamController.add(SpeechToTextStatus.notListening);
     } else {
       _statusStreamController.add(SpeechToTextStatus.error);
     }
