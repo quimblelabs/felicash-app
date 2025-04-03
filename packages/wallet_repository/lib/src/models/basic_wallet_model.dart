@@ -1,5 +1,6 @@
 import 'package:currency_repository/currency_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:wallet_repository/src/enums/wallet_type_enum.dart';
 import 'package:wallet_repository/src/models/base/base_wallet_model.dart';
 
@@ -31,7 +32,7 @@ class BasicWalletModel extends BaseWalletModel {
     baseCurrency: CurrencyModel.empty,
     balance: 0,
     color: Colors.black,
-    icon: const EmojiIcon(raw: '', emoji: ''),
+    icon: const EmojiDataIcon(raw: '', emoji: ''),
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
     excludeFromTotal: false,

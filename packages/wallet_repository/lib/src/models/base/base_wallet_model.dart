@@ -1,12 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:currency_repository/currency_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:wallet_repository/src/enums/wallet_type_enum.dart';
 
+/// {@template base_wallet_model}
+/// Base wallet model for all wallet types
+/// {@endtemplate}
 abstract class BaseWalletModel extends Equatable {
+  /// {@macro base_wallet_model}
   const BaseWalletModel({
     required this.id,
     required this.name,
@@ -24,21 +26,47 @@ abstract class BaseWalletModel extends Equatable {
     this.achieveReason,
   });
 
+  /// The unique identifier of the wallet
   final String id;
-  final String name;
-  final String? description;
-  final WalletTypeEnum walletType;
-  final CurrencyModel baseCurrency;
-  final double balance;
-  final RawIcon icon;
-  final Color color;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final bool excludeFromTotal;
-  final bool isArchived;
-  final DateTime? archivedAt;
-  final String? achieveReason;
 
+  /// The name of the wallet
+  final String name;
+
+  /// Optional description of the wallet
+  final String? description;
+
+  /// The type of wallet (e.g. cash, bank, credit card)
+  final WalletTypeEnum walletType;
+
+  /// The base currency used for this wallet
+  final CurrencyModel baseCurrency;
+
+  /// The current balance of the wallet
+  final double balance;
+
+  /// The icon representing the wallet
+  final RawIconData icon;
+
+  /// The color used for displaying the wallet
+  final Color color;
+
+  /// The timestamp when the wallet was created
+  final DateTime createdAt;
+
+  /// The timestamp when the wallet was last updated
+  final DateTime updatedAt;
+
+  /// Whether to exclude this wallet from total calculations
+  final bool excludeFromTotal;
+
+  /// Whether the wallet is archived
+  final bool isArchived;
+
+  /// The timestamp when the wallet was archived, if applicable
+  final DateTime? archivedAt;
+
+  /// The reason why the wallet was archived, if applicable
+  final String? achieveReason;
   @override
   List<Object?> get props {
     return [
@@ -56,50 +84,4 @@ abstract class BaseWalletModel extends Equatable {
       achieveReason,
     ];
   }
-}
-
-abstract class RawIcon extends Equatable {
-  const RawIcon({
-    required this.raw,
-  });
-
-  final String raw;
-
-  @override
-  List<Object?> get props => [raw];
-}
-
-class IconDataIcon extends RawIcon {
-  const IconDataIcon({
-    required super.raw,
-    required this.icon,
-  });
-
-  final IconData icon;
-  @override
-  List<Object?> get props => [icon, raw];
-}
-
-class ImageIcon extends RawIcon {
-  const ImageIcon({
-    required super.raw,
-    required this.url,
-  });
-
-  final String url;
-
-  @override
-  List<Object?> get props => [url, raw];
-}
-
-class EmojiIcon extends RawIcon {
-  const EmojiIcon({
-    required super.raw,
-    required this.emoji,
-  });
-
-  final String emoji;
-
-  @override
-  List<Object?> get props => [emoji, raw];
 }

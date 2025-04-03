@@ -111,6 +111,17 @@ class TransactionModel extends Equatable {
     );
   }
 
+  static TransactionModel empty = TransactionModel(
+    id: '',
+    wallet: BasicWalletModel.empty,
+    category: CategoryModel.empty,
+    transactionType: TransactionTypeEnum.expense,
+    amount: 0,
+    transactionDate: DateTime.now(),
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
+
   @override
   List<Object?> get props => [
         id,

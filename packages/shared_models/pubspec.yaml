@@ -1,5 +1,5 @@
-name: transaction_repository
-description: The repository for transaction and it related domain data
+name: shared_models
+description: A Very Good Project created by Very Good CLI.
 version: 0.1.0+1
 publish_to: none
 
@@ -8,13 +8,9 @@ environment:
   flutter: ^3.24.0
 
 dependencies:
-  equatable: ^2.0.7
   flutter:
     sdk: flutter
-  shared_models:
-    path: ../shared_models
-  wallet_repository:
-    path: ../wallet_repository
+  equatable: ^2.0.7
 
 dev_dependencies:
   flutter_test:
