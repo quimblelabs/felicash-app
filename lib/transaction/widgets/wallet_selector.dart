@@ -129,7 +129,7 @@ class _WalletSelectorState extends State<WalletSelector>
                       if (widget.onPickWallet != null) {
                         widget.onPickWallet?.call(wallet, toWallet, true);
                       } else {
-                        //TODO: implement this
+                        // TODO(tuanhm): implement this
                       }
                     },
                   ),
@@ -155,11 +155,7 @@ class _WalletSelectorState extends State<WalletSelector>
                                 const Expanded(child: Divider()),
                                 const SizedBox(width: AppSpacing.md),
                                 IconButton.filled(
-                                  onPressed: hasBothWallets
-                                      ? () {
-                                          // TODOAdd swap action
-                                        }
-                                      : null,
+                                  onPressed: hasBothWallets ? _onSwap : null,
                                   icon: const Icon(Icons.swap_vert),
                                 ),
                                 const SizedBox(width: AppSpacing.md),
@@ -177,7 +173,7 @@ class _WalletSelectorState extends State<WalletSelector>
                                     false,
                                   );
                                 } else {
-                                  //TODO: Navigate to wallets picker
+                                  // TODO(tuanhm): Navigate to wallets picker
                                 }
                               },
                             ),

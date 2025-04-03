@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:app_utils/app_utils.dart';
 import 'package:felicash/app/bloc/app_bloc.dart';
-import 'package:felicash/app/routes/modal_page.dart';
+import 'package:felicash/app/routes/pages/fade_transition_page.dart';
+import 'package:felicash/app/routes/pages/modal_page.dart';
 import 'package:felicash/home/view/home_page.dart';
 import 'package:felicash/login/view/login_page.dart';
 import 'package:felicash/onboarding/view/onboarding_page.dart';
@@ -10,6 +11,7 @@ import 'package:felicash/overview/view/overview_page.dart';
 import 'package:felicash/personal/view/personal_page.dart';
 import 'package:felicash/transaction/view/transaction_creation_modal.dart';
 import 'package:felicash/transaction/view/transactions_page.dart';
+import 'package:felicash/voice_transaction/view/voice_transaction_page.dart';
 import 'package:felicash/wallet/view/wallets_page.dart';
 import 'package:felicash/wallet_creation/view/monetary_input_modal.dart';
 import 'package:felicash/wallet_creation/view/wallet_creation_modal.dart';
@@ -35,6 +37,9 @@ abstract class AppRoutes {
 
   // Create transaction
   static const String transactionCreation = '/create-transaction';
+
+  // Voice transaction
+  static const String voiceTransaction = '/voice-transaction';
 }
 
 abstract class AppRouteNames {
@@ -52,6 +57,9 @@ abstract class AppRouteNames {
 
   // Create transaction
   static const transactionCreation = 'createTransaction';
+
+  // Voice transaction
+  static const voiceTransaction = 'voiceTransaction';
 }
 
 class AppRouter {
@@ -88,8 +96,10 @@ class AppRouter {
                 GoRoute(
                   name: AppRouteNames.overview,
                   path: AppRoutes.overview,
-                  pageBuilder: (context, state) =>
-                      const NoTransitionPage(child: OverviewPage()),
+                  pageBuilder: (context, state) => FadeTransitionPage(
+                    key: state.pageKey,
+                    child: const OverviewPage(),
+                  ),
                   routes: [
                     GoRoute(
                       path: AppRoutes.transactionCreation,
@@ -104,6 +114,23 @@ class AppRouter {
                         );
                       },
                     ),
+                    GoRoute(
+                      path: AppRoutes.voiceTransaction,
+                      name: AppRouteNames.voiceTransaction,
+                      parentNavigatorKey: _rootNavigatorKey,
+                      pageBuilder: (context, state) {
+                        return CustomTransitionPage(
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          child: const VoiceTransactionPage(),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ],
@@ -113,8 +140,10 @@ class AppRouter {
                 GoRoute(
                   name: AppRouteNames.transactions,
                   path: AppRoutes.transactions,
-                  pageBuilder: (context, state) =>
-                      const NoTransitionPage(child: TransactionsPage()),
+                  pageBuilder: (context, state) => FadeTransitionPage(
+                    key: state.pageKey,
+                    child: const TransactionsPage(),
+                  ),
                 ),
               ],
             ),
@@ -123,8 +152,10 @@ class AppRouter {
                 GoRoute(
                   name: AppRouteNames.wallets,
                   path: AppRoutes.wallets,
-                  pageBuilder: (context, state) =>
-                      const NoTransitionPage(child: WalletPage()),
+                  pageBuilder: (context, state) => FadeTransitionPage(
+                    key: state.pageKey,
+                    child: const WalletPage(),
+                  ),
                   routes: [
                     GoRoute(
                       parentNavigatorKey: _rootNavigatorKey,
@@ -186,7 +217,7 @@ class AppRouter {
                   name: AppRouteNames.personal,
                   path: AppRoutes.personal,
                   pageBuilder: (context, state) =>
-                      const NoTransitionPage(child: PersonalPage()),
+                      const FadeTransitionPage(child: PersonalPage()),
                 ),
               ],
             ),
@@ -213,17 +244,12 @@ class AppRouter {
     final loggingIn = loginLoc == currentLoc;
 
     final overviewLoc = state.namedLocation(AppRouteNames.overview);
-    final transactionCreationLoc = state.namedLocation(
-      AppRouteNames.transactionCreation,
-    );
 
     if (!isAuthenticated && !onboardingIn && !loggingIn) {
       return onboardingLoc;
     }
     if (isAuthenticated && onboardingIn) {
-      //TODO: Uncomment this after test the transaction creation
-      // return overviewLoc;
-      return transactionCreationLoc;
+      return overviewLoc;
     }
 
     return null;

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:currency_repository/currency_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart' show Color, DayPeriod, IconData, Icons;
+import 'package:flutter/material.dart' show Color, IconData, Icons;
 import 'package:form_inputs/form_inputs.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -21,23 +21,25 @@ class WalletCreationBloc
             currency: currency,
           ),
         ) {
-    on<WalletNameChanged>(_onWalletNameChanged);
-    on<WalletDescriptionChanged>(_onWalletDescriptionChanged);
-    on<WalletTypeChanged>(_onWalletTypeChanged);
-    on<WalletIconChanged>(_onWalletIconChanged);
-    on<WalletColorChanged>(_onWalletColorChanged);
-    on<WalletBalanceChanged>(_onWalletBalanceChanged);
-    on<WalletCurrencyChanged>(_onWalletCurrencyChanged);
-    on<WalletExcludeFromTotalChanged>(_onWalletExcludeFromTotalChanged);
-    on<WalletCreditLimitChanged>(_onWalletCreditLimitChanged);
-    on<WalletStateDayOfMonthChanged>(_onWalletStateDayOfMonthChanged);
-    on<WalletPaymentDayOfMonthChanged>(_onWalletPaymentDayOfMonthChanged);
-    on<WalletSavingGoalChanged>(_onWalletSavingGoalChanged);
+    on<WalletCreationNameChanged>(_onWalletNameChanged);
+    on<WalletCreationDescriptionChanged>(_onWalletDescriptionChanged);
+    on<WalletCreationTypeChanged>(_onWalletTypeChanged);
+    on<WalletCreationIconChanged>(_onWalletIconChanged);
+    on<WalletCreationColorChanged>(_onWalletColorChanged);
+    on<WalletCreationBalanceChanged>(_onWalletBalanceChanged);
+    on<WalletCreationCurrencyChanged>(_onWalletCurrencyChanged);
+    on<WalletCreationExcludeFromTotalChanged>(_onWalletExcludeFromTotalChanged);
+    on<WalletCreationCreditLimitChanged>(_onWalletCreditLimitChanged);
+    on<WalletCreationStateDayOfMonthChanged>(_onWalletStateDayOfMonthChanged);
+    on<WalletCreationPaymentDayOfMonthChanged>(
+      _onWalletPaymentDayOfMonthChanged,
+    );
+    on<WalletCreationSavingGoalChanged>(_onWalletSavingGoalChanged);
     on<WalletCreationSubmitted>(_onWalletCreationSubmitted);
   }
 
   void _onWalletNameChanged(
-    WalletNameChanged event,
+    WalletCreationNameChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     final name = WalletName.dirty(event.name);
@@ -50,7 +52,7 @@ class WalletCreationBloc
   }
 
   void _onWalletDescriptionChanged(
-    WalletDescriptionChanged event,
+    WalletCreationDescriptionChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     final description = WalletDescription.dirty(event.description);
@@ -63,7 +65,7 @@ class WalletCreationBloc
   }
 
   void _onWalletTypeChanged(
-    WalletTypeChanged event,
+    WalletCreationTypeChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     emit(
@@ -74,7 +76,7 @@ class WalletCreationBloc
   }
 
   void _onWalletIconChanged(
-    WalletIconChanged event,
+    WalletCreationIconChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     emit(
@@ -85,7 +87,7 @@ class WalletCreationBloc
   }
 
   void _onWalletColorChanged(
-    WalletColorChanged event,
+    WalletCreationColorChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     emit(
@@ -96,7 +98,7 @@ class WalletCreationBloc
   }
 
   void _onWalletBalanceChanged(
-    WalletBalanceChanged event,
+    WalletCreationBalanceChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     final balance = MonetaryAmount.dirty(event.balance);
@@ -109,7 +111,7 @@ class WalletCreationBloc
   }
 
   void _onWalletCurrencyChanged(
-    WalletCurrencyChanged event,
+    WalletCreationCurrencyChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     emit(
@@ -120,7 +122,7 @@ class WalletCreationBloc
   }
 
   void _onWalletExcludeFromTotalChanged(
-    WalletExcludeFromTotalChanged event,
+    WalletCreationExcludeFromTotalChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     emit(
@@ -131,7 +133,7 @@ class WalletCreationBloc
   }
 
   void _onWalletCreditLimitChanged(
-    WalletCreditLimitChanged event,
+    WalletCreationCreditLimitChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     final creditLimit = WalletCreditLimit.dirty(event.creditLimit);
@@ -144,7 +146,7 @@ class WalletCreationBloc
   }
 
   void _onWalletStateDayOfMonthChanged(
-    WalletStateDayOfMonthChanged event,
+    WalletCreationStateDayOfMonthChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     final stateDayOfMonth = WalletStateDayOfMonth.dirty(
@@ -159,7 +161,7 @@ class WalletCreationBloc
   }
 
   void _onWalletPaymentDayOfMonthChanged(
-    WalletPaymentDayOfMonthChanged event,
+    WalletCreationPaymentDayOfMonthChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     final paymentDayOfMonth = WalletPaymentDayOfMonth.dirty(
@@ -174,7 +176,7 @@ class WalletCreationBloc
   }
 
   void _onWalletSavingGoalChanged(
-    WalletSavingGoalChanged event,
+    WalletCreationSavingGoalChanged event,
     Emitter<WalletCreationState> emit,
   ) {
     final savingsGoal = MonetaryAmount.dirty(event.savingGoal);
@@ -193,7 +195,7 @@ class WalletCreationBloc
     if (!state.isValid) return;
     emit(state.copyWith(status: WalletCreationStatus.submiting));
     try {
-      // TODO: Implement wallet creation logic
+      // TODO(tuanhm): Implement wallet creation logic
       // Here you would typically call the repository to create the wallet
       // For example: await _walletRepository.createWallet(...);
       emit(state.copyWith(status: WalletCreationStatus.success));

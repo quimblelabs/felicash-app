@@ -44,7 +44,8 @@ class ModalPage<T> extends Page<T> {
   /// Color of the modal barrier that darkens the screen behind the sheet
   final Color? barrierColor;
 
-  /// Whether this is a route for a bottom sheet that will utilize [DraggableScrollableSheet]
+  /// Whether this is a route for a bottom sheet that will
+  /// utilize [DraggableScrollableSheet]
   final bool isScrollControlled;
 
   /// The max height constraint ratio when [isScrollControlled] is false
@@ -53,7 +54,8 @@ class ModalPage<T> extends Page<T> {
   /// Whether the bottom sheet will be dismissed when user taps on the scrim
   final bool isDismissible;
 
-  /// Whether the bottom sheet can be dragged up and down and dismissed by swiping
+  /// Whether the bottom sheet can be dragged up and
+  /// down and dismissed by swiping
   final bool enableDrag;
 
   /// Whether to show a drag handle at the top of the sheet
