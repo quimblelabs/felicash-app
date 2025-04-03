@@ -186,7 +186,7 @@ class _WalletsSelector extends StatelessWidget {
 }
 
 class _Category extends StatelessWidget {
-  const _Category({super.key});
+  const _Category();
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +197,7 @@ class _Category extends StatelessWidget {
         ChoiceChip(
           selected: true,
           onSelected: (value) {
-            //TODO Add category selection
+            // TODO(tuanhm): Add category selection
           },
           avatar: const Text('🍗'),
           labelStyle: theme.textTheme.labelLarge,
@@ -206,7 +206,7 @@ class _Category extends StatelessWidget {
         ChoiceChip(
           selected: false,
           onSelected: (value) {
-            //TODO Add category selection
+            // TODO(tuanhm): Add category selection
           },
           avatar: const Text('🍗'),
           labelStyle: theme.textTheme.labelLarge,
@@ -225,7 +225,7 @@ class _Category extends StatelessWidget {
 }
 
 class _TransactionDate extends HookWidget {
-  const _TransactionDate({super.key});
+  const _TransactionDate();
 
   @override
   Widget build(BuildContext context) {
@@ -271,7 +271,7 @@ class _TransactionDate extends HookWidget {
 }
 
 class _TransactionNotes extends StatelessWidget {
-  const _TransactionNotes({super.key});
+  const _TransactionNotes();
 
   @override
   Widget build(BuildContext context) {

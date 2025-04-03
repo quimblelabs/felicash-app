@@ -7,17 +7,23 @@ environment:
   sdk: ^3.5.0
 
 dependencies:
+  ai_client:
+    path: packages/ai_client/ai_client
   animations: ^2.0.11
   app_ui:
     path: packages/app_ui
   app_utils:
     path: packages/app_utils
+  async: ^2.12.0
   authentication_client:
     path: packages/authentication_client/authentication_client
   bloc: ^9.0.0
   bloc_concurrency: ^0.3.0
   currency_repository:
     path: packages/currency_repository
+  dio: ^5.8.0+1
+  dio_client:
+    path: packages/dio_client
   dropdown_button2: ^2.3.9
   equatable: ^2.0.7
   felicash_data_client:
@@ -41,6 +47,8 @@ dependencies:
   google_sign_in: ^6.3.0
   iconsax_plus: ^1.0.0
   intl: ^0.20.0
+  n8n_ai_client:
+    path: packages/ai_client/n8n_ai_client
   speech_to_text_client:
     path: packages/speech_to_text_client
   sqflite: ^2.4.1
