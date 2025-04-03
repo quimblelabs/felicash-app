@@ -129,7 +129,7 @@ class TransactionCreationBloc
   }) {
     final isValid = Formz.validate([
       amount ?? state.amount,
-      if (note ?? state.note case final note?) note,
+      if (note ?? state.note case final n) n,
     ]);
 
     if (state.wallet == null) {

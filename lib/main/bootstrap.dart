@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:felicash_data_client/felicash_data_client.dart';
 import 'package:flutter/widgets.dart';
+import 'package:n8n_ai_client/n8n_ai_client.dart';
 import 'package:sqflite/sqflite.dart' show databaseFactory;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -42,7 +43,8 @@ Future<void> bootstrap(AppBuilder builder) async {
       queue: queue,
       dbName: 'felicash.sqlite',
     );
-    await dataClient.initialize();
+
+    // await dataClient.initialize();
     FlutterError.onError = (details) {
       log(details.exceptionAsString(), stackTrace: details.stack);
     };

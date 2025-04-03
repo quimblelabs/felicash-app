@@ -5,7 +5,6 @@ import 'package:felicash/wallet_creation/widgets/wallet_creation_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:wallet_repository/wallet_repository.dart' show WalletTypeEnum;
 
 class WalletCreationModal extends StatelessWidget {
@@ -19,7 +18,7 @@ class WalletCreationModal extends StatelessWidget {
     return BlocProvider(
       create: (context) => WalletCreationBloc(
         walletType: walletType,
-        //TODO: Change to the current user currency
+        // TODO(tuanhm): Change to the current user currency
         currency: CurrencyModel(
           code: 'USD',
           name: 'United States Dollar',
@@ -114,7 +113,7 @@ class _WalletCreationView extends HookWidget {
   }
 
   Future<bool> _checkAndShowPopConfirmation(BuildContext context) async {
-    // TODO: Check if form is dirty, and show confirmation dialog
+    // TODO(tuanhm): Check if form is dirty, and show confirmation dialog
     final confirm = await showDialog<bool?>(
       context: context,
       builder: (context) => AlertDialog(

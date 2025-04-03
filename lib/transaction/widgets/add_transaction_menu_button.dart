@@ -3,8 +3,8 @@ import 'dart:ui';
 
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/app/routes/app_router.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 
@@ -21,7 +21,7 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
   late final OverlayPortalController _overlayPortalController;
   late final AnimationController _animationController;
   final GlobalKey _childKey = GlobalKey();
-  Offset childPos = Offset.zero;
+  // Offset childPos = Offset.zero;
   bool _visible = false;
   VoidCallback? _onClosedCallback;
 
@@ -34,9 +34,9 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
       reverseDuration: const Duration(milliseconds: 210),
     )..addStatusListener(_onAnimationStatusChanged);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _calculateChildPosition();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _calculateChildPosition();
+    // });
 
     super.initState();
   }
@@ -67,12 +67,12 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
     _onClosedCallback = null;
   }
 
-  void _calculateChildPosition() {
-    final childRenderBox =
-        _childKey.currentContext!.findRenderObject()! as RenderBox;
-    final childPosition = childRenderBox.localToGlobal(Offset.zero);
-    childPos = childPosition;
-  }
+  // void _calculateChildPosition() {
+  //   final childRenderBox =
+  //       _childKey.currentContext!.findRenderObject()! as RenderBox;
+  //   final childPosition = childRenderBox.localToGlobal(Offset.zero);
+  //   childPos = childPosition;
+  // }
 
   void _toggle({required bool visible}) {
     if (visible) {
@@ -94,6 +94,7 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
         elevation: 0,
       ),
       onPressed: () {
+        HapticFeedback.lightImpact();
         _toggle(visible: !_visible);
       },
       icon: AnimatedBuilder(
@@ -123,6 +124,9 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
   Widget _buildOverlay(BuildContext context, Widget child) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
+    final childRenderBox =
+        _childKey.currentContext!.findRenderObject()! as RenderBox;
+    final childPos = childRenderBox.localToGlobal(Offset.zero);
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -151,20 +155,24 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
             child: AnimatedBuilder(
               animation: _animationController,
               builder: (context, _) {
+                if (childPos == Offset.zero) {
+                  return const SizedBox.shrink();
+                }
                 return Column(
                   spacing: AppRadius.md,
                   children: [
                     Transform.translate(
                       offset: Offset(
+                        (1 - _animationController.value) * -120,
                         0,
-                        (1 - _animationController.value) * 240,
                       ),
                       child: Opacity(
                         opacity: _animationController.value,
                         child: FilledButton.icon(
                           onPressed: () {
+                            HapticFeedback.lightImpact();
                             _onClosedCallback = () {
-                              // TODO:  Add recept scanner
+                              // TODO(tuanhm):  Add recept scanner
                             };
                             _toggle(visible: false);
                           },
@@ -175,15 +183,16 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
                     ),
                     Transform.translate(
                       offset: Offset(
+                        (1 - _animationController.value) * 80,
                         0,
-                        (1 - _animationController.value) * 180,
                       ),
                       child: Opacity(
                         opacity: _animationController.value,
                         child: FilledButton.icon(
                           onPressed: () {
+                            HapticFeedback.lightImpact();
                             _onClosedCallback = () {
-                              // TODO:  Add AI Voice Input
+                              context.pushNamed(AppRouteNames.voiceTransaction);
                             };
                             _toggle(visible: false);
                           },
@@ -194,13 +203,14 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
                     ),
                     Transform.translate(
                       offset: Offset(
+                        (1 - _animationController.value) * -60,
                         0,
-                        (1 - _animationController.value) * 120,
                       ),
                       child: Opacity(
                         opacity: _animationController.value,
                         child: FilledButton.icon(
                           onPressed: () {
+                            HapticFeedback.lightImpact();
                             _onClosedCallback = () async {
                               final result = await context.pushNamed(
                                 AppRouteNames.transactionCreation,
