@@ -49,6 +49,8 @@ dependencies:
   intl: ^0.20.0
   n8n_ai_client:
     path: packages/ai_client/n8n_ai_client
+  permission_client:
+    path: packages/permission_client
   speech_to_text_client:
     path: packages/speech_to_text_client
   sqflite: ^2.4.1

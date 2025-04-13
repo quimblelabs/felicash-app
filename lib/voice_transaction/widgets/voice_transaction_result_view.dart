@@ -1,7 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/transaction/view/transaction_item.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
-import 'package:felicash/voice_transaction/bloc/transaction_processing_bloc.dart';
+import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

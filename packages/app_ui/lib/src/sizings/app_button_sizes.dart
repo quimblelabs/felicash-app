@@ -9,7 +9,7 @@ abstract class AppButtonSizes {
   static const smallMinimumSize = Size(0, 40);
 
   /// The minimum size of a button.
-  static const defaultMinimumSize = Size(double.infinity, 56);
+  static const defaultMinimumSize = Size(double.infinity, 48);
 
   /// The maximum size of a button.
   static const defaultMaximumSize = Size(double.infinity, 56);

@@ -26,6 +26,13 @@ enum TransactionTypeEnum {
         return Icons.swap_horiz;
     }
   }
+
+  /// Returns the type from string.
+  static TransactionTypeEnum fromString(String value) {
+    return TransactionTypeEnum.values.firstWhere(
+      (e) => e.name == value,
+    );
+  }
 }
 
 /// {@template transaction_model}

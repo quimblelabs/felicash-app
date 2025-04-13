@@ -67,5 +67,9 @@
 		</array>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>We need access to the microphone to enable voice transaction recording</string>
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>We need access to speech recognition to enable voice transaction recording</string>
 	</dict>
 </plist>

@@ -34,12 +34,19 @@ class AppTheme {
       useMaterial3: true,
       brightness: colorScheme.brightness,
       colorScheme: colorScheme,
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        shadowColor: colorScheme.shadow.withValues(alpha: .25),
+        color: colorScheme.surface,
+        surfaceTintColor: colorScheme.surface,
+        scrolledUnderElevation: 1,
+        centerTitle: true,
+        titleTextStyle: textTheme.headlineMedium?.copyWith(
+          color: colorScheme.onSurface,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       bottomAppBarTheme: BottomAppBarTheme(
-        // backgroundColor: colorScheme.primary,
-        // selectedItemColor: colorScheme.onPrimary,
-        // unselectedItemColor: colorScheme.onPrimaryContainer,
-        // showUnselectedLabels: false,
-        // showSelectedLabels: false,
         elevation: 1,
         color: colorScheme.primary,
         surfaceTintColor: colorScheme.primary,
@@ -49,7 +56,7 @@ class AppTheme {
         style: FilledButton.styleFrom(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
-              Radius.circular(AppRadius.lg),
+              Radius.circular(AppRadius.xlg),
             ),
           ),
           minimumSize: AppButtonSizes.defaultMinimumSize,
@@ -75,9 +82,6 @@ class AppTheme {
         fillColor: colorScheme.surfaceContainer,
         filled: true,
         border: const OutlineInputBorder(
-          // borderSide: BorderSide(
-          //   color: colorScheme.outline,
-          // ),
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.all(
             Radius.circular(AppRadius.lg),

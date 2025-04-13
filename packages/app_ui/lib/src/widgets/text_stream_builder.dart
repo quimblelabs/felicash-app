@@ -38,6 +38,7 @@ class TextStreamBuilder extends StatefulWidget {
   const TextStreamBuilder({
     required this.input,
     required this.builder,
+    this.enabled = true,
     this.duration,
     this.delay,
     this.breaks = TextBreaks.character,
@@ -51,6 +52,9 @@ class TextStreamBuilder extends StatefulWidget {
           duration == null || delay == null,
           'Can not use both duration and delay',
         );
+
+  /// Whether the text stream is enabled.
+  final bool enabled;
 
   /// The input to build the text from.
   final String input;
@@ -96,10 +100,18 @@ class _TextStreamBuilderState extends State<TextStreamBuilder> {
   }
 
   void _initializeController() {
-    _controller = StreamController<({String text, String untilNow})>();
+    // _controller = StreamController<({String text, String untilNow})>();
+    // _stream = _controller.stream;
+    // _isInitialized = true;
+    // _startStreaming();
+
+    _controller =
+        StreamController<({String text, String untilNow})>.broadcast();
     _stream = _controller.stream;
     _isInitialized = true;
-    _startStreaming();
+    if (widget.enabled) {
+      _startStreaming();
+    }
   }
 
   @override
@@ -109,7 +121,8 @@ class _TextStreamBuilderState extends State<TextStreamBuilder> {
     if (widget.input != oldWidget.input ||
         widget.duration != oldWidget.duration ||
         widget.delay != oldWidget.delay ||
-        widget.breaks != oldWidget.breaks) {
+        widget.breaks != oldWidget.breaks ||
+        widget.enabled != oldWidget.enabled) {
       _controller.close();
       _initializeController();
     }
@@ -123,6 +136,9 @@ class _TextStreamBuilderState extends State<TextStreamBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.enabled) {
+      return widget.builder(context, widget.input, widget.input);
+    }
     return StreamBuilder<({String text, String untilNow})>(
       stream: _stream,
       builder: (context, snapshot) {

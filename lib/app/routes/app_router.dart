@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app_utils/app_utils.dart';
+import 'package:felicash/ai_assistant/view/ai_assistant_page.dart';
 import 'package:felicash/app/bloc/app_bloc.dart';
 import 'package:felicash/app/routes/pages/fade_transition_page.dart';
 import 'package:felicash/app/routes/pages/modal_page.dart';
@@ -30,6 +31,8 @@ abstract class AppRoutes {
   static const personal = '/personal';
 
   static const wallets = '/wallets';
+  // Add new AI Assistant route
+  static const String aiAssistant = '/ai-assistant';
   // Creation flow
   static const String walletTypeSelector = '/select-type';
   static const String walletCreation = '/create/:type';
@@ -50,7 +53,10 @@ abstract class AppRouteNames {
   static const personal = 'personal';
   static const wallets = 'wallets';
 
-  // Creatation flow
+  // Add new AI Assistant route name
+  static const aiAssistant = 'aiAssistant';
+
+  // Creation flow
   static const walletTypeSelector = 'selectWalletType';
   static const walletCreation = 'createWallet';
   static const balanceUpdate = 'updateBalance';
@@ -85,10 +91,16 @@ class AppRouter {
           path: AppRoutes.login,
           builder: (context, state) => const LoginPage(),
         ),
-        StatefulShellRoute.indexedStack(
+        StatefulShellRoute(
           parentNavigatorKey: _rootNavigatorKey,
           builder: (context, state, navigationShell) {
-            return HomePage(child: navigationShell);
+            return navigationShell;
+          },
+          navigatorContainerBuilder: (context, navigationShell, children) {
+            return HomePage(
+              navigationShell: navigationShell,
+              children: children,
+            );
           },
           branches: [
             StatefulShellBranch(
@@ -96,9 +108,15 @@ class AppRouter {
                 GoRoute(
                   name: AppRouteNames.overview,
                   path: AppRoutes.overview,
-                  pageBuilder: (context, state) => FadeTransitionPage(
-                    key: state.pageKey,
+                  pageBuilder: (context, state) => CustomTransitionPage(
                     child: const OverviewPage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
                   ),
                   routes: [
                     GoRoute(
@@ -129,6 +147,14 @@ class AppRouter {
                           },
                           child: const VoiceTransactionPage(),
                         );
+                      },
+                    ),
+                    GoRoute(
+                      path: AppRoutes.aiAssistant,
+                      name: AppRouteNames.aiAssistant,
+                      parentNavigatorKey: _rootNavigatorKey,
+                      builder: (context, state) {
+                        return const AiAssistantPage();
                       },
                     ),
                   ],
@@ -199,7 +225,7 @@ class AppRouter {
                               isScrollControlled: false,
                               useSafeArea: true,
                               builder: (context) => MonetaryInputModal(
-                                initalValue: double.parse(initial!),
+                                initialValue: double.parse(initial!),
                                 currencySymbol: currency!,
                               ),
                             );
@@ -246,7 +272,7 @@ class AppRouter {
     final overviewLoc = state.namedLocation(AppRouteNames.overview);
 
     if (!isAuthenticated && !onboardingIn && !loggingIn) {
-      return onboardingLoc;
+      return overviewLoc;
     }
     if (isAuthenticated && onboardingIn) {
       return overviewLoc;

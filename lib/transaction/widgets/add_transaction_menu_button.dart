@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:app_ui/app_ui.dart';
@@ -20,6 +19,7 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
     with SingleTickerProviderStateMixin {
   late final OverlayPortalController _overlayPortalController;
   late final AnimationController _animationController;
+  late final Animation<double> _opacityAnimation;
   final GlobalKey _childKey = GlobalKey();
   // Offset childPos = Offset.zero;
   bool _visible = false;
@@ -33,11 +33,9 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
       duration: const Duration(milliseconds: 210),
       reverseDuration: const Duration(milliseconds: 210),
     )..addStatusListener(_onAnimationStatusChanged);
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _calculateChildPosition();
-    // });
-
+    _opacityAnimation = _animationController.drive(
+      CurveTween(curve: Curves.easeInOut),
+    );
     super.initState();
   }
 
@@ -67,13 +65,6 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
     _onClosedCallback = null;
   }
 
-  // void _calculateChildPosition() {
-  //   final childRenderBox =
-  //       _childKey.currentContext!.findRenderObject()! as RenderBox;
-  //   final childPosition = childRenderBox.localToGlobal(Offset.zero);
-  //   childPos = childPosition;
-  // }
-
   void _toggle({required bool visible}) {
     if (visible) {
       _animationController.forward();
@@ -84,11 +75,8 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final child = IconButton.filled(
+    final child = IconButton.filledTonal(
       style: IconButton.styleFrom(
-        backgroundColor: theme.colorScheme.secondaryContainer,
-        foregroundColor: theme.colorScheme.onSecondaryContainer,
         shape: const CircleBorder(),
         padding: const EdgeInsets.all(12),
         elevation: 0,
@@ -97,16 +85,7 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
         HapticFeedback.lightImpact();
         _toggle(visible: !_visible);
       },
-      icon: AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, child) {
-          return Transform.rotate(
-            angle: _animationController.value * (0.25 * math.pi),
-            child: child,
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
+      icon: const Icon(Icons.add),
     );
 
     return OverlayPortal(
@@ -127,114 +106,143 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
     final childRenderBox =
         _childKey.currentContext!.findRenderObject()! as RenderBox;
     final childPos = childRenderBox.localToGlobal(Offset.zero);
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        GestureDetector(
-          onTap: () {
-            _toggle(visible: false);
-          },
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 5,
-              sigmaY: 4,
-            ),
-            child: Container(
-              height: size.height,
-              width: size.width,
-              color: theme.colorScheme.surface.withValues(
-                alpha: .45 * _animationController.value,
+    return TextButtonTheme(
+      data: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          minimumSize: const Size(double.infinity, 56),
+          textStyle: theme.textTheme.bodyLarge,
+          alignment: Alignment.centerLeft,
+        ),
+      ),
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          GestureDetector(
+            onTap: () {
+              _toggle(visible: false);
+            },
+            child: AnimatedBuilder(
+              animation: _opacityAnimation,
+              builder: (context, child) => BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 40 * _opacityAnimation.value,
+                  sigmaY: 40 * _opacityAnimation.value,
+                ),
+                child: Container(
+                  height: size.height,
+                  width: size.width,
+                  color: theme.colorScheme.surface.withValues(
+                    alpha: .6 * _opacityAnimation.value,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-        Positioned(
-          bottom: size.height - childPos.dy + AppSpacing.xlg,
-          child: SizedBox(
-            width: size.width * .6,
+          Positioned(
+            bottom: size.height - childPos.dy + AppSpacing.xlg,
             child: AnimatedBuilder(
-              animation: _animationController,
+              animation: _opacityAnimation,
               builder: (context, _) {
-                if (childPos == Offset.zero) {
-                  return const SizedBox.shrink();
-                }
-                return Column(
-                  spacing: AppRadius.md,
-                  children: [
-                    Transform.translate(
-                      offset: Offset(
-                        (1 - _animationController.value) * -120,
-                        0,
-                      ),
-                      child: Opacity(
-                        opacity: _animationController.value,
-                        child: FilledButton.icon(
-                          onPressed: () {
-                            HapticFeedback.lightImpact();
-                            _onClosedCallback = () {
-                              // TODO(tuanhm):  Add recept scanner
-                            };
-                            _toggle(visible: false);
-                          },
-                          icon: const Icon(IconsaxPlusLinear.scanner),
-                          label: const Text('Recept Scanner'),
+                return SizedBox(
+                  width: size.width * .5,
+                  child: FadeTransition(
+                    opacity: _opacityAnimation,
+                    child: Column(
+                      spacing: AppRadius.md,
+                      children: [
+                        Transform.translate(
+                          offset: Offset(
+                            0,
+                            (1 - _animationController.value) * 120,
+                          ),
+                          child: _ActionButton(
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              _onClosedCallback = () {
+                                // TODO(tuanhm):  Add recept scanner
+                              };
+                              _toggle(visible: false);
+                            },
+                            icon: IconsaxPlusBold.scanner,
+                            label: 'Recept Scanner'.hardCoded,
+                          ),
                         ),
-                      ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(
-                        (1 - _animationController.value) * 80,
-                        0,
-                      ),
-                      child: Opacity(
-                        opacity: _animationController.value,
-                        child: FilledButton.icon(
-                          onPressed: () {
-                            HapticFeedback.lightImpact();
-                            _onClosedCallback = () {
-                              context.pushNamed(AppRouteNames.voiceTransaction);
-                            };
-                            _toggle(visible: false);
-                          },
-                          icon: const Icon(IconsaxPlusBold.microphone_2),
-                          label: const Text('AI Voice Input'),
+                        Transform.translate(
+                          offset: Offset(
+                            0,
+                            (1 - _animationController.value) * 80,
+                          ),
+                          child: _ActionButton(
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              _onClosedCallback = () {
+                                context.pushNamed(AppRouteNames.aiAssistant);
+                              };
+                              _toggle(visible: false);
+                            },
+                            icon: FeliCashIcons.magic,
+                            label: 'AI Input'.hardCoded,
+                          ),
                         ),
-                      ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(
-                        (1 - _animationController.value) * -60,
-                        0,
-                      ),
-                      child: Opacity(
-                        opacity: _animationController.value,
-                        child: FilledButton.icon(
-                          onPressed: () {
-                            HapticFeedback.lightImpact();
-                            _onClosedCallback = () async {
-                              final result = await context.pushNamed(
-                                AppRouteNames.transactionCreation,
-                              );
-                            };
-                            _toggle(visible: false);
-                          },
-                          icon: const Icon(Icons.add),
-                          label: const Text('Manual Entry'),
+                        Transform.translate(
+                          offset: Offset(
+                            0,
+                            (1 - _animationController.value) * 60,
+                          ),
+                          child: _ActionButton(
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              _onClosedCallback = () async {
+                                final result = await context.pushNamed(
+                                  AppRouteNames.transactionCreation,
+                                );
+                              };
+                              _toggle(visible: false);
+                            },
+                            icon: IconsaxPlusBold.money_add,
+                            label: 'Manual Entry'.hardCoded,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 );
               },
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  const _ActionButton({
+    required this.label,
+    required this.icon,
+    this.onPressed,
+  });
+
+  final String label;
+  final IconData icon;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return TextButton.icon(
+      onPressed: onPressed,
+      icon: Padding(
+        padding: const EdgeInsets.only(right: AppSpacing.md),
+        child: CircleAvatar(
+          backgroundColor: theme.colorScheme.primary,
+          child: Icon(
+            icon,
+            color: theme.colorScheme.onPrimary,
+          ),
         ),
-        Positioned(
-          left: childPos.dx,
-          top: childPos.dy,
-          child: child,
-        ),
-      ],
+      ),
+      label: Text(label),
     );
   }
 }

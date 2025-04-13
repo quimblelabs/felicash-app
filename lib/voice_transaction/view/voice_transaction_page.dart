@@ -1,5 +1,5 @@
+import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
-import 'package:felicash/voice_transaction/bloc/transaction_processing_bloc.dart';
 import 'package:felicash/voice_transaction/cubit/speech_language_cubit.dart';
 import 'package:felicash/voice_transaction/widgets/voice_transaction_bottom_buttons.dart';
 import 'package:felicash/voice_transaction/widgets/voice_transaction_result_view.dart';
@@ -25,7 +25,7 @@ class VoiceTransactionPage extends StatelessWidget {
           )..loadLanguages(),
         ),
         BlocProvider(
-          create: (context) => TransactionProcessingBloc(
+          create: (context) => AiAssistantBloc(
             aiClient: context.read(),
           ),
         ),
@@ -110,8 +110,8 @@ class _ListenForUserSpeechCompleted extends StatelessWidget {
               .read<SpeechRecognitionBloc>()
               .add(const SpeechRecognitionStopListeningRequested());
           context
-              .read<TransactionProcessingBloc>()
-              .add(TransactionProcessingStartProcessing(recognizedText));
+              .read<AiAssistantBloc>()
+              .add(AiAssistantStartProcessing(recognizedText));
         }
       },
       child: child,
