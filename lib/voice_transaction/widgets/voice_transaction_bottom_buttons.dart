@@ -1,6 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
-import 'package:felicash/voice_transaction/bloc/transaction_processing_bloc.dart';
+import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,8 +62,8 @@ class _PlayPauseButton extends StatelessWidget {
     final isSessionPaused = context.select<SpeechRecognitionBloc, bool>(
       (bloc) => bloc.state is SpeechRecognitionPausedSuccess,
     );
-    final isProcessing = context.select<TransactionProcessingBloc, bool>(
-      (bloc) => bloc.state is TransactionProcessingInProgress,
+    final isProcessing = context.select<AiAssistantBloc, bool>(
+      (bloc) => bloc.state is AiAssistantInProgress,
     );
     Widget icon = const Icon(Icons.pause_rounded);
     if (isSessionPaused) {
@@ -79,9 +79,7 @@ class _PlayPauseButton extends StatelessWidget {
               .read<SpeechRecognitionBloc>()
               .add(SpeechRecognitionStartListeningRequested());
         } else if (isProcessing) {
-          context
-              .read<TransactionProcessingBloc>()
-              .add(TransactionProcessingCancelProcessing());
+          context.read<AiAssistantBloc>().add(AiAssistantCancelProcessing());
           context
               .read<SpeechRecognitionBloc>()
               .add(SpeechRecognitionStartListeningRequested());
@@ -89,13 +87,12 @@ class _PlayPauseButton extends StatelessWidget {
           context
               .read<SpeechRecognitionBloc>()
               .add(SpeechRecognitionPauseSessionRequested());
-          final isProcessCompleted = context
-              .read<TransactionProcessingBloc>()
-              .state is TransactionProcessingCompleted;
+          final isProcessCompleted =
+              context.read<AiAssistantBloc>().state is AiAssistantCompleted;
           if (isProcessCompleted) {
             context
-                .read<TransactionProcessingBloc>()
-                .add(const TransactionProcessingReset(keepHistory: true));
+                .read<AiAssistantBloc>()
+                .add(const AiAssistantReset(keepHistory: true));
           }
         }
       },

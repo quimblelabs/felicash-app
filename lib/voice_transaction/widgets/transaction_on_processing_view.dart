@@ -93,8 +93,8 @@ class _ImThinking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isProcessing = context.select<TransactionProcessingBloc, bool>(
-      (bloc) => bloc.state is TransactionProcessingInProgress,
+    final isProcessing = context.select<AiAssistantBloc, bool>(
+      (bloc) => bloc.state is AiAssistantInProgress,
     );
     return Visibility(
       visible: isProcessing,
@@ -156,15 +156,12 @@ class _ProcessResponseText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isCompleted = context.select<TransactionProcessingBloc, bool>(
-      (bloc) => bloc.state is TransactionProcessingCompleted,
+    final isCompleted = context.select<AiAssistantBloc, bool>(
+      (bloc) => bloc.state is AiAssistantCompleted,
     );
-    final responseText = context.select<TransactionProcessingBloc, String?>(
-      (bloc) => bloc.state is TransactionProcessingCompleted
-          ? (bloc.state as TransactionProcessingCompleted)
-              .process
-              .processingResult
-              ?.responseText
+    final responseText = context.select<AiAssistantBloc, String?>(
+      (bloc) => bloc.state is AiAssistantCompleted
+          ? (bloc.state as AiAssistantCompleted).process.response?.responseText
           : null,
     );
     final length = responseText?.length ?? 0;
@@ -233,14 +230,15 @@ class _TransactionResultCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final isVisible = context.select<TransactionProcessingBloc, bool>(
+    final isVisible = context.select<AiAssistantBloc, bool>(
       (bloc) =>
-          bloc.state is TransactionProcessingCompleted &&
-          (bloc.state as TransactionProcessingCompleted)
+          bloc.state is AiAssistantCompleted &&
+          ((bloc.state as AiAssistantCompleted)
                   .process
-                  .processingResult
-                  ?.transaction !=
-              null,
+                  .response
+                  ?.transactions
+                  .isNotEmpty ??
+              false),
     );
 
     return _AnimatedSlidingFade(
@@ -267,12 +265,13 @@ class _TransactionResultCard extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Builder(
           builder: (context) {
-            final state = context.watch<TransactionProcessingBloc>().state;
+            final state = context.watch<AiAssistantBloc>().state;
 
-            if (state is! TransactionProcessingCompleted) {
+            if (state is! AiAssistantCompleted) {
               return const SizedBox.shrink();
             }
-            final transaction = state.process.processingResult?.transaction;
+            final transaction =
+                state.process.response?.transactions.firstOrNull;
             if (transaction == null) {
               return const SizedBox.shrink();
             }

@@ -25,6 +25,7 @@ class IconDataIcon extends RawIconData {
 
   /// The Flutter [IconData] instance.
   final IconData icon;
+
   @override
   List<Object?> get props => [icon, raw];
 }

@@ -72,14 +72,16 @@ class AppView extends StatelessWidget {
     final interTextTheme = GoogleFonts.interTextTheme();
     final theme = AppTheme(interTextTheme);
     final router = context.read<AppRouter>().router;
-    return MaterialApp.router(
-      theme: theme.light(),
-      darkTheme: theme.dark(),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      routerDelegate: router.routerDelegate,
-      routeInformationParser: router.routeInformationParser,
-      routeInformationProvider: router.routeInformationProvider,
+    return KeyboardHeightProvider(
+      child: MaterialApp.router(
+        theme: theme.light(),
+        darkTheme: theme.dark(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routerDelegate: router.routerDelegate,
+        routeInformationParser: router.routeInformationParser,
+        routeInformationProvider: router.routeInformationProvider,
+      ),
     );
   }
 }

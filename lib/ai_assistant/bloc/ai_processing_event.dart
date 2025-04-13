@@ -1,14 +1,14 @@
-part of 'transaction_processing_bloc.dart';
+part of 'ai_assistant_bloc.dart';
 
-sealed class TransactionProcessingEvent extends Equatable {
-  const TransactionProcessingEvent();
+sealed class AiAssistantEvent extends Equatable {
+  const AiAssistantEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class TransactionProcessingStartProcessing extends TransactionProcessingEvent {
-  const TransactionProcessingStartProcessing(this.requestMessage);
+class AiAssistantStartProcessing extends AiAssistantEvent {
+  const AiAssistantStartProcessing(this.requestMessage);
   final String requestMessage;
 
   @override
@@ -16,15 +16,14 @@ class TransactionProcessingStartProcessing extends TransactionProcessingEvent {
 }
 
 /// Cancel the current transaction processing
-class TransactionProcessingCancelProcessing
-    extends TransactionProcessingEvent {}
+class AiAssistantCancelProcessing extends AiAssistantEvent {}
 
 /// Reset the transaction processing state to initial state
 ///
 /// If [keepHistory] is true, the history will be kept
 /// otherwise the history will be cleared
-class TransactionProcessingReset extends TransactionProcessingEvent {
-  const TransactionProcessingReset({
+class AiAssistantReset extends AiAssistantEvent {
+  const AiAssistantReset({
     this.keepHistory = false,
   });
   final bool keepHistory;

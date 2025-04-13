@@ -12,13 +12,15 @@ part 'speech_recognition_state.dart';
 /// The delay for the final recognized text.
 ///
 /// If in the duration the user does not speak, the final recognized.
-const _kDelayForFinalRecognizedText = Duration(seconds: 1, milliseconds: 500);
+const kDelayForFinalRecognizedText = Duration(seconds: 2, milliseconds: 500);
 
 class SpeechRecognitionBloc
     extends Bloc<SpeechRecognitionEvent, SpeechRecognitionState> {
   SpeechRecognitionBloc({
     required SpeechToTextClient speechToTextClient,
+    Duration delayForFinalRecognizedText = kDelayForFinalRecognizedText,
   })  : _sttClient = speechToTextClient,
+        _delayForFinalRecognizedText = delayForFinalRecognizedText,
         super(const SpeechRecognitionInitial()) {
     _statusSubscription = _sttClient.statusStream.listen(_listenForClientError);
     on<SpeechRecognitionClientStarted>(
@@ -32,6 +34,7 @@ class SpeechRecognitionBloc
     on<SpeechRecognitionRecognizedTextUpdated>(_onRecognizedTextUpdated);
   }
 
+  final Duration _delayForFinalRecognizedText;
   final SpeechToTextClient _sttClient;
   late StreamSubscription<SpeechToTextStatus> _statusSubscription;
 
@@ -85,14 +88,14 @@ class SpeechRecognitionBloc
     Emitter<SpeechRecognitionState> emit,
   ) async {
     try {
+      final language = event.language;
       await _sttClient.startListening(
         onResult: (result) {
           if (isClosed) return;
           if (state is! SpeechRecognitionListeningInProgress) return;
           add(SpeechRecognitionRecognizedTextUpdated(result));
         },
-        // TODO(tuanhm): Add the language code here.
-        language: const SpeechLanguage(Locale('vi', 'VN'), 'Vietnamese'),
+        language: language,
       );
       emit(const SpeechRecognitionListeningInProgress(recognizedText: ''));
     } catch (e) {
@@ -155,7 +158,7 @@ class SpeechRecognitionBloc
       if (event.source == RecognizedTextSource.voice) {
         _stopListeningDebouncer?.cancel();
         _stopListeningDebouncer = Timer(
-          _kDelayForFinalRecognizedText,
+          _delayForFinalRecognizedText,
           () => add(
             const SpeechRecognitionStopListeningRequested(
               reason: StopListeningReason.noSpeechAfterDelay,

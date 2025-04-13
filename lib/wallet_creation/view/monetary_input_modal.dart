@@ -9,19 +9,19 @@ class MonetaryInputModal extends HookWidget {
   /// {@macro money_input_view}
   const MonetaryInputModal({
     required this.currencySymbol,
-    this.initalValue = 0,
+    this.initialValue = 0,
     super.key,
   });
 
   /// The currency symbol to display.
   final String currencySymbol;
-  final double initalValue;
+  final double initialValue;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    final controller = useTextEditingController(text: initalValue.toString());
+    final controller = useTextEditingController(text: initialValue.toString());
     final height = mediaQuery.size.height;
     final contentHeight = height * 0.4;
     return ModalScaffold(

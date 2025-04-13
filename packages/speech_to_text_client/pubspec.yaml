@@ -11,6 +11,8 @@ dependencies:
   equatable: ^2.0.7
   flutter:
     sdk: flutter
+  permission_client:
+    path: ../permission_client
   speech_to_text: ^7.0.0
 
 dev_dependencies:

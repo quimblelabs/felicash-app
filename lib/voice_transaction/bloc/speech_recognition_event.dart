@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'speech_recognition_bloc.dart';
 
 /// The source of the recognized text.
@@ -22,12 +23,25 @@ sealed class SpeechRecognitionEvent extends Equatable {
   const SpeechRecognitionEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
+/// Initial event to initialize the speech recognition session.
 class SpeechRecognitionClientStarted extends SpeechRecognitionEvent {}
 
-class SpeechRecognitionStartListeningRequested extends SpeechRecognitionEvent {}
+class SpeechRecognitionStartListeningRequested extends SpeechRecognitionEvent {
+  const SpeechRecognitionStartListeningRequested({
+    this.language,
+  });
+
+  /// The language to recognize.
+  ///
+  /// If not provided, the default language will be used.
+  final SpeechLanguage? language;
+
+  @override
+  List<Object?> get props => [language, ...super.props];
+}
 
 class SpeechRecognitionStopListeningRequested extends SpeechRecognitionEvent {
   const SpeechRecognitionStopListeningRequested({
@@ -36,7 +50,7 @@ class SpeechRecognitionStopListeningRequested extends SpeechRecognitionEvent {
   final StopListeningReason reason;
 
   @override
-  List<Object> get props => [reason, ...super.props];
+  List<Object?> get props => [reason, ...super.props];
 }
 
 class SpeechRecognitionPauseSessionRequested extends SpeechRecognitionEvent {}
@@ -45,7 +59,7 @@ class SpeechRecognitionStatusChanged extends SpeechRecognitionEvent {
   const SpeechRecognitionStatusChanged(this.state);
   final SpeechRecognitionState state;
   @override
-  List<Object> get props => [state, ...super.props];
+  List<Object?> get props => [state, ...super.props];
 }
 
 class SpeechRecognitionRecognizedTextUpdated extends SpeechRecognitionEvent {
@@ -56,5 +70,5 @@ class SpeechRecognitionRecognizedTextUpdated extends SpeechRecognitionEvent {
   final String text;
   final RecognizedTextSource source;
   @override
-  List<Object> get props => [text, source];
+  List<Object?> get props => [text, source];
 }
