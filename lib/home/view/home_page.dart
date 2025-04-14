@@ -1,3 +1,4 @@
+import 'package:app_utils/app_utils.dart';
 import 'package:felicash/app/routes/app_router.dart';
 import 'package:felicash/home/cubit/home_cubit.dart';
 import 'package:felicash/navigation/view/bottom_nav_bar.dart';
@@ -7,41 +8,106 @@ import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
-    required this.child,
+    required this.navigationShell,
+    required this.children,
     super.key,
   });
 
-  final Widget child;
+  /// The navigation shell and container for the branch Navigators.
+  final StatefulNavigationShell navigationShell;
+
+  /// The children (branch Navigators) to display in a custom container
+  /// ([AnimatedBranchContainer]).
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeCubit(),
-      child: HomeView(child: child),
+      child: HomeView(
+        navigationShell: navigationShell,
+        children: children,
+      ),
     );
   }
 }
 
 class HomeView extends StatelessWidget {
-  const HomeView({required this.child, super.key});
-  final Widget child;
+  const HomeView({
+    required this.navigationShell,
+    required this.children,
+    super.key,
+  });
+
+  /// The navigation shell and container for the branch Navigators.
+  final StatefulNavigationShell navigationShell;
+
+  /// The children (branch Navigators) to display in a custom container
+  /// ([AnimatedBranchContainer]).
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
-    final selectedTab =
-        context.select((HomeCubit cubit) => cubit.state.tabIndex);
-
     return _TabChangedListener(
       child: Scaffold(
-        body: child,
-        extendBody: true,
+        body: AnimatedBranchContainer(
+          currentIndex: navigationShell.currentIndex,
+          children: children,
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
         bottomNavigationBar: BottomNavBar(
-          selectedTab,
+          navigationShell.currentIndex,
           onTabChanged: (index) {
             context.read<HomeCubit>().changeTab(index);
           },
         ),
+      ),
+    );
+  }
+}
+
+/// Custom branch Navigator container that provides animated transitions
+/// when switching branches.
+class AnimatedBranchContainer extends StatelessWidget {
+  /// Creates a AnimatedBranchContainer
+  const AnimatedBranchContainer({
+    required this.currentIndex,
+    required this.children,
+    super.key,
+  });
+
+  /// The index (in [children]) of the branch Navigator to display.
+  final int currentIndex;
+
+  /// The children (branch Navigators) to display in this container.
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    const duration = Duration(milliseconds: 200);
+    return Stack(
+      children: children.mapIndexed(
+        (int index, Widget navigator) {
+          return AnimatedScale(
+            scale: index == currentIndex ? 1 : 1.005,
+            duration: duration,
+            child: AnimatedOpacity(
+              opacity: index == currentIndex ? 1 : 0,
+              duration: duration,
+              child: _branchNavigatorWrapper(index, navigator),
+            ),
+          );
+        },
+      ).toList(),
+    );
+  }
+
+  Widget _branchNavigatorWrapper(int index, Widget navigator) {
+    return IgnorePointer(
+      ignoring: index != currentIndex,
+      child: TickerMode(
+        enabled: index == currentIndex,
+        child: navigator,
       ),
     );
   }
