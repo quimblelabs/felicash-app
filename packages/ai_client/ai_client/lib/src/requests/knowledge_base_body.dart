@@ -16,14 +16,21 @@ class KnowledgeBaseBody extends Equatable {
     this.categories,
     this.transactionTypes,
     this.wallets,
+    required this.sourceWallet,
   });
 
   final List<CategoryKnowledgeBaseBody>? categories;
   final List<TransactionTypeKnowledgeBaseBody>? transactionTypes;
   final List<WalletKnowledgeBaseBody>? wallets;
+  final WalletKnowledgeBaseBody sourceWallet;
 
   Map<String, dynamic> toJson() => _$KnowledgeBaseBodyToJson(this);
 
   @override
-  List<Object?> get props => [categories, transactionTypes, wallets];
+  List<Object?> get props => [
+    categories,
+    transactionTypes,
+    wallets,
+    sourceWallet,
+  ];
 }

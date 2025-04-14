@@ -25,6 +25,7 @@ void main() {
     final userRepository = UserRepository(
       authenticationClient: authenticationClient,
     );
+
     final walletRepository = WalletRepository(
       client: dataClient,
     );

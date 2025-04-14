@@ -14,5 +14,6 @@ Map<String, dynamic> _$KnowledgeBaseBodyToJson(
   if (instance.categories case final value?) 'categories': value,
   if (instance.transactionTypes case final value?) 'transaction_types': value,
   if (instance.wallets case final value?) 'wallets': value,
+  'source_wallet': instance.sourceWallet,
   'props': instance.props,
 };

@@ -5,7 +5,7 @@ import 'package:felicash/app/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wallet_repository/wallet_repository.dart' show WalletTypeEnum;
+import 'package:shared_models/shared_models.dart';
 
 class WalletTypeSelectorModal extends StatelessWidget {
   const WalletTypeSelectorModal({super.key});

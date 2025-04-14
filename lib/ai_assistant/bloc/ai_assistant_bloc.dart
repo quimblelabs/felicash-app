@@ -4,8 +4,10 @@ import 'package:ai_client/ai_client.dart';
 import 'package:async/async.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:category_repository/category_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:felicash/ai_assistant/models/ai_assistant_request_model.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:transaction_repository/transaction_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -46,6 +48,11 @@ const _mockKnowledgeBase = KnowledgeBaseBody(
     //   description: 'Ví chứa các khoản tiết kiệm của tôi',
     // ),
   ],
+  sourceWallet: WalletKnowledgeBaseBody(
+    id: '0df79f43-efc2-42f7-8277-611bb752eba0',
+    name: 'Ví tiền mặt',
+    description: 'Ví dùng cho các chi tiêu và thu nhập bằng tiền mặt',
+  ),
 );
 
 class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
@@ -205,7 +212,7 @@ extension on ExtractedTransaction {
       id: '',
       notes: notes,
       category: category,
-      transactionType: TransactionTypeEnum.fromString(transactionType ?? ''),
+      transactionType: TransactionTypeEnum.fromJsonKey(transactionType ?? ''),
       amount: amount ?? 0,
       transactionDate: transactionDate ?? now,
       wallet: wallet,

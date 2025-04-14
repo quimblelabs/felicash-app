@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -213,6 +214,7 @@ class _WalletItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -222,13 +224,17 @@ class _WalletItem extends StatelessWidget {
       leading: CircleAvatar(
         backgroundColor: wallet?.color,
         foregroundColor: wallet?.color.onContainer,
-        child: const Icon(Icons.wallet),
+        child: wallet?.icon == null
+            ? const Icon(Icons.wallet)
+            : IconWidget(icon: wallet!.icon),
       ),
       title: Text(wallet?.name ?? 'Select a wallet'.hardCoded),
       subtitle: (wallet != null)
           ? Text(
-              'Balance ${wallet!.baseCurrency.symbol} '
-                      '${wallet!.balance}'
+              'Balance ${wallet!.balance.toCurrency(
+                symbol: wallet!.baseCurrency.symbol,
+                locale: l10n.localeName,
+              )}'
                   .hardCoded,
             )
           : null,
