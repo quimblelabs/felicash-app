@@ -1,39 +1,8 @@
+import 'package:category_repository/category_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:transaction_repository/src/models/category_model.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:transaction_repository/src/models/recurrence_model.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-
-/// The enum TransactionTypeEnum is used to define the type of transaction.
-enum TransactionTypeEnum {
-  /// Represents an expense transaction.
-  expense,
-
-  /// Represents an income transaction.
-  income,
-
-  /// Represents a transfer transaction.
-  transfer;
-
-  /// Returns the icon associated with the transaction type.
-  IconData get icon {
-    switch (this) {
-      case TransactionTypeEnum.expense:
-        return Icons.arrow_downward;
-      case TransactionTypeEnum.income:
-        return Icons.arrow_upward;
-      case TransactionTypeEnum.transfer:
-        return Icons.swap_horiz;
-    }
-  }
-
-  /// Returns the type from string.
-  static TransactionTypeEnum fromString(String value) {
-    return TransactionTypeEnum.values.firstWhere(
-      (e) => e.name == value,
-    );
-  }
-}
 
 /// {@template transaction_model}
 /// Represents a financial transaction within a wallet.

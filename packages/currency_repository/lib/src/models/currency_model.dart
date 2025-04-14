@@ -6,12 +6,16 @@ import 'package:equatable/equatable.dart';
 class CurrencyModel extends Equatable {
   /// {@macro currency_model}
   const CurrencyModel({
+    required this.id,
     required this.code,
     required this.name,
     required this.symbol,
     required this.createdAt,
     required this.updatedAt,
   });
+
+  /// Id of the currency
+  final String id;
 
   /// Code of the currency
   final String code;
@@ -30,6 +34,7 @@ class CurrencyModel extends Equatable {
 
   /// Empty currency model
   static final empty = CurrencyModel(
+    id: '',
     code: '',
     name: '',
     symbol: '',
@@ -42,6 +47,7 @@ class CurrencyModel extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         code,
         name,
         symbol,
