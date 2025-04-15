@@ -21,7 +21,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_models/shared_models.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 /// The paths of the routes.
 abstract class AppRoutes {
@@ -92,20 +91,16 @@ class AppRouter {
           path: AppRoutes.login,
           builder: (context, state) => const LoginPage(),
         ),
-        StatefulShellRoute.indexedStack(
+        StatefulShellRoute(
           parentNavigatorKey: _rootNavigatorKey,
-          // builder: (context, state, navigationShell) {
-          //   return navigationShell;
-          // },
-          // navigatorContainerBuilder: (context, navigationShell, children) {
-          //   return HomePage(
-          //     // navigationShell: navigationShell,
-          //     // children: children,
-          //     child: navigationShell,
-          //   );
-          // },
           builder: (context, state, navigationShell) {
-            return HomePage(child: navigationShell);
+            return navigationShell;
+          },
+          navigatorContainerBuilder: (context, navigationShell, children) {
+            return HomePage(
+              navigationShell: navigationShell,
+              children: children,
+            );
           },
           branches: [
             StatefulShellBranch(
