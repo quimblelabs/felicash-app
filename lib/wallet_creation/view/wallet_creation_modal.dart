@@ -36,6 +36,11 @@ class WalletCreationModal extends StatelessWidget {
           // Check if WalletCreationState is successful created a
           // wallet and get back true
           if (state.status == WalletCreationStatus.success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Wallet created successfully'.hardCoded),
+              ),
+            );
             context.pop();
           } else if (state.status == WalletCreationStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
