@@ -43,7 +43,7 @@ void main() {
 
     final aiClient = N8nAiClient(
       dio,
-      baseUrl: '',
+      baseUrl: 'https://n8n.quimblelab.com/webhook',
     );
     return App(
       userRepository: userRepository,

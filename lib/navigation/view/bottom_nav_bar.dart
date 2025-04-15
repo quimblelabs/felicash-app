@@ -23,53 +23,48 @@ class BottomNavBar extends StatelessWidget {
       data: theme.copyWith(
         splashColor: Colors.transparent,
       ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-          child: SizedBox(
-            height: 80,
-            width: (screenWidth * .8).clamp(300.0, 400.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppRadius.xlg),
-              child: BottomAppBar(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _NavBarItem(
-                      icon: currentIndex == 0
-                          ? IconsaxPlusBold.home
-                          : IconsaxPlusLinear.home,
-                      label: 'Home',
-                      isSelected: currentIndex == 0,
-                      onTap: () => onTabChanged(0),
-                    ),
-                    _NavBarItem(
-                      icon: currentIndex == 1
-                          ? IconsaxPlusBold.arrow_swap_horizontal
-                          : IconsaxPlusLinear.arrow_swap_horizontal,
-                      label: 'Transactions',
-                      isSelected: currentIndex == 1,
-                      onTap: () => onTabChanged(1),
-                    ),
-                    const AddTransactionMenuButton(),
-                    _NavBarItem(
-                      icon: currentIndex == 2
-                          ? IconsaxPlusBold.wallet
-                          : IconsaxPlusLinear.wallet,
-                      label: 'Wallet',
-                      isSelected: currentIndex == 2,
-                      onTap: () => onTabChanged(2),
-                    ),
-                    _NavBarItem(
-                      icon: currentIndex == 3
-                          ? IconsaxPlusBold.user
-                          : IconsaxPlusLinear.user,
-                      label: 'Personal',
-                      isSelected: currentIndex == 3,
-                      onTap: () => onTabChanged(3),
-                    ),
-                  ],
-                ),
+      child: ClipRRect(
+        child: BottomAppBar(
+          child: SafeArea(
+            child: SizedBox(
+              height: 80,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _NavBarItem(
+                    icon: currentIndex == 0
+                        ? IconsaxPlusBold.home
+                        : IconsaxPlusLinear.home,
+                    label: 'Home',
+                    isSelected: currentIndex == 0,
+                    onTap: () => onTabChanged(0),
+                  ),
+                  _NavBarItem(
+                    icon: currentIndex == 1
+                        ? IconsaxPlusBold.arrow_swap_horizontal
+                        : IconsaxPlusLinear.arrow_swap_horizontal,
+                    label: 'Transactions',
+                    isSelected: currentIndex == 1,
+                    onTap: () => onTabChanged(1),
+                  ),
+                  const AddTransactionMenuButton(),
+                  _NavBarItem(
+                    icon: currentIndex == 2
+                        ? IconsaxPlusBold.wallet
+                        : IconsaxPlusLinear.wallet,
+                    label: 'Wallet',
+                    isSelected: currentIndex == 2,
+                    onTap: () => onTabChanged(2),
+                  ),
+                  _NavBarItem(
+                    icon: currentIndex == 3
+                        ? IconsaxPlusBold.user
+                        : IconsaxPlusLinear.user,
+                    label: 'Personal',
+                    isSelected: currentIndex == 3,
+                    onTap: () => onTabChanged(3),
+                  ),
+                ],
               ),
             ),
           ),
