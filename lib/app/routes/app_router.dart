@@ -20,6 +20,7 @@ import 'package:felicash/wallet_creation/view/wallet_type_selector_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 /// The paths of the routes.
@@ -91,16 +92,20 @@ class AppRouter {
           path: AppRoutes.login,
           builder: (context, state) => const LoginPage(),
         ),
-        StatefulShellRoute(
+        StatefulShellRoute.indexedStack(
           parentNavigatorKey: _rootNavigatorKey,
+          // builder: (context, state, navigationShell) {
+          //   return navigationShell;
+          // },
+          // navigatorContainerBuilder: (context, navigationShell, children) {
+          //   return HomePage(
+          //     // navigationShell: navigationShell,
+          //     // children: children,
+          //     child: navigationShell,
+          //   );
+          // },
           builder: (context, state, navigationShell) {
-            return navigationShell;
-          },
-          navigatorContainerBuilder: (context, navigationShell, children) {
-            return HomePage(
-              navigationShell: navigationShell,
-              children: children,
-            );
+            return HomePage(child: navigationShell);
           },
           branches: [
             StatefulShellBranch(
@@ -124,11 +129,14 @@ class AppRouter {
                       name: AppRouteNames.transactionCreation,
                       parentNavigatorKey: _rootNavigatorKey,
                       pageBuilder: (context, state) {
+                        const walletId = '9ca6c9b6-e206-4222-b22e-cf0741ff4779';
+                        // state.uri.queryParameters['walledId'];
                         return ModalPage(
                           isScrollControlled: true,
                           useSafeArea: true,
-                          builder: (context) =>
-                              const TransactionCreationModal(),
+                          builder: (context) => const TransactionCreationModal(
+                            walletId: walletId,
+                          ),
                         );
                       },
                     ),

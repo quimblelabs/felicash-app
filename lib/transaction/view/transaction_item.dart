@@ -1,6 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/l10n/arb/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:transaction_repository/transaction_repository.dart';
 
 class TransactionItem extends StatelessWidget {
@@ -21,6 +22,7 @@ class TransactionItem extends StatelessWidget {
       TransactionTypeEnum.income => crimsionRedColor.color,
       TransactionTypeEnum.expense => dolarBillColor.color,
       TransactionTypeEnum.transfer => null,
+      _ => null,
     };
     return Row(
       children: [

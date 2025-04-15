@@ -4,11 +4,11 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:felicash_data_client/felicash_data_client.dart';
 import 'package:flutter/widgets.dart';
-import 'package:n8n_ai_client/n8n_ai_client.dart';
-import 'package:sqflite/sqflite.dart' show databaseFactory;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-typedef AppBuilder = FutureOr<Widget> Function(FelicashDataClient dataClient);
+typedef AppBuilder = FutureOr<Widget> Function(
+  FelicashDataClient dataClient,
+);
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -29,22 +29,18 @@ class AppBlocObserver extends BlocObserver {
 Future<void> bootstrap(AppBuilder builder) async {
   await runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    final (client, queue) = OfflineFirstWithSupabaseRepository.clientQueue(
-      databaseFactory: databaseFactory,
-      ignorePaths: {'/auth/v1', '/storage/v1', '/functions/v1'},
-    );
+
     final supabase = await Supabase.initialize(
       url: const String.fromEnvironment('SUPABASE_URL'),
       anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY'),
-      httpClient: client,
-    );
-    final dataClient = FelicashDataClient(
-      supabaseClient: supabase.client,
-      queue: queue,
-      dbName: 'felicash.sqlite',
     );
 
-    // await dataClient.initialize();
+    final dataClient = await FelicashDataClient.create(
+      dbName: const String.fromEnvironment('FELICASH_LOCAL_DB_NAME'),
+      endpoint: const String.fromEnvironment('POWERSYNC_URL'),
+      supabaseClient: supabase.client,
+    );
+
     FlutterError.onError = (details) {
       log(details.exceptionAsString(), stackTrace: details.stack);
     };

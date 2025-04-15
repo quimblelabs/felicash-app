@@ -5,7 +5,8 @@ import 'package:felicash/wallet_creation/widgets/wallet_creation_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:wallet_repository/wallet_repository.dart' show WalletTypeEnum;
+import 'package:go_router/go_router.dart';
+import 'package:shared_models/shared_models.dart';
 
 class WalletCreationModal extends StatelessWidget {
   const WalletCreationModal({required this.walletType, super.key});
@@ -17,18 +18,35 @@ class WalletCreationModal extends StatelessWidget {
     final secondaryFixed = Theme.of(context).colorScheme.secondaryFixed;
     return BlocProvider(
       create: (context) => WalletCreationBloc(
+        walletRepository: context.read(),
         walletType: walletType,
         // TODO(tuanhm): Change to the current user currency
         currency: CurrencyModel(
+          id: '9c37561e-3b22-49c2-b153-39de15be36e7',
           code: 'USD',
-          name: 'United States Dollar',
+          name: 'United States dollar',
           symbol: r'$',
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         ),
         color: secondaryFixed,
       ),
-      child: const _WalletCreationView(),
+      child: BlocListener<WalletCreationBloc, WalletCreationState>(
+        listener: (context, state) {
+          // Check if WalletCreationState is successful created a
+          // wallet and get back true
+          if (state.status == WalletCreationStatus.success) {
+            context.pop();
+          } else if (state.status == WalletCreationStatus.failure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage ?? 'Unknown error'),
+              ),
+            );
+          }
+        },
+        child: const _WalletCreationView(),
+      ),
     );
   }
 }

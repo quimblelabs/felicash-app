@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:category_repository/category_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:transaction_repository/transaction_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -9,8 +11,10 @@ part 'transaction_creation_state.dart';
 
 class TransactionCreationBloc
     extends Bloc<TransactionCreationEvent, TransactionCreationState> {
-  TransactionCreationBloc()
-      : super(
+  TransactionCreationBloc({
+    required WalletRepository walletRepository,
+  })  : _walletRepository = walletRepository,
+        super(
           TransactionCreationState(
             wallet: BasicWalletModel.empty,
             date: DateTime.now(),
@@ -25,6 +29,8 @@ class TransactionCreationBloc
     on<TransactionCreationTransferToWalletChanged>(_onTransferToWalletChanged);
   }
 
+  final WalletRepository _walletRepository;
+
   void _onTransactionTypeChanged(
     TransactionCreationTypeChanged event,
     Emitter<TransactionCreationState> emit,
@@ -37,10 +43,10 @@ class TransactionCreationBloc
     );
   }
 
-  void _onTargetWalletChanged(
+  Future<void> _onTargetWalletChanged(
     TransactionCreationWalletChanged event,
     Emitter<TransactionCreationState> emit,
-  ) {
+  ) async {
     if (event.wallet != null) {
       emit(
         state.copyWith(
@@ -50,7 +56,13 @@ class TransactionCreationBloc
       );
       return;
     } else if (event.id case final id?) {
-      // TODO: Load wallet from id and set it as target wallet
+      final wallet = await _walletRepository.getWalletById(id);
+      emit(
+        state.copyWith(
+          wallet: wallet,
+          isValid: _validateForm(),
+        ),
+      );
       return;
     }
     emit(

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:transaction_repository/transaction_repository.dart';
 
 class TransactionCreationForm extends StatelessWidget {
