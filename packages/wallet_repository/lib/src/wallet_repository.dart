@@ -130,62 +130,8 @@ class WalletRepository {
           AND (?8 is null OR w.${WalletFields.walletArchived} = ?8)
     ORDER BY 
       CASE WHEN ?9 IS NOT NULL AND ?10 = 'ASC' THEN ?9 END ASC,
-      CASE WHEN ?9 IS NOT NULL AND ?10 = 'DESC' THEN ?9 END DESC,
+      CASE WHEN ?9 IS NOT NULL AND ?10 = 'DESC' THEN ?9 END DESC
     LIMIT ?11 OFFSET ?12
-  ''';
-
-  static const _getWalletByIdQuery = '''
-    SELECT *
-    FROM wallets w 
-    LEFT JOIN credit_wallets cw ON w.${WalletFields.walletId} = cw.${CreditWalletFields.creditWalletWalletId} 
-    LEFT JOIN savings_wallets sw ON w.${WalletFields.walletId} = sw.${SavingsWalletFields.savingsWalletWalletId}
-    LEFT JOIN currencies c ON w.${WalletFields.walletBaseCurrency} = c.${CurrencyFields.currencyId}
-    WHERE w.${WalletFields.walletId} = ?1
-  ''';
-
-  static const _updateWalletQuery = '''
-    UPDATE wallets
-    SET 
-    CASE 
-      WHEN ?1 IS NOT NULL THEN ${WalletFields.walletName} =?1
-      WHEN ?2 IS NOT NULL THEN ${WalletFields.walletDescription} =?2
-      WHEN ?3 IS NOT NULL THEN ${WalletFields.walletBalance} =?3
-      WHEN ?4 IS NOT NULL THEN ${WalletFields.walletBaseCurrency} =?4
-      WHEN ?5 IS NOT NULL THEN ${WalletFields.walletWalletType} =?5
-
-      WHEN ?6 IS NOT NULL THEN ${WalletFields.walletIcon} =?6
-      WHEN ?7 IS NOT NULL THEN ${WalletFields.walletColor} =?7
-      WHEN ?8 IS NOT NULL THEN ${WalletFields.walletExcludeFromTotal} =?8
-      WHEN ?9 IS NOT NULL THEN ${WalletFields.walletArchived} =?9
-      WHEN ?10 IS NOT NULL THEN ${WalletFields.walletArchivedAt} =?10
-      
-      WHEN ?11 IS NOT NULL THEN ${WalletFields.walletArchiveReason} =?11
-    END,
-    ${WalletFields.walletUpdatedAt} =?12
-    WHERE ${WalletFields.walletId} =?13
-    RETURNING *
-    ''';
-
-  static const _updateCreditWalletQuery = '''
-    UPDATE credit_wallets
-    SET 
-    CASE
-      WHEN ?1 IS NOT NULL THEN ${CreditWalletFields.creditWalletCreditLimit} =?1
-      WHEN ?2 IS NOT NULL THEN ${CreditWalletFields.creditWalletPaymentDueDayOfMonth} =?2
-      WHEN ?3 IS NOT NULL THEN ${CreditWalletFields.creditWalletStateDayOfMonth} =?3
-    END,
-    WHERE ${CreditWalletFields.creditWalletWalletId} =?5
-    RETURNING *
-  ''';
-
-  static const _updateSavingsWalletQuery = '''
-    UPDATE savings_wallets
-    SET 
-    CASE 
-      WHEN ?1 IS NOT NULL THEN ${SavingsWalletFields.savingsWalletSavingsGoal} =?1
-    END,
-    WHERE ${SavingsWalletFields.savingsWalletWalletId} =?2
-    RETURNING *
   ''';
 
   /// Fetches all wallets.
@@ -200,7 +146,7 @@ class WalletRepository {
         query.baseCurrency,
         query.minBalance,
         query.maxBalance,
-        query.walletType,
+        query.walletType?.jsonKey,
         query.archived,
         query.orderBy,
         query.orderType.sqlString,
@@ -234,6 +180,15 @@ class WalletRepository {
       Error.throwWithStackTrace(GetWalletsFailure(e), stacktrace);
     }
   }
+
+  static const _getWalletByIdQuery = '''
+    SELECT *
+    FROM wallets w 
+    LEFT JOIN credit_wallets cw ON w.${WalletFields.walletId} = cw.${CreditWalletFields.creditWalletWalletId} 
+    LEFT JOIN savings_wallets sw ON w.${WalletFields.walletId} = sw.${SavingsWalletFields.savingsWalletWalletId}
+    LEFT JOIN currencies c ON w.${WalletFields.walletBaseCurrency} = c.${CurrencyFields.currencyId}
+    WHERE w.${WalletFields.walletId} = ?1
+  ''';
 
   /// Fetches a wallet by id.
   ///
@@ -453,6 +408,51 @@ class WalletRepository {
       Error.throwWithStackTrace(CreateWalletFailure(e), stacktrace);
     }
   }
+
+  static const _updateWalletQuery = '''
+    UPDATE wallets
+    SET 
+    CASE 
+      WHEN ?1 IS NOT NULL THEN ${WalletFields.walletName} =?1
+      WHEN ?2 IS NOT NULL THEN ${WalletFields.walletDescription} =?2
+      WHEN ?3 IS NOT NULL THEN ${WalletFields.walletBalance} =?3
+      WHEN ?4 IS NOT NULL THEN ${WalletFields.walletBaseCurrency} =?4
+      WHEN ?5 IS NOT NULL THEN ${WalletFields.walletWalletType} =?5
+
+      WHEN ?6 IS NOT NULL THEN ${WalletFields.walletIcon} =?6
+      WHEN ?7 IS NOT NULL THEN ${WalletFields.walletColor} =?7
+      WHEN ?8 IS NOT NULL THEN ${WalletFields.walletExcludeFromTotal} =?8
+      WHEN ?9 IS NOT NULL THEN ${WalletFields.walletArchived} =?9
+      WHEN ?10 IS NOT NULL THEN ${WalletFields.walletArchivedAt} =?10
+      
+      WHEN ?11 IS NOT NULL THEN ${WalletFields.walletArchiveReason} =?11
+    END,
+    ${WalletFields.walletUpdatedAt} =?12
+    WHERE ${WalletFields.walletId} =?13
+    RETURNING *
+    ''';
+
+  static const _updateCreditWalletQuery = '''
+    UPDATE credit_wallets
+    SET 
+    CASE
+      WHEN ?1 IS NOT NULL THEN ${CreditWalletFields.creditWalletCreditLimit} =?1
+      WHEN ?2 IS NOT NULL THEN ${CreditWalletFields.creditWalletPaymentDueDayOfMonth} =?2
+      WHEN ?3 IS NOT NULL THEN ${CreditWalletFields.creditWalletStateDayOfMonth} =?3
+    END,
+    WHERE ${CreditWalletFields.creditWalletWalletId} =?5
+    RETURNING *
+  ''';
+
+  static const _updateSavingsWalletQuery = '''
+    UPDATE savings_wallets
+    SET 
+    CASE 
+      WHEN ?1 IS NOT NULL THEN ${SavingsWalletFields.savingsWalletSavingsGoal} =?1
+    END,
+    WHERE ${SavingsWalletFields.savingsWalletWalletId} =?2
+    RETURNING *
+  ''';
 
   /// Updates a wallet.
   ///

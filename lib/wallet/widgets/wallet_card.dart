@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_models/shared_models.dart';
 
 class WalletCard extends StatelessWidget {
   const WalletCard({required this.block, super.key});
@@ -26,11 +27,9 @@ class WalletCard extends StatelessWidget {
               CircleAvatar(
                 radius: 24,
                 backgroundColor: block.color,
-                child: Text(
-                  block.icon,
-                  style: theme.textTheme.titleLarge!.copyWith(
-                    color: block.color.onContainer,
-                  ),
+                child: IconWidget(
+                  icon: block.icon,
+                  color: block.color.onContainer,
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
@@ -104,5 +103,5 @@ class WalletBlock {
   final Color color;
   final double balance;
   final String currency;
-  final String icon;
+  final RawIconData icon;
 }
