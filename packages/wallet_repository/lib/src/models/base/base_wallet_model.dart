@@ -2,12 +2,11 @@ import 'package:currency_repository/currency_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_models/shared_models.dart';
-import 'package:wallet_repository/src/enums/wallet_type_enum.dart';
 
 /// {@template base_wallet_model}
 /// Base wallet model for all wallet types
 /// {@endtemplate}
-abstract class BaseWalletModel extends Equatable {
+class BaseWalletModel extends Equatable {
   /// {@macro base_wallet_model}
   const BaseWalletModel({
     required this.id,
@@ -67,6 +66,7 @@ abstract class BaseWalletModel extends Equatable {
 
   /// The reason why the wallet was archived, if applicable
   final String? achieveReason;
+
   @override
   List<Object?> get props {
     return [

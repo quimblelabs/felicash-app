@@ -39,7 +39,7 @@ class TransactionCreationState extends Equatable {
   }) {
     return TransactionCreationState(
       type: type ?? this.type,
-      wallet: this.wallet ?? wallet,
+      wallet: wallet ?? this.wallet,
       amount: amount ?? this.amount,
       category: category ?? this.category,
       date: date ?? this.date,

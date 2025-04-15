@@ -16,8 +16,9 @@ class TransactionCreationModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TransactionCreationBloc()
-        ..add(
+      create: (context) => TransactionCreationBloc(
+        walletRepository: context.read(),
+      )..add(
           // TODO(tuanhm): Add default fallback target wallet if not provided
           TransactionCreationWalletChanged(id: walletId ?? ''),
         ),

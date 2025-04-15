@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wallet_repository/wallet_repository.dart' show WalletTypeEnum;
+import 'package:shared_models/shared_models.dart';
 
 class WalletCreationForm extends StatelessWidget {
   const WalletCreationForm({super.key});

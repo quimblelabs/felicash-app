@@ -3,6 +3,8 @@ import 'package:currency_repository/currency_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' show Color, IconData, Icons;
 import 'package:form_inputs/form_inputs.dart';
+import 'package:shared_models/shared_models.dart';
+import 'package:uuid/uuid.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 part 'wallet_creation_event.dart';
@@ -11,10 +13,12 @@ part 'wallet_creation_state.dart';
 class WalletCreationBloc
     extends Bloc<WalletCreationEvent, WalletCreationState> {
   WalletCreationBloc({
+    required WalletRepository walletRepository,
     required WalletTypeEnum walletType,
     required CurrencyModel currency,
     required Color color,
-  }) : super(
+  })  : _walletRepository = walletRepository,
+        super(
           WalletCreationState(
             walletType: walletType,
             color: color,
@@ -37,6 +41,8 @@ class WalletCreationBloc
     on<WalletCreationSavingGoalChanged>(_onWalletSavingGoalChanged);
     on<WalletCreationSubmitted>(_onWalletCreationSubmitted);
   }
+
+  final WalletRepository _walletRepository;
 
   void _onWalletNameChanged(
     WalletCreationNameChanged event,
@@ -188,16 +194,42 @@ class WalletCreationBloc
     );
   }
 
-  void _onWalletCreationSubmitted(
+  Future<void> _onWalletCreationSubmitted(
     WalletCreationSubmitted event,
     Emitter<WalletCreationState> emit,
-  ) {
+  ) async {
     if (!state.isValid) return;
     emit(state.copyWith(status: WalletCreationStatus.submiting));
     try {
-      // TODO(tuanhm): Implement wallet creation logic
-      // Here you would typically call the repository to create the wallet
-      // For example: await _walletRepository.createWallet(...);
+      final baseWallet = BaseWalletModel(
+        id: const Uuid().v4(),
+        name: state.name.value,
+        walletType: state.walletType,
+        baseCurrency: state.currency,
+        balance: state.balance.value,
+        color: state.color,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        excludeFromTotal: state.excludeFromTotal,
+        isArchived: false,
+        icon: IconDataIcon.fromIconData(state.icon),
+        description: state.description.value,
+      );
+      final wallet = switch (state.walletType) {
+        WalletTypeEnum.basic =>
+          BasicWalletModel.fromBaseWalletModel(baseWalletModel: baseWallet),
+        WalletTypeEnum.credit => CreditWalletModel.fromBaseWalletModel(
+            baseWalletModel: baseWallet,
+            creditLimit: state.creditLimit.value,
+            stateDayOfMonth: state.stateDayOfMonth.value,
+            paymentDueDayOfMonth: state.paymentDayOfMonth.value,
+          ),
+        WalletTypeEnum.savings => SavingsWalletModel.fromBaseWalletModel(
+            baseWalletModel: baseWallet,
+            savingsGoal: state.savingsGoal.value,
+          ),
+      };
+      await _walletRepository.createWallet(wallet);
       emit(state.copyWith(status: WalletCreationStatus.success));
     } catch (e) {
       emit(
