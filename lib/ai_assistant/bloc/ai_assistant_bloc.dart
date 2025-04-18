@@ -100,7 +100,7 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
             .postExtractTransactionFromText(
               PostExtractTransactionFromTextBody(
                 queryText: event.requestMessage,
-                // TODO(tuamhm): Implement the real knowledge base
+                // TODO(danddt): Implement the real knowledge base
                 knowledgeBase: _mockKnowledgeBase,
               ),
             )
@@ -135,7 +135,7 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
           }
         }
 
-        // TODO(tuanhm): Save all transactions to the database
+        // TODO(dangddt): Save all transactions to the database
 
         return newProcess.copyWith(
           status: AiProcessingStatus.completed,
