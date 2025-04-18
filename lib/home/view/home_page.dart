@@ -84,16 +84,19 @@ class AnimatedBranchContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const duration = Duration(milliseconds: 200);
+    const duration = Duration(milliseconds: 250);
     return Stack(
       children: children.mapIndexed(
         (int index, Widget navigator) {
           return AnimatedScale(
-            scale: index == currentIndex ? 1 : 1.005,
+            alignment: Alignment.topCenter,
+            scale: index == currentIndex ? 1 : 1.008,
             duration: duration,
+            curve: Curves.fastOutSlowIn,
             child: AnimatedOpacity(
               opacity: index == currentIndex ? 1 : 0,
               duration: duration,
+              curve: Curves.easeInOut,
               child: _branchNavigatorWrapper(index, navigator),
             ),
           );
