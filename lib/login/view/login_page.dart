@@ -1,9 +1,12 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:felicash/app/routes/app_router.dart';
 import 'package:felicash/login/bloc/login_bloc.dart';
 import 'package:felicash/login/widgets/login_with_email_password_login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_inputs/form_inputs.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -23,30 +26,37 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        appBar: AppBar(),
-        body: const SingleChildScrollView(
-          padding: EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            children: [
-              _AppLogo(),
-              SizedBox(height: AppSpacing.lg),
-              _LoginTitle(),
-              SizedBox(height: AppSpacing.sm),
-              _LoginSubtitle(),
-              SizedBox(height: AppSpacing.xxlg),
-              LoginWithEmailPasswordLoginForm(),
-              SizedBox(height: AppSpacing.xxlg),
-              _ProvidersSeparator(),
-              SizedBox(height: AppSpacing.xxlg),
-              _ContinueWithAppleButton(),
-              SizedBox(height: AppSpacing.sm),
-              _ContinueWithGoogleButton(),
-              SizedBox(height: AppSpacing.xxlg),
-              _DontHaveAnAccount(),
-            ],
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state.status.isSuccess) {
+          context.goNamed(AppRouteNames.overview);
+        }
+      },
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          appBar: AppBar(),
+          body: const SingleChildScrollView(
+            padding: EdgeInsets.all(AppSpacing.lg),
+            child: Column(
+              children: [
+                _AppLogo(),
+                SizedBox(height: AppSpacing.lg),
+                _LoginTitle(),
+                SizedBox(height: AppSpacing.sm),
+                _LoginSubtitle(),
+                SizedBox(height: AppSpacing.xxlg),
+                LoginWithEmailPasswordLoginForm(),
+                SizedBox(height: AppSpacing.xxlg),
+                _ProvidersSeparator(),
+                SizedBox(height: AppSpacing.xxlg),
+                _ContinueWithAppleButton(),
+                SizedBox(height: AppSpacing.sm),
+                _ContinueWithGoogleButton(),
+                SizedBox(height: AppSpacing.xxlg),
+                _DontHaveAnAccount(),
+              ],
+            ),
           ),
         ),
       ),
