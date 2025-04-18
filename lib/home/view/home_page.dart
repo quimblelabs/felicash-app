@@ -93,11 +93,17 @@ class AnimatedBranchContainer extends StatelessWidget {
             scale: index == currentIndex ? 1 : 1.008,
             duration: duration,
             curve: Curves.fastOutSlowIn,
-            child: AnimatedOpacity(
-              opacity: index == currentIndex ? 1 : 0,
+            child: AnimatedSlide(
+              offset:
+                  index == currentIndex ? Offset.zero : const Offset(0, 0.005),
               duration: duration,
-              curve: Curves.easeInOut,
-              child: _branchNavigatorWrapper(index, navigator),
+              curve: Curves.fastOutSlowIn,
+              child: AnimatedOpacity(
+                opacity: index == currentIndex ? 1 : 0,
+                duration: duration,
+                curve: Curves.easeInOut,
+                child: _branchNavigatorWrapper(index, navigator),
+              ),
             ),
           );
         },
