@@ -8,7 +8,7 @@ import 'package:felicash/app/routes/pages/modal_page.dart';
 import 'package:felicash/home/view/home_page.dart';
 import 'package:felicash/login/view/login_page.dart';
 import 'package:felicash/onboarding/view/onboarding_page.dart';
-import 'package:felicash/overview/view/overview_page.dart';
+import 'package:felicash/overview/overview/view/overview_page.dart';
 import 'package:felicash/personal/view/personal_page.dart';
 import 'package:felicash/transaction/view/transaction_creation_modal.dart';
 import 'package:felicash/transaction/view/transactions_page.dart';
@@ -72,7 +72,7 @@ class AppRouter {
   AppRouter(AppBloc appBloc) {
     _router = GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: AppRoutes.onboarding,
+      initialLocation: AppRoutes.overview,
       debugLogDiagnostics: true,
       refreshListenable: StreamToListenable(
         [appBloc.stream.map((state) => state.status)],
@@ -272,13 +272,8 @@ class AppRouter {
     final loginLoc = state.namedLocation(AppRouteNames.login);
     final loggingIn = loginLoc == currentLoc;
 
-    final overviewLoc = state.namedLocation(AppRouteNames.overview);
-
-    if (!isAuthenticated && !onboardingIn && !loggingIn) {
-      return overviewLoc;
-    }
-    if (isAuthenticated && onboardingIn) {
-      return overviewLoc;
+    if (!isAuthenticated && (!onboardingIn || !loggingIn)) {
+      return loginLoc;
     }
 
     return null;
