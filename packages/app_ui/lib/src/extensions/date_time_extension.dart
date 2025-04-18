@@ -6,4 +6,9 @@ extension DateTimeEx on DateTime {
   String yMMMEd([dynamic locale]) {
     return DateFormat.yMMMEd(locale).format(this);
   }
+
+  /// Whether the current [DateTime] is the same day as the given [other].
+  bool isSameDay(DateTime other) {
+    return year == other.year && month == other.month && day == other.day;
+  }
 }
