@@ -88,6 +88,37 @@ class AppTheme {
           ),
         ),
       ),
+      dropdownMenuTheme: DropdownMenuThemeData(
+        inputDecorationTheme: InputDecorationTheme(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.sm,
+          ),
+          isDense: true,
+          constraints: BoxConstraints(
+            minHeight: AppButtonSizes.smallMinimumSize.height,
+            maxHeight: AppButtonSizes.smallMaximumSize.height,
+          ),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.all(
+              Radius.circular(AppRadius.xlg),
+            ),
+          ),
+        ),
+        menuStyle: MenuStyle(
+          shape: WidgetStateProperty.all(
+            const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(AppRadius.lg),
+              ),
+            ),
+          ),
+          backgroundColor: WidgetStateProperty.all(colorScheme.surface),
+          elevation: WidgetStateProperty.all(2),
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+        ),
+      ),
     );
   }
 }

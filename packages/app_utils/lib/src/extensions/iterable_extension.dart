@@ -24,4 +24,18 @@ extension IterableExtension<T> on Iterable<T> {
       index++;
     }
   }
+
+  /// Join the elements of the iterable into a list of items.
+  /// The [separator] is used to separate the items.
+  Iterable<T> joinItems({
+    required T separator,
+  }) {
+    final list = <T>[];
+    for (final element in this) {
+      list
+        ..add(element)
+        ..add(separator);
+    }
+    return list;
+  }
 }
