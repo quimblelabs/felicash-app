@@ -37,6 +37,22 @@ class GetWalletByIdFailure extends WalletFailure {
   const GetWalletByIdFailure(super.error);
 }
 
+/// {@template get_wallet_by_id_not_found}
+///  Failure when fetching a wallet by id and it is not found.
+/// {@endtemplate}
+class GetWalletByUserIdNotFound extends GetWalletByIdFailure {
+  /// {@macro get_wallet_by_id_failure}
+  const GetWalletByUserIdNotFound([super.error = 'Wallet not found']);
+}
+
+/// {@template get_wallet_by_id_parse_failure}
+/// Failure when fetching a wallet by id and it is not found.
+/// {@endtemplate}
+class GetWalletByUserIdParseFailure extends GetWalletByIdFailure {
+  /// {@macro get_wallet_by_id_failure}
+  const GetWalletByUserIdParseFailure([super.error = 'Error parsing wallet']);
+}
+
 /// {@template create_wallet_failure}
 /// Failure when creating a wallet.
 /// {@endtemplate}
@@ -137,29 +153,29 @@ class WalletRepository {
   /// Fetches all wallets.
   ///
   /// Throws a [GetWalletsFailure] if an error occurs.
-  Future<List<BaseWalletModel>> getWallets(GetWalletQuery query) async {
-    try {
-      final params = [
-        _client.getUserId(),
-        query.name,
-        query.description,
-        query.baseCurrency,
-        query.minBalance,
-        query.maxBalance,
-        query.walletType?.jsonKey,
-        query.archived,
-        query.orderBy,
-        query.orderType.sqlString,
-        query.limit,
-        query.offset,
-      ];
+  Stream<List<BaseWalletModel>> getWallets(GetWalletQuery query) {
+    final params = [
+      _client.getUserId(),
+      query.name,
+      query.description,
+      query.baseCurrency,
+      query.minBalance,
+      query.maxBalance,
+      query.walletType?.jsonKey,
+      query.archived,
+      query.orderBy,
+      query.orderType.sqlString,
+      query.limit,
+      query.offset,
+    ];
 
-      final rows = await _client.db.getAll(
-        _query(_getWalletsQuery, params),
-        params,
-      );
-      if (rows.isEmpty) return [];
-      final walletMap = _processWalletRows(rows);
+    return _client.db
+        .watch(
+      _query(_getWalletsQuery, params),
+      parameters: params,
+    )
+        .map((results) {
+      final walletMap = _processWalletRows(results);
       final wallets = walletMap.values.toList();
       final walletModels = <BaseWalletModel>[];
       for (final wallet in wallets) {
@@ -174,11 +190,12 @@ class WalletRepository {
         walletModels.add(walletModel);
       }
       return walletModels;
-    } on GetWalletsFailure {
-      rethrow;
-    } catch (e, stacktrace) {
-      Error.throwWithStackTrace(GetWalletsFailure(e), stacktrace);
-    }
+    }).handleError(
+      (Object e, StackTrace stacktrace) {
+        if (e is GetWalletsFailure) throw e;
+        Error.throwWithStackTrace(GetWalletsFailure(e), stacktrace);
+      },
+    );
   }
 
   static const _getWalletByIdQuery = '''
@@ -193,17 +210,21 @@ class WalletRepository {
   /// Fetches a wallet by id.
   ///
   /// Throws a [GetWalletByIdFailure] if an error occurs.
-  Future<BaseWalletModel?> getWalletById(String id) async {
-    try {
-      final params = [id];
-      final row = await _client.db.get(
-        _query(_getWalletByIdQuery, params),
-        params,
-      );
+  Stream<BaseWalletModel> getWalletById(String id) {
+    final params = [id];
+    return _client.db
+        .watch(
+      _query(_getWalletByIdQuery, params),
+      parameters: params,
+    )
+        .map((row) {
+      if (row.isEmpty) throw const GetWalletByUserIdNotFound();
 
-      final walletMap = _processWalletRow(row);
+      final walletMap = _processWalletRow(row.first);
 
-      if (walletMap.isEmpty) return null;
+      if (walletMap.isEmpty) {
+        throw const GetWalletByUserIdParseFailure();
+      }
 
       final wallet = walletMap.values.first;
 
@@ -215,11 +236,12 @@ class WalletRepository {
             'Wallet type ${wallet.walletWalletType} is not implemented.',
           ),
       };
-    } on GetWalletByIdFailure {
-      rethrow;
-    } catch (e, stacktrace) {
-      Error.throwWithStackTrace(GetWalletByIdFailure(e), stacktrace);
-    }
+    }).handleError(
+      (Object e, StackTrace stacktrace) {
+        if (e is GetWalletByUserIdNotFound) throw e;
+        Error.throwWithStackTrace(GetWalletByIdFailure(e), stacktrace);
+      },
+    );
   }
 
   static const _insertWalletQuery = '''

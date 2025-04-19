@@ -1,9 +1,14 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/transaction/bloc/transaction_creation_bloc.dart';
 import 'package:felicash/transaction/widgets/transaction_creation_form.dart';
+import 'package:felicash/wallet/bloc/wallets_bloc.dart';
+import 'package:felicash/wallet/cubit/wallets_filter_cubit.dart';
+import 'package:felicash/wallet/models/wallets_view_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:shared_models/shared_models.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class TransactionCreationModal extends StatelessWidget {
   const TransactionCreationModal({super.key, this.walletId});
@@ -15,14 +20,53 @@ class TransactionCreationModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wallets = context.select<WalletsBloc, List<BaseWalletModel>>((bloc) {
+      return switch (bloc.state) {
+        WalletLoadSuccess(:final wallets) => wallets,
+        _ => [],
+      };
+    });
     return BlocProvider(
-      create: (context) => TransactionCreationBloc(
-        walletRepository: context.read(),
-      )..add(
-          // TODO(tuanhm): Add default fallback target wallet if not provided
-          TransactionCreationWalletChanged(id: walletId ?? ''),
+      create: (context) => WalletsFilterCubit()
+        ..onFilterChanged(
+          WalletsViewFilter(
+            walletTypeEnum: WalletTypeEnum.values.first,
+          ),
         ),
-      child: const _TransactionCreationView(),
+      child: BlocProvider(
+        create: (context) {
+          final bloc = TransactionCreationBloc(
+            walletRepository: context.read(),
+          );
+          if (walletId != null) {
+            bloc.add(
+              TransactionCreationWalletChanged(
+                id: walletId,
+              ),
+            );
+          } else {
+            bloc.add(
+              TransactionCreationWalletChanged(
+                id: '',
+                wallet: wallets.firstOrNull,
+              ),
+            );
+          }
+          return bloc;
+        },
+        child: BlocListener<WalletsBloc, WalletsState>(
+          listener: (context, state) {
+            if (state is WalletLoadSuccess) {
+              context.read<TransactionCreationBloc>().add(
+                    TransactionCreationWalletChanged(
+                      wallet: state.wallets.firstOrNull,
+                    ),
+                  );
+            }
+          },
+          child: const _TransactionCreationView(),
+        ),
+      ),
     );
   }
 }

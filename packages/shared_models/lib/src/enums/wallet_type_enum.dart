@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// Wallet type enum
 enum WalletTypeEnum {
   /// Basic wallet type
@@ -14,6 +12,7 @@ enum WalletTypeEnum {
   /// The json key of the enum
   final String jsonKey;
 
+  /// The name of the enum
   final String name;
 
   // ignore: sort_constructors_first

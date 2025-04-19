@@ -14,7 +14,7 @@ class WalletSelectorModal extends StatelessWidget {
 }
 
 class _WalletSelectorView extends StatelessWidget {
-  const _WalletSelectorView({super.key});
+  const _WalletSelectorView();
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class _WalletSelectorView extends StatelessWidget {
 }
 
 class _SearchField extends HookWidget {
-  const _SearchField({super.key});
+  const _SearchField();
 
   @override
   Widget build(BuildContext context) {

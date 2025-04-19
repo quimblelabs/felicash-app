@@ -4,6 +4,7 @@ import 'package:category_repository/src/queries/get_category_query.dart';
 import 'package:equatable/equatable.dart';
 import 'package:felicash_data_client/felicash_data_client.dart';
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:shared_models/shared_models.dart';
 
 import 'models/category_model.dart';
 
@@ -124,50 +125,51 @@ class CategoryRepository {
           AND (?5 IS NULL OR c.${CategoryFields.categoryDescription} = ?5)
           AND (?6 IS NULL OR c.${CategoryFields.categoryEnabled} = ?6)
     ORDER BY 
-      CASE 
-        WHEN ?7 IS NOT NULL AND ?8 = 'ASC' THEN ?7 END ASC,
-        WHEN ?7 IS NOT NULL AND ?8 = 'DESC' THEN ?7 END DESC,
+      CASE WHEN ?7 IS NOT NULL AND ?8 = 'ASC' THEN ?7 END ASC,
+      CASE WHEN ?7 IS NOT NULL AND ?8 = 'DESC' THEN ?7 END DESC
     LIMIT ?9 OFFSET ?10
   ''';
 
-  Future<List<CategoryModel>> getCategories(GetCategoryQuery query) async {
-    try {
-      final params = [
-        _client.getUserId(),
-        query.parentCategoryId,
-        query.transactionType,
-        query.name,
-        query.description,
-        query.enabled,
-        query.orderBy,
-        query.orderType.sqlString,
-        query.limit,
-        query.offset,
-      ];
-      final rows = await _client.db.getAll(
-        _query(_getCategoriesQuery, params),
-        params,
-      );
+  Stream<List<CategoryModel>> getCategories(GetCategoryQuery query) {
+    final params = [
+      _client.getUserId(),
+      query.parentCategoryId,
+      query.transactionType,
+      query.name,
+      query.description,
 
-      if (rows.isEmpty) return [];
+      query.enabled,
+      query.orderBy,
+      query.orderType.sqlString,
+      query.limit,
+      query.offset,
+    ];
+    return _client.db
+        .watch(_query(_getCategoriesQuery, params), parameters: params)
+        .map((results) {
+          if (results.isEmpty) return <CategoryModel>[];
 
-      Map<String, Category> categoriesMap = {};
-      for (final row in rows) {
-        final category = Category.fromRow(row);
-        categoriesMap[category.categoryId] = category;
-      }
-      final categories = categoriesMap.values.toList();
-      final categoryModels = <CategoryModel>[];
-      for (final category in categories) {
-        final categoryModel = CategoryModel.fromCategory(category);
-        categoryModels.add(categoryModel);
-      }
-      return categoryModels;
-    } on GetCategoriesFailure {
-      rethrow;
-    } catch (e, stacktrace) {
-      Error.throwWithStackTrace(GetCategoriesFailure(e), stacktrace);
-    }
+          final categoriesMap = <String, Category>{};
+
+          for (final row in results) {
+            final category = Category.fromRow(row);
+            categoriesMap[category.categoryId] = category;
+          }
+
+          final categories = categoriesMap.values.toList();
+          final categoryModels = <CategoryModel>[];
+
+          for (final category in categories) {
+            final categoryModel = CategoryModel.fromCategory(category);
+            categoryModels.add(categoryModel);
+          }
+
+          return categoryModels;
+        })
+        .handleError((Object e, StackTrace stacktrace) {
+          if (e is GetCategoriesFailure) throw e;
+          Error.throwWithStackTrace(GetCategoriesFailure(e), stacktrace);
+        });
   }
 
   static const _getCategoryByIdQuery = '''
@@ -176,33 +178,43 @@ class CategoryRepository {
       WHERE c.${CategoryFields.categoryId} =?1
     ''';
 
-  Future<CategoryModel> getCategoryById(String id) async {
-    try {
-      final params = [id];
-      final row = await _client.db.get(
-        _query(_getCategoryByIdQuery, params),
-        params,
-      );
-      final category = Category.fromRow(row);
-      final categoryModel = CategoryModel.fromCategory(category);
-      return categoryModel;
-    } on GetCategoryByIdFailure {
-      rethrow;
-    } catch (e, stacktrace) {
-      Error.throwWithStackTrace(GetCategoryByIdFailure(e), stacktrace);
-    }
+  Stream<CategoryModel> getCategoryById(String id) {
+    final params = [id];
+    return _client.db
+        .watch(_query(_getCategoryByIdQuery, params), parameters: params)
+        .map((results) {
+          if (results.isEmpty) {
+            throw GetCategoryByIdFailure('Category not found');
+          }
+          final row = results.first;
+          final category = Category.fromRow(row);
+          final categoryModel = CategoryModel.fromCategory(category);
+          return categoryModel;
+        })
+        .handleError((Object e, StackTrace stacktrace) {
+          if (e is GetCategoryByIdFailure) throw e;
+          Error.throwWithStackTrace(GetCategoryByIdFailure(e), stacktrace);
+        });
   }
 
   static const _createCategoryQuery = '''
     INSERT INTO categories (
+      ${CategoryFields.id}
+      ${CategoryFields.categoryId}
       ${CategoryFields.categoryUserId},
       ${CategoryFields.categoryParentCategoryId},
       ${CategoryFields.categoryTransactionType},
+
       ${CategoryFields.categoryName},
-      ${CategoryFields.categoryDescription},
       ${CategoryFields.categoryIcon},
       ${CategoryFields.categoryColor},
-    ) VALUES (?1,?2,?3,?4,?5,?6,?7)
+      ${CategoryFields.categoryDescription},
+      ${CategoryFields.categoryCreatedAt},
+
+      ${CategoryFields.categoryUpdatedAt},
+      ${CategoryFields.categoryEnabled},
+    ) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,datetime(),datetime(),false)
+    RETURNING *
   ''';
 
   Future<CategoryModel> createCategory(CategoryModel category) async {
@@ -211,13 +223,15 @@ class CategoryRepository {
         tx,
       ) async {
         final params = [
+          category.id,
+          category.id,
           _client.getUserId(),
           category.parentCategoryId,
           category.transactionType,
           category.name,
-          category.description,
           category.icon.toRaw(),
-          category.color,
+          category.color.toHex(),
+          category.description,
         ];
         final rows = await tx.execute(
           _query(_createCategoryQuery, params),
@@ -252,6 +266,7 @@ class CategoryRepository {
       END,
       ${CategoryFields.categoryUpdatedAt} =?8
     WHERE ${CategoryFields.categoryId} =?9
+    RETURNING *
   ''';
 
   Future<CategoryModel> updateCategory(CategoryModel category) async {
@@ -265,6 +280,7 @@ class CategoryRepository {
           category.transactionType,
           category.description,
           category.icon,
+          //
           category.color,
           category.enabled,
           DateTime.now().toIso8601String(),

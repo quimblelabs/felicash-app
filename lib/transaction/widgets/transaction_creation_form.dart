@@ -1,14 +1,15 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:felicash/category/views/horizontal_category_selection.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/transaction/bloc/transaction_creation_bloc.dart';
 import 'package:felicash/transaction/widgets/wallet_selector.dart';
+import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:shared_models/shared_models.dart';
-import 'package:transaction_repository/transaction_repository.dart';
 
 class TransactionCreationForm extends StatelessWidget {
   const TransactionCreationForm({super.key});
@@ -34,7 +35,7 @@ class TransactionCreationForm extends StatelessWidget {
         const _WalletsSelector(),
         const SizedBox(height: AppSpacing.lg),
         InputLabel(text: Text('Category'.hardCoded)),
-        const _Category(),
+        const _CategorySelector(),
         const SizedBox(height: AppSpacing.lg),
         InputLabel(text: Text('Date'.hardCoded)),
         const _TransactionDate(),
@@ -42,6 +43,22 @@ class TransactionCreationForm extends StatelessWidget {
         InputLabel(text: Text('Notes'.hardCoded)),
         const _TransactionNotes(),
       ],
+    );
+  }
+}
+
+class _CategorySelector extends StatelessWidget {
+  const _CategorySelector();
+
+  @override
+  Widget build(BuildContext context) {
+    return HorizontalCategorySelection(
+      onCategorySelected: (category) {
+        if (category == null) return;
+        context
+            .read<TransactionCreationBloc>()
+            .add(TransactionCreationCategoryChanged(category));
+      },
     );
   }
 }
@@ -64,7 +81,7 @@ class _TransactionTypeSelector extends HookWidget {
               .add(TransactionCreationTypeChanged(value ?? type));
         },
         selectedItemBuilder: (context) {
-          return TransactionTypeEnum.values
+          return TransactionTypeEnum.validableValues
               .map(
                 (e) => Row(
                   mainAxisSize: MainAxisSize.min,
@@ -86,7 +103,7 @@ class _TransactionTypeSelector extends HookWidget {
               .toList();
         },
         items: [
-          ...TransactionTypeEnum.values.map(
+          ...TransactionTypeEnum.validableValues.map(
             (e) => DropdownMenuItem(
               value: e,
               child: Row(
@@ -166,61 +183,26 @@ class _WalletsSelector extends StatelessWidget {
       (TransactionCreationBloc bloc) =>
           bloc.state.type == TransactionTypeEnum.transfer,
     );
-    return WalletSelector(
-      wallet: wallet,
-      toWallet: transferToWallet,
-      isTransfer: isTransfer,
-      onChanged: (from, to) {
-        if (from != wallet) {
-          context
-              .read<TransactionCreationBloc>() //
-              .add(TransactionCreationWalletChanged(wallet: wallet));
-        }
-        if (to != transferToWallet) {
-          context
-              .read<TransactionCreationBloc>() //
-              .add(TransactionCreationTransferToWalletChanged(to));
-        }
+    return BlocBuilder<WalletsBloc, WalletsState>(
+      builder: (context, state) {
+        return WalletSelector(
+          wallet: wallet,
+          toWallet: transferToWallet,
+          isTransfer: isTransfer,
+          onChanged: (from, to) {
+            if (from != wallet) {
+              context
+                  .read<TransactionCreationBloc>() //
+                  .add(TransactionCreationWalletChanged(wallet: wallet));
+            }
+            if (to != transferToWallet) {
+              context
+                  .read<TransactionCreationBloc>() //
+                  .add(TransactionCreationTransferToWalletChanged(to));
+            }
+          },
+        );
       },
-    );
-  }
-}
-
-class _Category extends StatelessWidget {
-  const _Category();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Wrap(
-      spacing: AppSpacing.sm,
-      children: [
-        ChoiceChip(
-          selected: true,
-          onSelected: (value) {
-            // TODO(tuanhm): Add category selection
-          },
-          avatar: const Text('🍗'),
-          labelStyle: theme.textTheme.labelLarge,
-          label: Text('Food & Drinks'.hardCoded),
-        ),
-        ChoiceChip(
-          selected: false,
-          onSelected: (value) {
-            // TODO(tuanhm): Add category selection
-          },
-          avatar: const Text('🍗'),
-          labelStyle: theme.textTheme.labelLarge,
-          label: Text('Food & Drinks'.hardCoded),
-        ),
-        ActionChip(
-          avatar: const Icon(Icons.more_horiz),
-          label: Text('Others'.hardCoded),
-          onPressed: () {
-            // Select other categories
-          },
-        ),
-      ],
     );
   }
 }

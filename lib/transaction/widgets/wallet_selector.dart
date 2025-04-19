@@ -50,6 +50,7 @@ class _WalletSelectorState extends State<WalletSelector>
   late final AnimationController _showHideTransferWalletAnimationController;
   late final Animation<Offset> _transferWalletOffsetAnimation;
   bool _isTransfer = false;
+
   @override
   void initState() {
     _isTransfer = widget.isTransfer;

@@ -3,7 +3,6 @@ import 'package:category_repository/category_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:shared_models/shared_models.dart';
-import 'package:transaction_repository/transaction_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 part 'transaction_creation_event.dart';
@@ -56,12 +55,15 @@ class TransactionCreationBloc
       );
       return;
     } else if (event.id case final id?) {
-      final wallet = await _walletRepository.getWalletById(id);
-      emit(
-        state.copyWith(
-          wallet: wallet,
-          isValid: _validateForm(),
-        ),
+      await emit.forEach(
+        _walletRepository.getWalletById(id),
+        onData: (wallet) {
+          return state.copyWith(
+            wallet: wallet,
+            isValid: _validateForm(),
+          );
+        },
+        onError: (_, __) => state,
       );
       return;
     }
@@ -77,7 +79,7 @@ class TransactionCreationBloc
     TransactionCreationAmountChanged event,
     Emitter<TransactionCreationState> emit,
   ) {
-    final amount = MonetaryAmount.dirty(event.amount);
+    final amount = TransactionMonetaryAmount.dirty(event.amount);
     emit(
       state.copyWith(
         amount: amount,
@@ -93,7 +95,7 @@ class TransactionCreationBloc
     emit(
       state.copyWith(
         category: event.category,
-        isValid: _validateForm(),
+        isValid: _validateForm(category: event.category),
       ),
     );
   }
@@ -136,31 +138,50 @@ class TransactionCreationBloc
   }
 
   bool _validateForm({
-    MonetaryAmount? amount,
+    TransactionMonetaryAmount? amount,
     TransactionNote? note,
+    TransactionTypeEnum? type,
+    BaseWalletModel? wallet,
+    BaseWalletModel? transferToWallet,
+    CategoryModel? category,
+    DateTime? date,
   }) {
-    final isValid = Formz.validate([
-      amount ?? state.amount,
-      if (note ?? state.note case final n) n,
+    // Get effective values, using provided or current state
+    final effectiveAmount = amount ?? state.amount;
+    final effectiveNote = note ?? state.note;
+    final effectiveType = type ?? state.type;
+    final effectiveWallet = wallet ?? state.wallet;
+    final effectiveTransferWallet = transferToWallet ?? state.transferToWallet;
+    final effectiveCategory = category ?? state.category;
+    final effectiveDate = date ?? state.date;
+
+    // Validate form fields
+    final isFormValid = Formz.validate([
+      effectiveAmount,
+      if (effectiveNote.value?.isNotEmpty ?? false) effectiveNote,
     ]);
 
-    if (state.wallet == null) {
+    // Required fields validation
+    if (effectiveWallet == null || effectiveDate == null) {
       return false;
     }
 
-    if (state.type == TransactionTypeEnum.transfer &&
-        state.transferToWallet == null) {
+    // Transfer-specific validation
+    if (effectiveType == TransactionTypeEnum.transfer) {
+      if (effectiveTransferWallet == null) {
+        return false;
+      }
+
+      // Prevent transfer to same wallet
+      if (effectiveWallet.id == effectiveTransferWallet.id) {
+        return false;
+      }
+    }
+    // Non-transfer validation
+    else if (effectiveCategory == null) {
       return false;
     }
 
-    if (state.type != TransactionTypeEnum.transfer && state.category == null) {
-      return false;
-    }
-
-    if (state.date == null) {
-      return false;
-    }
-
-    return isValid;
+    return isFormValid;
   }
 }

@@ -41,4 +41,11 @@ enum TransactionTypeEnum {
         return Icons.question_mark;
     }
   }
+
+  /// Returns all the values of the TransactionTypeEnum.
+  static List<TransactionTypeEnum> get validableValues => [
+        TransactionTypeEnum.expense,
+        TransactionTypeEnum.income,
+        TransactionTypeEnum.transfer,
+      ];
 }

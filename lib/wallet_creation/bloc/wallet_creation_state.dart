@@ -9,13 +9,13 @@ class WalletCreationState extends Equatable {
     required this.color,
     this.name = const WalletName.pure(),
     this.description = const WalletDescription.pure(),
-    this.balance = const MonetaryAmount.pure(),
+    this.balance = const WalletMonetaryBalance.pure(),
     this.excludeFromTotal = false,
     this.icon = Icons.wallet,
     this.creditLimit = const WalletCreditLimit.pure(),
     this.stateDayOfMonth = const WalletStateDayOfMonth.pure(),
     this.paymentDayOfMonth = const WalletPaymentDayOfMonth.pure(),
-    this.savingsGoal = const MonetaryAmount.pure(),
+    this.savingsGoal = const WalletMonetarySavingsGoal.pure(),
     this.isValid = false,
     this.status = WalletCreationStatus.initial,
     this.errorMessage,
@@ -28,14 +28,14 @@ class WalletCreationState extends Equatable {
   final IconData icon;
   final Color color;
   final CurrencyModel currency;
-  final MonetaryAmount balance;
+  final WalletMonetaryBalance balance;
   final bool excludeFromTotal;
   // -- Ceredit wallet creation data
   final WalletCreditLimit creditLimit;
   final WalletStateDayOfMonth stateDayOfMonth;
   final WalletPaymentDayOfMonth paymentDayOfMonth;
   // -- Savings wallet creation data
-  final MonetaryAmount savingsGoal;
+  final WalletMonetarySavingsGoal savingsGoal;
 
   // -- Wallet creation validation and status
   final bool isValid;
@@ -48,13 +48,13 @@ class WalletCreationState extends Equatable {
     WalletTypeEnum? walletType,
     IconData? icon,
     Color? color,
-    MonetaryAmount? balance,
+    WalletMonetaryBalance? balance,
     CurrencyModel? currency,
     bool? excludeFromTotal,
     WalletCreditLimit? creditLimit,
     WalletStateDayOfMonth? stateDayOfMonth,
     WalletPaymentDayOfMonth? paymentDayOfMonth,
-    MonetaryAmount? savingsGoal,
+    WalletMonetarySavingsGoal? savingsGoal,
     bool? isValid,
     WalletCreationStatus? status,
     String? errorMessage,

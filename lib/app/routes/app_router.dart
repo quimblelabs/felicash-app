@@ -124,12 +124,11 @@ class AppRouter {
                       name: AppRouteNames.transactionCreation,
                       parentNavigatorKey: _rootNavigatorKey,
                       pageBuilder: (context, state) {
-                        const walletId = '9ca6c9b6-e206-4222-b22e-cf0741ff4779';
-                        // state.uri.queryParameters['walledId'];
+                        final walletId = state.uri.queryParameters['walledId'];
                         return ModalPage(
                           isScrollControlled: true,
                           useSafeArea: true,
-                          builder: (context) => const TransactionCreationModal(
+                          builder: (context) => TransactionCreationModal(
                             walletId: walletId,
                           ),
                         );

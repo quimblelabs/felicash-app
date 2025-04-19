@@ -3,11 +3,11 @@ import 'package:shared_models/shared_models.dart';
 
 class GetCategoryQuery extends BaseGetQuery {
   const GetCategoryQuery({
-    required this.parentCategoryId,
+    this.parentCategoryId,
     this.transactionType,
     this.name,
     this.description,
-    this.enabled = true,
+    this.enabled,
     super.pageIndex,
     super.pageSize,
     super.orderType,
@@ -27,7 +27,7 @@ class GetCategoryQuery extends BaseGetQuery {
   final String? description;
 
   /// The category type to get the category for.
-  final bool enabled;
+  final bool? enabled;
 
   @override
   List<Object?> get props => [

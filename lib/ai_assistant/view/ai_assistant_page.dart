@@ -1,10 +1,15 @@
+import 'package:app_ui/app_ui.dart';
+import 'package:category_repository/category_repository.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
 import 'package:felicash/ai_assistant/widgets/chat_box.dart';
 import 'package:felicash/ai_assistant/widgets/input_box.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
+import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_models/shared_models.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class AiAssistantPage extends StatelessWidget {
   const AiAssistantPage({super.key});
@@ -74,7 +79,42 @@ class _ListenForUserSpeechDone extends StatelessWidget {
         if (state is SpeechRecognitionListeningSuccess) {
           final text = state.recognizedText;
           if (text.trim().isEmpty) return;
-          context.read<AiAssistantBloc>().add(AiAssistantStartProcessing(text));
+          final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
+            (bloc) => switch (bloc.state) {
+              WalletLoadSuccess(:final wallets) => wallets,
+              _ => [],
+            },
+          );
+          if (wallets.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('No wallets found'.hardCoded),
+              ),
+            );
+            return;
+          }
+          // TODO(dangddt): Get categories,
+          final categories = <CategoryModel>[];
+          // TODO(dangddt): Get transaction types,
+          final transactionTypes = <TransactionTypeEnum>[];
+          // TODO(dangddt): Get source wallet,
+          const sourceWallet = null as BaseWalletModel?;
+          if (sourceWallet == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('No source wallet found'.hardCoded),
+              ),
+            );
+          }
+          context.read<AiAssistantBloc>().add(
+                AiAssistantStartProcessing(
+                  requestMessage: text,
+                  walletsParameter: wallets,
+                  categoriesParameter: categories,
+                  transactionTypesParameter: transactionTypes,
+                  sourceWallet: sourceWallet!,
+                ),
+              );
         }
       },
       child: child,

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/app/routes/app_router.dart';
 import 'package:felicash/wallet_creation/bloc/wallet_creation_bloc.dart';
@@ -288,9 +289,9 @@ class _WalletBalance extends HookWidget {
         useTextEditingController(text: initalBalance.toString());
 
     final errorText = switch (displayError) {
-      MonetaryAmountValidationError.over =>
+      WalletMonetaryBalanceValidationError.over =>
         'Balance must be less than ${acceptedRange.max}'.hardCoded,
-      MonetaryAmountValidationError.under =>
+      WalletMonetaryBalanceValidationError.under =>
         'Balance must be greater than ${acceptedRange.min}'.hardCoded,
       null => null,
     };
@@ -579,10 +580,12 @@ class _WalletSavingsGoal extends HookWidget {
     );
 
     final errorText = switch (displayError) {
-      MonetaryAmountValidationError.over =>
-        'The credit limit must be less than ${acceptedRange.max}'.hardCoded,
-      MonetaryAmountValidationError.under =>
-        'The credit limit must be greater than ${acceptedRange.min}'.hardCoded,
+      WalletMonetarySavingsGoalValidationError.zero =>
+        'The savings goal must be greater than 0'.hardCoded,
+      WalletMonetarySavingsGoalValidationError.over =>
+        'The savings goal must be less than ${acceptedRange.max}'.hardCoded,
+      WalletMonetarySavingsGoalValidationError.under =>
+        'The savings goal must be greater than ${acceptedRange.min}'.hardCoded,
       null => null,
     };
 
@@ -599,7 +602,7 @@ class _WalletSavingsGoal extends HookWidget {
         readOnly: true,
         decoration: InputDecoration(
           prefixText: '$currencySymbol ',
-          hintText: 'Set the credit limit'.hardCoded,
+          hintText: 'Set the savings goal'.hardCoded,
           errorText: errorText,
           suffixIcon: const Icon(Icons.chevron_right),
         ),

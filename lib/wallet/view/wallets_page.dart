@@ -1,45 +1,36 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:felicash/app/routes/app_router.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
+import 'package:felicash/app/routes/app_router.dart';
+import 'package:felicash/wallet/cubit/wallets_filter_cubit.dart';
+import 'package:felicash/wallet/models/wallets_view_filter.dart';
 import 'package:felicash/wallet/widgets/wallet_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:shared_models/shared_models.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
-typedef WalletTypeData = Map<WalletTypeEnum, (String, IconData)>;
+extension on WalletTypeEnum {
+  IconData get icon => switch (this) {
+        WalletTypeEnum.basic => IconsaxPlusBold.wallet_1,
+        WalletTypeEnum.credit => IconsaxPlusBold.wallet_2,
+        WalletTypeEnum.savings => Icons.savings,
+      };
+}
 
 class WalletPage extends StatelessWidget {
   const WalletPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final walletTypeData = {
-      WalletTypeEnum.basic: (
-        WalletTypeEnum.basic.name,
-        IconsaxPlusBold.wallet_1
-      ),
-      WalletTypeEnum.credit: (
-        WalletTypeEnum.credit.name,
-        IconsaxPlusBold.wallet_2
-      ),
-      WalletTypeEnum.savings: (
-        WalletTypeEnum.savings.name,
-        Icons.savings,
-      ),
-    };
-    return RepositoryProvider<WalletTypeData>(
-      create: (context) => walletTypeData,
-      child: BlocProvider<WalletsBloc>(
-        create: (context) => WalletsBloc(
-          walletRepository: context.read(),
-        )..add(
-            WalletsWalletTypeChanged(walletType: walletTypeData.keys.first),
+    return BlocProvider<WalletsFilterCubit>(
+      create: (context) => WalletsFilterCubit()
+        ..onFilterChanged(
+          WalletsViewFilter(
+            walletTypeEnum: WalletTypeEnum.values.first,
           ),
-        child: const WalletView(),
-      ),
+        ),
+      child: const WalletView(),
     );
   }
 }
@@ -49,9 +40,9 @@ class WalletView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final walletTypeData = context.read<WalletTypeData>();
+    final walletsState = context.watch<WalletsBloc>().state;
     return DefaultTabController(
-      length: walletTypeData.length,
+      length: WalletTypeEnum.values.length,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Wallets'),
@@ -71,18 +62,16 @@ class WalletView extends StatelessWidget {
             ),
           ],
         ),
-        body: BlocBuilder<WalletsBloc, WalletsState>(
-          builder: (context, state) => switch (state) {
-            WalletLoadInProgress() => const Center(
-                child: CircularProgressIndicator.adaptive(),
-              ),
-            WalletLoadSuccess() => const _ListWalletBuilder(),
-            WalletLoadFailure() => Center(
-                child: Text(state.messageText),
-              ),
-            _ => const SizedBox.shrink(),
-          },
-        ),
+        body: switch (walletsState) {
+          WalletLoadInProgress() => const Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
+          WalletLoadSuccess() => const _ListWalletBuilder(),
+          WalletLoadFailure() => Center(
+              child: Text(walletsState.messageText),
+            ),
+          _ => const SizedBox.shrink(),
+        },
       ),
     );
   }
@@ -93,15 +82,16 @@ class _ListWalletBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
-      (bloc) => bloc.state is WalletLoadSuccess
-          ? (bloc.state as WalletLoadSuccess).wallets
-          : const [],
+    final wallets =
+        (context.watch<WalletsBloc>().state as WalletLoadSuccess).wallets;
+    final filter = context.select<WalletsFilterCubit, WalletsViewFilter>(
+      (cubit) => cubit.state.filter,
     );
+    final filteredWallets = filter.applyAll(wallets).toList();
     return ListView.builder(
-      itemCount: wallets.length,
+      itemCount: filteredWallets.length,
       itemBuilder: (context, index) {
-        final wallet = wallets[index];
+        final wallet = filteredWallets[index];
         return Padding(
           padding: const EdgeInsets.all(AppSpacing.md),
           child: WalletCard(
@@ -126,8 +116,10 @@ class _WalletTypeTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final walletsBloc = context.read<WalletsBloc>();
-    final walletTypeData = context.read<WalletTypeData>();
+    final walletsFilterCubit = context.read<WalletsFilterCubit>();
+    final filter = context.select<WalletsFilterCubit, WalletsViewFilter>(
+      (cubit) => cubit.state.filter,
+    );
     return TabBarTheme(
       data: TabBarThemeData(
         splashFactory: NoSplash.splashFactory,
@@ -151,13 +143,13 @@ class _WalletTypeTabBar extends StatelessWidget {
               child: TabBar(
                 enableFeedback: true,
                 isScrollable: true,
-                onTap: (index) => walletsBloc.add(
-                  WalletsWalletTypeChanged(
-                    walletType: walletTypeData.keys.elementAt(index),
+                onTap: (index) => walletsFilterCubit.onFilterChanged(
+                  filter.copyWith(
+                    walletTypeEnum: () => WalletTypeEnum.values[index],
                   ),
                 ),
                 tabs: [
-                  ...walletTypeData.entries.map(
+                  ...WalletTypeEnum.values.map(
                     (entry) => Tab(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -166,9 +158,9 @@ class _WalletTypeTabBar extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(entry.value.$2),
+                            Icon(entry.icon),
                             const SizedBox(width: AppSpacing.md),
-                            Text(entry.value.$1.hardCoded),
+                            Text(entry.name.hardCoded),
                           ],
                         ),
                       ),

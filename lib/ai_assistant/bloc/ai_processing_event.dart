@@ -8,8 +8,18 @@ sealed class AiAssistantEvent extends Equatable {
 }
 
 class AiAssistantStartProcessing extends AiAssistantEvent {
-  const AiAssistantStartProcessing(this.requestMessage);
+  const AiAssistantStartProcessing({
+    required this.requestMessage,
+    required this.walletsParameter,
+    required this.categoriesParameter,
+    required this.transactionTypesParameter,
+    required this.sourceWallet,
+  });
   final String requestMessage;
+  final List<BaseWalletModel> walletsParameter;
+  final List<CategoryModel> categoriesParameter;
+  final List<TransactionTypeEnum> transactionTypesParameter;
+  final BaseWalletModel sourceWallet;
 
   @override
   List<Object> get props => [requestMessage, ...super.props];

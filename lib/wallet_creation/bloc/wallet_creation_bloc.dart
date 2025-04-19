@@ -107,7 +107,7 @@ class WalletCreationBloc
     WalletCreationBalanceChanged event,
     Emitter<WalletCreationState> emit,
   ) {
-    final balance = MonetaryAmount.dirty(event.balance);
+    final balance = WalletMonetaryBalance.dirty(event.balance);
     emit(
       state.copyWith(
         balance: balance,
@@ -185,7 +185,7 @@ class WalletCreationBloc
     WalletCreationSavingGoalChanged event,
     Emitter<WalletCreationState> emit,
   ) {
-    final savingsGoal = MonetaryAmount.dirty(event.savingGoal);
+    final savingsGoal = WalletMonetarySavingsGoal.dirty(event.savingGoal);
     emit(
       state.copyWith(
         savingsGoal: savingsGoal,
@@ -244,11 +244,11 @@ class WalletCreationBloc
   bool _validateForm({
     WalletName? name,
     WalletDescription? description,
-    MonetaryAmount? balance,
+    WalletMonetaryBalance? balance,
     WalletCreditLimit? creditLimit,
     WalletStateDayOfMonth? stateDayOfMonth,
     WalletPaymentDayOfMonth? paymentDayOfMonth,
-    MonetaryAmount? savingsGoal,
+    WalletMonetarySavingsGoal? savingsGoal,
   }) {
     final isValid = Formz.validate([
       name ?? state.name,

@@ -4,7 +4,7 @@ class TransactionCreationState extends Equatable {
   const TransactionCreationState({
     required this.wallet,
     this.type = TransactionTypeEnum.expense,
-    this.amount = const MonetaryAmount.pure(),
+    this.amount = const TransactionMonetaryAmount.pure(),
     this.category,
     this.date,
     this.note = const TransactionNote.pure(),
@@ -16,7 +16,7 @@ class TransactionCreationState extends Equatable {
 
   /// The wallet that the transaction is going to be created for.
   final BaseWalletModel? wallet;
-  final MonetaryAmount amount;
+  final TransactionMonetaryAmount amount;
   final CategoryModel? category;
   final DateTime? date;
   final TransactionNote note;
@@ -30,7 +30,7 @@ class TransactionCreationState extends Equatable {
   TransactionCreationState copyWith({
     TransactionTypeEnum? type,
     BaseWalletModel? wallet,
-    MonetaryAmount? amount,
+    TransactionMonetaryAmount? amount,
     CategoryModel? category,
     DateTime? date,
     TransactionNote? note,

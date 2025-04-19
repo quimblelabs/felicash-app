@@ -193,7 +193,7 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
                             onPressed: () {
                               HapticFeedback.lightImpact();
                               _onClosedCallback = () async {
-                                final result = await context.pushNamed(
+                                await context.pushNamed(
                                   AppRouteNames.transactionCreation,
                                 );
                               };
