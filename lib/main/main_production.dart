@@ -1,3 +1,4 @@
+import 'package:category_repository/category_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_client/dio_client.dart';
 import 'package:felicash/app/app.dart';
@@ -28,6 +29,10 @@ void main() {
     final walletRepository = WalletRepository(
       client: dataClient,
     );
+
+    final categoryRepository = CategoryRepository(
+      client: dataClient,
+    );
     final dio = Dio();
     dio.interceptors.add(
       BearerTokenInterceptor(
@@ -44,9 +49,10 @@ void main() {
       baseUrl: '',
     );
     return App(
-      userRepository: userRepository,
       user: await userRepository.user.first,
+      userRepository: userRepository,
       walletRepository: walletRepository,
+      categoryRepository: categoryRepository,
       aiClient: aiClient,
     );
   });

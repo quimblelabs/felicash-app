@@ -1,8 +1,10 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:category_repository/category_repository.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/voice_transaction/view/speech_recognition_permission_modal.dart';
+import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/wallet_selector/view/wallet_selector_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:permission_client/permission_client.dart';
+import 'package:shared_models/shared_models.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class InputBox extends StatelessWidget {
   const InputBox({super.key});
@@ -258,9 +262,44 @@ class _ActionButton extends StatelessWidget {
 
   void _submitMessage(BuildContext context) {
     final message = context.read<AiAssistantViewCubit>().state.message;
+    final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
+      (bloc) => switch (bloc.state) {
+        WalletLoadSuccess(:final wallets) => wallets,
+        _ => [],
+      },
+    );
+    if (wallets.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('No wallets found'.hardCoded),
+        ),
+      );
+      return;
+    }
+    // TODO(dangddt): Get categories,
+    final categories = <CategoryModel>[];
+    // TODO(dangddt): Get transaction types,
+    final transactionTypes = <TransactionTypeEnum>[];
+    // TODO(dangddt): Get source wallet,
+    const sourceWallet = null as BaseWalletModel?;
+    if (sourceWallet == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('No source wallet found'.hardCoded),
+        ),
+      );
+    }
     // Send message
     FocusScope.of(context).unfocus();
-    context.read<AiAssistantBloc>().add(AiAssistantStartProcessing(message));
+    context.read<AiAssistantBloc>().add(
+          AiAssistantStartProcessing(
+            requestMessage: message,
+            walletsParameter: wallets,
+            categoriesParameter: categories,
+            transactionTypesParameter: transactionTypes,
+            sourceWallet: sourceWallet!,
+          ),
+        );
     context.read<AiAssistantViewCubit>().updateMessage('');
   }
 
@@ -271,7 +310,7 @@ class _ActionButton extends StatelessWidget {
         await permissionClient.speechRecognitionStatus();
     if (!context.mounted) return;
     if (!micPermission.isGranted || !speechRecognitionPermission.isGranted) {
-      final result = showModalBottomSheet<bool?>(
+      await showModalBottomSheet<bool?>(
         context: context,
         builder: (context) => const SpeechRecognitionPermissionModal(),
       );

@@ -13,7 +13,7 @@ class GetWalletQuery extends BaseGetQuery {
     this.minBalance,
     this.maxBalance,
     this.walletType,
-    this.archived = false,
+    this.archived,
     super.pageIndex,
     super.pageSize,
     super.orderType,
@@ -39,7 +39,7 @@ class GetWalletQuery extends BaseGetQuery {
   final double? maxBalance;
 
   /// The archived flag.
-  final bool archived;
+  final bool? archived;
 
   @override
   List<Object?> get props => [

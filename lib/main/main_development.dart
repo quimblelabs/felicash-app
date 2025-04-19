@@ -1,3 +1,4 @@
+import 'package:category_repository/category_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_client/dio_client.dart';
 import 'package:felicash/app/app.dart';
@@ -30,6 +31,10 @@ void main() {
       client: dataClient,
     );
 
+    final categoryRepository = CategoryRepository(
+      client: dataClient,
+    );
+
     final dio = Dio();
     dio.interceptors.add(
       BearerTokenInterceptor(
@@ -45,10 +50,12 @@ void main() {
       dio,
       baseUrl: 'https://n8n.quimblelab.com/webhook',
     );
+
     return App(
-      userRepository: userRepository,
       user: await userRepository.user.first,
+      userRepository: userRepository,
       walletRepository: walletRepository,
+      categoryRepository: categoryRepository,
       aiClient: aiClient,
     );
   });

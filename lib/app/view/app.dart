@@ -1,8 +1,11 @@
 import 'package:ai_client/ai_client.dart';
 import 'package:app_ui/app_ui.dart';
+import 'package:category_repository/category_repository.dart';
 import 'package:felicash/app/bloc/app_bloc.dart';
 import 'package:felicash/app/routes/app_router.dart';
+import 'package:felicash/category/bloc/categories_bloc.dart';
 import 'package:felicash/l10n/arb/app_localizations.dart';
+import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,17 +15,20 @@ import 'package:wallet_repository/wallet_repository.dart';
 
 class App extends StatelessWidget {
   const App({
-    required UserRepository userRepository,
     required User user,
+    required UserRepository userRepository,
     required WalletRepository walletRepository,
+    required CategoryRepository categoryRepository,
     required AiClient aiClient,
     super.key,
   })  : _userRepository = userRepository,
         _walletRepository = walletRepository,
+        _categoryRepository = categoryRepository,
         _user = user,
         _aiClient = aiClient;
   final UserRepository _userRepository;
   final WalletRepository _walletRepository;
+  final CategoryRepository _categoryRepository;
   final User _user;
   final AiClient _aiClient;
 
@@ -39,8 +45,8 @@ class App extends StatelessWidget {
         RepositoryProvider<AiClient>.value(
           value: _aiClient,
         ),
-        RepositoryProvider<SpeechToTextClient>(
-          create: (context) => SpeechToTextClient(),
+        RepositoryProvider<SpeechToTextClient>.value(
+          value: SpeechToTextClient(),
         ),
       ],
       child: MultiBlocProvider(
@@ -50,6 +56,28 @@ class App extends StatelessWidget {
               userRepository: _userRepository,
               user: _user,
             ),
+          ),
+          BlocProvider<WalletsBloc>(
+            create: (context) => WalletsBloc(
+              walletRepository: _walletRepository,
+            )..add(
+                const WalletsSubscriptionRequested(
+                  query: GetWalletQuery(
+                    archived: false,
+                  ),
+                ),
+              ),
+          ),
+          BlocProvider<CategoriesBloc>(
+            create: (context) => CategoriesBloc(
+              categoryRepository: _categoryRepository,
+            )..add(
+                const CategoriesSubscriptionRequested(
+                  query: GetCategoryQuery(
+                    enabled: true,
+                  ),
+                ),
+              ),
           ),
         ],
         child: RepositoryProvider<AppRouter>(

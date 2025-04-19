@@ -7,12 +7,13 @@ sealed class WalletsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class WalletsWalletTypeChanged extends WalletsEvent {
-  const WalletsWalletTypeChanged({
-    required this.walletType,
+class WalletsSubscriptionRequested extends WalletsEvent {
+  const WalletsSubscriptionRequested({
+    required this.query,
   });
-  final WalletTypeEnum walletType;
+
+  final GetWalletQuery query;
 
   @override
-  List<Object> get props => [walletType];
+  List<Object> get props => [query];
 }

@@ -100,8 +100,34 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
             .postExtractTransactionFromText(
               PostExtractTransactionFromTextBody(
                 queryText: event.requestMessage,
-                // TODO(danddt): Implement the real knowledge base
-                knowledgeBase: _mockKnowledgeBase,
+                knowledgeBase: KnowledgeBaseBody(
+                  sourceWallet: WalletKnowledgeBaseBody(
+                    id: event.sourceWallet.id,
+                    name: event.sourceWallet.name,
+                    description: event.sourceWallet.description,
+                  ),
+                  wallets: event.walletsParameter
+                      .map(
+                        (e) => WalletKnowledgeBaseBody(
+                          id: e.id,
+                          name: e.name,
+                          description: e.description,
+                        ),
+                      )
+                      .toList(),
+                  categories: event.categoriesParameter
+                      .map(
+                        (e) => CategoryKnowledgeBaseBody(
+                          id: e.id,
+                          name: e.name,
+                          description: e.description,
+                        ),
+                      )
+                      .toList(),
+                  transactionTypes: event.transactionTypesParameter
+                      .map((e) => e.jsonKey)
+                      .toList(),
+                ),
               ),
             )
             .then((r) => r.firstOrNull);
