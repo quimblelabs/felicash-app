@@ -38,10 +38,15 @@ final class WalletLoadSuccess extends WalletsState {
 
 final class WalletLoadFailure extends WalletsState {
   const WalletLoadFailure({
+    required this.error,
+    required this.previousQuery,
     this.messageText = 'Error when load wallets',
   });
   final String messageText;
 
+  final Object error;
+  final GetWalletQuery previousQuery;
+
   @override
-  List<Object> get props => [messageText];
+  List<Object> get props => [messageText, error, previousQuery];
 }

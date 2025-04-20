@@ -1,4 +1,5 @@
 import 'package:category_repository/category_repository.dart';
+import 'package:currency_repository/currency_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_client/dio_client.dart';
 import 'package:felicash/app/app.dart';
@@ -32,6 +33,9 @@ void main() {
     final categoryRepository = CategoryRepository(
       client: dataClient,
     );
+    final currencyRepository = CurrencyRepository(
+      client: dataClient,
+    );
 
     final dio = Dio();
     dio.interceptors.add(
@@ -50,10 +54,11 @@ void main() {
     );
     return App(
       user: await userRepository.user.first,
+      aiClient: aiClient,
       userRepository: userRepository,
       walletRepository: walletRepository,
       categoryRepository: categoryRepository,
-      aiClient: aiClient,
+      currencyRepository: currencyRepository,
     );
   });
 }

@@ -4,6 +4,7 @@ import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
 import 'package:felicash/ai_assistant/widgets/chat_box.dart';
 import 'package:felicash/ai_assistant/widgets/input_box.dart';
+import 'package:felicash/category/bloc/categories_bloc.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,20 @@ class AiAssistantPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
+      (bloc) => switch (bloc.state) {
+        WalletLoadSuccess(:final wallets) => wallets,
+        _ => [],
+      },
+    );
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => AiAssistantViewCubit()),
+        BlocProvider(
+          create: (_) => AiAssistantViewCubit()
+            ..updateSourceWallet(
+              wallets.firstOrNull,
+            ),
+        ),
         BlocProvider(
           create: (_) => AiAssistantBloc(
             aiClient: context.read(),
@@ -30,7 +42,16 @@ class AiAssistantPage extends StatelessWidget {
           )..add(SpeechRecognitionClientStarted()),
         ),
       ],
-      child: const _AiAssistantView(),
+      child: BlocListener<WalletsBloc, WalletsState>(
+        listener: (context, state) {
+          if (state is WalletLoadSuccess) {
+            context
+                .read<AiAssistantViewCubit>()
+                .updateSourceWallet(state.wallets.firstOrNull);
+          }
+        },
+        child: const _AiAssistantView(),
+      ),
     );
   }
 }
@@ -72,6 +93,18 @@ class _ListenForUserSpeechDone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
+      (bloc) => switch (bloc.state) {
+        WalletLoadSuccess(:final wallets) => wallets,
+        _ => [],
+      },
+    );
+    final categories = context.select<CategoriesBloc, List<CategoryModel>>(
+      (bloc) => switch (bloc.state) {
+        CategoriesLoadSuccess(:final categories) => categories,
+        _ => [],
+      },
+    );
     return BlocListener<SpeechRecognitionBloc, SpeechRecognitionState>(
       listenWhen: (previous, current) =>
           current is SpeechRecognitionListeningSuccess,
@@ -79,26 +112,9 @@ class _ListenForUserSpeechDone extends StatelessWidget {
         if (state is SpeechRecognitionListeningSuccess) {
           final text = state.recognizedText;
           if (text.trim().isEmpty) return;
-          final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
-            (bloc) => switch (bloc.state) {
-              WalletLoadSuccess(:final wallets) => wallets,
-              _ => [],
-            },
-          );
-          if (wallets.isEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('No wallets found'.hardCoded),
-              ),
-            );
-            return;
-          }
-          // TODO(dangddt): Get categories,
-          final categories = <CategoryModel>[];
-          // TODO(dangddt): Get transaction types,
-          final transactionTypes = <TransactionTypeEnum>[];
-          // TODO(dangddt): Get source wallet,
-          const sourceWallet = null as BaseWalletModel?;
+          final transactionTypes = TransactionTypeEnum.validableValues;
+          final sourceWallet =
+              context.read<AiAssistantViewCubit>().state.sourceWallet;
           if (sourceWallet == null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

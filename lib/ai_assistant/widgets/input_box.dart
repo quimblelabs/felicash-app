@@ -2,10 +2,11 @@ import 'package:app_ui/app_ui.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
+import 'package:felicash/category/bloc/categories_bloc.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/voice_transaction/view/speech_recognition_permission_modal.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
-import 'package:felicash/wallet_selector/view/wallet_selector_modal.dart';
+import 'package:felicash/wallet/view/wallet_selector/wallet_selector_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -153,40 +154,83 @@ class _WalletSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final cubit = context.read<AiAssistantViewCubit>();
+    final walletsBloc = context.read<WalletsBloc>();
+    final sourceWallet = context.select<AiAssistantViewCubit, BaseWalletModel?>(
+      (cubit) => cubit.state.sourceWallet,
+    );
+    final state =
+        context.select<WalletsBloc, WalletsState>((bloc) => bloc.state);
     final inProcessing = context.select(
       (AiAssistantBloc bloc) =>
           bloc.state is SpeechRecognitionListeningInProgress,
     );
 
-    final onPressed = inProcessing ? null : () => _onPressed(context);
-
-    return ActionChip(
-      labelStyle: theme.textTheme.labelMedium,
-      labelPadding: const EdgeInsets.only(left: AppSpacing.md),
-      label: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: Text('Wallet 1'.hardCoded),
+    return switch (state) {
+      WalletInitial() => const SizedBox.shrink(),
+      WalletLoadInProgress(:final messageText) => Row(
+          children: [
+            Text(messageText),
+            const SizedBox(width: AppSpacing.md),
+            const SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator.adaptive(),
+            ),
+          ],
+        ),
+      WalletLoadSuccess(:final wallets) => ActionChip(
+          labelStyle: theme.textTheme.labelMedium,
+          labelPadding: const EdgeInsets.only(left: AppSpacing.md),
+          label: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                child: Text(sourceWallet?.name ?? ''),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              const Icon(
+                Icons.arrow_drop_down,
+                size: 16,
+              ),
+            ],
           ),
-          const SizedBox(width: AppSpacing.md),
-          const Icon(
-            Icons.arrow_drop_down,
-            size: 16,
-          ),
-        ],
-      ),
-      onPressed: onPressed,
-    );
-  }
-
-  void _onPressed(BuildContext context) {
-    final result = showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      useRootNavigator: true,
-      builder: (_) => const WalletSelectorModal(),
-    );
+          onPressed: inProcessing
+              ? null
+              : () async {
+                  final result = await showModalBottomSheet<BaseWalletModel?>(
+                    context: context,
+                    isScrollControlled: true,
+                    useRootNavigator: true,
+                    builder: (_) => WalletSelectorModal(
+                      title: 'Select a wallet'.hardCoded,
+                      wallets: wallets,
+                      initialWallet: sourceWallet,
+                    ),
+                  );
+                  if (result != null) {
+                    cubit.updateSourceWallet(result);
+                  }
+                },
+        ),
+      WalletLoadFailure(:final messageText, :final previousQuery) => Row(
+          children: [
+            Text(
+              messageText,
+            ),
+            IconButton(
+              onPressed: () {
+                walletsBloc.add(
+                  WalletsSubscriptionRetry(
+                    query: previousQuery,
+                  ),
+                );
+              },
+              icon: const Icon(Icons.refresh),
+            ),
+          ],
+        ),
+    };
   }
 }
 
@@ -235,13 +279,13 @@ class _ActionButton extends StatelessWidget {
           HapticFeedback.lightImpact();
           final message = context.read<AiAssistantViewCubit>().state.message;
           if (voiceInputEnabled) {
-            _stopVoiceInput(context);
+            stopVoiceInput(context);
           } else if (inProgressing) {
-            _cancelProcessing(context);
+            cancelProcessing(context);
           } else if (message.isNotEmpty) {
-            _submitMessage(context);
+            submitMessage(context);
           } else {
-            _startVoiceInput(context);
+            startVoiceInput(context);
           }
         },
         // icon: const Icon(IconsaxPlusBold.send_1),
@@ -250,24 +294,28 @@ class _ActionButton extends StatelessWidget {
     );
   }
 
-  void _stopVoiceInput(BuildContext context) {
+  void stopVoiceInput(BuildContext context) {
     context
         .read<SpeechRecognitionBloc>()
         .add(const SpeechRecognitionStopListeningRequested());
   }
 
-  void _cancelProcessing(BuildContext context) {
+  void cancelProcessing(BuildContext context) {
     context.read<AiAssistantBloc>().add(AiAssistantCancelProcessing());
   }
 
-  void _submitMessage(BuildContext context) {
+  void submitMessage(
+    BuildContext context,
+  ) {
+    // Message
     final message = context.read<AiAssistantViewCubit>().state.message;
-    final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
-      (bloc) => switch (bloc.state) {
-        WalletLoadSuccess(:final wallets) => wallets,
-        _ => [],
-      },
-    );
+
+    // Wallets
+    final wallets = switch (context.read<WalletsBloc>().state) {
+      WalletLoadSuccess(:final wallets) => wallets,
+      _ => <BaseWalletModel>[],
+    };
+
     if (wallets.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -276,12 +324,10 @@ class _ActionButton extends StatelessWidget {
       );
       return;
     }
-    // TODO(dangddt): Get categories,
-    final categories = <CategoryModel>[];
-    // TODO(dangddt): Get transaction types,
-    final transactionTypes = <TransactionTypeEnum>[];
-    // TODO(dangddt): Get source wallet,
-    const sourceWallet = null as BaseWalletModel?;
+
+    // Source wallet
+    final sourceWallet =
+        context.read<AiAssistantViewCubit>().state.sourceWallet;
     if (sourceWallet == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -289,6 +335,15 @@ class _ActionButton extends StatelessWidget {
         ),
       );
     }
+
+    // Categories
+    final categories = switch (context.read<CategoriesBloc>().state) {
+      CategoriesLoadSuccess(:final categories) => categories,
+      _ => <CategoryModel>[],
+    };
+    // Transaction types
+    final transactionTypes = TransactionTypeEnum.validableValues;
+
     // Send message
     FocusScope.of(context).unfocus();
     context.read<AiAssistantBloc>().add(
@@ -303,7 +358,7 @@ class _ActionButton extends StatelessWidget {
     context.read<AiAssistantViewCubit>().updateMessage('');
   }
 
-  Future<void> _startVoiceInput(BuildContext context) async {
+  Future<void> startVoiceInput(BuildContext context) async {
     const permissionClient = PermissionClient();
     final micPermission = await permissionClient.microphoneStatus();
     final speechRecognitionPermission =

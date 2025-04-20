@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:currency_repository/currency_repository.dart';
+import 'package:felicash/currency/bloc/currencies_bloc.dart';
 import 'package:felicash/wallet_creation/bloc/wallet_creation_bloc.dart';
 import 'package:felicash/wallet_creation/widgets/wallet_creation_form.dart';
 import 'package:flutter/material.dart';
@@ -16,22 +17,27 @@ class WalletCreationModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final secondaryFixed = Theme.of(context).colorScheme.secondaryFixed;
+    final currencies = context.select<CurrenciesBloc, List<CurrencyModel>>(
+      (bloc) => switch (bloc.state) {
+        CurrenciesLoadSuccess(:final currencies) => currencies,
+        _ => [],
+      },
+    );
     return BlocProvider(
-      create: (context) => WalletCreationBloc(
-        walletRepository: context.read(),
-        walletType: walletType,
-        // TODO(tuanhm): Change to the current user currency
-        currency: CurrencyModel(
-          id: '9c37561e-3b22-49c2-b153-39de15be36e7',
-          code: 'USD',
-          name: 'United States dollar',
-          symbol: r'$',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ),
-        color: secondaryFixed,
-      ),
+      create: (context) {
+        final currency = currencies.firstOrNull;
+        final bloc = WalletCreationBloc(
+          walletRepository: context.read(),
+          walletType: walletType,
+          color: secondaryFixed,
+        );
+        if (currency != null) {
+          bloc.add(WalletCreationCurrencyChanged(currency));
+        }
+        return bloc;
+      },
       child: BlocListener<WalletCreationBloc, WalletCreationState>(
+        listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
           // Check if WalletCreationState is successful created a
           // wallet and get back true

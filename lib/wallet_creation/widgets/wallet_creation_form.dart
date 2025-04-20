@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:app_ui/app_ui.dart';
+import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash/app/routes/app_router.dart';
+import 'package:felicash/currency/views/currency_selector/currency_selector.dart';
 import 'package:felicash/wallet_creation/bloc/wallet_creation_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -233,48 +235,34 @@ class _WalletCurrency extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currency = context.read<WalletCreationBloc>().state.currency;
-    final currencyController = useTextEditingController(text: currency.code);
-    return BlocListener<WalletCreationBloc, WalletCreationState>(
-      listener: (context, state) {
-        if (state.currency != currency) {
-          currencyController.text = state.currency.code;
+    final currency = context.select<WalletCreationBloc, CurrencyModel?>(
+      (bloc) => bloc.state.currency,
+    );
+    return CurrencySelector(
+      initialCurrency: currency,
+      onCurrencySelected: (currency) {
+        if (currency != null) {
+          context
+              .read<WalletCreationBloc>()
+              .add(WalletCreationCurrencyChanged(currency));
         }
       },
-      child: TextFormField(
-        controller: currencyController,
-        readOnly: true,
-        onTap: () => _pickCurrency(context),
-        decoration: InputDecoration(
-          hintText: 'Currency'.hardCoded,
-          suffixIcon: const Icon(Icons.arrow_drop_down),
-        ),
-      ),
     );
-  }
-
-  Future<void> _pickCurrency(BuildContext context) async {
-    // TODO(tuanhm): add currency picker
-    // unawaited(HapticFeedback.lightImpact());
-    // final picked = await showModalBottomSheet<Currency?>(
-    //   context: context,
-    //   isScrollControlled: true,
-    //   builder: (context) {
-    //     return CurrencyPickerModal(
-    //       title: Text('Pick a currency'.hardCoded),
-    //       currencyPacks: const [CurrencyPacks.currencies],
-    //     );
-    //   },
-    // );
-    // if (picked == null) return;
-    // if (context.mounted) {
-    //   context.read<WalletCreationBloc>().add(WalletCurrencyChanged(picked));
-    // }
   }
 }
 
 class _WalletBalance extends HookWidget {
   const _WalletBalance();
+
+  String _buildPrefixText(BuildContext context, WalletCreationState state) {
+    return '${state.currency?.symbol ?? '?'.hardCoded} ';
+  }
+
+  TextStyle _buildPrefixStyle(BuildContext context, WalletCreationState state) {
+    final theme = Theme.of(context);
+    final style = theme.textTheme.bodyLarge;
+    return style!.copyWith(color: theme.colorScheme.onSurfaceVariant);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -283,10 +271,10 @@ class _WalletBalance extends HookWidget {
     final displayError = context.select(
       (WalletCreationBloc bloc) => bloc.state.balance.displayError,
     );
-    final initalBalance =
+    final initialBalance =
         context.read<WalletCreationBloc>().state.balance.value;
     final balanceTextEditingController =
-        useTextEditingController(text: initalBalance.toString());
+        useTextEditingController(text: initialBalance.toString());
 
     final errorText = switch (displayError) {
       WalletMonetaryBalanceValidationError.over =>
@@ -295,10 +283,6 @@ class _WalletBalance extends HookWidget {
         'Balance must be greater than ${acceptedRange.min}'.hardCoded,
       null => null,
     };
-
-    final currencySymbol = context.select(
-      (WalletCreationBloc bloc) => bloc.state.currency.symbol,
-    );
 
     return BlocListener<WalletCreationBloc, WalletCreationState>(
       listener: (context, state) {
@@ -312,7 +296,12 @@ class _WalletBalance extends HookWidget {
         onTap: () => _updateBalance(context),
         readOnly: true,
         decoration: InputDecoration(
-          prefixText: '$currencySymbol ',
+          prefixText: context.select<WalletCreationBloc, String>(
+            (bloc) => _buildPrefixText(context, bloc.state),
+          ),
+          prefixStyle: context.select<WalletCreationBloc, TextStyle>(
+            (bloc) => _buildPrefixStyle(context, bloc.state),
+          ),
           hintText: 'Set the current balance'.hardCoded,
           errorText: errorText,
           suffixIcon: const Icon(Icons.chevron_right),
@@ -332,7 +321,7 @@ class _WalletBalance extends HookWidget {
       pathParameters: {'type': type.name},
       queryParameters: {
         'initial': initial.toString(),
-        'currency': curency.code,
+        'currency': curency?.code,
       },
     );
     if (updated == null) return;
@@ -410,7 +399,7 @@ class _WalletCreditLimit extends HookWidget {
     };
 
     final currencySymbol = context.select(
-      (WalletCreationBloc bloc) => bloc.state.currency.symbol,
+      (WalletCreationBloc bloc) => bloc.state.currency?.symbol,
     );
 
     return BlocListener<WalletCreationBloc, WalletCreationState>(
@@ -445,7 +434,7 @@ class _WalletCreditLimit extends HookWidget {
       pathParameters: {'type': type.name},
       queryParameters: {
         'initial': initial.toString(),
-        'currency': curency.code,
+        'currency': curency?.code,
       },
     );
     if (updated == null) return;
@@ -576,7 +565,7 @@ class _WalletSavingsGoal extends HookWidget {
       text: inital.toString(),
     );
     final currencySymbol = context.select(
-      (WalletCreationBloc bloc) => bloc.state.currency.symbol,
+      (WalletCreationBloc bloc) => bloc.state.currency?.symbol,
     );
 
     final errorText = switch (displayError) {
@@ -621,7 +610,7 @@ class _WalletSavingsGoal extends HookWidget {
       pathParameters: {'type': type.name},
       queryParameters: {
         'initial': initial.toString(),
-        'currency': curency.code,
+        'currency': curency?.code,
       },
     );
     if (updated == null) return;

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:felicash_data_client/felicash_data_client.dart';
 
 /// {@template currency_model}
 /// Currency model for the app
@@ -13,6 +14,18 @@ class CurrencyModel extends Equatable {
     required this.createdAt,
     required this.updatedAt,
   });
+
+  /// Factory constructor for [CurrencyModel] from [Currency]
+  factory CurrencyModel.fromCurrency(Currency currency) {
+    return CurrencyModel(
+      id: currency.id,
+      code: currency.currencyCode,
+      name: currency.currencyName,
+      symbol: currency.currencySymbol,
+      createdAt: currency.currencyCreatedAt,
+      updatedAt: currency.currencyUpdatedAt,
+    );
+  }
 
   /// Id of the currency
   final String id;

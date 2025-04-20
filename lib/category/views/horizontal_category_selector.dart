@@ -6,8 +6,8 @@ import 'package:felicash/category/cubit/category_select_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HorizontalCategorySelection extends StatelessWidget {
-  const HorizontalCategorySelection({
+class HorizontalCategorySelector extends StatelessWidget {
+  const HorizontalCategorySelector({
     super.key,
     this.initialCategory,
     this.onCategorySelected,
@@ -48,22 +48,26 @@ class HorizontalCategorySelectionView extends StatelessWidget {
     final state =
         context.select<CategoriesBloc, CategoriesState>((bloc) => bloc.state);
     return switch (state) {
-      CategoriesInitial() || CategoriesLoading() => const SizedBox(
+      CategoriesInitial() || CategoriesLoadInProgress() => const SizedBox(
           width: double.infinity,
           child: Center(
             child: CircularProgressIndicator(),
           ),
         ),
-      CategoriesLoaded(:final categories) => _CategorySelections(
+      CategoriesLoadSuccess(:final categories) => _CategorySelections(
           categories: categories,
         ),
-      CategoriesFailure(:final previousQuery) => Padding(
+      CategoriesLoadFailure(
+        :final messageText,
+        :final previousQuery,
+      ) =>
+        Padding(
           padding: const EdgeInsets.only(left: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Failed to load categories'.hardCoded,
+                messageText,
                 style: theme.textTheme.labelLarge?.copyWith(
                   color: theme.colorScheme.error,
                 ),
@@ -116,31 +120,6 @@ class _CategorySelections extends StatelessWidget {
             label: Text(category.name.hardCoded),
           ),
         ),
-        // ChoiceChip(
-        //   selected: true,
-        //   onSelected: (value) {
-        // TODO(tuanhm): Add category selection
-        //   },
-        //   avatar: const Text('🍗'),
-        //   labelStyle: theme.textTheme.labelLarge,
-        //   label: Text('Food & Drinks'.hardCoded),
-        // ),
-        // ChoiceChip(
-        //   selected: false,
-        //   onSelected: (value) {
-        //     // TODO(tuanhm): Add category selection
-        //   },
-        //   avatar: const Text('🍗'),
-        //   labelStyle: theme.textTheme.labelLarge,
-        //   label: Text('Food & Drinks'.hardCoded),
-        // ),
-        // ActionChip(
-        //   avatar: const Icon(Icons.more_horiz),
-        //   label: Text('Others'.hardCoded),
-        //   onPressed: () {
-        //     // Select other categories
-        //   },
-        // ),
       ],
     );
   }

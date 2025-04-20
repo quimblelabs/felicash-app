@@ -1,9 +1,11 @@
 import 'package:ai_client/ai_client.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:category_repository/category_repository.dart';
+import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash/app/bloc/app_bloc.dart';
 import 'package:felicash/app/routes/app_router.dart';
 import 'package:felicash/category/bloc/categories_bloc.dart';
+import 'package:felicash/currency/bloc/currencies_bloc.dart';
 import 'package:felicash/l10n/arb/app_localizations.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:flutter/material.dart';
@@ -19,16 +21,19 @@ class App extends StatelessWidget {
     required UserRepository userRepository,
     required WalletRepository walletRepository,
     required CategoryRepository categoryRepository,
+    required CurrencyRepository currencyRepository,
     required AiClient aiClient,
     super.key,
   })  : _userRepository = userRepository,
         _walletRepository = walletRepository,
         _categoryRepository = categoryRepository,
+        _currencyRepository = currencyRepository,
         _user = user,
         _aiClient = aiClient;
   final UserRepository _userRepository;
   final WalletRepository _walletRepository;
   final CategoryRepository _categoryRepository;
+  final CurrencyRepository _currencyRepository;
   final User _user;
   final AiClient _aiClient;
 
@@ -76,6 +81,15 @@ class App extends StatelessWidget {
                   query: GetCategoryQuery(
                     enabled: true,
                   ),
+                ),
+              ),
+          ),
+          BlocProvider<CurrenciesBloc>(
+            create: (context) => CurrenciesBloc(
+              currencyRepository: _currencyRepository,
+            )..add(
+                const CurrenciesSubscriptionRequested(
+                  query: GetCurrencyQuery(),
                 ),
               ),
           ),

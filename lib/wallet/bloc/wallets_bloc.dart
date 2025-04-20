@@ -11,6 +11,7 @@ class WalletsBloc extends Bloc<WalletsEvent, WalletsState> {
   })  : _walletRepository = walletRepository,
         super(const WalletInitial()) {
     on<WalletsSubscriptionRequested>(_onWalledLoadActivated);
+    on<WalletsSubscriptionRetry>(_onWalletsSubscriptionRetry);
   }
 
   final WalletRepository _walletRepository;
@@ -25,7 +26,25 @@ class WalletsBloc extends Bloc<WalletsEvent, WalletsState> {
         event.query,
       ),
       onData: (wallets) => WalletLoadSuccess(wallets: wallets),
-      onError: (error, stackTrace) => const WalletLoadFailure(),
+      onError: (error, stackTrace) => WalletLoadFailure(
+        error: error,
+        previousQuery: event.query,
+      ),
+    );
+  }
+
+  Future<void> _onWalletsSubscriptionRetry(
+    WalletsSubscriptionRetry event,
+    Emitter<WalletsState> emit,
+  ) async {
+    emit(const WalletLoadInProgress());
+    await emit.forEach<List<BaseWalletModel>>(
+      _walletRepository.getWallets(event.query),
+      onData: (wallets) => WalletLoadSuccess(wallets: wallets),
+      onError: (error, stackTrace) => WalletLoadFailure(
+        error: error,
+        previousQuery: event.query,
+      ),
     );
   }
 }
