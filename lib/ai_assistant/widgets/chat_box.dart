@@ -1,6 +1,5 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
-import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
 import 'package:felicash/ai_assistant/models/ai_assistant_request_model.dart';
 import 'package:felicash/transaction/view/transaction_item.dart';

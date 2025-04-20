@@ -14,47 +14,6 @@ import 'package:wallet_repository/wallet_repository.dart';
 part 'ai_processing_event.dart';
 part 'ai_processing_state.dart';
 
-const _mockKnowledgeBase = KnowledgeBaseBody(
-  categories: [
-    CategoryKnowledgeBaseBody(
-      id: '751b0c10-d10e-472b-b953-d7463fecb819',
-      name: 'Ăn uống',
-      description: 'Các giao dịch chi trả cho việc ăn uống.',
-    ),
-    CategoryKnowledgeBaseBody(
-      id: '5346a559-7eab-4682-90da-ee8e510784d1',
-      name: 'Mua sắm',
-      description: 'Các giao dịch chi trả cho việc mua sắm.',
-    ),
-  ],
-  transactionTypes: [
-    'income',
-    're_payment',
-    'lending',
-    'borrowing',
-    'expense',
-    'debt_collecting',
-    'transfer',
-  ],
-  wallets: [
-    WalletKnowledgeBaseBody(
-      id: '0df79f43-efc2-42f7-8277-611bb752eba0',
-      name: 'Ví tiền mặt',
-      description: 'Ví dùng cho các chi tiêu và thu nhập bằng tiền mặt',
-    ),
-    // WalletKnowledgeBaseBody(
-    //   id: 'd88fe0bd-a91d-499a-898c-395e7e5c0c50',
-    //   name: 'Ví tiết kiệm',
-    //   description: 'Ví chứa các khoản tiết kiệm của tôi',
-    // ),
-  ],
-  sourceWallet: WalletKnowledgeBaseBody(
-    id: '0df79f43-efc2-42f7-8277-611bb752eba0',
-    name: 'Ví tiền mặt',
-    description: 'Ví dùng cho các chi tiêu và thu nhập bằng tiền mặt',
-  ),
-);
-
 class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
   AiAssistantBloc({
     required AiClient aiClient,

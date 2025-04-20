@@ -17,3 +17,14 @@ class WalletsSubscriptionRequested extends WalletsEvent {
   @override
   List<Object> get props => [query];
 }
+
+class WalletsSubscriptionRetry extends WalletsEvent {
+  const WalletsSubscriptionRetry({
+    required this.query,
+  });
+
+  final GetWalletQuery query;
+
+  @override
+  List<Object> get props => [query];
+}

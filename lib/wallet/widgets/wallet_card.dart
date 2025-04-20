@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:shared_models/shared_models.dart';
 
 class WalletCard extends StatelessWidget {
-  const WalletCard({required this.block, super.key});
+  const WalletCard({
+    required this.block,
+    super.key,
+    this.selected = false,
+  });
   final WalletBlock block;
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {

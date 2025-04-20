@@ -11,7 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   equatable: ^2.0.7
-
+  felicash_data_client:
+    path: ../felicash_data_client
+  shared_models:
+    path: ../shared_models
 dev_dependencies:
   flutter_test:
     sdk: flutter

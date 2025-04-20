@@ -20,12 +20,15 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     CategoriesSubscriptionRequested event,
     Emitter<CategoriesState> emit,
   ) async {
-    emit(const CategoriesLoading());
+    emit(const CategoriesLoadInProgress());
     final categories = _categoryRepository.getCategories(event.query);
     await emit.forEach<List<CategoryModel>>(
       categories,
-      onData: (categories) => CategoriesLoaded(categories: categories),
-      onError: (error, stackTrace) => CategoriesFailure(error, event.query),
+      onData: (categories) => CategoriesLoadSuccess(categories: categories),
+      onError: (error, stackTrace) => CategoriesLoadFailure(
+        error: error,
+        previousQuery: event.query,
+      ),
     );
   }
 
@@ -33,12 +36,15 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     CategoriesSubcriptionRetry event,
     Emitter<CategoriesState> emit,
   ) async {
-    emit(const CategoriesLoading());
+    emit(const CategoriesLoadInProgress());
     final categories = _categoryRepository.getCategories(event.query);
     await emit.forEach<List<CategoryModel>>(
       categories,
-      onData: (categories) => CategoriesLoaded(categories: categories),
-      onError: (error, stackTrace) => CategoriesFailure(error, event.query),
+      onData: (categories) => CategoriesLoadSuccess(categories: categories),
+      onError: (error, stackTrace) => CategoriesLoadFailure(
+        error: error,
+        previousQuery: event.query,
+      ),
     );
   }
 }

@@ -15,14 +15,12 @@ class WalletCreationBloc
   WalletCreationBloc({
     required WalletRepository walletRepository,
     required WalletTypeEnum walletType,
-    required CurrencyModel currency,
     required Color color,
   })  : _walletRepository = walletRepository,
         super(
           WalletCreationState(
             walletType: walletType,
             color: color,
-            currency: currency,
           ),
         ) {
     on<WalletCreationNameChanged>(_onWalletNameChanged);
@@ -205,7 +203,7 @@ class WalletCreationBloc
         id: const Uuid().v4(),
         name: state.name.value,
         walletType: state.walletType,
-        baseCurrency: state.currency,
+        baseCurrency: state.currency!,
         balance: state.balance.value,
         color: state.color,
         createdAt: DateTime.now(),
@@ -249,6 +247,7 @@ class WalletCreationBloc
     WalletStateDayOfMonth? stateDayOfMonth,
     WalletPaymentDayOfMonth? paymentDayOfMonth,
     WalletMonetarySavingsGoal? savingsGoal,
+    CurrencyModel? currency,
   }) {
     final isValid = Formz.validate([
       name ?? state.name,
@@ -265,6 +264,9 @@ class WalletCreationBloc
     ]);
 
     // Add any additional validation logic here
+    if ((currency ?? state.currency) == null) {
+      return false;
+    }
 
     return isValid;
   }

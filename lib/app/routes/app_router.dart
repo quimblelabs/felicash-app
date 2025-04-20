@@ -13,7 +13,7 @@ import 'package:felicash/personal/view/personal_page.dart';
 import 'package:felicash/transaction/view/transaction_creation_modal.dart';
 import 'package:felicash/transaction/view/transactions_page.dart';
 import 'package:felicash/voice_transaction/view/voice_transaction_page.dart';
-import 'package:felicash/wallet/view/wallets_page.dart';
+import 'package:felicash/wallet/view/wallets/wallets_page.dart';
 import 'package:felicash/wallet_creation/view/monetary_input_modal.dart';
 import 'package:felicash/wallet_creation/view/wallet_creation_modal.dart';
 import 'package:felicash/wallet_creation/view/wallet_type_selector_modal.dart';

@@ -5,8 +5,8 @@ enum WalletCreationStatus { initial, submiting, success, failure }
 class WalletCreationState extends Equatable {
   const WalletCreationState({
     required this.walletType,
-    required this.currency,
     required this.color,
+    this.currency,
     this.name = const WalletName.pure(),
     this.description = const WalletDescription.pure(),
     this.balance = const WalletMonetaryBalance.pure(),
@@ -27,7 +27,7 @@ class WalletCreationState extends Equatable {
   final WalletTypeEnum walletType;
   final IconData icon;
   final Color color;
-  final CurrencyModel currency;
+  final CurrencyModel? currency;
   final WalletMonetaryBalance balance;
   final bool excludeFromTotal;
   // -- Ceredit wallet creation data
