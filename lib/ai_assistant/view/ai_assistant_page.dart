@@ -112,7 +112,7 @@ class _ListenForUserSpeechDone extends StatelessWidget {
         if (state is SpeechRecognitionListeningSuccess) {
           final text = state.recognizedText;
           if (text.trim().isEmpty) return;
-          final transactionTypes = TransactionTypeEnum.validableValues;
+          final transactionTypes = TransactionTypeEnum.availableValues;
           final sourceWallet =
               context.read<AiAssistantViewCubit>().state.sourceWallet;
           if (sourceWallet == null) {
