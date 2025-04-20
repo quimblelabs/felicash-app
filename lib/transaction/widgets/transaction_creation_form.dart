@@ -81,7 +81,7 @@ class _TransactionTypeSelector extends HookWidget {
               .add(TransactionCreationTypeChanged(value ?? type));
         },
         selectedItemBuilder: (context) {
-          return TransactionTypeEnum.validableValues
+          return TransactionTypeEnum.availableValues
               .map(
                 (e) => Row(
                   mainAxisSize: MainAxisSize.min,
@@ -103,7 +103,7 @@ class _TransactionTypeSelector extends HookWidget {
               .toList();
         },
         items: [
-          ...TransactionTypeEnum.validableValues.map(
+          ...TransactionTypeEnum.availableValues.map(
             (e) => DropdownMenuItem(
               value: e,
               child: Row(

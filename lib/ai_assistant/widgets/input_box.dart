@@ -342,7 +342,7 @@ class _ActionButton extends StatelessWidget {
       _ => <CategoryModel>[],
     };
     // Transaction types
-    final transactionTypes = TransactionTypeEnum.validableValues;
+    final transactionTypes = TransactionTypeEnum.availableValues;
 
     // Send message
     FocusScope.of(context).unfocus();

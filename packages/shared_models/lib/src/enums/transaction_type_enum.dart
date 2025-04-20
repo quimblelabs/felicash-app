@@ -42,8 +42,9 @@ enum TransactionTypeEnum {
     }
   }
 
-  /// Returns all the values of the TransactionTypeEnum.
-  static List<TransactionTypeEnum> get validableValues => [
+  /// Returns all the values of the TransactionTypeEnum
+  /// that are available for selection.
+  static List<TransactionTypeEnum> get availableValues => [
         TransactionTypeEnum.expense,
         TransactionTypeEnum.income,
         TransactionTypeEnum.transfer,
