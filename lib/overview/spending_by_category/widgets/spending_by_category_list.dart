@@ -40,8 +40,8 @@ class _SpendingByCategoryItem extends StatelessWidget {
       dense: true,
       leading: CircleAvatar(
         radius: 18,
-        backgroundColor: stat.category.color,
-        foregroundColor: stat.category.color.onContainer,
+        backgroundColor: stat.category.color.withAlpha(100),
+        foregroundColor: stat.category.color,
         child: IconWidget(
           icon: stat.category.icon,
           size: 16,
