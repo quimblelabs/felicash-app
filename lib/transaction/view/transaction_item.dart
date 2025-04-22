@@ -17,10 +17,10 @@ class TransactionItem extends StatelessWidget {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
     final crimsionRedColor = AppColors.crimsionRed.colorSchemeOf(context);
-    final dolarBillColor = AppColors.dollarBill.colorSchemeOf(context);
+    final dollarBillColor = AppColors.dollarBill.colorSchemeOf(context);
     final amountColor = switch (transaction.transactionType) {
       TransactionTypeEnum.income => crimsionRedColor.color,
-      TransactionTypeEnum.expense => dolarBillColor.color,
+      TransactionTypeEnum.expense => dollarBillColor.color,
       TransactionTypeEnum.transfer => null,
       _ => null,
     };
@@ -28,8 +28,8 @@ class TransactionItem extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: AppRadius.xlg,
-          backgroundColor: transaction.category.color,
-          foregroundColor: transaction.category.color.onContainer,
+          backgroundColor: transaction.category.color.withAlpha(40),
+          foregroundColor: transaction.category.color,
           child: IconWidget(
             icon: transaction.category.icon,
             size: AppRadius.xlg,
