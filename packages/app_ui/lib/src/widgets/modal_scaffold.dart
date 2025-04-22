@@ -67,6 +67,7 @@ class ModalScaffold extends StatelessWidget {
                   scrolledUnderElevation: 0,
                   automaticallyImplyLeading: false,
                   title: header,
+                  centerTitle: false,
                   actions: canPop
                       ? [
                           Padding(

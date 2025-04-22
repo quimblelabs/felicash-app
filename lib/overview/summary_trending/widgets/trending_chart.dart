@@ -1,5 +1,15 @@
 part of '../view/summary_trending_section.dart';
 
+extension on DailySummary {
+  double getYValue(TransactionTypeEnum type) {
+    return switch (type) {
+      TransactionTypeEnum.expense => expense.abs(),
+      TransactionTypeEnum.income => income.abs(),
+      TransactionTypeEnum.transfer || TransactionTypeEnum.unknown => 0,
+    };
+  }
+}
+
 class _TrendingChart extends StatelessWidget {
   const _TrendingChart();
 
@@ -8,24 +18,30 @@ class _TrendingChart extends StatelessWidget {
     TransactionTypeEnum type,
     Color color,
   ) {
-    final clone = List.of(summaries);
+    final dataSource = <DailySummary>[];
     final now = DateTime.now();
     // Start day of month
     final start = DateTime(now.year, now.month);
     // End day of month
     final end = DateTime(now.year, now.month + 1);
     for (var i = start; i.isBefore(end); i = i.add(const Duration(days: 1))) {
-      if (clone.any((e) => e.date.isSameDay(i))) {
-        continue;
+      // If the date is not in the summaries, add a new daily summary
+      // with 0 expense and income.
+      final summary = summaries.firstWhereOrNull((e) => e.date.isSameDay(i));
+      if (summary == null) {
+        dataSource.add(DailySummary(date: i, expense: 0, income: 0));
+      } else {
+        dataSource.add(summary);
       }
-      clone.add(DailySummary(date: i, expense: 0, income: 0));
     }
-    final lineSeries = StepAreaSeries<DailySummary, DateTime>(
+    final lineSeries = SplineAreaSeries<DailySummary, DateTime>(
       key: ValueKey(type.jsonKey),
-      dataSource: clone,
+      dataSource: dataSource,
       borderColor: color,
       borderWidth: 3,
       animationDuration: 800,
+      splineType: SplineType.cardinal,
+      cardinalSplineTension: 0.9,
       gradient: LinearGradient(
         colors: [
           color.withValues(alpha: .4),
@@ -46,12 +62,7 @@ class _TrendingChart extends StatelessWidget {
         if (summary.date.isAfter(now)) {
           return null;
         }
-        final value = switch (type) {
-          TransactionTypeEnum.expense => summary.expense,
-          TransactionTypeEnum.income => summary.income,
-          TransactionTypeEnum.transfer || TransactionTypeEnum.unknown => 0,
-        };
-        return value.abs();
+        return summary.getYValue(type);
       },
     );
     return [lineSeries];
@@ -99,6 +110,7 @@ class _TrendingChart extends StatelessWidget {
     final selectedType = context.select(
       (SummaryTrendingSectionBloc bloc) => bloc.state.selectedTransactionType,
     );
+
     final color = _getColor(selectedType, context);
     final series = _getLineSeries(summaries, selectedType, color);
     return SizedBox(
@@ -187,7 +199,7 @@ class _TooltipItem extends StatelessWidget {
             ),
           ),
           Text(
-            amount.toCurrency(
+            (type == TransactionTypeEnum.expense ? -amount : amount).toCurrency(
               locale: l10n.localeName,
               // TODO: Replace with currency symbol
               symbol: r'$',

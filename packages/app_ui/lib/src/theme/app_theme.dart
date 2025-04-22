@@ -41,9 +41,19 @@ class AppTheme {
         surfaceTintColor: colorScheme.surface,
         scrolledUnderElevation: 1,
         centerTitle: true,
-        titleTextStyle: textTheme.headlineMedium?.copyWith(
-          color: colorScheme.onSurface,
-          fontWeight: FontWeight.bold,
+      ),
+      listTileTheme: ListTileThemeData(
+        titleTextStyle: textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.sm,
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(AppRadius.lg),
+          ),
         ),
       ),
       bottomAppBarTheme: BottomAppBarTheme(

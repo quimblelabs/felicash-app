@@ -31,11 +31,20 @@ extension IterableExtension<T> on Iterable<T> {
     required T separator,
   }) {
     final list = <T>[];
-    for (final element in this) {
-      list
-        ..add(element)
-        ..add(separator);
+    for (var i = 0; i < length; i++) {
+      list.add(elementAt(i));
+      if (i < length - 1) {
+        list.add(separator);
+      }
     }
     return list;
+  }
+
+  /// Returns the first element that satisfies the given [test] function.
+  T? firstWhereOrNull(bool Function(T element) test) {
+    for (final e in this) {
+      if (test(e)) return e;
+    }
+    return null;
   }
 }
