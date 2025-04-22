@@ -114,16 +114,37 @@ class AppView extends StatelessWidget {
     final interTextTheme = GoogleFonts.interTextTheme();
     final theme = AppTheme(interTextTheme);
     final router = context.read<AppRouter>().router;
-    return KeyboardHeightProvider(
-      child: MaterialApp.router(
-        theme: theme.light(),
-        darkTheme: theme.dark(),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        routerDelegate: router.routerDelegate,
-        routeInformationParser: router.routeInformationParser,
-        routeInformationProvider: router.routeInformationProvider,
+    return _OnAuthenticatedUser(
+      child: KeyboardHeightProvider(
+        child: MaterialApp.router(
+          theme: theme.light(),
+          darkTheme: theme.dark(),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerDelegate: router.routerDelegate,
+          routeInformationParser: router.routeInformationParser,
+          routeInformationProvider: router.routeInformationProvider,
+        ),
       ),
+    );
+  }
+}
+
+class _OnAuthenticatedUser extends StatelessWidget {
+  const _OnAuthenticatedUser({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AppBloc, AppState>(
+      listenWhen: (previous, current) => previous.user != current.user,
+      listener: (context, state) {
+        if (!state.user.isAnonymous) {
+          //TODO: Add logic that will be executed when the user is authenticated
+        }
+      },
+      child: child,
     );
   }
 }
