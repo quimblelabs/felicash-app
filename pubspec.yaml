@@ -43,6 +43,7 @@ dependencies:
   form_builder_validators: ^11.1.2
   form_inputs:
     path: packages/form_inputs
+  freezed_annotation: ^3.0.0
   gap: ^3.0.1
   go_router: ^14.8.1
   google_fonts: ^6.2.1
@@ -55,6 +56,7 @@ dependencies:
     path: packages/permission_client
   shared_models:
     path: packages/shared_models
+  sliver_tools: ^0.2.12
   speech_to_text_client:
     path: packages/speech_to_text_client
   sqflite: ^2.4.1
@@ -75,8 +77,10 @@ dependencies:
 
 dev_dependencies:
   bloc_test: ^10.0.0
+  build_runner: ^2.4.15
   flutter_test:
     sdk: flutter
+  freezed: ^3.0.6
   melos: ^6.3.2
   mocktail: ^1.0.4
   very_good_analysis: ^7.0.0

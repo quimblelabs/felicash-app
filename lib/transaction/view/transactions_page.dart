@@ -1,23 +1,111 @@
+import 'package:app_ui/app_ui.dart';
+import 'package:app_utils/app_utils.dart';
+import 'package:felicash/l10n/l10n.dart';
+import 'package:felicash/transaction/bloc/transaction_list_filter_cubit.dart';
+import 'package:felicash/transaction/bloc/transactions_bloc.dart';
+import 'package:felicash/transaction/models/transaction_list_filter.dart';
+import 'package:felicash/transaction/view/transaction_item.dart';
+import 'package:felicash/transaction/view/transaction_list_filter_modal.dart';
+import 'package:felicash/transaction/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:sliver_tools/sliver_tools.dart';
+import 'package:transaction_repository/transaction_repository.dart';
+
+part '../widgets/transaction_list.dart';
+part '../widgets/transaction_list_filter_button.dart';
+part '../widgets/transaction_list_search_bar.dart';
 
 class TransactionsPage extends StatelessWidget {
   const TransactionsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const TransactionsView();
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => TransactionsBloc()
+            ..add(const TransactionsInitialSubscriptionRequested()),
+        ),
+        BlocProvider(
+          create: (context) => TransactionListFilterCubit(),
+        ),
+      ],
+      child: const TransactionsView(),
+    );
   }
 }
 
-class TransactionsView extends StatelessWidget {
+class TransactionsView extends StatefulWidget {
   const TransactionsView({super.key});
+
+  @override
+  State<TransactionsView> createState() => _TransactionsViewState();
+}
+
+class _TransactionsViewState extends State<TransactionsView> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Transactions'),
+      body: Stack(
+        children: [
+          CustomScrollView(
+            controller: _scrollController,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            slivers: [
+              SliverAppBar.medium(
+                centerTitle: false,
+                title: Text('Transactions'.hardCoded),
+                bottom: const PreferredSize(
+                  preferredSize: Size.fromHeight(56),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      AppSpacing.lg,
+                      AppSpacing.lg,
+                      AppSpacing.lg,
+                      AppSpacing.sm,
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(child: TransactionListSearchBar()),
+                        TransactionListFilterButton(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.lg,
+                  AppSpacing.sm,
+                  AppSpacing.lg,
+                  AppSpacing.xxxlg,
+                ),
+                sliver: TransactionList(
+                  scrollController: _scrollController,
+                ),
+              ),
+            ],
+          ),
+          ScrollToTopButton(
+            scrollController: _scrollController,
+          ),
+        ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
