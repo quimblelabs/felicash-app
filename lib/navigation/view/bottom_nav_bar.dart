@@ -26,40 +26,47 @@ class BottomNavBar extends StatelessWidget {
           child: SizedBox(
             height: 80,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _NavBarItem(
-                  icon: currentIndex == 0
-                      ? IconsaxPlusBold.home
-                      : IconsaxPlusLinear.home,
-                  label: 'Home',
-                  isSelected: currentIndex == 0,
-                  onTap: () => onTabChanged(0),
+                Expanded(
+                  child: _NavBarItem(
+                    icon: currentIndex == 0
+                        ? IconsaxPlusBold.chart
+                        : IconsaxPlusLinear.chart_3,
+                    label: 'Overview'.hardCoded,
+                    isSelected: currentIndex == 0,
+                    onTap: () => onTabChanged(0),
+                  ),
                 ),
-                _NavBarItem(
-                  icon: currentIndex == 1
-                      ? IconsaxPlusBold.arrow_swap_horizontal
-                      : IconsaxPlusLinear.arrow_swap_horizontal,
-                  label: 'Transactions',
-                  isSelected: currentIndex == 1,
-                  onTap: () => onTabChanged(1),
+                Expanded(
+                  child: _NavBarItem(
+                    icon: currentIndex == 1
+                        ? IconsaxPlusBold.arrow_swap_horizontal
+                        : IconsaxPlusLinear.arrow_swap_horizontal,
+                    label: 'Transactions'.hardCoded,
+                    isSelected: currentIndex == 1,
+                    onTap: () => onTabChanged(1),
+                  ),
                 ),
-                const AddTransactionMenuButton(),
-                _NavBarItem(
-                  icon: currentIndex == 2
-                      ? IconsaxPlusBold.wallet
-                      : IconsaxPlusLinear.wallet,
-                  label: 'Wallet',
-                  isSelected: currentIndex == 2,
-                  onTap: () => onTabChanged(2),
+                const Expanded(child: AddTransactionMenuButton()),
+                Expanded(
+                  child: _NavBarItem(
+                    icon: currentIndex == 2
+                        ? IconsaxPlusBold.wallet
+                        : IconsaxPlusLinear.wallet,
+                    label: 'Wallets'.hardCoded,
+                    isSelected: currentIndex == 2,
+                    onTap: () => onTabChanged(2),
+                  ),
                 ),
-                _NavBarItem(
-                  icon: currentIndex == 3
-                      ? IconsaxPlusBold.user
-                      : IconsaxPlusLinear.user,
-                  label: 'Personal',
-                  isSelected: currentIndex == 3,
-                  onTap: () => onTabChanged(3),
+                Expanded(
+                  child: _NavBarItem(
+                    icon: currentIndex == 3
+                        ? IconsaxPlusBold.user
+                        : IconsaxPlusLinear.user,
+                    label: 'Personal'.hardCoded,
+                    isSelected: currentIndex == 3,
+                    onTap: () => onTabChanged(3),
+                  ),
                 ),
               ],
             ),
@@ -88,12 +95,27 @@ class _NavBarItem extends StatelessWidget {
     final theme = Theme.of(context);
     final color = theme.colorScheme.onPrimary;
     final unSelectedColor = theme.colorScheme.onPrimaryContainer;
-    return IconButton(
-      onPressed: () {
+    final effectiveColor = isSelected ? color : unSelectedColor;
+
+    return InkWell(
+      onTap: () {
         HapticFeedback.lightImpact();
         onTap();
       },
-      icon: Icon(icon, color: isSelected ? color : unSelectedColor),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        spacing: AppSpacing.xs,
+        children: [
+          Icon(icon, color: effectiveColor),
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: effectiveColor,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
