@@ -45,6 +45,7 @@ class WalletView extends StatelessWidget {
       length: WalletTypeEnum.values.length,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text('Wallets'),
           bottom: const PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight),

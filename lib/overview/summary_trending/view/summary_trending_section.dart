@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:app_ui/app_ui.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:felicash/l10n/arb/app_localizations.dart';
+import 'package:app_utils/app_utils.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/overview/summary_trending/bloc/summary_trending_section_bloc.dart';
 import 'package:felicash/overview/summary_trending/models/daily_summary.dart';
