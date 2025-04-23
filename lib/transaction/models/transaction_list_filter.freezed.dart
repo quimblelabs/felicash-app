@@ -30,6 +30,9 @@ mixin _$TransactionListFilter {
       _$TransactionListFilterCopyWithImpl<TransactionListFilter>(
           this as TransactionListFilter, _$identity);
 
+  /// Serializes this TransactionListFilter to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -45,6 +48,7 @@ mixin _$TransactionListFilter {
             (identical(other.to, to) || other.to == to));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -126,7 +130,7 @@ class _$TransactionListFilterCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _TransactionListFilter extends TransactionListFilter {
   const _TransactionListFilter(
       {this.searchKey = '',
@@ -139,6 +143,8 @@ class _TransactionListFilter extends TransactionListFilter {
         _types = types,
         _wallets = wallets,
         super._();
+  factory _TransactionListFilter.fromJson(Map<String, dynamic> json) =>
+      _$TransactionListFilterFromJson(json);
 
   @override
   @JsonKey()
@@ -185,6 +191,13 @@ class _TransactionListFilter extends TransactionListFilter {
           this, _$identity);
 
   @override
+  Map<String, dynamic> toJson() {
+    return _$TransactionListFilterToJson(
+      this,
+    );
+  }
+
+  @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
@@ -199,6 +212,7 @@ class _TransactionListFilter extends TransactionListFilter {
             (identical(other.to, to) || other.to == to));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,

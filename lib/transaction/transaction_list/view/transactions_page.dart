@@ -53,51 +53,54 @@ class _TransactionsViewState extends State<TransactionsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          CustomScrollView(
-            controller: _scrollController,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            slivers: [
-              SliverAppBar.medium(
-                centerTitle: false,
-                title: Text('Transactions'.hardCoded),
-                bottom: const PreferredSize(
-                  preferredSize: Size.fromHeight(56),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      AppSpacing.lg,
-                      AppSpacing.lg,
-                      AppSpacing.lg,
-                      AppSpacing.sm,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(child: TransactionListSearchBar()),
-                        TransactionListFilterButton(),
-                      ],
+    return GestureDetector(
+      onTap: FocusScope.of(context).unfocus,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            CustomScrollView(
+              controller: _scrollController,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              slivers: [
+                SliverAppBar.medium(
+                  centerTitle: false,
+                  title: Text('Transactions'.hardCoded),
+                  bottom: const PreferredSize(
+                    preferredSize: Size.fromHeight(56),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        AppSpacing.lg,
+                        AppSpacing.lg,
+                        AppSpacing.lg,
+                        AppSpacing.sm,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(child: TransactionListSearchBar()),
+                          TransactionListFilterButton(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
-                  AppSpacing.sm,
-                  AppSpacing.lg,
-                  AppSpacing.xxxlg,
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.lg,
+                    AppSpacing.sm,
+                    AppSpacing.lg,
+                    AppSpacing.xxxlg,
+                  ),
+                  sliver: TransactionList(
+                    scrollController: _scrollController,
+                  ),
                 ),
-                sliver: TransactionList(
-                  scrollController: _scrollController,
-                ),
-              ),
-            ],
-          ),
-          ScrollToTopButton(
-            scrollController: _scrollController,
-          ),
-        ],
+              ],
+            ),
+            ScrollToTopButton(
+              scrollController: _scrollController,
+            ),
+          ],
+        ),
       ),
     );
   }

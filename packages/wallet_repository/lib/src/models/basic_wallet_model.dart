@@ -1,12 +1,18 @@
 import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash_data_client/felicash_data_client.dart';
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:wallet_repository/src/models/base/base_wallet_model.dart';
+
+part 'basic_wallet_model.g.dart';
 
 /// {@template basic_wallet_model}
 /// Basic Wallet model
 /// {@endtemplate}
+@JsonSerializable(
+  converters: [HexColorConverter(), RawIconDataConverter()],
+)
 class BasicWalletModel extends BaseWalletModel {
   /// {@macro basic_wallet_model}
   const BasicWalletModel({
@@ -24,6 +30,9 @@ class BasicWalletModel extends BaseWalletModel {
     super.archivedAt,
     super.achieveReason,
   }) : super(walletType: WalletTypeEnum.basic);
+
+  factory BasicWalletModel.fromJson(Map<String, dynamic> json) =>
+      _$BasicWalletModelFromJson(json);
 
   /// Factory constructor for [BasicWalletModel] from [BaseWalletModel]
   factory BasicWalletModel.fromBaseWalletModel({
@@ -47,21 +56,12 @@ class BasicWalletModel extends BaseWalletModel {
   }
 
   /// Factory constructor for [BasicWalletModel] from [Wallet]
-  factory BasicWalletModel.fromWallet({
-    required Wallet wallet,
-  }) {
+  factory BasicWalletModel.fromWallet({required Wallet wallet}) {
     return BasicWalletModel(
       id: wallet.walletId,
       name: wallet.walletName,
       description: wallet.walletDescription,
-      baseCurrency: CurrencyModel(
-        id: wallet.currencies.first.currencyId,
-        code: wallet.currencies.first.currencyCode,
-        name: wallet.currencies.first.currencyName,
-        symbol: wallet.currencies.first.currencySymbol,
-        createdAt: wallet.currencies.first.currencyCreatedAt,
-        updatedAt: wallet.currencies.first.currencyUpdatedAt,
-      ),
+      baseCurrency: CurrencyModel.fromCurrency(wallet.currencies.first),
       balance: wallet.walletBalance,
       color: HexColor.fromHex(wallet.walletColor),
       icon: RawIconData.fromRaw(wallet.walletIcon),
@@ -73,6 +73,9 @@ class BasicWalletModel extends BaseWalletModel {
       updatedAt: wallet.walletUpdatedAt,
     );
   }
+
+  /// Convert to JSON
+  Map<String, dynamic> toJson() => _$BasicWalletModelToJson(this);
 
   /// Creates a empty wallet model.
   static final empty = BasicWalletModel(

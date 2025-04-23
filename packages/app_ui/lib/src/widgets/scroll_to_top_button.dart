@@ -67,7 +67,7 @@ class _ScrollToTopButtonState extends State<ScrollToTopButton> {
                   curve: Curves.easeInOut,
                 );
               },
-              child: const Icon(Icons.arrow_upward),
+              child: const Icon(Icons.arrow_circle_up_rounded),
             ),
           ),
         ),
