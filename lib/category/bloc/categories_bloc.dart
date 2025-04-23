@@ -21,7 +21,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     Emitter<CategoriesState> emit,
   ) async {
     emit(const CategoriesLoadInProgress());
-    final categories = _categoryRepository.getCategories(event.query);
+    final categories = _categoryRepository.getCategoriesStream(event.query);
     await emit.forEach<List<CategoryModel>>(
       categories,
       onData: (categories) => CategoriesLoadSuccess(categories: categories),
@@ -37,7 +37,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     Emitter<CategoriesState> emit,
   ) async {
     emit(const CategoriesLoadInProgress());
-    final categories = _categoryRepository.getCategories(event.query);
+    final categories = _categoryRepository.getCategoriesStream(event.query);
     await emit.forEach<List<CategoryModel>>(
       categories,
       onData: (categories) => CategoriesLoadSuccess(categories: categories),

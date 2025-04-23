@@ -8,9 +8,13 @@ abstract class AppEvent extends Equatable {
 }
 
 /// Emits when the app is opened.
-class AppOpened extends AppEvent {}
+class AppOpened extends AppEvent {
+  const AppOpened();
+}
 
-class AppLogOutRequested extends AppEvent {}
+class AppLogOutRequested extends AppEvent {
+  const AppLogOutRequested();
+}
 
 class AppUserChanged extends AppEvent {
   const AppUserChanged(this.user);

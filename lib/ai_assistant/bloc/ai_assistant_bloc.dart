@@ -17,8 +17,13 @@ part 'ai_processing_state.dart';
 class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
   AiAssistantBloc({
     required AiClient aiClient,
+    required WalletRepository walletRepository,
+    required CategoryRepository categoryRepository,
   })  : _aiClient = aiClient,
+        _walletRepository = walletRepository,
+        _categoryRepository = categoryRepository,
         super(const AiAssistantInitial()) {
+    on<AiAssistantLoadResourceRequested>(_onLoadResourceRequested);
     on<AiAssistantStartProcessing>(_onStartProcessing);
     on<AiAssistantCancelProcessing>(
       _onCancelProcessing,
@@ -31,8 +36,39 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
   }
 
   final AiClient _aiClient;
+  final WalletRepository _walletRepository;
+  final CategoryRepository _categoryRepository;
 
   CancelableOperation<AiAssistantRequestModel>? _processingCancelable;
+  List<BaseWalletModel> walletsParameter = [];
+  List<CategoryModel> categoriesParameter = [];
+  List<TransactionTypeEnum> transactionTypesParameter = [];
+
+  Future<void> _onLoadResourceRequested(
+    AiAssistantLoadResourceRequested event,
+    Emitter<AiAssistantState> emit,
+  ) async {
+    try {
+      walletsParameter = event.walletsParameter.isNotEmpty
+          ? event.walletsParameter
+          : await _walletRepository.getWalletsFuture(
+              const GetWalletQuery(
+                archived: false,
+              ),
+            );
+      categoriesParameter = event.categoriesParameter.isNotEmpty
+          ? event.categoriesParameter
+          : await _categoryRepository.getCategoriesFuture(
+              const GetCategoryQuery(
+                enabled: true,
+              ),
+            );
+    } catch (e) {
+      walletsParameter = [];
+      categoriesParameter = [];
+    }
+    transactionTypesParameter = TransactionTypeEnum.availableValues;
+  }
 
   Future<void> _onStartProcessing(
     AiAssistantStartProcessing event,
@@ -65,7 +101,7 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
                     name: event.sourceWallet.name,
                     description: event.sourceWallet.description,
                   ),
-                  wallets: event.walletsParameter
+                  wallets: walletsParameter
                       .map(
                         (e) => WalletKnowledgeBaseBody(
                           id: e.id,
@@ -74,7 +110,7 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
                         ),
                       )
                       .toList(),
-                  categories: event.categoriesParameter
+                  categories: categoriesParameter
                       .map(
                         (e) => CategoryKnowledgeBaseBody(
                           id: e.id,
@@ -83,8 +119,10 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
                         ),
                       )
                       .toList(),
-                  transactionTypes: event.transactionTypesParameter
-                      .map((e) => e.jsonKey)
+                  transactionTypes: transactionTypesParameter
+                      .map(
+                        (e) => e.jsonKey,
+                      )
                       .toList(),
                 ),
               ),

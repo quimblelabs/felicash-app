@@ -26,15 +26,16 @@ class TransactionItem extends StatelessWidget {
     };
     return Row(
       children: [
-        CircleAvatar(
-          radius: AppRadius.xlg,
-          backgroundColor: transaction.category.color.withAlpha(40),
-          foregroundColor: transaction.category.color,
-          child: IconWidget(
-            icon: transaction.category.icon,
-            size: AppRadius.xlg,
+        if (transaction.category case final category?)
+          CircleAvatar(
+            radius: AppRadius.xlg,
+            backgroundColor: category.color.withAlpha(40),
+            foregroundColor: category.color,
+            child: IconWidget(
+              icon: category.icon,
+              size: AppRadius.xlg,
+            ),
           ),
-        ),
         const SizedBox(width: AppSpacing.md),
         Expanded(
           child: Row(
@@ -46,7 +47,7 @@ class TransactionItem extends StatelessWidget {
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        transaction.category.name,
+                        transaction.category?.name ?? 'No category',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.titleMedium,
