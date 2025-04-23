@@ -10,8 +10,10 @@ import 'package:felicash/login/view/login_page.dart';
 import 'package:felicash/onboarding/view/onboarding_page.dart';
 import 'package:felicash/overview/overview/view/overview_page.dart';
 import 'package:felicash/personal/view/personal_page.dart';
-import 'package:felicash/transaction/view/transaction_creation_modal.dart';
-import 'package:felicash/transaction/view/transactions_page.dart';
+import 'package:felicash/transaction/models/transaction_list_filter.dart';
+import 'package:felicash/transaction/transaction_creation/view/transaction_creation_modal.dart';
+import 'package:felicash/transaction/transaction_list/view/transactions_page.dart';
+import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_filter_modal.dart';
 import 'package:felicash/voice_transaction/view/voice_transaction_page.dart';
 import 'package:felicash/wallet/view/wallets/wallets_page.dart';
 import 'package:felicash/wallet_creation/view/monetary_input_modal.dart';
@@ -27,7 +29,9 @@ abstract class AppRoutes {
   static const onboarding = '/onboarding';
   static const login = '/login';
   static const overview = '/';
+  // Transactions
   static const transactions = '/transactions';
+  static const transactionListFilters = '/transactions/filters';
   static const personal = '/personal';
 
   static const wallets = '/wallets';
@@ -49,8 +53,18 @@ abstract class AppRouteNames {
   static const login = 'login';
   static const onboarding = 'onboarding';
   static const overview = 'overview';
+
+  // Transactions
+  /// The route name for the transactions page.
   static const transactions = 'transactions';
+
+  /// The route name for the transaction list filters page.
+  static const transactionListFilters = 'transactionListFilters';
+
+  /// The route name for the personal page.
   static const personal = 'personal';
+
+  /// The route name for the wallets page.
   static const wallets = 'wallets';
 
   // Add new AI Assistant route name
@@ -172,6 +186,26 @@ class AppRouter {
                     key: state.pageKey,
                     child: const TransactionsPage(),
                   ),
+                  routes: [
+                    GoRoute(
+                      name: AppRouteNames.transactionListFilters,
+                      path: AppRoutes.transactionListFilters,
+                      parentNavigatorKey: _rootNavigatorKey,
+                      pageBuilder: (context, state) {
+                        final initialFilter =
+                            state.extra as TransactionListFilter?;
+                        return ModalPage(
+                          isScrollControlled: false,
+                          useSafeArea: true,
+                          builder: (context) {
+                            return TransactionListFilterModal(
+                              initialFilter: initialFilter,
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

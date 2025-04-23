@@ -1,5 +1,5 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:felicash/transaction/widgets/add_transaction_menu_button.dart';
+import 'package:felicash/transaction/transaction_creation/widgets/add_transaction_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
@@ -97,7 +97,7 @@ class _NavBarItem extends StatelessWidget {
     final unSelectedColor = theme.colorScheme.onPrimaryContainer;
     final effectiveColor = isSelected ? color : unSelectedColor;
 
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
         onTap();
@@ -110,7 +110,9 @@ class _NavBarItem extends StatelessWidget {
           Icon(icon, color: effectiveColor),
           Text(
             label,
-            style: theme.textTheme.bodySmall?.copyWith(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.labelSmall?.copyWith(
               color: effectiveColor,
             ),
           ),

@@ -14,10 +14,9 @@ class TransactionListFilterButton extends StatelessWidget {
   }
 
   Future<void> _onPressed(BuildContext context) async {
-    final result = await showModalBottomSheet<TransactionListFilter?>(
-      context: context,
-      useRootNavigator: true,
-      builder: (context) => const TransactionListFilterModal(),
+    final result = await context.pushNamed<TransactionListFilter?>(
+      AppRouteNames.transactionListFilters,
+      extra: context.read<TransactionListFilterCubit>().state.filter,
     );
     if (result == null) return;
     if (!context.mounted) return;
