@@ -2,6 +2,9 @@ import 'package:currency_repository/currency_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:wallet_repository/src/models/basic_wallet_model.dart';
+import 'package:wallet_repository/src/models/credit_wallet_model.dart';
+import 'package:wallet_repository/src/models/savings_walllet_model.dart';
 
 /// {@template base_wallet_model}
 /// Base wallet model for all wallet types
@@ -24,6 +27,35 @@ class BaseWalletModel extends Equatable {
     this.archivedAt,
     this.achieveReason,
   });
+
+  /// Factory constructor for [BaseWalletModel] from JSON
+  ///
+  /// This factory constructor will return the correct subclass of [BaseWalletModel]
+  /// based on the [walletType] field in the JSON.
+  factory BaseWalletModel.fromJson(Map<String, dynamic> json) {
+    final walletType = json['walletType'] as String;
+    final enumValue = WalletTypeEnum.values.byName(walletType);
+    switch (enumValue) {
+      case WalletTypeEnum.basic:
+        return BasicWalletModel.fromJson(json);
+      case WalletTypeEnum.credit:
+        return CreditWalletModel.fromJson(json);
+      case WalletTypeEnum.savings:
+        return SavingsWalletModel.fromJson(json);
+    }
+  }
+
+  /// Convert to JSON
+  ///
+  /// This method will return the JSON representation of the [BaseWalletModel].
+  Map<String, dynamic> toJson() {
+    return switch (this) {
+      final BasicWalletModel wallet => wallet.toJson(),
+      final CreditWalletModel wallet => wallet.toJson(),
+      final SavingsWalletModel wallet => wallet.toJson(),
+      _ => throw Exception('Invalid wallet type'),
+    };
+  }
 
   /// The unique identifier of the wallet
   final String id;

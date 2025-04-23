@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:app_utils/app_utils.dart';
 import 'package:felicash/ai_assistant/view/ai_assistant_page.dart';
 import 'package:felicash/app/bloc/app_bloc.dart';
+import 'package:felicash/app/routes/app_router_extra_codec.dart';
+import 'package:felicash/app/routes/extras/transaction_list_filter_extra_codec.dart';
 import 'package:felicash/app/routes/pages/fade_transition_page.dart';
 import 'package:felicash/app/routes/pages/modal_page.dart';
 import 'package:felicash/home/view/home_page.dart';
@@ -13,6 +15,8 @@ import 'package:felicash/personal/view/personal_page.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
 import 'package:felicash/transaction/transaction_creation/view/transaction_creation_modal.dart';
 import 'package:felicash/transaction/transaction_list/view/transactions_page.dart';
+import 'package:felicash/transaction/transaction_list_filter/view/all_filters_view.dart';
+import 'package:felicash/transaction/transaction_list_filter/view/categories_filter_view.dart';
 import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_filter_modal.dart';
 import 'package:felicash/voice_transaction/view/voice_transaction_page.dart';
 import 'package:felicash/wallet/view/wallets/wallets_page.dart';
@@ -32,6 +36,8 @@ abstract class AppRoutes {
   // Transactions
   static const transactions = '/transactions';
   static const transactionListFilters = '/transactions/filters';
+  static const transactionListFilterCategories =
+      '/transactions/filters/categories';
   static const personal = '/personal';
 
   static const wallets = '/wallets';
@@ -60,6 +66,10 @@ abstract class AppRouteNames {
 
   /// The route name for the transaction list filters page.
   static const transactionListFilters = 'transactionListFilters';
+
+  /// The route name for the transaction list filter's categories page.
+  static const transactionListFilterCategories =
+      'transactionListFilterCategories';
 
   /// The route name for the personal page.
   static const personal = 'personal';
@@ -92,6 +102,7 @@ class AppRouter {
         [appBloc.stream.map((state) => state.status)],
       ),
       redirect: _redirect,
+      extraCodec: const AppRouterExtraCodec(),
       routes: [
         GoRoute(
           name: AppRouteNames.onboarding,
@@ -187,23 +198,32 @@ class AppRouter {
                     child: const TransactionsPage(),
                   ),
                   routes: [
-                    GoRoute(
-                      name: AppRouteNames.transactionListFilters,
-                      path: AppRoutes.transactionListFilters,
-                      parentNavigatorKey: _rootNavigatorKey,
-                      pageBuilder: (context, state) {
+                    ShellRoute(
+                      pageBuilder: (context, state, child) {
                         final initialFilter =
                             state.extra as TransactionListFilter?;
                         return ModalPage(
                           isScrollControlled: false,
                           useSafeArea: true,
-                          builder: (context) {
-                            return TransactionListFilterModal(
-                              initialFilter: initialFilter,
-                            );
-                          },
+                          builder: (context) => TransactionListFilterModal(
+                            initialFilter: initialFilter,
+                            navigation: child,
+                          ),
                         );
                       },
+                      routes: [
+                        GoRoute(
+                          name: AppRouteNames.transactionListFilters,
+                          path: AppRoutes.transactionListFilters,
+                          builder: (context, state) => const AllFiltersView(),
+                        ),
+                        GoRoute(
+                          name: AppRouteNames.transactionListFilterCategories,
+                          path: AppRoutes.transactionListFilterCategories,
+                          builder: (context, state) =>
+                              const CategoriesFilterView(),
+                        ),
+                      ],
                     ),
                   ],
                 ),

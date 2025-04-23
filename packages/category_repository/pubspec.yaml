@@ -16,11 +16,14 @@ dependencies:
     path: ../shared_models
   felicash_data_client:
     path: ../felicash_data_client
+  json_annotation: ^4.9.0
+  json_serializable: ^6.9.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  build_runner: ^2.4.15
 
 
 # For information on the generic Dart part of this file, see the

@@ -1,12 +1,18 @@
 import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash_data_client/felicash_data_client.dart';
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:wallet_repository/src/models/base/base_wallet_model.dart';
+
+part 'savings_walllet_model.g.dart';
 
 /// {@template savings_wallet_model}
 /// Savings Wallet Model
 /// {@endtemplate}
+@JsonSerializable(
+  converters: [HexColorConverter(), RawIconDataConverter()],
+)
 class SavingsWalletModel extends BaseWalletModel {
   /// {@macro savings_wallet_model}
   const SavingsWalletModel({
@@ -25,6 +31,10 @@ class SavingsWalletModel extends BaseWalletModel {
     super.archivedAt,
     super.achieveReason,
   }) : super(walletType: WalletTypeEnum.savings);
+
+  /// Factory constructor for [SavingsWalletModel] from JSON
+  factory SavingsWalletModel.fromJson(Map<String, dynamic> json) =>
+      _$SavingsWalletModelFromJson(json);
 
   /// Factory constructor for [SavingsWalletModel] from [BaseWalletModel]
   factory SavingsWalletModel.fromBaseWalletModel({
@@ -77,6 +87,9 @@ class SavingsWalletModel extends BaseWalletModel {
       updatedAt: wallet.walletUpdatedAt,
     );
   }
+
+  /// Convert to JSON
+  Map<String, dynamic> toJson() => _$SavingsWalletModelToJson(this);
 
   /// Creates a empty wallet model.
   static final empty = SavingsWalletModel(
