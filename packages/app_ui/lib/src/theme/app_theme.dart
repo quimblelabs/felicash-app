@@ -60,7 +60,7 @@ class AppTheme {
         elevation: 1,
         color: colorScheme.primary,
         surfaceTintColor: colorScheme.primary,
-        // type: BottomNavigationBarType.fixed,
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
