@@ -1,13 +1,17 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
 
+/// {@template scroll_to_top_button}
+/// A button that scrolls to the top of the screen.
+/// {@endtemplate}
 class ScrollToTopButton extends StatefulWidget {
+  /// {@macro scroll_to_top_button}
   const ScrollToTopButton({
     required this.scrollController,
     super.key,
   });
 
+  /// The scroll controller to listen to.
   final ScrollController scrollController;
 
   @override
@@ -63,7 +67,7 @@ class _ScrollToTopButtonState extends State<ScrollToTopButton> {
                   curve: Curves.easeInOut,
                 );
               },
-              child: const Icon(IconsaxPlusLinear.arrow_up_2),
+              child: const Icon(Icons.arrow_upward),
             ),
           ),
         ),

@@ -3,7 +3,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:felicash/category/views/horizontal_category_selector.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/transaction/bloc/transaction_creation_bloc.dart';
-import 'package:felicash/transaction/widgets/wallet_selector.dart';
+import 'package:felicash/transaction/transaction_creation/widgets/wallet_selector.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -258,7 +258,7 @@ class _TransactionNotes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final maxLenght = context.select(
+    final maxLength = context.select(
       (TransactionCreationBloc bloc) => bloc.state.note.maxLength,
     );
     return TextFormField(
@@ -272,7 +272,7 @@ class _TransactionNotes extends StatelessWidget {
       ),
       maxLines: 3,
       minLines: 3,
-      maxLength: maxLenght,
+      maxLength: maxLength,
     );
   }
 }
