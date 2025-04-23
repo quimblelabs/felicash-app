@@ -9,7 +9,6 @@ import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_models/shared_models.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class AiAssistantPage extends StatelessWidget {
@@ -20,6 +19,12 @@ class AiAssistantPage extends StatelessWidget {
     final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
       (bloc) => switch (bloc.state) {
         WalletLoadSuccess(:final wallets) => wallets,
+        _ => [],
+      },
+    );
+    final categories = context.select<CategoriesBloc, List<CategoryModel>>(
+      (bloc) => switch (bloc.state) {
+        CategoriesLoadSuccess(:final categories) => categories,
         _ => [],
       },
     );
@@ -34,7 +39,14 @@ class AiAssistantPage extends StatelessWidget {
         BlocProvider(
           create: (_) => AiAssistantBloc(
             aiClient: context.read(),
-          ),
+            categoryRepository: context.read(),
+            walletRepository: context.read(),
+          )..add(
+              AiAssistantLoadResourceRequested(
+                walletsParameter: wallets,
+                categoriesParameter: categories,
+              ),
+            ),
         ),
         BlocProvider(
           create: (context) => SpeechRecognitionBloc(
@@ -45,9 +57,10 @@ class AiAssistantPage extends StatelessWidget {
       child: BlocListener<WalletsBloc, WalletsState>(
         listener: (context, state) {
           if (state is WalletLoadSuccess) {
-            context
-                .read<AiAssistantViewCubit>()
-                .updateSourceWallet(state.wallets.firstOrNull);
+            final cubit = context.read<AiAssistantViewCubit>();
+            if (cubit.state.sourceWallet == null) {
+              cubit.updateSourceWallet(state.wallets.firstOrNull);
+            }
           }
         },
         child: const _AiAssistantView(),
@@ -93,18 +106,6 @@ class _ListenForUserSpeechDone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
-      (bloc) => switch (bloc.state) {
-        WalletLoadSuccess(:final wallets) => wallets,
-        _ => [],
-      },
-    );
-    final categories = context.select<CategoriesBloc, List<CategoryModel>>(
-      (bloc) => switch (bloc.state) {
-        CategoriesLoadSuccess(:final categories) => categories,
-        _ => [],
-      },
-    );
     return BlocListener<SpeechRecognitionBloc, SpeechRecognitionState>(
       listenWhen: (previous, current) =>
           current is SpeechRecognitionListeningSuccess,
@@ -112,7 +113,6 @@ class _ListenForUserSpeechDone extends StatelessWidget {
         if (state is SpeechRecognitionListeningSuccess) {
           final text = state.recognizedText;
           if (text.trim().isEmpty) return;
-          final transactionTypes = TransactionTypeEnum.availableValues;
           final sourceWallet =
               context.read<AiAssistantViewCubit>().state.sourceWallet;
           if (sourceWallet == null) {
@@ -125,9 +125,6 @@ class _ListenForUserSpeechDone extends StatelessWidget {
           context.read<AiAssistantBloc>().add(
                 AiAssistantStartProcessing(
                   requestMessage: text,
-                  walletsParameter: wallets,
-                  categoriesParameter: categories,
-                  transactionTypesParameter: transactionTypes,
                   sourceWallet: sourceWallet!,
                 ),
               );

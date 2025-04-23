@@ -4,25 +4,41 @@ sealed class AiAssistantEvent extends Equatable {
   const AiAssistantEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
+}
+
+class AiAssistantLoadResourceRequested extends AiAssistantEvent {
+  const AiAssistantLoadResourceRequested({
+    this.walletsParameter = const [],
+    this.categoriesParameter = const [],
+  });
+
+  final List<BaseWalletModel> walletsParameter;
+  final List<CategoryModel> categoriesParameter;
+
+  @override
+  List<Object?> get props => [
+        ...super.props,
+        walletsParameter,
+        categoriesParameter,
+      ];
 }
 
 class AiAssistantStartProcessing extends AiAssistantEvent {
   const AiAssistantStartProcessing({
     required this.requestMessage,
-    required this.walletsParameter,
-    required this.categoriesParameter,
-    required this.transactionTypesParameter,
     required this.sourceWallet,
   });
   final String requestMessage;
-  final List<BaseWalletModel> walletsParameter;
-  final List<CategoryModel> categoriesParameter;
-  final List<TransactionTypeEnum> transactionTypesParameter;
+
   final BaseWalletModel sourceWallet;
 
   @override
-  List<Object> get props => [requestMessage, ...super.props];
+  List<Object?> get props => [
+        ...super.props,
+        requestMessage,
+        sourceWallet,
+      ];
 }
 
 /// Cancel the current transaction processing
@@ -38,5 +54,5 @@ class AiAssistantReset extends AiAssistantEvent {
   });
   final bool keepHistory;
   @override
-  List<Object> get props => [keepHistory, ...super.props];
+  List<Object?> get props => [...super.props, keepHistory];
 }

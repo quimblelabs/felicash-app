@@ -47,6 +47,12 @@ class App extends StatelessWidget {
         RepositoryProvider<WalletRepository>.value(
           value: _walletRepository,
         ),
+        RepositoryProvider<CategoryRepository>.value(
+          value: _categoryRepository,
+        ),
+        RepositoryProvider<CurrencyRepository>.value(
+          value: _currencyRepository,
+        ),
         RepositoryProvider<AiClient>.value(
           value: _aiClient,
         ),
@@ -140,9 +146,7 @@ class _OnAuthenticatedUser extends StatelessWidget {
     return BlocListener<AppBloc, AppState>(
       listenWhen: (previous, current) => previous.user != current.user,
       listener: (context, state) {
-        if (!state.user.isAnonymous) {
-          //TODO: Add logic that will be executed when the user is authenticated
-        }
+        if (!state.user.isAnonymous) {}
       },
       child: child,
     );

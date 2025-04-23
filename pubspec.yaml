@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   ai_client:
-    path: packages/ai_client/ai_client
+    path: packages/clients/ai_client/ai_client
   animations: ^2.0.11
   app_ui:
     path: packages/app_ui
@@ -16,20 +16,20 @@ dependencies:
     path: packages/app_utils
   async: ^2.12.0
   authentication_client:
-    path: packages/authentication_client/authentication_client
+    path: packages/clients/authentication_client/authentication_client
   bloc: ^9.0.0
   bloc_concurrency: ^0.3.0
   category_repository:
-    path: packages/category_repository
+    path: packages/repositories/category_repository
   currency_repository:
-    path: packages/currency_repository
+    path: packages/repositories/currency_repository
   dio: ^5.8.0+1
   dio_client:
-    path: packages/dio_client
+    path: packages/clients/dio_client
   dropdown_button2: ^2.3.9
   equatable: ^2.0.7
   felicash_data_client:
-    path: packages/felicash_data_client
+    path: packages/clients/felicash_data_client
   firebase_core: ^3.12.1
   flutter:
     sdk: flutter
@@ -52,29 +52,29 @@ dependencies:
   intl: ^0.20.0
   json_annotation: ^4.8.1
   n8n_ai_client:
-    path: packages/ai_client/n8n_ai_client
+    path: packages/clients/ai_client/n8n_ai_client
   permission_client:
-    path: packages/permission_client
+    path: packages/clients/permission_client
   shared_models:
     path: packages/shared_models
   sliver_tools: ^0.2.12
   speech_to_text_client:
-    path: packages/speech_to_text_client
+    path: packages/clients/speech_to_text_client
   sqflite: ^2.4.1
   supabase_authentication_client:
-    path: packages/authentication_client/supabase_authentication_client
+    path: packages/clients/authentication_client/supabase_authentication_client
   supabase_flutter: ^2.8.4
   syncfusion_flutter_charts: ^29.1.38
   syncfusion_flutter_core: ^29.1.38
   token_storage:
-    path: packages/authentication_client/token_storage
+    path: packages/clients/authentication_client/token_storage
   transaction_repository:
-    path: packages/transaction_repository
+    path: packages/repositories/transaction_repository
   user_repository:
-    path: packages/user_repository
+    path: packages/repositories/user_repository
   uuid: ^4.5.1
   wallet_repository:
-    path: packages/wallet_repository
+    path: packages/repositories/wallet_repository
 
 dev_dependencies:
   bloc_test: ^10.0.0

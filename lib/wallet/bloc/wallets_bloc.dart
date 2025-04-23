@@ -22,7 +22,7 @@ class WalletsBloc extends Bloc<WalletsEvent, WalletsState> {
   ) async {
     emit(const WalletLoadInProgress());
     await emit.forEach<List<BaseWalletModel>>(
-      _walletRepository.getWallets(
+      _walletRepository.getWalletsStream(
         event.query,
       ),
       onData: (wallets) => WalletLoadSuccess(wallets: wallets),
@@ -39,7 +39,7 @@ class WalletsBloc extends Bloc<WalletsEvent, WalletsState> {
   ) async {
     emit(const WalletLoadInProgress());
     await emit.forEach<List<BaseWalletModel>>(
-      _walletRepository.getWallets(event.query),
+      _walletRepository.getWalletsStream(event.query),
       onData: (wallets) => WalletLoadSuccess(wallets: wallets),
       onError: (error, stackTrace) => WalletLoadFailure(
         error: error,

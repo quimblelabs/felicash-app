@@ -118,7 +118,7 @@ class _TransactionListState extends State<TransactionList> {
     if (_isBottom) {
       context
           .read<TransactionsBloc>()
-          .add(TransactionsNextSubscriptionRequested());
+          .add(const TransactionsNextSubscriptionRequested());
     }
   }
 
@@ -219,10 +219,9 @@ class _BottomLoader extends StatelessWidget {
 
 class _Section extends MultiSliver {
   _Section({
-    Key? key,
     required List<Widget> items,
+    super.key,
   }) : super(
-          key: key,
           pushPinnedChildren: true,
           children: items,
         );

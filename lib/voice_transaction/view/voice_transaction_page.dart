@@ -1,6 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
+import 'package:felicash/category/bloc/categories_bloc.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/voice_transaction/cubit/speech_language_cubit.dart';
 import 'package:felicash/voice_transaction/widgets/voice_transaction_bottom_buttons.dart';
@@ -16,6 +17,18 @@ class VoiceTransactionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
+      (bloc) => switch (bloc.state) {
+        WalletLoadSuccess(:final wallets) => wallets,
+        _ => [],
+      },
+    );
+    final categories = context.select<CategoriesBloc, List<CategoryModel>>(
+      (bloc) => switch (bloc.state) {
+        CategoriesLoadSuccess(:final categories) => categories,
+        _ => [],
+      },
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -32,7 +45,14 @@ class VoiceTransactionPage extends StatelessWidget {
         BlocProvider(
           create: (context) => AiAssistantBloc(
             aiClient: context.read(),
-          ),
+            walletRepository: context.read(),
+            categoryRepository: context.read(),
+          )..add(
+              AiAssistantLoadResourceRequested(
+                walletsParameter: wallets,
+                categoriesParameter: categories,
+              ),
+            ),
         ),
       ],
       child: const _VoiceTransactionView(),
@@ -143,9 +163,6 @@ class _ListenForUserSpeechCompleted extends StatelessWidget {
           context.read<AiAssistantBloc>().add(
                 AiAssistantStartProcessing(
                   requestMessage: recognizedText,
-                  walletsParameter: wallets,
-                  categoriesParameter: categories,
-                  transactionTypesParameter: transactionTypes,
                   sourceWallet: sourceWallet!,
                 ),
               );

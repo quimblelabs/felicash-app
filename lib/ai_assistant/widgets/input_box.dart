@@ -1,8 +1,6 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:category_repository/category_repository.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
-import 'package:felicash/category/bloc/categories_bloc.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/voice_transaction/view/speech_recognition_permission_modal.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
@@ -13,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:permission_client/permission_client.dart';
-import 'package:shared_models/shared_models.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class InputBox extends StatelessWidget {
@@ -168,16 +165,19 @@ class _WalletSelector extends StatelessWidget {
 
     return switch (state) {
       WalletInitial() => const SizedBox.shrink(),
-      WalletLoadInProgress(:final messageText) => Row(
-          children: [
-            Text(messageText),
-            const SizedBox(width: AppSpacing.md),
-            const SizedBox(
-              width: 16,
-              height: 16,
-              child: CircularProgressIndicator.adaptive(),
-            ),
-          ],
+      WalletLoadInProgress(:final messageText) => Padding(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            children: [
+              Text(messageText),
+              const SizedBox(width: AppSpacing.md),
+              const SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            ],
+          ),
         ),
       WalletLoadSuccess(:final wallets) => ActionChip(
           labelStyle: theme.textTheme.labelMedium,
@@ -336,22 +336,11 @@ class _ActionButton extends StatelessWidget {
       );
     }
 
-    // Categories
-    final categories = switch (context.read<CategoriesBloc>().state) {
-      CategoriesLoadSuccess(:final categories) => categories,
-      _ => <CategoryModel>[],
-    };
-    // Transaction types
-    final transactionTypes = TransactionTypeEnum.availableValues;
-
     // Send message
     FocusScope.of(context).unfocus();
     context.read<AiAssistantBloc>().add(
           AiAssistantStartProcessing(
             requestMessage: message,
-            walletsParameter: wallets,
-            categoriesParameter: categories,
-            transactionTypesParameter: transactionTypes,
             sourceWallet: sourceWallet!,
           ),
         );

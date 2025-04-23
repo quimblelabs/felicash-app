@@ -1,6 +1,6 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/app/routes/app_router.dart';
+import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/wallet/cubit/wallets_filter_cubit.dart';
 import 'package:felicash/wallet/models/wallets_view_filter.dart';
 import 'package:felicash/wallet/widgets/wallet_card.dart';
