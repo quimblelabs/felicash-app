@@ -15,13 +15,9 @@ dependencies:
   shared_models:
     path: ../../shared_models
   felicash_data_client:
-<<<<<<< Updated upstream:packages/category_repository/pubspec.yaml
-    path: ../felicash_data_client
+    path: ../../clients/felicash_data_client
   json_annotation: ^4.9.0
   json_serializable: ^6.9.5
-=======
-    path: ../../clients/felicash_data_client
->>>>>>> Stashed changes:packages/repositories/category_repository/pubspec.yaml
 
 dev_dependencies:
   flutter_test:

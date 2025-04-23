@@ -14,13 +14,9 @@ dependencies:
   felicash_data_client:
     path: ../../clients/felicash_data_client
   shared_models:
-<<<<<<< Updated upstream:packages/currency_repository/pubspec.yaml
-    path: ../shared_models
+    path: ../../shared_models
   json_annotation: ^4.9.0
   json_serializable: ^6.9.5
-=======
-    path: ../../shared_models
->>>>>>> Stashed changes:packages/repositories/currency_repository/pubspec.yaml
 dev_dependencies:
   build_runner: ^2.4.15
   flutter_test:
