@@ -4,7 +4,6 @@ import 'package:app_utils/app_utils.dart';
 import 'package:felicash/ai_assistant/view/ai_assistant_page.dart';
 import 'package:felicash/app/bloc/app_bloc.dart';
 import 'package:felicash/app/routes/app_router_extra_codec.dart';
-import 'package:felicash/app/routes/extras/transaction_list_filter_extra_codec.dart';
 import 'package:felicash/app/routes/pages/fade_transition_page.dart';
 import 'package:felicash/app/routes/pages/modal_page.dart';
 import 'package:felicash/home/view/home_page.dart';
