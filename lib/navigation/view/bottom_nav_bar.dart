@@ -98,6 +98,7 @@ class _NavBarItem extends StatelessWidget {
     final effectiveColor = isSelected ? color : unSelectedColor;
 
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         HapticFeedback.lightImpact();
         onTap();
