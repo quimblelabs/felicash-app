@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:felicash/overview/summary_trending/models/daily_summary.dart';
-import 'package:felicash_data_client/felicash_data_client.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_models/shared_models.dart';
 
@@ -28,7 +27,7 @@ class SummaryTrendingSectionBloc
     emit(state.copyWith(status: SummaryTrendingSectionStatus.loading));
 
     try {
-      //TODO(dangddt): Implement get daily summaries from API
+      // TODO(dangddt): Implement get daily summaries from API
 
       final summaries = _getFakeDailySummaries();
       emit(

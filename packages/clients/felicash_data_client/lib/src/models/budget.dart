@@ -2,7 +2,6 @@ import 'package:felicash_data_client/felicash_data_client.dart' show SqliteRow;
 import 'package:felicash_data_client/src/enums/budget_period.dart';
 import 'package:felicash_data_client/src/models/budget_tracking.dart';
 import 'package:felicash_data_client/src/models/category.dart';
-import 'package:felicash_data_client/src/models/profile.dart';
 import 'package:felicash_data_client/src/typedefs/typedef.dart' show SqliteRow;
 import 'package:json_annotation/json_annotation.dart';
 
@@ -66,6 +65,9 @@ class Budget {
       budgetTrackings: [],
     );
   }
+
+  /// Table name of the budget
+  static const String tableName = 'budgets';
 
   /// Id field to suitable with sqlite database
   final String id;

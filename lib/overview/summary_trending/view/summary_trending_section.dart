@@ -127,7 +127,7 @@ class _TotalAmount extends StatelessWidget {
           Text(
             totalAmount.toCurrency(
               locale: l10n.localeName,
-              //TODO(tuanhm): Replace with your currency symbol
+              // TODO(tuanhm): Replace with your currency symbol
               symbol: r'$',
             ),
             style: theme.textTheme.headlineMedium?.copyWith(

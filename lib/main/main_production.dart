@@ -10,6 +10,7 @@ import 'package:n8n_ai_client/n8n_ai_client.dart';
 import 'package:supabase_authentication_client/supabase_authentication_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:token_storage/token_storage.dart';
+import 'package:transaction_repository/transaction_repository.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -39,6 +40,10 @@ void main() {
       client: dataClient,
     );
 
+    final transactionRepository = TransactionRepository(
+      client: dataClient,
+    );
+
     final dio = Dio();
     dio.interceptors.add(
       BearerTokenInterceptor(
@@ -61,6 +66,7 @@ void main() {
       walletRepository: walletRepository,
       categoryRepository: categoryRepository,
       currencyRepository: currencyRepository,
+      transactionRepository: transactionRepository,
     );
   });
 }

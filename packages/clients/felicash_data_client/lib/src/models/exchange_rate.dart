@@ -50,6 +50,9 @@ class ExchangeRate {
     );
   }
 
+  /// Table name of the exchange rate
+  static const String tableName = 'exchange_rates';
+
   /// Id field to suitable with sqlite database
   final String id;
 

@@ -45,6 +45,9 @@ class PaybackLink {
     );
   }
 
+  /// Table name of the payback link
+  static const String tableName = 'payback_links';
+
   /// Id field to suitable with sqlite database
   final String id;
 

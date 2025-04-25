@@ -1,6 +1,7 @@
 import 'package:felicash_data_client/src/models/wallet.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:powersync/sqlite3.dart' as sqlite;
+
 part 'saving_wallet.g.dart';
 
 /// {@template wallet_fields}
@@ -38,6 +39,9 @@ class SavingsWallet {
       wallets: [],
     );
   }
+
+  /// Table name of the savings wallet
+  static const String tableName = 'savings_wallets';
 
   /// Id field to suitable with sqlite database
   final String id;

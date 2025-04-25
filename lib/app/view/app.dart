@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:speech_to_text_client/speech_to_text_client.dart';
+import 'package:transaction_repository/transaction_repository.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -22,18 +23,21 @@ class App extends StatelessWidget {
     required WalletRepository walletRepository,
     required CategoryRepository categoryRepository,
     required CurrencyRepository currencyRepository,
+    required TransactionRepository transactionRepository,
     required AiClient aiClient,
     super.key,
   })  : _userRepository = userRepository,
         _walletRepository = walletRepository,
         _categoryRepository = categoryRepository,
         _currencyRepository = currencyRepository,
+        _transactionRepository = transactionRepository,
         _user = user,
         _aiClient = aiClient;
   final UserRepository _userRepository;
   final WalletRepository _walletRepository;
   final CategoryRepository _categoryRepository;
   final CurrencyRepository _currencyRepository;
+  final TransactionRepository _transactionRepository;
   final User _user;
   final AiClient _aiClient;
 
@@ -52,6 +56,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider<CurrencyRepository>.value(
           value: _currencyRepository,
+        ),
+        RepositoryProvider<TransactionRepository>.value(
+          value: _transactionRepository,
         ),
         RepositoryProvider<AiClient>.value(
           value: _aiClient,

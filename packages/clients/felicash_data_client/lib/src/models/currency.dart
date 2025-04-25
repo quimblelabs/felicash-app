@@ -44,6 +44,9 @@ class Currency {
     );
   }
 
+  /// Table name of the currency
+  static const String tableName = 'currencies';
+
   /// Id field to suitable with sqlite database
   final String id;
 
