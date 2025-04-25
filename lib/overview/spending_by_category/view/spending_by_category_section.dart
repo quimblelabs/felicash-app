@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-part '../widgets/spending_by_category_pie_chart.dart';
 part '../widgets/spending_by_category_list.dart';
+part '../widgets/spending_by_category_pie_chart.dart';
 
 class SpendingByCategorySection extends StatelessWidget {
   const SpendingByCategorySection({super.key});

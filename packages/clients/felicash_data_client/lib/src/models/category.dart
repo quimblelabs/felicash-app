@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-
 import 'package:felicash_data_client/felicash_data_client.dart';
-import 'package:felicash_data_client/src/enums/transaction_type.dart';
-import 'package:felicash_data_client/src/models/profile.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'category.g.dart';
@@ -61,6 +57,9 @@ class Category {
       categoryDescription: row[CategoryFields.categoryDescription] as String?,
     );
   }
+
+  /// Table name of the category
+  static const String tableName = 'categories';
 
   /// Id field to suitable with sqlite database
   final String id;
