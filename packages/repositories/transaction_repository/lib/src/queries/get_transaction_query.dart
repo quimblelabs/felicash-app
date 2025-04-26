@@ -58,3 +58,11 @@ class GetTransactionQuery extends BaseGetQuery {
         transactionNotes,
       ];
 }
+
+/// {@template custom_order_by_fields}
+/// Custom order by fields
+/// {@endtemplate}
+class CustomOrderByFields {
+  /// Absolute transaction amount
+  static const absTransactionAmount = 'abs(transaction_amount)';
+}

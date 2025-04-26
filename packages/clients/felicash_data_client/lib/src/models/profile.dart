@@ -30,6 +30,9 @@ class Profile {
     );
   }
 
+  /// Table name of the profile
+  static const String tableName = 'profiles';
+
   /// Id field to suitable with sqlite database
   final String id;
 

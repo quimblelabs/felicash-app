@@ -88,6 +88,9 @@ class Transaction {
     );
   }
 
+  /// Table name of the transaction
+  static const String tableName = 'transactions';
+
   /// Id field to suitable with sqlite database
   final String id;
 

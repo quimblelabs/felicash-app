@@ -53,6 +53,9 @@ class BudgetTracking {
     );
   }
 
+  /// Table name of the budget tracking
+  static const String tableName = 'budget_trackings';
+
   /// Id field to suitable with sqlite database
   final String id;
 

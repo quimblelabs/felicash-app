@@ -1,17 +1,21 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:bloc/bloc.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:felicash/overview/spending_by_category/models/category_spending_stat.dart';
-import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:transaction_repository/transaction_repository.dart';
 
 part 'spending_by_category_event.dart';
 part 'spending_by_category_state.dart';
 
 class SpendingByCategoryBloc
     extends Bloc<SpendingByCategoryEvent, SpendingByCategoryState> {
-  SpendingByCategoryBloc() : super(const SpendingByCategoryState()) {
+  SpendingByCategoryBloc({
+    required TransactionRepository transactionRepository,
+  })  : _transactionRepository = transactionRepository,
+        super(const SpendingByCategoryState()) {
     on<SpendingByCategorySubscriptionRequested>(
       _onSpendingByCategorySubscriptionRequested,
     );
@@ -20,21 +24,39 @@ class SpendingByCategoryBloc
     );
   }
 
-  void _onSpendingByCategorySubscriptionRequested(
+  final TransactionRepository _transactionRepository;
+
+  Future<void> _onSpendingByCategorySubscriptionRequested(
     SpendingByCategorySubscriptionRequested event,
     Emitter<SpendingByCategoryState> emit,
-  ) {
+  ) async {
     emit(state.copyWith(status: SpendingByCategoryStatus.loading));
-    // TODO(dangddt): implement _onSpendingByCategorySubscriptionRequested
-    final data = _fakeCategorySpendingStats;
-    final transformedData = _transformData(data, take: 3);
-    final selected = data.isNotEmpty ? data[0] : null;
-    emit(
-      state.copyWith(
-        status: SpendingByCategoryStatus.success,
-        categorySpendingStats: transformedData,
-        selectedCategorySpendingStat: selected,
+    await emit.forEach<List<TransactionSummaryByCategoryModel>>(
+      // TODO(tuanhm): remove hard code currency id
+      _transactionRepository.getTransactionSummaryByCategory(
+        GetTransactionSummaryByCategoryQuery(
+          convertToCurrencyId: '9c37561e-3b22-49c2-b153-39de15be36e7'.hardCoded,
+          transactionType: TransactionTypeEnum.expense,
+          startDate: DateTime.now().subtract(const Duration(days: 30)),
+          endDate: DateTime.now(),
+        ),
       ),
+      onData: (result) {
+        final data =
+            CategorySpendingStatListX.fromTransactionSummaryByCategoryModels(
+          result,
+        );
+        return state.copyWith(
+          status: SpendingByCategoryStatus.success,
+          categorySpendingStats: data,
+          selectedCategorySpendingStat: data.first,
+        );
+      },
+      onError: (error, stackTrace) {
+        return state.copyWith(
+          status: SpendingByCategoryStatus.failure,
+        );
+      },
     );
   }
 

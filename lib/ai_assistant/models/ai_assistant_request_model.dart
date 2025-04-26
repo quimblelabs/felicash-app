@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:transaction_repository/transaction_repository.dart';
 import 'package:uuid/uuid.dart';
 

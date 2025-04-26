@@ -54,6 +54,9 @@ class Recurrence {
     );
   }
 
+  /// Table name of the recurrence
+  static const String tableName = 'recurrences';
+
   /// Id field to suitable with sqlite database
   final String id;
 

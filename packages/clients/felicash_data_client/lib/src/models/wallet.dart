@@ -81,6 +81,9 @@ class Wallet {
     );
   }
 
+  /// Table name of the wallet
+  static const String tableName = 'wallets';
+
   /// Id field to suitable with sqlite database
   final String id;
 
