@@ -1,7 +1,7 @@
-import 'package:equatable/equatable.dart';
 import 'package:felicash_data_client/src/models/profile.dart';
 import 'package:felicash_data_client/src/typedefs/typedef.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'merchant.g.dart';
 
 /// {@template merchant_fields}
@@ -51,6 +51,9 @@ class Merchant {
       profiles: [],
     );
   }
+
+  /// Table name of the merchant
+  static const String tableName = 'merchants';
 
   /// Id field to suitable with sqlite database
   final String id;

@@ -2,10 +2,12 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:felicash_data_client/felicash_data_client.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:shared_models/shared_models.dart';
 import 'package:transaction_repository/src/models/transaction_model.dart';
+import 'package:transaction_repository/src/models/transaction_summary_by_category_model.dart';
 import 'package:transaction_repository/src/queries/get_transaction_query.dart';
+import 'package:transaction_repository/src/queries/get_transaction_summary_by_category_query.dart';
 import 'package:uuid/uuid.dart';
 
 /// {@template transaction_failure}
@@ -145,8 +147,8 @@ class TransactionRepository {
       query.walletId,
       query.categoryId,
       query.transactionType?.jsonKey,
-      query.startDate?.toIso8601String(),
-      query.endDate?.toIso8601String(),
+      query.startDate?.toUtc().toIso8601String(),
+      query.endDate?.toUtc().toIso8601String(),
       query.minAmount,
       query.maxAmount,
       query.transactionNotes,
@@ -508,7 +510,7 @@ class TransactionRepository {
           transaction.transactionType.jsonKey,
           transaction.notes,
           transaction.imageAttachment,
-          transaction.transactionDate,
+          transaction.transactionDate.toUtc().toIso8601String(),
           transaction.id,
         ];
 
@@ -696,4 +698,84 @@ class TransactionRepository {
       Error.throwWithStackTrace(DeleteTransactionFailure(e), stacktrace);
     }
   }
+
+  /// Query to get transaction summary by categories
+  /// Summarizes transaction amounts by category, converting all amounts to a
+  /// single currency
+  static const String _getTransactionSummaryByCategoryQuery = '''
+    SELECT 
+      c.${CategoryFields.categoryId} as ${TransactionSummaryByCategoryModelFields.categoryId},
+      c.${CategoryFields.categoryName} as ${TransactionSummaryByCategoryModelFields.categoryName},
+      c.${CategoryFields.categoryIcon} as ${TransactionSummaryByCategoryModelFields.categoryIcon},
+      c.${CategoryFields.categoryColor} as ${TransactionSummaryByCategoryModelFields.categoryColor},
+      COUNT(t.${TransactionFields.transactionId}) as ${TransactionSummaryByCategoryModelFields.transactionCount},
+      SUM(t.${TransactionFields.transactionAmount}) as ${TransactionSummaryByCategoryModelFields.totalAmount},
+      cu.${CurrencyFields.currencyCode} as ${TransactionSummaryByCategoryModelFields.baseCurrencyCode},
+      SUM(t.${TransactionFields.transactionAmount} * COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0)) as ${TransactionSummaryByCategoryModelFields.totalAmountExchanged},
+      (
+        SELECT ${CurrencyFields.currencyCode}
+        FROM ${Currency.tableName}
+        WHERE ${CurrencyFields.currencyId} = ?1
+      ) as ${TransactionSummaryByCategoryModelFields.exchangeCurrencyCode},
+      COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) as ${TransactionSummaryByCategoryModelFields.exchangeRateRate},
+      COALESCE(er.${ExchangeRateFields.exchangeRateEffectiveDate}, 
+        (
+          SELECT MAX(${ExchangeRateFields.exchangeRateEffectiveDate}) 
+          FROM ${ExchangeRate.tableName}
+          WHERE ${ExchangeRateFields.exchangeRateToCurrency} = ?1
+        )
+      ) as ${TransactionSummaryByCategoryModelFields.exchangeRateEffectiveDate}
+    FROM ${Transaction.tableName} t
+    JOIN ${Category.tableName} c ON t.${TransactionFields.transactionCategoryId} = c.${CategoryFields.categoryId}
+    JOIN ${Wallet.tableName} w ON t.${TransactionFields.transactionWalletId} = w.${WalletFields.walletId}
+    LEFT JOIN ${ExchangeRate.tableName} er ON w.${WalletFields.walletBaseCurrency} = er.${ExchangeRateFields.exchangeRateFromCurrency} 
+      AND er.${ExchangeRateFields.exchangeRateToCurrency} = ?1 AND date(er.${ExchangeRateFields.exchangeRateEffectiveDate}) = 
+      (
+        SELECT MAX(date(${ExchangeRateFields.exchangeRateEffectiveDate})) 
+        FROM ${ExchangeRate.tableName}
+        WHERE ${ExchangeRateFields.exchangeRateToCurrency} = ?1
+      )
+    JOIN ${Currency.tableName} cu ON w.${WalletFields.walletBaseCurrency} = cu.${CurrencyFields.currencyId}
+    WHERE t.${TransactionFields.transactionUserId} = ?2
+      AND t.${TransactionFields.transactionTransactionType} = ?3
+      AND (?4 IS NULL OR t.${TransactionFields.transactionTransactionDate} >= ?4)
+      AND (?5 IS NULL OR t.${TransactionFields.transactionTransactionDate} <= ?5)
+    GROUP BY c.${CategoryFields.categoryId}, er.${ExchangeRateFields.exchangeRateId}, cu.${CurrencyFields.currencyId}
+    ORDER BY total_amount DESC
+  ''';
+
+  /// Get transaction summary by category.
+  Stream<List<TransactionSummaryByCategoryModel>>
+      getTransactionSummaryByCategory(
+    GetTransactionSummaryByCategoryQuery query,
+  ) {
+    final params = [
+      query.convertToCurrencyId,
+      _client.getUserId(),
+      query.transactionType?.jsonKey,
+      query.startDate?.toUtc().toIso8601String(),
+      query.endDate?.toUtc().toIso8601String(),
+    ];
+
+    return _client.db
+        .watch(
+      _query(_getTransactionSummaryByCategoryQuery, params),
+      parameters: params,
+    )
+        .map(
+      (results) {
+        return results.map(TransactionSummaryByCategoryModel.fromRow).toList();
+      },
+    );
+  }
 }
+
+// SELECT c.category_id,c.category_name,c.category_icon,c.category_color, count(t.transaction_id) as transaction_count, (sum(t.transaction_amount) * er.exchange_rate_rate) as total_amount, er.exchange_rate_rate, er.exchange_rate_effective_date
+// FROM transactions t
+// JOIN categories c ON t.transaction_category_id = c.category_id
+// JOIN wallets w ON t.transaction_wallet_id = w.wallet_id
+// JOIN exchange_rates er ON w.wallet_base_currency = er.exchange_rate_from_currency 
+//     AND er.exchange_rate_to_currency = '4de39ed1-0743-4e90-a234-4788ce1bda77' 
+//     AND date(er.exchange_rate_effective_date) = date(now())
+// WHERE transaction_transaction_type = 'expense'
+// GROUP BY c.category_id, er.exchange_rate_id

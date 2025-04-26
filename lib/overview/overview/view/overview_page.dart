@@ -19,8 +19,9 @@ class OverviewPage extends StatelessWidget {
             ..add(SummaryTrendingSectionSubscriptionRequested()),
         ),
         BlocProvider(
-          create: (_) => SpendingByCategoryBloc()
-            ..add(SpendingByCategorySubscriptionRequested()),
+          create: (_) => SpendingByCategoryBloc(
+            transactionRepository: context.read(),
+          )..add(SpendingByCategorySubscriptionRequested()),
         ),
       ],
       child: const _OverviewView(),

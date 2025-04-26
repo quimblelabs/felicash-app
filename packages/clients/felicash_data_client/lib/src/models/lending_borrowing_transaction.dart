@@ -3,6 +3,7 @@ import 'package:felicash_data_client/src/models/profile.dart';
 import 'package:felicash_data_client/src/models/transaction.dart';
 import 'package:felicash_data_client/src/typedefs/typedef.dart' show SqliteRow;
 import 'package:json_annotation/json_annotation.dart';
+
 part 'lending_borrowing_transaction.g.dart';
 
 /// {@template lending_borrowing_transaction_model}
@@ -58,6 +59,9 @@ class LendingBorrowingTransaction {
       counterParties: [],
     );
   }
+
+  /// Table name of the lending borrowing transaction
+  static const String tableName = 'lending_borrowing_transactions';
 
   /// Id field to suitable with sqlite database
   final String id;

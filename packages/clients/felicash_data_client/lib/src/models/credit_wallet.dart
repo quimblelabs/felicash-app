@@ -1,8 +1,5 @@
-import 'package:felicash_data_client/src/models/models.dart';
-import 'package:felicash_data_client/src/models/wallet.dart';
 import 'package:felicash_data_client/src/typedefs/typedef.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:powersync/sqlite3.dart' as sqlite;
 
 part 'credit_wallet.g.dart';
 
@@ -44,6 +41,9 @@ class CreditWallet {
           row[CreditWalletFields.creditWalletPaymentDueDayOfMonth] as int,
     );
   }
+
+  /// Table name of the credit wallet
+  static const String tableName = 'credit_wallets';
 
   /// Id field to suitable with sqlite database
   final String id;
