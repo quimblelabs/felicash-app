@@ -5,11 +5,30 @@ class TransactionListFilterButton extends StatelessWidget {
     super.key,
   });
 
+  int _countFilter(TransactionListFilter filter) {
+    var count = 0;
+    if (filter.categories.isNotEmpty) count++;
+    if (filter.wallets.isNotEmpty) count++;
+    if (filter.types.isNotEmpty) count++;
+    if (filter.searchKey.isNotEmpty) count++;
+    if (filter.from != null || filter.to != null) count++;
+    return count;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () => _onPressed(context),
-      icon: const Icon(Icons.filter_list),
+    final filter =
+        context.select<TransactionListFilterCubit, TransactionListFilter>(
+      (value) => value.state.filter,
+    );
+    final count = _countFilter(filter);
+    return Badge(
+      isLabelVisible: count > 0,
+      label: Text(count.toString()),
+      child: IconButton(
+        onPressed: () => _onPressed(context),
+        icon: const Icon(Icons.filter_list),
+      ),
     );
   }
 
