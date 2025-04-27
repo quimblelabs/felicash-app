@@ -34,9 +34,13 @@ class _TransactionListState extends State<TransactionList> {
           case TransactionsStatus.success:
           case TransactionsStatus.loading:
             if (state.transactions.isEmpty) {
-              return SliverToBoxAdapter(
-                child: Center(
-                  child: Text('No transactions'.hardCoded),
+              return SliverFillRemaining(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('No transactions'.hardCoded),
+                    Text('Add a transaction to get started'.hardCoded),
+                  ],
                 ),
               );
             }

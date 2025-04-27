@@ -1,6 +1,12 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:currency_repository/currency_repository.dart';
+import 'package:felicash/currency/bloc/currencies_bloc.dart';
 import 'package:felicash/l10n/l10n.dart';
+import 'package:felicash/wallet/bloc/wallets_bloc.dart';
+import 'package:felicash_data_client/felicash_data_client.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class OverviewAppBar extends StatelessWidget {
   const OverviewAppBar({super.key});
@@ -59,10 +65,71 @@ class _AppBarLeading extends StatelessWidget {
 class _TotalBalance extends StatelessWidget {
   const _TotalBalance({super.key});
 
+  double _calculateTotalBalance(
+    Set<CurrencyModel> currencies,
+    Set<BaseWalletModel> wallets,
+    CurrencyModel baseCurrency,
+  ) {
+    double totalBalance = 0;
+
+    for (final wallet in wallets) {
+      if (wallet.excludeFromTotal || wallet.isArchived) continue;
+
+      if (wallet.baseCurrency.code == baseCurrency.code) {
+        totalBalance += wallet.balance;
+      } else {
+        // TODO: Implement exchange rate conversion
+        // For now, we'll just add the balance as is
+        totalBalance += wallet.balance;
+      }
+    }
+    return totalBalance;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = context.l10n;
+    final currencies = context.select<CurrenciesBloc, Set<CurrencyModel>>(
+      (value) {
+        final state = value.state;
+        if (state is CurrenciesLoadSuccess) {
+          return state.currencies.toSet();
+        }
+        return {};
+      },
+    );
+
+    final wallets = context.select<WalletsBloc, Set<BaseWalletModel>>(
+      (value) {
+        final state = value.state;
+        if (state is WalletLoadSuccess) {
+          return state.wallets.toSet();
+        }
+        return {};
+      },
+    );
+
+    // TODO(tuanhm): Get base currency from user settings
+    // final baseCurrency = currencies.firstWhere(
+    //   (currency) => currency.code == 'USD',
+    //   orElse: () => currencies.first,
+    // );
+    final baseCurrency = CurrencyModel(
+      code: 'USD',
+      symbol: r'$',
+      name: 'United States Dollar',
+      id: '1',
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+
+    final totalBalance = _calculateTotalBalance(
+      currencies,
+      wallets,
+      baseCurrency,
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.end,
@@ -78,7 +145,10 @@ class _TotalBalance extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              100000.0.toCurrency(locale: l10n.localeName, symbol: r'$'),
+              totalBalance.toCurrency(
+                locale: l10n.localeName,
+                symbol: r'$',
+              ),
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
