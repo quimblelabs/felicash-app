@@ -127,6 +127,9 @@ class TransactionRepository {
   static const _getTransactionsQuery = '''
     SELECT *
     FROM transactions t
+    JOIN categories c ON t.${TransactionFields.transactionCategoryId} = c.${CategoryFields.categoryId}
+    JOIN wallets w ON t.${TransactionFields.transactionWalletId} = w.${WalletFields.walletId}
+    JOIN currencies cu ON w.${WalletFields.walletBaseCurrency} = cu.${CurrencyFields.currencyId}
     WHERE t.${TransactionFields.transactionUserId} = ?1
     AND (?2 IS NULL OR t.${TransactionFields.transactionWalletId} = ?2)
     AND (?3 IS NULL OR t.${TransactionFields.transactionCategoryId} = ?3)
@@ -164,7 +167,20 @@ class TransactionRepository {
         .map(
       (results) {
         return results
-            .map(Transaction.fromRow)
+            .map(
+              (row) => Transaction.fromRow(row).copyWith(
+                categories: [
+                  Category.fromRow(row),
+                ],
+                wallets: [
+                  Wallet.fromRow(row).copyWith(
+                    currencies: [
+                      Currency.fromRow(row),
+                    ],
+                  ),
+                ],
+              ),
+            )
             .map(TransactionModel.fromTransaction)
             .toList();
       },
@@ -254,14 +270,14 @@ class TransactionRepository {
       ${TransactionFields.transactionTransferId},
       ${TransactionFields.transactionCreatedAt},
       ${TransactionFields.transactionUpdatedAt},
-      ${TransactionFields.transactionMerchantId},
+      ${TransactionFields.transactionMerchantId}
     )
     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, datetime(), datetime(), ?13)
     RETURNING *
   ''';
 
   /// Create a transaction.
-  Future<TransactionModel> createTransaction(
+  Future<void> createTransaction(
     TransactionModel transaction,
   ) async {
     try {
@@ -295,7 +311,7 @@ class TransactionRepository {
             'Unknown transaction type',
           );
       }
-      final createdTransaction = await _client.db.writeTransaction(
+      await _client.db.writeTransaction(
         (tx) async {
           // Create transaction
           final transactionParams = [
@@ -307,7 +323,7 @@ class TransactionRepository {
             //
             transaction.transactionType.jsonKey,
             transaction.amount,
-            transaction.transactionDate,
+            transaction.transactionDate.toUtc().toIso8601String(),
             transaction.notes,
             transaction.imageAttachment,
             //
@@ -357,7 +373,7 @@ class TransactionRepository {
               //
               transaction.transactionType.jsonKey,
               -transaction.amount,
-              transaction.transactionDate,
+              transaction.transactionDate.toUtc().toIso8601String(),
               transaction.notes,
               transaction.imageAttachment,
               //
@@ -422,20 +438,6 @@ class TransactionRepository {
           return transactionCreated;
         },
       );
-      if (createdTransaction.transactions.isNotEmpty) {
-        final transactionModel = TransactionModel.fromTransaction(
-          createdTransaction,
-        );
-        return transactionModel.copyWith(
-          transferWallet: transaction.transferWallet,
-          transferTransaction: createdTransaction.transactions.isNotEmpty
-              ? TransactionModel.fromTransaction(
-                  createdTransaction.transactions.first,
-                )
-              : null,
-        );
-      }
-      return TransactionModel.fromTransaction(createdTransaction);
     } on CreateTransactionFailure {
       rethrow;
     } catch (e, stacktrace) {

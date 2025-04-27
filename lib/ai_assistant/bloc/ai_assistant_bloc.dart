@@ -9,6 +9,7 @@ import 'package:equatable/equatable.dart';
 import 'package:felicash/ai_assistant/models/ai_assistant_request_model.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:transaction_repository/transaction_repository.dart';
+import 'package:uuid/uuid.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 part 'ai_processing_event.dart';
@@ -19,9 +20,11 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
     required AiClient aiClient,
     required WalletRepository walletRepository,
     required CategoryRepository categoryRepository,
+    required TransactionRepository transactionRepository,
   })  : _aiClient = aiClient,
         _walletRepository = walletRepository,
         _categoryRepository = categoryRepository,
+        _transactionRepository = transactionRepository,
         super(const AiAssistantInitial()) {
     on<AiAssistantLoadResourceRequested>(_onLoadResourceRequested);
     on<AiAssistantStartProcessing>(_onStartProcessing);
@@ -38,6 +41,7 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
   final AiClient _aiClient;
   final WalletRepository _walletRepository;
   final CategoryRepository _categoryRepository;
+  final TransactionRepository _transactionRepository;
 
   CancelableOperation<AiAssistantRequestModel>? _processingCancelable;
   List<BaseWalletModel> walletsParameter = [];
@@ -141,9 +145,7 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
         final transactionsData = <TransactionModel>[];
         if (transactions != null && transactions.isNotEmpty) {
           for (final e in transactions) {
-            // TODO(tuanhm): Get the wallet, category from the current
-            // knowledge base
-            final wallet = BasicWalletModel.empty;
+            final wallet = event.sourceWallet;
             final category = CategoryModel.empty.copyWith(
               id: e.category?.id,
               name: e.category?.name,
@@ -157,9 +159,9 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
             transactionsData.add(transaction);
           }
         }
-
-        // TODO(dangddt): Save all transactions to the database
-
+        for (final transaction in transactionsData) {
+          await _transactionRepository.createTransaction(transaction);
+        }
         return newProcess.copyWith(
           status: AiProcessingStatus.completed,
           response: ProcessingResponse(
@@ -232,7 +234,7 @@ extension on ExtractedTransaction {
   }) {
     final now = DateTime.now();
     return TransactionModel(
-      id: '',
+      id: const Uuid().v4(),
       notes: notes,
       category: category,
       transactionType: TransactionTypeEnum.fromJsonKey(transactionType ?? ''),

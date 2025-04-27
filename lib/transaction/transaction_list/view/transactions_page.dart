@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/app/routes/app_router.dart';
 import 'package:felicash/l10n/l10n.dart';
-import 'package:felicash/transaction/bloc/transaction_list_filter_cubit.dart';
+import 'package:felicash/transaction/cubit/transaction_list_filter_cubit.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
 import 'package:felicash/transaction/transaction_list/bloc/transactions_bloc.dart';
 import 'package:felicash/transaction/transaction_list/widgets/transaction_item.dart';

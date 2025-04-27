@@ -1,7 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/app/routes/app_router.dart';
-import 'package:felicash/transaction/bloc/transaction_list_filter_cubit.dart';
+import 'package:felicash/transaction/cubit/transaction_list_filter_cubit.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

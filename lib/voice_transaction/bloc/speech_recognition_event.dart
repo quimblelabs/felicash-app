@@ -29,6 +29,23 @@ sealed class SpeechRecognitionEvent extends Equatable {
 /// Initial event to initialize the speech recognition session.
 class SpeechRecognitionClientStarted extends SpeechRecognitionEvent {}
 
+class SpeechRecognitionLoadResourceRequested extends SpeechRecognitionEvent {
+  const SpeechRecognitionLoadResourceRequested({
+    this.walletsParameter = const [],
+    this.categoriesParameter = const [],
+  });
+
+  final List<BaseWalletModel> walletsParameter;
+  final List<CategoryModel> categoriesParameter;
+
+  @override
+  List<Object?> get props => [
+        ...super.props,
+        walletsParameter,
+        categoriesParameter,
+      ];
+}
+
 class SpeechRecognitionStartListeningRequested extends SpeechRecognitionEvent {
   const SpeechRecognitionStartListeningRequested({
     this.language,
