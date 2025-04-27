@@ -10,11 +10,13 @@ part 'post_query_body.g.dart';
   includeIfNull: false,
 )
 class PostQueryBody extends Equatable {
-  const PostQueryBody({required this.queryText});
+  const PostQueryBody({required this.queryText, required this.timezone});
 
   final QueryTextBody queryText;
 
+  final String timezone;
+
   Map<String, dynamic> toJson() => _$PostQueryBodyToJson(this);
   @override
-  List<Object?> get props => [queryText];
+  List<Object?> get props => [queryText, timezone];
 }
