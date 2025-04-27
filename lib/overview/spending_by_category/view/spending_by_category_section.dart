@@ -14,24 +14,88 @@ class SpendingByCategorySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Card(
-      child: AnimatedSize(
-        alignment: Alignment.topCenter,
-        duration: Duration(milliseconds: 410),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _Title(),
-            Stack(
-              alignment: Alignment.center,
+    return BlocBuilder<SpendingByCategoryBloc, SpendingByCategoryState>(
+      builder: (context, state) {
+        if (state.status == SpendingByCategoryStatus.loading) {
+          return const Card(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        if (state.categorySpendingStats.isEmpty) {
+          return const _EmptyStateView();
+        }
+
+        return const Card(
+          child: AnimatedSize(
+            alignment: Alignment.topCenter,
+            duration: Duration(milliseconds: 410),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _PieChart(),
-                _SelectedCategorySection(),
+                _Title(),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    _PieChart(),
+                    _SelectedCategorySection(),
+                  ],
+                ),
+                _SpendingByCategoryList(),
               ],
             ),
-            _SpendingByCategoryList(),
-          ],
-        ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _EmptyStateView extends StatelessWidget {
+  const _EmptyStateView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const _Title(),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.xlg,
+              vertical: AppSpacing.xxlg,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: AppSpacing.lg),
+                Icon(
+                  Icons.pie_chart_outline,
+                  size: 64,
+                  color: Theme.of(context).colorScheme.outline,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Text(
+                  'No spending data available'.hardCoded,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  'Add some transactions to see your spending by category'
+                      .hardCoded,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

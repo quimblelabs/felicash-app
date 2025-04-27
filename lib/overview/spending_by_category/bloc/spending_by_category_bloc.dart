@@ -49,7 +49,7 @@ class SpendingByCategoryBloc
         return state.copyWith(
           status: SpendingByCategoryStatus.success,
           categorySpendingStats: data,
-          selectedCategorySpendingStat: data.first,
+          selectedCategorySpendingStat: data.firstOrNull,
         );
       },
       onError: (error, stackTrace) {
