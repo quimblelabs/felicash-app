@@ -41,6 +41,7 @@ class AiAssistantPage extends StatelessWidget {
             aiClient: context.read(),
             categoryRepository: context.read(),
             walletRepository: context.read(),
+            transactionRepository: context.read(),
           )..add(
               AiAssistantLoadResourceRequested(
                 walletsParameter: wallets,
@@ -51,6 +52,9 @@ class AiAssistantPage extends StatelessWidget {
         BlocProvider(
           create: (context) => SpeechRecognitionBloc(
             speechToTextClient: context.read(),
+            walletRepository: context.read(),
+            categoryRepository: context.read(),
+            transactionRepository: context.read(),
           )..add(SpeechRecognitionClientStarted()),
         ),
       ],

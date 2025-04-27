@@ -9,7 +9,6 @@ import 'package:felicash/voice_transaction/widgets/voice_transaction_result_view
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_models/shared_models.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class VoiceTransactionPage extends StatelessWidget {
@@ -34,7 +33,17 @@ class VoiceTransactionPage extends StatelessWidget {
         BlocProvider(
           create: (context) => SpeechRecognitionBloc(
             speechToTextClient: context.read(),
-          )..add(SpeechRecognitionClientStarted()),
+            walletRepository: context.read(),
+            categoryRepository: context.read(),
+            transactionRepository: context.read(),
+          )
+            ..add(
+              SpeechRecognitionLoadResourceRequested(
+                walletsParameter: wallets,
+                categoriesParameter: categories,
+              ),
+            )
+            ..add(SpeechRecognitionClientStarted()),
           lazy: false,
         ),
         BlocProvider(
@@ -47,6 +56,7 @@ class VoiceTransactionPage extends StatelessWidget {
             aiClient: context.read(),
             walletRepository: context.read(),
             categoryRepository: context.read(),
+            transactionRepository: context.read(),
           )..add(
               AiAssistantLoadResourceRequested(
                 walletsParameter: wallets,
@@ -134,24 +144,7 @@ class _ListenForUserSpeechCompleted extends StatelessWidget {
           context
               .read<SpeechRecognitionBloc>()
               .add(const SpeechRecognitionStopListeningRequested());
-          final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
-            (bloc) => switch (bloc.state) {
-              WalletLoadSuccess(:final wallets) => wallets,
-              _ => [],
-            },
-          );
-          if (wallets.isEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('No wallets found'.hardCoded),
-              ),
-            );
-          }
-          // TODO(dangddt): Get categories,
-          final categories = <CategoryModel>[];
-          // TODO(dangddt): Get transaction types,
-          final transactionTypes = <TransactionTypeEnum>[];
-          // TODO(dangddt): Get source wallet,
+          // TODO(tuanhm): Get the source wallet from the current state
           const sourceWallet = null as BaseWalletModel?;
           if (sourceWallet == null) {
             ScaffoldMessenger.of(context).showSnackBar(

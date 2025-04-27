@@ -1,7 +1,8 @@
 import 'dart:async';
 
+import 'package:felicash_data_client/src/models/models.dart';
 import 'package:felicash_data_client/src/models/schema.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -227,6 +228,23 @@ class FelicashBackendConnector extends PowerSyncBackendConnector {
     }
 
     final rest = supabaseClient.rest;
+    final tableId = <String, String>{
+      BudgetTracking.tableName: BudgetTrackingFields.budgetTrackingId,
+      Budget.tableName: BudgetFields.budgetId,
+      Category.tableName: CategoryFields.categoryId,
+      CreditWallet.tableName: CreditWalletFields.creditWalletId,
+      Currency.tableName: CurrencyFields.currencyId,
+      ExchangeRate.tableName: ExchangeRateFields.exchangeRateId,
+      LendingBorrowingTransaction.tableName:
+          LendingBorrowingTransactionFields.lendingBorrowingTransactionId,
+      Merchant.tableName: MerchantFields.merchantId,
+      PaybackLink.tableName: PaybackLinkFields.paybackLinkId,
+      Profile.tableName: ProfileFields.profileId,
+      Recurrence.tableName: RecurrenceFields.recurrenceId,
+      SavingsWallet.tableName: SavingsWalletFields.savingsWalletId,
+      Transaction.tableName: TransactionFields.transactionId,
+      Wallet.tableName: WalletFields.walletId,
+    };
 
     try {
       for (final op in transaction.crud) {
@@ -234,14 +252,12 @@ class FelicashBackendConnector extends PowerSyncBackendConnector {
         switch (op.op) {
           case UpdateType.put:
             final data = Map<String, dynamic>.of(op.opData!);
-            // data['id'] = op.id;
+            data[tableId[op.table]!] = op.id;
             await table.upsert(data);
           case UpdateType.patch:
-            await table.update(op.opData!);
-          // .eq('id', op.id);
+            await table.update(op.opData!).eq(tableId[op.table]!, op.id);
           case UpdateType.delete:
-            await table.delete();
-          // .eq('id', op.id);
+            await table.delete().eq(tableId[op.table]!, op.id);
         }
       }
 

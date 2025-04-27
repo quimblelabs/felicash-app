@@ -2,9 +2,13 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:category_repository/category_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_models/shared_models.dart';
 import 'package:speech_to_text_client/speech_to_text_client.dart';
+import 'package:transaction_repository/transaction_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'speech_recognition_event.dart';
 part 'speech_recognition_state.dart';
@@ -18,15 +22,22 @@ class SpeechRecognitionBloc
     extends Bloc<SpeechRecognitionEvent, SpeechRecognitionState> {
   SpeechRecognitionBloc({
     required SpeechToTextClient speechToTextClient,
+    required WalletRepository walletRepository,
+    required CategoryRepository categoryRepository,
+    required TransactionRepository transactionRepository,
     Duration delayForFinalRecognizedText = kDelayForFinalRecognizedText,
   })  : _sttClient = speechToTextClient,
         _delayForFinalRecognizedText = delayForFinalRecognizedText,
+        _walletRepository = walletRepository,
+        _categoryRepository = categoryRepository,
+        _transactionRepository = transactionRepository,
         super(const SpeechRecognitionInitial()) {
     _statusSubscription = _sttClient.statusStream.listen(_listenForClientError);
     on<SpeechRecognitionClientStarted>(
       _onClientStart,
       transformer: droppable(),
     );
+    on<SpeechRecognitionLoadResourceRequested>(_onLoadResourceRequested);
     on<SpeechRecognitionStatusChanged>(_onStatusChanged);
     on<SpeechRecognitionStartListeningRequested>(_onStartListeningRequested);
     on<SpeechRecognitionPauseSessionRequested>(_onPauseSessionRequested);
@@ -37,9 +48,42 @@ class SpeechRecognitionBloc
   final Duration _delayForFinalRecognizedText;
   final SpeechToTextClient _sttClient;
   late StreamSubscription<SpeechToTextStatus> _statusSubscription;
+  final WalletRepository _walletRepository;
+  final CategoryRepository _categoryRepository;
+  final TransactionRepository _transactionRepository;
+
+  List<BaseWalletModel> walletsParameter = [];
+  List<CategoryModel> categoriesParameter = [];
+  List<TransactionTypeEnum> transactionTypesParameter = [];
 
   /// The timer to stop listening when the user does not speak.
   Timer? _stopListeningDebouncer;
+
+  Future<void> _onLoadResourceRequested(
+    SpeechRecognitionLoadResourceRequested event,
+    Emitter<SpeechRecognitionState> emit,
+  ) async {
+    try {
+      walletsParameter = event.walletsParameter.isNotEmpty
+          ? event.walletsParameter
+          : await _walletRepository.getWalletsFuture(
+              const GetWalletQuery(
+                archived: false,
+              ),
+            );
+      categoriesParameter = event.categoriesParameter.isNotEmpty
+          ? event.categoriesParameter
+          : await _categoryRepository.getCategoriesFuture(
+              const GetCategoryQuery(
+                enabled: true,
+              ),
+            );
+    } catch (e) {
+      walletsParameter = [];
+      categoriesParameter = [];
+    }
+    transactionTypesParameter = TransactionTypeEnum.availableValues;
+  }
 
   void _listenForClientError(SpeechToTextStatus clientStatus) {
     debugPrint('Client status: $clientStatus');
