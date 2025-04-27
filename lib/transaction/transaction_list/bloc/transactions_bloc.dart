@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:felicash/transaction/bloc/mock_txs_repo.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
 import 'package:transaction_repository/transaction_repository.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 part 'transactions_event.dart';
 part 'transactions_state.dart';
@@ -19,6 +19,7 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
         super(const TransactionsState.initial()) {
     on<TransactionsInitialSubscriptionRequested>(
       _onInitialSubscriptionRequested,
+      transformer: droppable(),
     );
     on<TransactionsNextSubscriptionRequested>(
       _onNextSubscriptionRequested,
@@ -91,8 +92,8 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
   /// Helper to build the current state based on the paged data
   TransactionsState _buildState() {
     final combined = _pagedData.expand((page) => page).toList();
-    final hasReachedEnd = _pagedData.isEmpty ||
-        _pagedData.last.length < MockTransactionRepository.pageSize;
+    final hasReachedEnd =
+        _pagedData.isEmpty || _pagedData.last.length < _pageSize;
 
     return TransactionsState(
       transactions: combined,
