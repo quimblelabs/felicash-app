@@ -11,5 +11,6 @@ Map<String, dynamic> _$PostQueryBodyToJson(PostQueryBody instance) =>
       if (instance.stringify case final value?) 'stringify': value,
       'hash_code': instance.hashCode,
       'query_text': instance.queryText,
+      'timezone': instance.timezone,
       'props': instance.props,
     };
