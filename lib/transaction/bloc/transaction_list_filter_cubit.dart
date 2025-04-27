@@ -10,11 +10,10 @@ import 'package:wallet_repository/wallet_repository.dart';
 part 'transaction_list_filter_state.dart';
 
 class TransactionListFilterCubit extends Cubit<TransactionListFilterState> {
-  TransactionListFilterCubit()
-      : super(
-          const TransactionListFilterState(
-            filter: TransactionListFilter.empty,
-          ),
+  TransactionListFilterCubit({
+    required TransactionListFilter initialFilter,
+  }) : super(
+          TransactionListFilterState.initial(initialFilter: initialFilter),
         );
 
   Timer? _searchDebounceTimer;
@@ -70,9 +69,13 @@ class TransactionListFilterCubit extends Cubit<TransactionListFilterState> {
     emit(state.copyWith(filter: state.filter.copyWith(to: to)));
   }
 
-  void reset() {
+  void clearAll() {
     _searchDebounceTimer?.cancel();
-    emit(const TransactionListFilterState(filter: TransactionListFilter.empty));
+    emit(
+      const TransactionListFilterState.initial(
+        initialFilter: TransactionListFilter.empty,
+      ),
+    );
   }
 
   @override

@@ -5,12 +5,18 @@ import 'package:equatable/equatable.dart';
 import 'package:felicash/transaction/bloc/mock_txs_repo.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
 import 'package:transaction_repository/transaction_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'transactions_event.dart';
 part 'transactions_state.dart';
 
+const _pageSize = 10;
+
 class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
-  TransactionsBloc() : super(const TransactionsState.initial()) {
+  TransactionsBloc({
+    required TransactionRepository transactionRepository,
+  })  : _transactionRepository = transactionRepository,
+        super(const TransactionsState.initial()) {
     on<TransactionsInitialSubscriptionRequested>(
       _onInitialSubscriptionRequested,
     );
@@ -19,7 +25,7 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
     );
   }
 
-  final _transactionRepository = MockTransactionRepository();
+  final TransactionRepository _transactionRepository;
   final List<List<TransactionModel>> _pagedData = [];
   DateTime? _lastCreatedAt;
 
@@ -29,8 +35,9 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
   ) {
     _pagedData.clear();
     emit(const TransactionsState.loading());
+    final query = event.filter.toGetTransactionQuery(pageIndex: 0);
     return emit.forEach(
-      _transactionRepository.fetchPage(pageIndex: 0),
+      _transactionRepository.getTransactions(query),
       onData: (transactions) {
         // Replace or insert the first page
         if (_pagedData.isEmpty) {
@@ -59,8 +66,9 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
     }
 
     final pageIndex = _pagedData.length;
+    final query = event.filter.toGetTransactionQuery(pageIndex: pageIndex);
     return emit.forEach(
-      _transactionRepository.fetchPage(pageIndex: pageIndex, before: last),
+      _transactionRepository.getTransactions(query),
       onData: (transactions) {
         // Replace or add the page at the correct index
         if (_pagedData.length > pageIndex) {
@@ -90,6 +98,28 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
       transactions: combined,
       hasReachedEnd: hasReachedEnd,
       status: TransactionsStatus.success,
+    );
+  }
+}
+
+extension on TransactionListFilter {
+  GetTransactionQuery toGetTransactionQuery({
+    required int pageIndex,
+    DateTime? start,
+    DateTime? end,
+  }) {
+    return GetTransactionQuery(
+      pageIndex: pageIndex,
+      pageSize: _pageSize,
+      startDate: start ?? from,
+      endDate: end ?? to,
+      // TODO(dangddt): Add multiple transaction type
+      transactionType: types.firstOrNull,
+      // TODO(dangddt): Add multiple category id
+      categoryId: categories.firstOrNull?.id,
+      // TODO(dangddt): Add multiple wallet id
+      walletId: wallets.firstOrNull?.id,
+      transactionNotes: searchKey,
     );
   }
 }

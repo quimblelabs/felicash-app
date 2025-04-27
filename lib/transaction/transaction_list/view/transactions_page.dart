@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/app/routes/app_router.dart';
 import 'package:felicash/l10n/l10n.dart';
@@ -24,14 +26,19 @@ class TransactionsPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => TransactionsBloc()
-            ..add(const TransactionsInitialSubscriptionRequested()),
+          create: (context) => TransactionsBloc(
+            transactionRepository: context.read<TransactionRepository>(),
+          )..add(const TransactionsInitialSubscriptionRequested()),
         ),
         BlocProvider(
-          create: (context) => TransactionListFilterCubit(),
+          create: (context) => TransactionListFilterCubit(
+            initialFilter: TransactionListFilter.empty,
+          ),
         ),
       ],
-      child: const TransactionsView(),
+      child: const _OnFilterUpdated(
+        child: TransactionsView(),
+      ),
     );
   }
 }
@@ -85,9 +92,9 @@ class _TransactionsViewState extends State<TransactionsView> {
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.lg,
+                    0,
                     AppSpacing.sm,
-                    AppSpacing.lg,
+                    0,
                     AppSpacing.xxxlg,
                   ),
                   sliver: TransactionList(
@@ -109,5 +116,25 @@ class _TransactionsViewState extends State<TransactionsView> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+}
+
+class _OnFilterUpdated extends StatelessWidget {
+  const _OnFilterUpdated({
+    required this.child,
+  });
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<TransactionListFilterCubit, TransactionListFilterState>(
+      listenWhen: (previous, current) => previous.filter != current.filter,
+      listener: (context, state) {
+        context.read<TransactionsBloc>().add(
+              TransactionsInitialSubscriptionRequested(filter: state.filter),
+            );
+      },
+      child: child,
+    );
   }
 }

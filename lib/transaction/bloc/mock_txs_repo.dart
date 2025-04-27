@@ -13,6 +13,25 @@ class MockTransactionRepository {
     final now = DateTime.now();
     final random = Random();
 
+    // Create mock wallets
+    final wallets = [
+      BasicWalletModel.empty.copyWith(
+        id: const Uuid().v4(),
+        name: 'Cash',
+        balance: 1000,
+      ),
+      BasicWalletModel.empty.copyWith(
+        id: const Uuid().v4(),
+        name: 'Bank Account',
+        balance: 5000,
+      ),
+      BasicWalletModel.empty.copyWith(
+        id: const Uuid().v4(),
+        name: 'Credit Card',
+        balance: -500,
+      ),
+    ];
+
     for (int day = 0; day < 100; day++) {
       final currentDate = now.subtract(Duration(days: day));
       // Generate 1-5 random transactions for this day
@@ -29,6 +48,26 @@ class MockTransactionRepository {
           'Healthcare',
           'Education',
         ];
+        final incomeNotesSeed = [
+          'Salary',
+          'Freelance work',
+          'Investment returns',
+          'Gift',
+          'Refund',
+          'Side hustle',
+          'Bonus',
+          'Rental income',
+        ];
+        final transferNotesSeed = [
+          'Transfer to savings',
+          'Transfer to checking',
+          'Transfer to investment',
+          'Transfer to emergency fund',
+          'Transfer to travel fund',
+          'Transfer to education fund',
+          'Transfer to retirement',
+          'Transfer to other account',
+        ];
         final categoryNameSeed = [
           'Food',
           'Transportation',
@@ -40,22 +79,61 @@ class MockTransactionRepository {
           'Miscellaneous',
         ];
 
-        final randomExpenseNote =
-            expenseNotesSeed[random.nextInt(expenseNotesSeed.length)];
+        // Randomly select transaction type
+        final transactionType = TransactionTypeEnum
+            .values[random.nextInt(TransactionTypeEnum.values.length)];
+
+        // Select appropriate notes based on transaction type
+        String randomNote;
+        switch (transactionType) {
+          case TransactionTypeEnum.expense:
+            randomNote =
+                expenseNotesSeed[random.nextInt(expenseNotesSeed.length)];
+            break;
+          case TransactionTypeEnum.income:
+            randomNote =
+                incomeNotesSeed[random.nextInt(incomeNotesSeed.length)];
+            break;
+          case TransactionTypeEnum.transfer:
+            randomNote =
+                transferNotesSeed[random.nextInt(transferNotesSeed.length)];
+            break;
+          case TransactionTypeEnum.unknown:
+            randomNote = 'Unknown transaction';
+            break;
+        }
+
         final randomCategoryName =
             categoryNameSeed[random.nextInt(categoryNameSeed.length)];
-        final randomAmount = (random.nextDouble() * 1000).roundToDouble();
+        double randomAmount;
+        switch (transactionType) {
+          case TransactionTypeEnum.expense:
+            randomAmount = -(random.nextDouble() * 1000)
+                .roundToDouble(); // Negative for expenses
+          case TransactionTypeEnum.income:
+            randomAmount = (random.nextDouble() * 1000)
+                .roundToDouble(); // Positive for income
+          case TransactionTypeEnum.transfer:
+            // For transfers, randomly decide if it's positive or negative
+            randomAmount = (random.nextBool() ? 1 : -1) *
+                (random.nextDouble() * 1000).roundToDouble();
+          case TransactionTypeEnum.unknown:
+            randomAmount = (random.nextDouble() * 1000).roundToDouble();
+        }
+
+        // Randomly select a wallet
+        final randomWallet = wallets[random.nextInt(wallets.length)];
 
         _allTransactions.add(
           TransactionModel(
             id: const Uuid().v4(),
-            wallet: BasicWalletModel.empty, // Mocked for simplicity
+            wallet: randomWallet,
             category: CategoryModel.empty.copyWith(
               name: randomCategoryName,
             ), // Mocked for simplicity
-            transactionType: TransactionTypeEnum.expense,
+            transactionType: transactionType,
             amount: randomAmount,
-            notes: randomExpenseNote,
+            notes: randomNote,
             transactionDate: currentDate,
             createdAt: currentDate,
             updatedAt: currentDate,
@@ -115,6 +193,26 @@ class MockTransactionRepository {
       'Healthcare',
       'Education',
     ];
+    final incomeNotesSeed = [
+      'Salary',
+      'Freelance work',
+      'Investment returns',
+      'Gift',
+      'Refund',
+      'Side hustle',
+      'Bonus',
+      'Rental income',
+    ];
+    final transferNotesSeed = [
+      'Transfer to savings',
+      'Transfer to checking',
+      'Transfer to investment',
+      'Transfer to emergency fund',
+      'Transfer to travel fund',
+      'Transfer to education fund',
+      'Transfer to retirement',
+      'Transfer to other account',
+    ];
     final categoryNameSeed = [
       'Food',
       'Transportation',
@@ -125,20 +223,80 @@ class MockTransactionRepository {
       'Education',
       'Miscellaneous',
     ];
+
+    // Create mock wallets
+    final wallets = [
+      BasicWalletModel.empty.copyWith(
+        id: const Uuid().v4(),
+        name: 'Cash',
+        balance: 1000,
+      ),
+      BasicWalletModel.empty.copyWith(
+        id: const Uuid().v4(),
+        name: 'Bank Account',
+        balance: 5000,
+      ),
+      BasicWalletModel.empty.copyWith(
+        id: const Uuid().v4(),
+        name: 'Credit Card',
+        balance: -500,
+      ),
+    ];
+
     final random = DateTime.now().millisecondsSinceEpoch % 1000;
-    final randomExpenseNote =
-        expenseNotesSeed[random % expenseNotesSeed.length];
+
+    // Randomly select transaction type
+    final transactionType =
+        TransactionTypeEnum.values[random % TransactionTypeEnum.values.length];
+
+    // Select appropriate notes based on transaction type
+    String randomNote;
+    switch (transactionType) {
+      case TransactionTypeEnum.expense:
+        randomNote = expenseNotesSeed[random % expenseNotesSeed.length];
+        break;
+      case TransactionTypeEnum.income:
+        randomNote = incomeNotesSeed[random % incomeNotesSeed.length];
+        break;
+      case TransactionTypeEnum.transfer:
+        randomNote = transferNotesSeed[random % transferNotesSeed.length];
+        break;
+      case TransactionTypeEnum.unknown:
+        randomNote = 'Unknown transaction';
+        break;
+    }
+
     final randomCategoryName =
         categoryNameSeed[random % categoryNameSeed.length];
+    double finalAmount;
+    switch (transactionType) {
+      case TransactionTypeEnum.expense:
+        finalAmount = -amount; // Negative for expenses
+        break;
+      case TransactionTypeEnum.income:
+        finalAmount = amount; // Positive for income
+        break;
+      case TransactionTypeEnum.transfer:
+        // For transfers, randomly decide if it's positive or negative
+        finalAmount = (random % 2 == 0 ? 1 : -1) * amount;
+        break;
+      case TransactionTypeEnum.unknown:
+        finalAmount = amount;
+        break;
+    }
+
+    // Randomly select a wallet
+    final randomWallet = wallets[random % wallets.length];
+
     final newTransaction = TransactionModel(
       id: const Uuid().v4(),
-      wallet: BasicWalletModel.empty, // Mocked for simplicity
+      wallet: randomWallet,
       category: CategoryModel.empty.copyWith(
         name: randomCategoryName,
       ), // Mocked for simplicity
-      transactionType: TransactionTypeEnum.expense,
-      amount: amount,
-      notes: randomExpenseNote,
+      transactionType: transactionType,
+      amount: finalAmount,
+      notes: randomNote,
       transactionDate: transactionDate,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),

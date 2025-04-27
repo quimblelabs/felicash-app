@@ -54,17 +54,18 @@ class _TransactionListState extends State<TransactionList> {
                     SliverPinnedHeader(
                       child: _DateHeader(date: date),
                     ),
-                    SliverPadding(
-                      padding: const EdgeInsets.only(
-                        top: AppSpacing.xs,
-                        bottom: AppSpacing.lg,
+                    DecoratedSliver(
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surfaceContainerLowest,
                       ),
                       sliver: SliverList.separated(
                         itemBuilder: (context, index) => _TransactionListItem(
                           transaction: transactions[index],
                         ),
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: AppSpacing.md,
+                        separatorBuilder: (context, index) => const Divider(
+                          height: 0,
+                          indent: AppSpacing.md,
+                          endIndent: AppSpacing.md,
                         ),
                         itemCount: transactions.length,
                       ),
@@ -162,10 +163,10 @@ class _DateHeader extends StatelessWidget {
       width: double.infinity,
       color: theme.colorScheme.surface.withValues(alpha: .9),
       padding: const EdgeInsets.fromLTRB(
-        AppSpacing.xs,
-        AppSpacing.sm,
         AppSpacing.lg,
-        AppSpacing.sm,
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.md,
       ),
       child: Text(
         dateText,
@@ -186,18 +187,9 @@ class _TransactionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(
-          AppRadius.lg,
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        child: TransactionItem(transaction: transaction),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      child: TransactionItem(transaction: transaction),
     );
   }
 }

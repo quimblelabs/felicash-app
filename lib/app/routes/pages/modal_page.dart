@@ -4,7 +4,7 @@ const _kScrollControlDisabledMaxHeightRatio = 9.0 / 16.0;
 
 class ModalPage<T> extends Page<T> {
   const ModalPage({
-    required this.builder,
+    required this.child,
     required this.isScrollControlled,
     this.backgroundColor,
     this.elevation,
@@ -24,7 +24,8 @@ class ModalPage<T> extends Page<T> {
     this.sheetAnimationStyle,
   });
 
-  final WidgetBuilder builder;
+  // final WidgetBuilder builder;
+  final Widget child;
 
   /// The bottom sheet's background color
   final Color? backgroundColor;
@@ -80,7 +81,9 @@ class ModalPage<T> extends Page<T> {
   Route<T> createRoute(BuildContext context) {
     return ModalBottomSheetRoute<T>(
       settings: this,
-      builder: builder,
+      builder: (context) {
+        return (ModalRoute.of(context)!.settings as ModalPage).child;
+      },
       backgroundColor: backgroundColor,
       elevation: elevation,
       shape: shape,

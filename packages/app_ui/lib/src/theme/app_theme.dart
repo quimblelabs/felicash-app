@@ -34,99 +34,151 @@ class AppTheme {
       useMaterial3: true,
       brightness: colorScheme.brightness,
       colorScheme: colorScheme,
-      appBarTheme: AppBarTheme(
-        elevation: 0,
-        shadowColor: colorScheme.shadow.withValues(alpha: .25),
-        color: colorScheme.surface,
-        surfaceTintColor: colorScheme.surface,
-        scrolledUnderElevation: 1,
-        centerTitle: true,
+      dividerTheme: _dividerTheme(colorScheme),
+      appBarTheme: _appBarTheme(colorScheme),
+      cardTheme: _cardTheme(colorScheme),
+      listTileTheme: _listTileTheme(colorScheme),
+      bottomAppBarTheme: _bottomAppBarTheme(colorScheme),
+      filledButtonTheme: _filledButtonTheme(colorScheme),
+      outlinedButtonTheme: _outlinedButtonTheme(colorScheme),
+      inputDecorationTheme: _inputDecorationTheme(colorScheme),
+      dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
+      chipTheme: _chipTheme(colorScheme),
+    );
+  }
+
+  AppBarTheme _appBarTheme(ColorScheme colorScheme) {
+    return AppBarTheme(
+      elevation: 0,
+      shadowColor: colorScheme.shadow.withValues(alpha: .25),
+      color: colorScheme.surface,
+      surfaceTintColor: colorScheme.surface,
+      scrolledUnderElevation: 1,
+      centerTitle: true,
+    );
+  }
+
+  CardTheme _cardTheme(ColorScheme colorScheme) {
+    return CardTheme(
+      color: colorScheme.surface,
+      surfaceTintColor: colorScheme.surface,
+      elevation: 1,
+    );
+  }
+
+  ListTileThemeData _listTileTheme(ColorScheme colorScheme) {
+    return ListTileThemeData(
+      titleTextStyle: textTheme.titleMedium?.copyWith(
+        fontWeight: FontWeight.w600,
       ),
-      listTileTheme: ListTileThemeData(
-        titleTextStyle: textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w600,
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(AppRadius.lg),
         ),
+      ),
+    );
+  }
+
+  BottomAppBarTheme _bottomAppBarTheme(ColorScheme colorScheme) {
+    return BottomAppBarTheme(
+      elevation: 1,
+      color: colorScheme.primary,
+      surfaceTintColor: colorScheme.primary,
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+    );
+  }
+
+  DividerThemeData _dividerTheme(ColorScheme colorScheme) {
+    return DividerThemeData(
+      color: colorScheme.outlineVariant.withAlpha(100),
+    );
+  }
+
+  FilledButtonThemeData _filledButtonTheme(ColorScheme colorScheme) {
+    return FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppRadius.lg)),
+        ),
+        minimumSize: AppButtonSizes.defaultMinimumSize,
+        maximumSize: AppButtonSizes.defaultMaximumSize,
+      ),
+    );
+  }
+
+  OutlinedButtonThemeData _outlinedButtonTheme(ColorScheme colorScheme) {
+    return OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppRadius.lg)),
+        ),
+        minimumSize: AppButtonSizes.defaultMinimumSize,
+        maximumSize: AppButtonSizes.defaultMaximumSize,
+      ),
+    );
+  }
+
+  InputDecorationTheme _inputDecorationTheme(ColorScheme colorScheme) {
+    return InputDecorationTheme(
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.xlg,
+        vertical: AppSpacing.lg,
+      ),
+      fillColor: colorScheme.surfaceContainer,
+      filled: true,
+      border: const OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(
+          Radius.circular(AppRadius.lg),
+        ),
+      ),
+    );
+  }
+
+  DropdownMenuThemeData _dropdownMenuTheme(ColorScheme colorScheme) {
+    return DropdownMenuThemeData(
+      inputDecorationTheme: InputDecorationTheme(
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.lg,
           vertical: AppSpacing.sm,
         ),
-        shape: const RoundedRectangleBorder(
+        isDense: true,
+        constraints: BoxConstraints(
+          minHeight: AppButtonSizes.smallMinimumSize.height,
+          maxHeight: AppButtonSizes.smallMaximumSize.height,
+        ),
+        border: const OutlineInputBorder(
+          borderSide: BorderSide.none,
           borderRadius: BorderRadius.all(
-            Radius.circular(AppRadius.lg),
+            Radius.circular(AppRadius.xlg),
           ),
         ),
       ),
-      bottomAppBarTheme: BottomAppBarTheme(
-        elevation: 1,
-        color: colorScheme.primary,
-        surfaceTintColor: colorScheme.primary,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
-      ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(AppRadius.xlg),
-            ),
-          ),
-          minimumSize: AppButtonSizes.defaultMinimumSize,
-          maximumSize: AppButtonSizes.defaultMaximumSize,
-        ),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          shape: const RoundedRectangleBorder(
+      menuStyle: MenuStyle(
+        shape: WidgetStateProperty.all(
+          const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(AppRadius.lg),
             ),
           ),
-          minimumSize: AppButtonSizes.defaultMinimumSize,
-          maximumSize: AppButtonSizes.defaultMaximumSize,
         ),
+        backgroundColor: WidgetStateProperty.all(colorScheme.surface),
+        elevation: WidgetStateProperty.all(2),
+        padding: WidgetStateProperty.all(EdgeInsets.zero),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.xlg,
-          vertical: AppSpacing.lg,
-        ),
-        fillColor: colorScheme.surfaceContainer,
-        filled: true,
-        border: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.all(
-            Radius.circular(AppRadius.lg),
-          ),
-        ),
-      ),
-      dropdownMenuTheme: DropdownMenuThemeData(
-        inputDecorationTheme: InputDecorationTheme(
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.sm,
-          ),
-          isDense: true,
-          constraints: BoxConstraints(
-            minHeight: AppButtonSizes.smallMinimumSize.height,
-            maxHeight: AppButtonSizes.smallMaximumSize.height,
-          ),
-          border: const OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.all(
-              Radius.circular(AppRadius.xlg),
-            ),
-          ),
-        ),
-        menuStyle: MenuStyle(
-          shape: WidgetStateProperty.all(
-            const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(AppRadius.lg),
-              ),
-            ),
-          ),
-          backgroundColor: WidgetStateProperty.all(colorScheme.surface),
-          elevation: WidgetStateProperty.all(2),
-          padding: WidgetStateProperty.all(EdgeInsets.zero),
+    );
+  }
+
+  ChipThemeData _chipTheme(ColorScheme colorScheme) {
+    return const ChipThemeData(
+      showCheckmark: false,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(AppRadius.lg),
         ),
       ),
     );

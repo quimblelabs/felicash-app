@@ -9,7 +9,7 @@ import 'package:wallet_repository/src/models/savings_walllet_model.dart';
 /// {@template base_wallet_model}
 /// Base wallet model for all wallet types
 /// {@endtemplate}
-class BaseWalletModel extends Equatable {
+abstract class BaseWalletModel extends Equatable {
   /// {@macro base_wallet_model}
   const BaseWalletModel({
     required this.id,
@@ -48,14 +48,7 @@ class BaseWalletModel extends Equatable {
   /// Convert to JSON
   ///
   /// This method will return the JSON representation of the [BaseWalletModel].
-  Map<String, dynamic> toJson() {
-    return switch (this) {
-      final BasicWalletModel wallet => wallet.toJson(),
-      final CreditWalletModel wallet => wallet.toJson(),
-      final SavingsWalletModel wallet => wallet.toJson(),
-      _ => throw Exception('Invalid wallet type'),
-    };
-  }
+  Map<String, dynamic> toJson();
 
   /// The unique identifier of the wallet
   final String id;
