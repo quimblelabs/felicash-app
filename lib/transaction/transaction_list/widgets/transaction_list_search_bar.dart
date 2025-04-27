@@ -11,8 +11,8 @@ class TransactionListSearchBar extends StatefulWidget {
 }
 
 class _TransactionListSearchBarState extends State<TransactionListSearchBar> {
-  bool _isCleared = true;
   final TextEditingController _searchController = TextEditingController();
+  bool _isCleared = true;
   Timer? _debounce;
 
   @override
@@ -22,11 +22,15 @@ class _TransactionListSearchBarState extends State<TransactionListSearchBar> {
   }
 
   void _onSearchChanged() {
+    final filterSearchKey =
+        context.read<TransactionListFilterCubit>().state.filter.searchKey;
     final searchKey = _searchController.text;
     if (searchKey.isEmpty) {
       setState(() => _isCleared = true);
     } else {
       setState(() => _isCleared = false);
+    }
+    if (searchKey != filterSearchKey) {
       _debounce?.cancel();
       _debounce = Timer(const Duration(milliseconds: 300), () {
         context.read<TransactionListFilterCubit>().updateSearchKey(searchKey);
