@@ -931,6 +931,14 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  navigator_resizable:
+    dependency: transitive
+    description:
+      name: navigator_resizable
+      sha256: ec1abf6f4b804ad5d4dc1fab3c914d6290543ee7b8a34095168c8726dbe38312
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   nested:
     dependency: transitive
     description:
@@ -1365,6 +1373,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.12"
+  smooth_sheets:
+    dependency: "direct main"
+    description:
+      name: smooth_sheets
+      sha256: "29b110df329ea48cce6e79cf25d0688fa447d11d24add52e7b8d4563daa64b7d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.11.3"
   source_gen:
     dependency: transitive
     description:
@@ -1584,6 +1600,22 @@ packages:
     description:
       name: syncfusion_flutter_core
       sha256: "720ea28f0ab8f8c19fc613c20b978e514c7e4e431171fd85ed8da528e01298e0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "29.1.39"
+  syncfusion_flutter_datepicker:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_datepicker
+      sha256: "19857d3cfb38ea3e11b198dc45a6b410655737826c6e86802cd3bd93f53bf4c5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "29.1.39"
+  syncfusion_localizations:
+    dependency: "direct main"
+    description:
+      name: syncfusion_localizations
+      sha256: "2503b2b8d8e859b4bb2fc690701511c2f18e6c5c06939996ff0ed62d3b92b614"
       url: "https://pub.dev"
     source: hosted
     version: "29.1.39"

@@ -7,10 +7,14 @@ import 'package:transaction_repository/transaction_repository.dart';
 class TransactionItem extends StatelessWidget {
   const TransactionItem({
     required this.transaction,
+    this.showWalletName = true,
+    this.onTap,
     super.key,
   });
 
   final TransactionModel transaction;
+  final bool showWalletName;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,73 +23,58 @@ class TransactionItem extends StatelessWidget {
     final crimsionRedColor = AppColors.crimsionRed.colorSchemeOf(context);
     final dollarBillColor = AppColors.dollarBill.colorSchemeOf(context);
     final amountColor = switch (transaction.transactionType) {
-      TransactionTypeEnum.income => crimsionRedColor.color,
-      TransactionTypeEnum.expense => dollarBillColor.color,
+      TransactionTypeEnum.income => dollarBillColor.color,
+      TransactionTypeEnum.expense => crimsionRedColor.color,
       TransactionTypeEnum.transfer => null,
       _ => null,
     };
-    return Row(
-      children: [
-        if (transaction.category case final category?)
-          CircleAvatar(
-            radius: AppRadius.xlg,
-            backgroundColor: category.color.withAlpha(40),
-            foregroundColor: category.color,
-            child: IconWidget(
-              icon: category.icon,
-              size: AppRadius.xlg,
+    final category = transaction.category;
+    return ListTile(
+      onTap: onTap,
+      visualDensity: VisualDensity.compact,
+      leading: CircleAvatar(
+        radius: AppRadius.xlg,
+        backgroundColor: category?.color.withAlpha(40),
+        foregroundColor: category?.color,
+        child: category != null
+            ? IconWidget(icon: category.icon, size: AppRadius.xlg)
+            : const Icon(Icons.question_mark),
+      ),
+      title: Text(category?.name ?? 'No category'),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            transaction.notes ?? '',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.bodySmall,
+          ),
+          if (showWalletName)
+            Text(
+              transaction.wallet.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodySmall,
             ),
+        ],
+      ),
+      trailing: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            transaction.amount.toCurrency(
+              locale: l10n.localeName,
+              symbol: transaction.wallet.baseCurrency.symbol,
+            ),
+            style: theme.textTheme.titleMedium?.copyWith(color: amountColor),
           ),
-        const SizedBox(width: AppSpacing.md),
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        transaction.category?.name ?? 'No category',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.titleMedium,
-                      ),
-                    ),
-                    if (transaction.notes case final notes?)
-                      if (notes.isNotEmpty) ...[
-                        const SizedBox(height: AppSpacing.xs),
-                        Text(
-                          notes,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall,
-                        ),
-                      ],
-                  ],
-                ),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    transaction.amount.toCurrency(locale: l10n.localeName),
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(color: amountColor),
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Text(
-                    transaction.transactionDate.yMMMEd(l10n.localeName),
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
-              ),
-            ],
+          Text(
+            transaction.transactionDate.yMMMd(l10n.localeName),
+            style: theme.textTheme.bodySmall,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:speech_to_text_client/speech_to_text_client.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:transaction_repository/transaction_repository.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -132,7 +133,10 @@ class AppView extends StatelessWidget {
         child: MaterialApp.router(
           theme: theme.light(),
           darkTheme: theme.dark(),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          localizationsDelegates: const [
+            ...AppLocalizations.localizationsDelegates,
+            SfGlobalLocalizations.delegate,
+          ],
           supportedLocales: AppLocalizations.supportedLocales,
           routerDelegate: router.routerDelegate,
           routeInformationParser: router.routeInformationParser,

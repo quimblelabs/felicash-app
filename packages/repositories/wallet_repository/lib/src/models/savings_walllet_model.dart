@@ -89,6 +89,7 @@ class SavingsWalletModel extends BaseWalletModel {
   }
 
   /// Convert to JSON
+  @override
   Map<String, dynamic> toJson() => _$SavingsWalletModelToJson(this);
 
   /// Creates a empty wallet model.

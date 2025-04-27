@@ -13,6 +13,7 @@ class TransactionListSearchBar extends StatefulWidget {
 class _TransactionListSearchBarState extends State<TransactionListSearchBar> {
   bool _isCleared = true;
   final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -26,13 +27,17 @@ class _TransactionListSearchBarState extends State<TransactionListSearchBar> {
       setState(() => _isCleared = true);
     } else {
       setState(() => _isCleared = false);
-      context.read<TransactionListFilterCubit>().updateSearchKey(searchKey);
+      _debounce?.cancel();
+      _debounce = Timer(const Duration(milliseconds: 300), () {
+        context.read<TransactionListFilterCubit>().updateSearchKey(searchKey);
+      });
     }
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 

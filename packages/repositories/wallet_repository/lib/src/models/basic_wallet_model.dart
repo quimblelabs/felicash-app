@@ -31,6 +31,7 @@ class BasicWalletModel extends BaseWalletModel {
     super.achieveReason,
   }) : super(walletType: WalletTypeEnum.basic);
 
+  /// Factory constructor for [BasicWalletModel] from JSON
   factory BasicWalletModel.fromJson(Map<String, dynamic> json) =>
       _$BasicWalletModelFromJson(json);
 
@@ -90,6 +91,38 @@ class BasicWalletModel extends BaseWalletModel {
     excludeFromTotal: false,
     isArchived: false,
   );
+
+  BasicWalletModel copyWith({
+    String? id,
+    String? name,
+    String? description,
+    CurrencyModel? baseCurrency,
+    double? balance,
+    Color? color,
+    RawIconData? icon,
+    bool? excludeFromTotal,
+    bool? isArchived,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    DateTime? archivedAt,
+    String? achieveReason,
+  }) {
+    return BasicWalletModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      baseCurrency: baseCurrency ?? this.baseCurrency,
+      balance: balance ?? this.balance,
+      color: color ?? this.color,
+      icon: icon ?? this.icon,
+      excludeFromTotal: excludeFromTotal ?? this.excludeFromTotal,
+      isArchived: isArchived ?? this.isArchived,
+      archivedAt: archivedAt ?? this.archivedAt,
+      achieveReason: achieveReason ?? this.achieveReason,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 
   /// Checks if the wallet is empty.
   bool get isEmpty => this == BasicWalletModel.empty;

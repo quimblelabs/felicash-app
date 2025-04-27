@@ -305,13 +305,15 @@ class _AssistantResponse extends HookWidget {
               if (response.transactions.isNotEmpty)
                 for (final transaction in response.transactions)
                   Container(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceContainer,
+                      border: Border.all(
+                        color: theme.colorScheme.outlineVariant,
+                      ),
                       borderRadius: BorderRadius.circular(AppSpacing.lg),
                     ),
                     child: TransactionItem(
                       transaction: transaction,
+                      showWalletName: false,
                     ),
                   ),
             ],

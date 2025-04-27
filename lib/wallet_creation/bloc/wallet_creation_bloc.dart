@@ -199,34 +199,17 @@ class WalletCreationBloc
     if (!state.isValid) return;
     emit(state.copyWith(status: WalletCreationStatus.submiting));
     try {
-      final baseWallet = BaseWalletModel(
+      final wallet = WalletFactory.createWallet(
         id: const Uuid().v4(),
         name: state.name.value,
         walletType: state.walletType,
         baseCurrency: state.currency!,
         balance: state.balance.value,
         color: state.color,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        excludeFromTotal: state.excludeFromTotal,
-        isArchived: false,
         icon: IconDataIcon.fromIconData(state.icon),
         description: state.description.value,
+        excludeFromTotal: state.excludeFromTotal,
       );
-      final wallet = switch (state.walletType) {
-        WalletTypeEnum.basic =>
-          BasicWalletModel.fromBaseWalletModel(baseWalletModel: baseWallet),
-        WalletTypeEnum.credit => CreditWalletModel.fromBaseWalletModel(
-            baseWalletModel: baseWallet,
-            creditLimit: state.creditLimit.value,
-            stateDayOfMonth: state.stateDayOfMonth.value,
-            paymentDueDayOfMonth: state.paymentDayOfMonth.value,
-          ),
-        WalletTypeEnum.savings => SavingsWalletModel.fromBaseWalletModel(
-            baseWalletModel: baseWallet,
-            savingsGoal: state.savingsGoal.value,
-          ),
-      };
       await _walletRepository.createWallet(wallet);
       emit(state.copyWith(status: WalletCreationStatus.success));
     } catch (e) {

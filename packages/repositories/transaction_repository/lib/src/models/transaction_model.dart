@@ -30,6 +30,11 @@ class TransactionModel extends Equatable {
 
   /// Factory constructor for [TransactionModel] from [Transaction]
   factory TransactionModel.fromTransaction(Transaction transaction) {
+    final recurrence = transaction.recurrences.firstOrNull;
+    final category = transaction.categories.firstOrNull;
+    final wallet = transaction.wallets.firstOrNull;
+    final transferWallet = transaction.wallets.firstOrNull;
+    final transferTransaction = transaction.transactions.firstOrNull;
     return TransactionModel(
       id: transaction.transactionId,
       amount: transaction.transactionAmount,
@@ -38,25 +43,37 @@ class TransactionModel extends Equatable {
       updatedAt: transaction.transactionUpdatedAt,
       notes: transaction.transactionNotes,
       imageAttachment: transaction.transactionImageAttachment,
-      recurrence: RecurrenceModel.fromRecurrence(
-        transaction.recurrences.first,
-      ),
-      category: CategoryModel.fromCategory(transaction.categories.first),
+      recurrence: recurrence != null
+          ? RecurrenceModel.fromRecurrence(recurrence)
+          : null,
+      category: category != null ? CategoryModel.fromCategory(category) : null,
       transactionType: TransactionTypeEnum.values.byName(
         transaction.transactionTransactionType.name,
       ),
-      wallet: switch (transaction.wallets.first.walletWalletType) {
-        WalletType.basic => BasicWalletModel.fromWallet(
-            wallet: transaction.wallets.first,
-          ),
-        WalletType.credit => CreditWalletModel.fromWallet(
-            wallet: transaction.wallets.first,
-          ),
-        WalletType.savings => SavingsWalletModel.fromWallet(
-            wallet: transaction.wallets.first,
-          ),
-        _ => throw UnimplementedError(),
-      },
+      transferTransaction: transferTransaction != null
+          ? TransactionModel.fromTransaction(transferTransaction)
+          : null,
+      wallet: wallet != null
+          ? switch (wallet.walletWalletType) {
+              WalletType.basic => BasicWalletModel.fromWallet(wallet: wallet),
+              WalletType.credit => CreditWalletModel.fromWallet(wallet: wallet),
+              WalletType.savings =>
+                SavingsWalletModel.fromWallet(wallet: wallet),
+              _ => throw UnimplementedError(),
+            }
+          : BasicWalletModel.empty,
+      transferWallet: transferWallet != null
+          ? switch (transferWallet.walletWalletType) {
+              WalletType.basic =>
+                BasicWalletModel.fromWallet(wallet: transferWallet),
+              WalletType.credit => CreditWalletModel.fromWallet(
+                  wallet: transferWallet,
+                ),
+              WalletType.savings =>
+                SavingsWalletModel.fromWallet(wallet: transferWallet),
+              _ => throw UnimplementedError(),
+            }
+          : null,
     );
   }
 

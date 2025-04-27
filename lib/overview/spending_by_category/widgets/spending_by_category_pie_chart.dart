@@ -111,28 +111,31 @@ class _SelectedCategorySection extends StatelessWidget {
         ),
         duration: const Duration(milliseconds: 410),
         reverseDuration: Duration.zero,
-        child: Column(
-          key: ValueKey(selectedItem.category),
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                amountValue,
+        child: Transform.translate(
+          offset: const Offset(0, AppSpacing.xs),
+          child: Column(
+            key: ValueKey(selectedItem.category),
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  amountValue,
+                  maxLines: 1,
+                  style: theme.textTheme.headlineMedium,
+                ),
+              ),
+              Text(
+                selectedItem.category.name,
                 maxLines: 1,
-                style: theme.textTheme.headlineMedium,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: selectedItem.category.color,
+                ),
               ),
-            ),
-            Text(
-              selectedItem.category.name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.titleSmall?.copyWith(
-                color: selectedItem.category.color,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
