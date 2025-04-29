@@ -39,13 +39,11 @@ final class CurrenciesLoadSuccess extends CurrenciesState {
 final class CurrenciesLoadFailure extends CurrenciesState {
   const CurrenciesLoadFailure({
     required this.error,
-    required this.previousQuery,
     this.messageText = 'Error when load currencies',
   });
   final String messageText;
   final Object error;
-  final GetCurrencyQuery previousQuery;
 
   @override
-  List<Object?> get props => [messageText, error, previousQuery];
+  List<Object?> get props => [messageText, error];
 }

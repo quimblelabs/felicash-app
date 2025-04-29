@@ -51,12 +51,9 @@ class CurrencySelectorView extends HookWidget {
       CurrenciesLoadInProgress() =>
         const CircularProgressIndicator(),
       CurrenciesLoadSuccess() => const Icon(Icons.arrow_drop_down),
-      CurrenciesLoadFailure(:final previousQuery) => GestureDetector(
-          onTap: () => context.read<CurrenciesBloc>().add(
-                CurrenciesSubscriptionRetry(
-                  query: previousQuery,
-                ),
-              ),
+      CurrenciesLoadFailure() => GestureDetector(
+          onTap: () =>
+              context.read<CurrenciesBloc>().add(const CurrenciesFetched()),
           child: const Icon(Icons.refresh),
         ),
     };
