@@ -3,7 +3,6 @@ import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash/currency/bloc/currencies_bloc.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
-import 'package:felicash_data_client/felicash_data_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -63,7 +62,7 @@ class _AppBarLeading extends StatelessWidget {
 }
 
 class _TotalBalance extends StatelessWidget {
-  const _TotalBalance({super.key});
+  const _TotalBalance();
 
   double _calculateTotalBalance(
     Set<CurrencyModel> currencies,
@@ -119,9 +118,6 @@ class _TotalBalance extends StatelessWidget {
       code: 'USD',
       symbol: r'$',
       name: 'United States Dollar',
-      id: '1',
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
     );
 
     final totalBalance = _calculateTotalBalance(

@@ -7,24 +7,9 @@ sealed class CurrenciesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CurrenciesSubscriptionRequested extends CurrenciesEvent {
-  const CurrenciesSubscriptionRequested({
-    required this.query,
-  });
-
-  final GetCurrencyQuery query;
+class CurrenciesFetched extends CurrenciesEvent {
+  const CurrenciesFetched();
 
   @override
-  List<Object> get props => [query];
-}
-
-class CurrenciesSubscriptionRetry extends CurrenciesEvent {
-  const CurrenciesSubscriptionRetry({
-    required this.query,
-  });
-
-  final GetCurrencyQuery query;
-
-  @override
-  List<Object> get props => [query];
+  List<Object> get props => [];
 }

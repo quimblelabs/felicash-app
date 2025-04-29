@@ -11,10 +11,6 @@ dependencies:
   flutter:
     sdk: flutter
   equatable: ^2.0.7
-  felicash_data_client:
-    path: ../../clients/felicash_data_client
-  shared_models:
-    path: ../../shared_models
   json_annotation: ^4.9.0
   json_serializable: ^6.9.5
 dev_dependencies:

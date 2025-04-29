@@ -34,9 +34,7 @@ void main() {
     final categoryRepository = CategoryRepository(
       client: dataClient,
     );
-    final currencyRepository = CurrencyRepository(
-      client: dataClient,
-    );
+    const currencyRepository = CurrencyRepository();
     final transactionRepository = TransactionRepository(
       client: dataClient,
     );

@@ -102,9 +102,7 @@ class App extends StatelessWidget {
             create: (context) => CurrenciesBloc(
               currencyRepository: _currencyRepository,
             )..add(
-                const CurrenciesSubscriptionRequested(
-                  query: GetCurrencyQuery(),
-                ),
+                const CurrenciesFetched(),
               ),
           ),
         ],

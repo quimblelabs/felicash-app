@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:bloc/bloc.dart';
 import 'package:currency_repository/currency_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -10,39 +12,23 @@ class CurrenciesBloc extends Bloc<CurrenciesEvent, CurrenciesState> {
     required CurrencyRepository currencyRepository,
   })  : _currencyRepository = currencyRepository,
         super(const CurrenciesInitial()) {
-    on<CurrenciesSubscriptionRequested>(_onCurrenciesSubscriptionRequested);
-    on<CurrenciesSubscriptionRetry>(_onCurrenciesSubscriptionRetry);
+    on<CurrenciesFetched>(_onCurrenciesSubscriptionRequested);
   }
 
   final CurrencyRepository _currencyRepository;
 
   Future<void> _onCurrenciesSubscriptionRequested(
-    CurrenciesSubscriptionRequested event,
+    CurrenciesFetched event,
     Emitter<CurrenciesState> emit,
   ) async {
     emit(const CurrenciesLoadInProgress());
-    await emit.forEach<List<CurrencyModel>>(
-      _currencyRepository.getCurrencies(event.query),
-      onData: (currencies) => CurrenciesLoadSuccess(currencies: currencies),
-      onError: (error, stackTrace) => CurrenciesLoadFailure(
-        error: error,
-        previousQuery: event.query,
-      ),
-    );
-  }
-
-  Future<void> _onCurrenciesSubscriptionRetry(
-    CurrenciesSubscriptionRetry event,
-    Emitter<CurrenciesState> emit,
-  ) async {
-    emit(const CurrenciesLoadInProgress());
-    await emit.forEach<List<CurrencyModel>>(
-      _currencyRepository.getCurrencies(event.query),
-      onData: (currencies) => CurrenciesLoadSuccess(currencies: currencies),
-      onError: (error, stackTrace) => CurrenciesLoadFailure(
-        error: error,
-        previousQuery: event.query,
-      ),
+    await _currencyRepository.getCurrencies().then((currencies) {
+      emit(CurrenciesLoadSuccess(currencies: currencies));
+    }).onError(
+      (error, stackTrace) {
+        developer.log(error.toString(), error: error, stackTrace: stackTrace);
+        emit(CurrenciesLoadFailure(error: error ?? 'Unknown error'));
+      },
     );
   }
 }
