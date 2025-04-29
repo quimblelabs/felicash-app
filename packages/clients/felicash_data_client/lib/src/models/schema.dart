@@ -82,21 +82,6 @@ const schema = Schema([
   ),
 
   Table(
-    'currencies',
-    [
-      Column.text('currency_code'),
-      Column.text('currency_name'),
-      Column.text('currency_symbol'),
-      Column.text('currency_created_at'),
-      Column.text('currency_updated_at'),
-      Column.text('currency_id'),
-    ],
-    indexes: [
-      Index('currency_code_idx', [IndexedColumn('currency_code')]),
-    ],
-  ),
-
-  Table(
     'exchange_rates',
     [
       Column.text('exchange_rate_id'),
@@ -255,7 +240,7 @@ const schema = Schema([
       Column.text('wallet_user_id'),
       Column.text('wallet_name'),
       Column.text('wallet_description'),
-      Column.text('wallet_base_currency'),
+      Column.text('wallet_currency_code'),
       Column.real('wallet_balance'),
       Column.text('wallet_created_at'),
       Column.text('wallet_updated_at'),
@@ -269,7 +254,7 @@ const schema = Schema([
     ],
     indexes: [
       Index('wallet_user', [IndexedColumn('wallet_user_id')]),
-      Index('wallet_currency', [IndexedColumn('wallet_base_currency')]),
+      Index('wallet_currency', [IndexedColumn('wallet_currency_code')]),
       Index('wallet_type', [IndexedColumn('wallet_wallet_type')]),
       Index('wallet_archived_idx', [IndexedColumn('wallet_archived')]),
     ],

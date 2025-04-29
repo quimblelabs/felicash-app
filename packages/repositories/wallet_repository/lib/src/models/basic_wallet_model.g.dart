@@ -10,8 +10,7 @@ BasicWalletModel _$BasicWalletModelFromJson(Map<String, dynamic> json) =>
     BasicWalletModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      baseCurrency:
-          CurrencyModel.fromJson(json['baseCurrency'] as Map<String, dynamic>),
+      currencyCode: json['currencyCode'] as String,
       balance: (json['balance'] as num).toDouble(),
       color: const HexColorConverter().fromJson(json['color'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
@@ -31,7 +30,7 @@ Map<String, dynamic> _$BasicWalletModelToJson(BasicWalletModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,
-      'baseCurrency': instance.baseCurrency,
+      'currencyCode': instance.currencyCode,
       'balance': instance.balance,
       'icon': const RawIconDataConverter().toJson(instance.icon),
       'color': const HexColorConverter().toJson(instance.color),

@@ -2,7 +2,6 @@ export 'budget.dart';
 export 'budget_tracking.dart';
 export 'category.dart';
 export 'credit_wallet.dart';
-export 'currency.dart';
 export 'exchange_rate.dart';
 export 'lending_borrowing_transaction.dart';
 export 'merchant.dart';

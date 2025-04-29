@@ -1,6 +1,5 @@
 import 'package:felicash_data_client/src/enums/wallet_type.dart';
 import 'package:felicash_data_client/src/models/credit_wallet.dart';
-import 'package:felicash_data_client/src/models/currency.dart';
 import 'package:felicash_data_client/src/models/profile.dart';
 import 'package:felicash_data_client/src/models/saving_wallet.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -36,7 +35,7 @@ class Wallet {
     required this.walletExcludeFromTotal,
     required this.walletArchived,
     required this.walletUserId,
-    required this.walletBaseCurrency,
+    required this.walletCurrencyCode,
     this.walletIcon,
     this.walletColor,
     this.walletArchivedAt,
@@ -44,7 +43,6 @@ class Wallet {
     this.profiles = const [],
     this.creditWallets = const [],
     this.savingsWallets = const [],
-    this.currencies = const [],
   }) : id = walletId;
 
   /// Creates a wallet from a row.
@@ -66,7 +64,7 @@ class Wallet {
       walletExcludeFromTotal: row[WalletFields.walletExcludeFromTotal] == 1,
       walletArchived: row[WalletFields.walletArchived] == 1,
       walletUserId: row[WalletFields.walletUserId] as String,
-      walletBaseCurrency: row[WalletFields.walletBaseCurrency] as String,
+      walletCurrencyCode: row[WalletFields.walletCurrencyCode] as String,
       walletIcon: row[WalletFields.walletIcon] as String?,
       walletColor: row[WalletFields.walletColor] as String?,
       walletArchivedAt:
@@ -77,7 +75,6 @@ class Wallet {
       profiles: [],
       creditWallets: [],
       savingsWallets: [],
-      currencies: [],
     );
   }
 
@@ -139,10 +136,7 @@ class Wallet {
   final List<SavingsWallet> savingsWallets;
 
   /// Wallet base currency of the wallet
-  final String walletBaseCurrency;
-
-  /// Currencies of the wallet
-  final List<Currency> currencies;
+  final String walletCurrencyCode;
 
   /// Creates a copy of the wallet with the given fields replaced with the
   /// new values.
@@ -164,8 +158,7 @@ class Wallet {
     List<Profile>? profiles,
     List<CreditWallet>? creditWallets,
     List<SavingsWallet>? savingsWallets,
-    String? walletBaseCurrency,
-    List<Currency>? currencies,
+    String? walletCurrencyCode,
   }) {
     return Wallet(
       walletId: walletId ?? this.walletId,
@@ -186,8 +179,7 @@ class Wallet {
       profiles: profiles ?? this.profiles,
       creditWallets: creditWallets ?? this.creditWallets,
       savingsWallets: savingsWallets ?? this.savingsWallets,
-      walletBaseCurrency: walletBaseCurrency ?? this.walletBaseCurrency,
-      currencies: currencies ?? this.currencies,
+      walletCurrencyCode: walletCurrencyCode ?? this.walletCurrencyCode,
     );
   }
 }

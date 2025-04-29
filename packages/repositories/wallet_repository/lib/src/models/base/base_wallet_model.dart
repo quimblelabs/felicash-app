@@ -1,4 +1,3 @@
-import 'package:currency_repository/currency_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_models/shared_models.dart';
@@ -15,7 +14,7 @@ abstract class BaseWalletModel extends Equatable {
     required this.id,
     required this.name,
     required this.walletType,
-    required this.baseCurrency,
+    required this.currencyCode,
     required this.balance,
     required this.color,
     required this.createdAt,
@@ -63,7 +62,7 @@ abstract class BaseWalletModel extends Equatable {
   final WalletTypeEnum walletType;
 
   /// The base currency used for this wallet
-  final CurrencyModel baseCurrency;
+  final String currencyCode;
 
   /// The current balance of the wallet
   final double balance;
@@ -99,7 +98,7 @@ abstract class BaseWalletModel extends Equatable {
       name,
       description,
       walletType,
-      baseCurrency,
+      currencyCode,
       balance,
       createdAt,
       updatedAt,

@@ -146,13 +146,16 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
         if (transactions != null && transactions.isNotEmpty) {
           for (final e in transactions) {
             final wallet = event.sourceWallet;
-            final category = CategoryModel.empty.copyWith(
-              id: e.category?.id,
-              name: e.category?.name,
-            );
-
+            CategoryModel? category;
+            if (e.category != null) {
+              for (final categoryParameter in categoriesParameter) {
+                if (categoryParameter.id == e.category?.id) {
+                  category = categoryParameter;
+                  break;
+                }
+              }
+            }
             final transaction = e.toTransactionModel(
-              // Replace with the real wallet
               wallet: wallet,
               category: category,
             );
@@ -230,7 +233,7 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
 extension on ExtractedTransaction {
   TransactionModel toTransactionModel({
     required BaseWalletModel wallet,
-    required CategoryModel category,
+    CategoryModel? category,
   }) {
     final now = DateTime.now();
     return TransactionModel(

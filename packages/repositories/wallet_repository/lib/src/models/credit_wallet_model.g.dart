@@ -10,8 +10,7 @@ CreditWalletModel _$CreditWalletModelFromJson(Map<String, dynamic> json) =>
     CreditWalletModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      baseCurrency:
-          CurrencyModel.fromJson(json['baseCurrency'] as Map<String, dynamic>),
+      currencyCode: json['currencyCode'] as String,
       balance: (json['balance'] as num).toDouble(),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
@@ -34,7 +33,7 @@ Map<String, dynamic> _$CreditWalletModelToJson(CreditWalletModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,
-      'baseCurrency': instance.baseCurrency,
+      'currencyCode': instance.currencyCode,
       'balance': instance.balance,
       'icon': const RawIconDataConverter().toJson(instance.icon),
       'color': const HexColorConverter().toJson(instance.color),

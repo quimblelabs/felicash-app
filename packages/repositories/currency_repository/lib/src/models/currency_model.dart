@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:felicash_data_client/felicash_data_client.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'currency_model.g.dart';
@@ -19,15 +18,6 @@ class CurrencyModel extends Equatable {
   /// Factory constructor for [CurrencyModel] from JSON
   factory CurrencyModel.fromJson(Map<String, dynamic> json) =>
       _$CurrencyModelFromJson(json);
-
-  /// Factory constructor for [CurrencyModel] from [Currency]
-  factory CurrencyModel.fromCurrency(Currency currency) {
-    return CurrencyModel(
-      code: currency.currencyCode,
-      name: currency.currencyName,
-      symbol: currency.currencySymbol,
-    );
-  }
 
   /// Convert to JSON
   Map<String, dynamic> toJson() => _$CurrencyModelToJson(this);

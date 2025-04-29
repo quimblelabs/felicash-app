@@ -38,7 +38,7 @@ abstract class WalletFactory {
         return BasicWalletModel(
           id: id,
           name: name,
-          baseCurrency: baseCurrency,
+          currencyCode: baseCurrency.code,
           balance: balance,
           color: color,
           icon: icon,
@@ -57,7 +57,7 @@ abstract class WalletFactory {
         return SavingsWalletModel(
           id: id,
           name: name,
-          baseCurrency: baseCurrency,
+          currencyCode: baseCurrency.code,
           balance: balance,
           color: color,
           icon: icon,
@@ -75,12 +75,13 @@ abstract class WalletFactory {
             stateDayOfMonth == null ||
             paymentDueDayOfMonth == null) {
           throw ArgumentError(
-              'creditLimit, stateDayOfMonth, and paymentDueDayOfMonth are required for credit wallet');
+            'creditLimit, stateDayOfMonth, and paymentDueDayOfMonth are required for credit wallet',
+          );
         }
         return CreditWalletModel(
           id: id,
           name: name,
-          baseCurrency: baseCurrency,
+          currencyCode: baseCurrency.code,
           balance: balance,
           color: color,
           icon: icon,

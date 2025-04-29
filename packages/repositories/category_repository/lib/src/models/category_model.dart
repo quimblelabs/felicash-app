@@ -120,7 +120,7 @@ class CategoryModel extends Equatable {
     id: '',
     transactionType: TransactionTypeEnum.expense,
     name: '',
-    icon: const IconDataIcon(raw: '', icon: Icons.forest_outlined),
+    icon: const IconDataIcon(raw: '', icon: Icons.question_mark_rounded),
     color: Colors.black,
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),

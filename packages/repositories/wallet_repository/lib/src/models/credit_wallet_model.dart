@@ -18,7 +18,7 @@ class CreditWalletModel extends BaseWalletModel {
   const CreditWalletModel({
     required super.id,
     required super.name,
-    required super.baseCurrency,
+    required super.currencyCode,
     required super.balance,
     required super.createdAt,
     required super.updatedAt,
@@ -48,7 +48,7 @@ class CreditWalletModel extends BaseWalletModel {
     return CreditWalletModel(
       id: baseWalletModel.id,
       name: baseWalletModel.name,
-      baseCurrency: baseWalletModel.baseCurrency,
+      currencyCode: baseWalletModel.currencyCode,
       balance: baseWalletModel.balance,
       icon: baseWalletModel.icon,
       color: baseWalletModel.color,
@@ -73,14 +73,7 @@ class CreditWalletModel extends BaseWalletModel {
       id: wallet.walletId,
       name: wallet.walletName,
       description: wallet.walletDescription,
-      baseCurrency: CurrencyModel(
-        id: wallet.currencies.first.currencyId,
-        code: wallet.currencies.first.currencyCode,
-        name: wallet.currencies.first.currencyName,
-        symbol: wallet.currencies.first.currencySymbol,
-        createdAt: wallet.currencies.first.currencyCreatedAt,
-        updatedAt: wallet.currencies.first.currencyUpdatedAt,
-      ),
+      currencyCode: wallet.walletCurrencyCode,
       balance: wallet.walletBalance,
       color: HexColor.fromHex(wallet.walletColor),
       icon: RawIconData.fromRaw(wallet.walletIcon),
@@ -98,6 +91,7 @@ class CreditWalletModel extends BaseWalletModel {
   }
 
   /// Convert to JSON
+  @override
   Map<String, dynamic> toJson() => _$CreditWalletModelToJson(this);
 
   /// Creates a empty wallet model.
@@ -105,7 +99,7 @@ class CreditWalletModel extends BaseWalletModel {
     id: '',
     name: '',
     color: Colors.black,
-    baseCurrency: CurrencyModel.empty,
+    currencyCode: '',
     balance: 0,
     creditLimit: 0,
     stateDayOfMonth: 0,

@@ -40,9 +40,9 @@ class TransactionSummaryByCategoryModel {
   factory TransactionSummaryByCategoryModel.fromRow(SqliteRow row) {
     return TransactionSummaryByCategoryModel(
       categoryId:
-          row[TransactionSummaryByCategoryModelFields.categoryId] as String,
+          row[TransactionSummaryByCategoryModelFields.categoryId] as String?,
       categoryName:
-          row[TransactionSummaryByCategoryModelFields.categoryName] as String,
+          row[TransactionSummaryByCategoryModelFields.categoryName] as String?,
       categoryIcon: RawIconData.fromRaw(
         row[TransactionSummaryByCategoryModelFields.categoryIcon] as String?,
       ),
@@ -73,16 +73,16 @@ class TransactionSummaryByCategoryModel {
   }
 
   /// The id of the category.
-  final String categoryId;
+  final String? categoryId;
 
   /// The name of the category.
-  final String categoryName;
+  final String? categoryName;
 
   /// The icon of the category.
   final RawIconData categoryIcon;
 
   /// The color of the category.
-  final Color categoryColor;
+  final Color? categoryColor;
 
   /// The number of transactions in the category.
   final int transactionCount;
