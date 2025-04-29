@@ -25,6 +25,5 @@ abstract final class _$WalletJsonKeys {
   static const String profiles = 'profiles';
   static const String creditWallets = 'credit_wallets';
   static const String savingsWallets = 'savings_wallets';
-  static const String walletBaseCurrency = 'wallet_base_currency';
-  static const String currencies = 'currencies';
+  static const String walletCurrencyCode = 'wallet_currency_code';
 }

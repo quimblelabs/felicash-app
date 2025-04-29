@@ -101,7 +101,7 @@ class _ListWalletBuilder extends StatelessWidget {
               name: wallet.name,
               color: wallet.color,
               balance: wallet.balance,
-              currency: wallet.baseCurrency.code,
+              currency: wallet.currencyCode.code,
               icon: wallet.icon,
             ),
           ),

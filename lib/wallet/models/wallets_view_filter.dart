@@ -43,7 +43,7 @@ extension WalletsViewFilterX on WalletsViewFilter {
               .contains(searchQuery!.toLowerCase())) {
         return false;
       }
-      if (wallet.baseCurrency.code
+      if (wallet.currencyCode.code
           .toLowerCase()
           .contains(searchQuery!.toLowerCase())) {
         return false;

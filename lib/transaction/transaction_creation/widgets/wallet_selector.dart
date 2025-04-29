@@ -233,7 +233,7 @@ class _WalletItem extends StatelessWidget {
       subtitle: (wallet != null)
           ? Text(
               'Balance ${wallet!.balance.toCurrency(
-                symbol: wallet!.baseCurrency.symbol,
+                symbol: wallet!.currencyCode.symbol,
                 locale: l10n.localeName,
               )}'
                   .hardCoded,

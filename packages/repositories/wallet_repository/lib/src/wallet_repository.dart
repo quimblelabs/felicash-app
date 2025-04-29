@@ -135,11 +135,10 @@ class WalletRepository {
     FROM wallets w 
     LEFT JOIN credit_wallets cw ON w.${WalletFields.walletId} = cw.${CreditWalletFields.creditWalletWalletId} 
     LEFT JOIN savings_wallets sw ON w.${WalletFields.walletId} = sw.${SavingsWalletFields.savingsWalletWalletId}
-    LEFT JOIN currencies c ON w.${WalletFields.walletBaseCurrency} = c.${CurrencyFields.currencyId}
     WHERE w.${WalletFields.walletUserId} = ?1 
           AND (?2 is null OR w.${WalletFields.walletName} LIKE ?2) 
           AND (?3 is null OR w.${WalletFields.walletDescription} LIKE ?3) 
-          AND (?4 is null OR w.${WalletFields.walletBaseCurrency} LIKE ?4) 
+          AND (?4 is null OR w.${WalletFields.walletCurrencyCode} LIKE ?4) 
           AND (?5 is null OR w.${WalletFields.walletBalance} >= ?5) 
           AND (?6 is null OR w.${WalletFields.walletBalance} <= ?6) 
           AND (?7 is null OR w.${WalletFields.walletWalletType} = ?7) 
@@ -251,7 +250,6 @@ class WalletRepository {
     FROM wallets w 
     LEFT JOIN credit_wallets cw ON w.${WalletFields.walletId} = cw.${CreditWalletFields.creditWalletWalletId} 
     LEFT JOIN savings_wallets sw ON w.${WalletFields.walletId} = sw.${SavingsWalletFields.savingsWalletWalletId}
-    LEFT JOIN currencies c ON w.${WalletFields.walletBaseCurrency} = c.${CurrencyFields.currencyId}
     WHERE w.${WalletFields.walletId} = ?1
   ''';
 
@@ -300,7 +298,7 @@ class WalletRepository {
       ${WalletFields.walletName}, 
       ${WalletFields.walletDescription}, 
 
-      ${WalletFields.walletBaseCurrency}, 
+      ${WalletFields.walletCurrencyCode}, 
       ${WalletFields.walletBalance}, 
       ${WalletFields.walletWalletType},
       ${WalletFields.walletIcon},
@@ -340,11 +338,6 @@ class WalletRepository {
     VALUES (uuid(), uuid(), ?1, ?2) RETURNING *
   ''';
 
-  static const _getCurrencyQuery = '''
-    SELECT * FROM currencies WHERE ${CurrencyFields.currencyId} =?1
-  ''';
-
-  /// Creates a wallet.
   ///
   /// Throws a [CreateWalletFailure] if an error occurs.
   Future<BaseWalletModel> createWallet(BaseWalletModel wallet) async {
@@ -359,7 +352,7 @@ class WalletRepository {
             wallet.name,
             wallet.description,
             //
-            wallet.baseCurrency.id,
+            wallet.currencyCode,
             wallet.balance,
             wallet.walletType.jsonKey,
             wallet.icon.toRaw(),
@@ -379,23 +372,7 @@ class WalletRepository {
             );
           }
 
-          var createdWallet = Wallet.fromRow(walletRows.first);
-
-          final currencyParams = [wallet.baseCurrency.id];
-          final currencyRows = await tx.execute(
-            _query(_getCurrencyQuery, currencyParams),
-            currencyParams,
-          );
-          if (currencyRows.isEmpty) {
-            throw CreateWalletFailure(
-              'Failed to create wallet: ${wallet.name}',
-            );
-          }
-          final currency = Currency.fromRow(currencyRows.first);
-
-          createdWallet = createdWallet.copyWith(
-            currencies: [currency],
-          );
+          final createdWallet = Wallet.fromRow(walletRows.first);
 
           if (wallet is BasicWalletModel) {
             return createdWallet;
@@ -486,7 +463,7 @@ class WalletRepository {
       WHEN ?1 IS NOT NULL THEN ${WalletFields.walletName} =?1
       WHEN ?2 IS NOT NULL THEN ${WalletFields.walletDescription} =?2
       WHEN ?3 IS NOT NULL THEN ${WalletFields.walletBalance} =?3
-      WHEN ?4 IS NOT NULL THEN ${WalletFields.walletBaseCurrency} =?4
+      WHEN ?4 IS NOT NULL THEN ${WalletFields.walletCurrencyCode} =?4
       WHEN ?5 IS NOT NULL THEN ${WalletFields.walletWalletType} =?5
 
       WHEN ?6 IS NOT NULL THEN ${WalletFields.walletIcon} =?6
@@ -534,7 +511,7 @@ class WalletRepository {
           wallet.name,
           wallet.description,
           wallet.balance,
-          wallet.baseCurrency.id,
+          wallet.currencyCode,
           wallet.walletType.jsonKey,
           //
           wallet.icon.toRaw(),
@@ -647,8 +624,6 @@ class WalletRepository {
       else if (_isWalletOfType(row, WalletType.savings)) {
         _addSavingsWalletToMap(walletMap, walletId, row);
       }
-
-      _addCurrencyToMap(walletMap, row);
     }
 
     return walletMap;
@@ -673,8 +648,6 @@ class WalletRepository {
       _addSavingsWalletToMap(walletMap, walletId, row);
     }
 
-    // Map currencies to the wallet
-    _addCurrencyToMap(walletMap, row);
     return walletMap;
   }
 
@@ -728,24 +701,5 @@ class WalletRepository {
         savingsWallets: [...wallet.savingsWallets, savingsWallet],
       );
     }
-  }
-
-  // Add a currency to the wallet map
-  void _addCurrencyToMap(
-    Map<String, Wallet> walletMap,
-    SqliteRow row,
-  ) {
-    final walletId = row[WalletFields.walletId] as String;
-    final wallet = walletMap[walletId];
-
-    if (wallet == null) {
-      throw Exception('Wallet not found for ID: $walletId');
-    }
-
-    final currency = Currency.fromRow(row);
-
-    walletMap[walletId] = wallet.copyWith(
-      currencies: [...wallet.currencies, currency],
-    );
   }
 }

@@ -127,9 +127,8 @@ class TransactionRepository {
   static const _getTransactionsQuery = '''
     SELECT *
     FROM transactions t
-    JOIN categories c ON t.${TransactionFields.transactionCategoryId} = c.${CategoryFields.categoryId}
+    LEFT JOIN categories c ON t.${TransactionFields.transactionCategoryId} = c.${CategoryFields.categoryId}
     JOIN wallets w ON t.${TransactionFields.transactionWalletId} = w.${WalletFields.walletId}
-    JOIN currencies cu ON w.${WalletFields.walletBaseCurrency} = cu.${CurrencyFields.currencyId}
     WHERE t.${TransactionFields.transactionUserId} = ?1
     AND (?2 IS NULL OR t.${TransactionFields.transactionWalletId} = ?2)
     AND (?3 IS NULL OR t.${TransactionFields.transactionCategoryId} = ?3)
@@ -170,14 +169,11 @@ class TransactionRepository {
             .map(
               (row) => Transaction.fromRow(row).copyWith(
                 categories: [
-                  Category.fromRow(row),
+                  if (row[CategoryFields.categoryId] != null)
+                    Category.fromRow(row),
                 ],
                 wallets: [
-                  Wallet.fromRow(row).copyWith(
-                    currencies: [
-                      Currency.fromRow(row),
-                    ],
-                  ),
+                  if (row[WalletFields.walletId] != null) Wallet.fromRow(row),
                 ],
               ),
             )
@@ -712,13 +708,9 @@ class TransactionRepository {
       c.${CategoryFields.categoryColor} as ${TransactionSummaryByCategoryModelFields.categoryColor},
       COUNT(t.${TransactionFields.transactionId}) as ${TransactionSummaryByCategoryModelFields.transactionCount},
       SUM(t.${TransactionFields.transactionAmount}) as ${TransactionSummaryByCategoryModelFields.totalAmount},
-      cu.${CurrencyFields.currencyCode} as ${TransactionSummaryByCategoryModelFields.baseCurrencyCode},
+      w.${WalletFields.walletCurrencyCode} as ${TransactionSummaryByCategoryModelFields.baseCurrencyCode},
       SUM(t.${TransactionFields.transactionAmount} * COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0)) as ${TransactionSummaryByCategoryModelFields.totalAmountExchanged},
-      (
-        SELECT ${CurrencyFields.currencyCode}
-        FROM ${Currency.tableName}
-        WHERE ${CurrencyFields.currencyId} = ?1
-      ) as ${TransactionSummaryByCategoryModelFields.exchangeCurrencyCode},
+      ?1 as ${TransactionSummaryByCategoryModelFields.exchangeCurrencyCode},
       COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) as ${TransactionSummaryByCategoryModelFields.exchangeRateRate},
       COALESCE(er.${ExchangeRateFields.exchangeRateEffectiveDate}, 
         (
@@ -728,21 +720,20 @@ class TransactionRepository {
         )
       ) as ${TransactionSummaryByCategoryModelFields.exchangeRateEffectiveDate}
     FROM ${Transaction.tableName} t
-    JOIN ${Category.tableName} c ON t.${TransactionFields.transactionCategoryId} = c.${CategoryFields.categoryId}
+    LEFT JOIN ${Category.tableName} c ON t.${TransactionFields.transactionCategoryId} = c.${CategoryFields.categoryId}
     JOIN ${Wallet.tableName} w ON t.${TransactionFields.transactionWalletId} = w.${WalletFields.walletId}
-    LEFT JOIN ${ExchangeRate.tableName} er ON w.${WalletFields.walletBaseCurrency} = er.${ExchangeRateFields.exchangeRateFromCurrency} 
+    LEFT JOIN ${ExchangeRate.tableName} er ON w.${WalletFields.walletCurrencyCode} = er.${ExchangeRateFields.exchangeRateFromCurrency} 
       AND er.${ExchangeRateFields.exchangeRateToCurrency} = ?1 AND date(er.${ExchangeRateFields.exchangeRateEffectiveDate}) = 
       (
         SELECT MAX(date(${ExchangeRateFields.exchangeRateEffectiveDate})) 
         FROM ${ExchangeRate.tableName}
         WHERE ${ExchangeRateFields.exchangeRateToCurrency} = ?1
       )
-    JOIN ${Currency.tableName} cu ON w.${WalletFields.walletBaseCurrency} = cu.${CurrencyFields.currencyId}
     WHERE t.${TransactionFields.transactionUserId} = ?2
       AND t.${TransactionFields.transactionTransactionType} = ?3
       AND (?4 IS NULL OR t.${TransactionFields.transactionTransactionDate} >= ?4)
       AND (?5 IS NULL OR t.${TransactionFields.transactionTransactionDate} <= ?5)
-    GROUP BY c.${CategoryFields.categoryId}, er.${ExchangeRateFields.exchangeRateId}, cu.${CurrencyFields.currencyId}
+    GROUP BY c.${CategoryFields.categoryId}, er.${ExchangeRateFields.exchangeRateId}
     ORDER BY total_amount DESC
   ''';
 

@@ -78,6 +78,8 @@ class IconDataIcon extends RawIconData {
 
   @override
   List<Object?> get props => [icon, raw];
+
+  static const unknown = IconDataIcon(raw: '', icon: Icons.question_mark);
 }
 
 /// Icon represented by an image URL.

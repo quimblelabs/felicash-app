@@ -18,7 +18,7 @@ class SavingsWalletModel extends BaseWalletModel {
   const SavingsWalletModel({
     required super.id,
     required super.name,
-    required super.baseCurrency,
+    required super.currencyCode,
     required super.balance,
     required super.icon,
     required super.color,
@@ -44,7 +44,7 @@ class SavingsWalletModel extends BaseWalletModel {
     return SavingsWalletModel(
       id: baseWalletModel.id,
       name: baseWalletModel.name,
-      baseCurrency: baseWalletModel.baseCurrency,
+      currencyCode: baseWalletModel.currencyCode,
       balance: baseWalletModel.balance,
       icon: baseWalletModel.icon,
       color: baseWalletModel.color,
@@ -67,14 +67,7 @@ class SavingsWalletModel extends BaseWalletModel {
       id: wallet.walletId,
       name: wallet.walletName,
       description: wallet.walletDescription,
-      baseCurrency: CurrencyModel(
-        id: wallet.currencies.first.currencyId,
-        code: wallet.currencies.first.currencyCode,
-        name: wallet.currencies.first.currencyName,
-        symbol: wallet.currencies.first.currencySymbol,
-        createdAt: wallet.currencies.first.currencyCreatedAt,
-        updatedAt: wallet.currencies.first.currencyUpdatedAt,
-      ),
+      currencyCode: wallet.walletCurrencyCode,
       balance: wallet.walletBalance,
       color: HexColor.fromHex(wallet.walletColor),
       icon: RawIconData.fromRaw(wallet.walletIcon),
@@ -96,7 +89,7 @@ class SavingsWalletModel extends BaseWalletModel {
   static final empty = SavingsWalletModel(
     id: '',
     name: '',
-    baseCurrency: CurrencyModel.empty,
+    currencyCode: '',
     balance: 0,
     icon: const EmojiDataIcon(raw: '', emoji: ''),
     color: Colors.black,

@@ -10,8 +10,7 @@ SavingsWalletModel _$SavingsWalletModelFromJson(Map<String, dynamic> json) =>
     SavingsWalletModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      baseCurrency:
-          CurrencyModel.fromJson(json['baseCurrency'] as Map<String, dynamic>),
+      currencyCode: json['currencyCode'] as String,
       balance: (json['balance'] as num).toDouble(),
       icon: const RawIconDataConverter().fromJson(json['icon'] as String),
       color: const HexColorConverter().fromJson(json['color'] as String),
@@ -32,7 +31,7 @@ Map<String, dynamic> _$SavingsWalletModelToJson(SavingsWalletModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,
-      'baseCurrency': instance.baseCurrency,
+      'currencyCode': instance.currencyCode,
       'balance': instance.balance,
       'icon': const RawIconDataConverter().toJson(instance.icon),
       'color': const HexColorConverter().toJson(instance.color),

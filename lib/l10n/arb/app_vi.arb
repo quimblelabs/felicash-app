@@ -1,0 +1,7 @@
+{
+    "@@locale": "vi",
+    "counterAppBarTitle": "Việt Nam",
+    "@counterAppBarTitle": {
+        "description": "Tên quốc gia"
+    }
+}

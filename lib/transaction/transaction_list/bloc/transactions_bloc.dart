@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:felicash/transaction/bloc/mock_txs_repo.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
 import 'package:transaction_repository/transaction_repository.dart';
 
@@ -49,6 +48,12 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
         _updateLastCreatedAt();
         return _buildState();
       },
+      onError: (error, stackTrace) {
+        // TODO(tuanhm): Handle error each page
+        return state.copyWith(
+          status: TransactionsStatus.failure,
+        );
+      },
     );
   }
 
@@ -67,11 +72,14 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
     }
 
     final pageIndex = _pagedData.length;
-    final query = event.filter.toGetTransactionQuery(pageIndex: pageIndex);
+    final query = event.filter.toGetTransactionQuery(
+      pageIndex: pageIndex,
+    );
     return emit.forEach(
       _transactionRepository.getTransactions(query),
       onData: (transactions) {
         // Replace or add the page at the correct index
+
         if (_pagedData.length > pageIndex) {
           _pagedData[pageIndex] = transactions;
         } else {
@@ -79,6 +87,12 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
         }
         _updateLastCreatedAt();
         return _buildState();
+      },
+      onError: (error, stackTrace) {
+        // TODO(tuanhm): Handle error each page
+        return state.copyWith(
+          status: TransactionsStatus.failure,
+        );
       },
     );
   }

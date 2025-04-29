@@ -233,7 +233,6 @@ class FelicashBackendConnector extends PowerSyncBackendConnector {
       Budget.tableName: BudgetFields.budgetId,
       Category.tableName: CategoryFields.categoryId,
       CreditWallet.tableName: CreditWalletFields.creditWalletId,
-      Currency.tableName: CurrencyFields.currencyId,
       ExchangeRate.tableName: ExchangeRateFields.exchangeRateId,
       LendingBorrowingTransaction.tableName:
           LendingBorrowingTransactionFields.lendingBorrowingTransactionId,

@@ -74,7 +74,7 @@ class _TotalBalance extends StatelessWidget {
     for (final wallet in wallets) {
       if (wallet.excludeFromTotal || wallet.isArchived) continue;
 
-      if (wallet.baseCurrency.code == baseCurrency.code) {
+      if (wallet.currencyCode.code == baseCurrency.code) {
         totalBalance += wallet.balance;
       } else {
         // TODO: Implement exchange rate conversion
@@ -114,7 +114,7 @@ class _TotalBalance extends StatelessWidget {
     //   (currency) => currency.code == 'USD',
     //   orElse: () => currencies.first,
     // );
-    final baseCurrency = CurrencyModel(
+    const baseCurrency = CurrencyModel(
       code: 'USD',
       symbol: r'$',
       name: 'United States Dollar',

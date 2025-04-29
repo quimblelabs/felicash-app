@@ -59,24 +59,28 @@ extension CategorySpendingStatListX on List<CategorySpendingStat> {
   ) {
     final stats = <String, CategorySpendingStat>{};
     for (final model in transactionSummaryByCategoryModels) {
-      if (stats.containsKey(model.categoryId)) {
-        stats[model.categoryId] = stats[model.categoryId]!.copyWith(
+      final categoryId = model.categoryId ?? '';
+      if (stats.containsKey(categoryId)) {
+        stats[categoryId] = stats[categoryId]!.copyWith(
           spending:
               stats[model.categoryId]!.spending + model.totalAmountExchanged,
           transactionCount: stats[model.categoryId]!.transactionCount +
               model.transactionCount,
         );
       } else {
-        stats[model.categoryId] = CategorySpendingStat(
-          category: CategoryModel(
-            id: model.categoryId,
-            transactionType: TransactionTypeEnum.expense,
-            name: model.categoryName,
-            icon: model.categoryIcon,
-            color: model.categoryColor ?? Colors.transparent,
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          ),
+        final category = categoryId.isEmpty
+            ? CategoryModel.empty
+            : CategoryModel(
+                id: categoryId,
+                transactionType: TransactionTypeEnum.expense,
+                name: model.categoryName ?? '',
+                icon: model.categoryIcon,
+                color: model.categoryColor ?? Colors.transparent,
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now(),
+              );
+        stats[categoryId] = CategorySpendingStat(
+          category: category,
           spending: model.totalAmountExchanged,
           transactionCount: model.transactionCount,
         );

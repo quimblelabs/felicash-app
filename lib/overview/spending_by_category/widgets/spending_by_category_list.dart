@@ -47,7 +47,9 @@ class _SpendingByCategoryItem extends StatelessWidget {
           size: 16,
         ),
       ),
-      title: Text(stat.category.name),
+      title: stat.category.isEmpty
+          ? Text('No Category'.hardCoded)
+          : Text(stat.category.name),
       trailing: Text(
         stat.spending.toCurrency(
           locale: l10n.localeName,

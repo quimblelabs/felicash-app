@@ -65,7 +65,7 @@ class TransactionItem extends StatelessWidget {
           Text(
             transaction.amount.toCurrency(
               locale: l10n.localeName,
-              symbol: transaction.wallet.baseCurrency.symbol,
+              symbol: transaction.wallet.currencyCode.symbol,
             ),
             style: theme.textTheme.titleMedium?.copyWith(color: amountColor),
           ),

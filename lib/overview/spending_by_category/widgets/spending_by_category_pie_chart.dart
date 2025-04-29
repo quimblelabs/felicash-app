@@ -36,7 +36,12 @@ class _PieChart extends StatelessWidget {
         explode: true,
         strokeColor: theme.colorScheme.surfaceContainerLowest,
         pointColorMapper: (CategorySpendingStat data, _) => data.category.color,
-        xValueMapper: (CategorySpendingStat data, _) => data.category.name,
+        xValueMapper: (CategorySpendingStat data, _) {
+          if (data.category.isEmpty) {
+            return 'No Category'.hardCoded;
+          }
+          return data.category.name;
+        },
         yValueMapper: (CategorySpendingStat data, _) => data.spending,
         dataLabelMapper: (data, index) {
           final percent = (data.spending / total) * 100;
@@ -127,7 +132,9 @@ class _SelectedCategorySection extends StatelessWidget {
                 ),
               ),
               Text(
-                selectedItem.category.name,
+                selectedItem.category.isEmpty
+                    ? 'No Category'.hardCoded
+                    : selectedItem.category.name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.titleSmall?.copyWith(
