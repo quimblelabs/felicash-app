@@ -1,17 +1,18 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/l10n/l10n.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:wallet_repository/wallet_repository.dart';
+import 'package:shared_models/shared_models.dart';
 
 typedef WalletPickerValueChanged = void Function(
-  BaseWalletModel from,
-  BaseWalletModel to,
+  WalletViewModel from,
+  WalletViewModel to,
 );
 
 /// Creates a new [WalletSelector] for selecting a wallet.
 typedef PickWalletCallback = void Function(
-  BaseWalletModel? current,
-  BaseWalletModel? otherWallet,
+  WalletViewModel? current,
+  WalletViewModel? otherWallet,
   // ignore: avoid_positional_boolean_parameters
   bool isFromWallet,
 );
@@ -29,10 +30,10 @@ class WalletSelector extends StatefulWidget {
   });
 
   /// The current wallet.
-  final BaseWalletModel? wallet;
+  final WalletViewModel? wallet;
 
   /// The current wallet to transfer to.
-  final BaseWalletModel? toWallet;
+  final WalletViewModel? toWallet;
 
   /// This callback is called when the value changes.
   final WalletPickerValueChanged? onChanged;
@@ -126,7 +127,7 @@ class _WalletSelectorState extends State<WalletSelector>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _WalletItem(
-                    wallet: wallet,
+                    walletViewModel: wallet,
                     onTap: () {
                       if (widget.onPickWallet != null) {
                         widget.onPickWallet?.call(wallet, toWallet, true);
@@ -166,7 +167,7 @@ class _WalletSelectorState extends State<WalletSelector>
                             ),
                             const SizedBox(height: AppSpacing.xs),
                             _WalletItem(
-                              wallet: toWallet,
+                              walletViewModel: toWallet,
                               onTap: () {
                                 if (widget.onPickWallet != null) {
                                   widget.onPickWallet?.call(
@@ -205,17 +206,23 @@ class _WalletSelectorState extends State<WalletSelector>
 
 class _WalletItem extends StatelessWidget {
   const _WalletItem({
-    this.wallet,
+    required this.walletViewModel,
     this.onTap,
   });
 
-  final BaseWalletModel? wallet;
+  final WalletViewModel? walletViewModel;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = context.l10n;
+    final wallet = walletViewModel?.wallet;
+    final currency = walletViewModel?.currency;
+    final balance = wallet?.balance.toCurrency(
+      symbol: currency?.symbol,
+      locale: l10n.localeName,
+    );
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -225,20 +232,12 @@ class _WalletItem extends StatelessWidget {
       leading: CircleAvatar(
         backgroundColor: wallet?.color,
         foregroundColor: wallet?.color.onContainer,
-        child: wallet?.icon == null
-            ? const Icon(Icons.wallet)
-            : IconWidget(icon: wallet!.icon),
+        child: IconWidget(
+          icon: wallet?.icon ?? const IconDataIcon(raw: '', icon: Icons.wallet),
+        ),
       ),
       title: Text(wallet?.name ?? 'Select a wallet'.hardCoded),
-      subtitle: (wallet != null)
-          ? Text(
-              'Balance ${wallet!.balance.toCurrency(
-                symbol: wallet!.currencyCode.symbol,
-                locale: l10n.localeName,
-              )}'
-                  .hardCoded,
-            )
-          : null,
+      subtitle: Text('Balance $balance'),
       trailing: const Icon(Icons.arrow_forward_ios),
     );
   }

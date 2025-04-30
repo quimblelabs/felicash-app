@@ -3,6 +3,7 @@ import 'package:felicash/transaction/bloc/transaction_creation_bloc.dart';
 import 'package:felicash/transaction/transaction_creation/widgets/transaction_creation_form.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/wallet/cubit/wallets_filter_cubit.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:felicash/wallet/models/wallets_view_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,7 @@ class TransactionCreationModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wallets = context.select<WalletsBloc, List<BaseWalletModel>>((bloc) {
+    final wallets = context.select<WalletsBloc, List<WalletViewModel>>((bloc) {
       return switch (bloc.state) {
         WalletLoadSuccess(:final wallets) => wallets,
         _ => [],
@@ -37,6 +38,7 @@ class TransactionCreationModal extends StatelessWidget {
         create: (context) {
           final bloc = TransactionCreationBloc(
             walletRepository: context.read(),
+            currencyRepository: context.read(),
           );
           if (walletId != null) {
             bloc.add(

@@ -22,6 +22,7 @@ import 'package:felicash/transaction/transaction_list_filter/view/transaction_li
 import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_types_filter_view.dart';
 import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_date_filter_view.dart';
 import 'package:felicash/voice_transaction/view/voice_transaction_page.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:felicash/wallet/view/wallets/wallets_page.dart';
 import 'package:felicash/wallet_creation/view/monetary_input_modal.dart';
 import 'package:felicash/wallet_creation/view/wallet_creation_modal.dart';
@@ -137,6 +138,7 @@ class AppRouter {
   static final _transactionCreationRoute = GoRoute(
     path: AppRoutes.transactionCreation,
     name: AppRouteNames.transactionCreation,
+    parentNavigatorKey: _rootNavigatorKey,
     pageBuilder: (context, state) {
       final walletId = state.uri.queryParameters['walledId'];
       return ModalPage(
@@ -152,6 +154,7 @@ class AppRouter {
   static final _voiceTransactionRoute = GoRoute(
     path: AppRoutes.voiceTransaction,
     name: AppRouteNames.voiceTransaction,
+    parentNavigatorKey: _rootNavigatorKey,
     pageBuilder: (context, state) {
       return CustomTransitionPage(
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -229,7 +232,7 @@ class AppRouter {
             path: AppRoutes.transactionListFilterWallets,
             parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (context, state) {
-              final initialSelected = state.extra as Set<BaseWalletModel>?;
+              final initialSelected = state.extra as Set<WalletViewModel>?;
               return PagedSheetPage(
                 scrollConfiguration: const SheetScrollConfiguration(),
                 child: TransactionListWalletsFilerView(

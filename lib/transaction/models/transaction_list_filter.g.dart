@@ -19,7 +19,7 @@ _TransactionListFilter _$TransactionListFilterFromJson(
               .toSet() ??
           const {},
       wallets: (json['wallets'] as List<dynamic>?)
-              ?.map((e) => BaseWalletModel.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => WalletViewModel.fromJson(e as Map<String, dynamic>))
               .toSet() ??
           const {},
       from:

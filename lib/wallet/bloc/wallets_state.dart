@@ -19,7 +19,7 @@ final class WalletLoadInProgress extends WalletsState {
     this.wallets = const [],
     this.messageText = 'Loading wallets...',
   });
-  final List<BaseWalletModel> wallets;
+  final List<WalletViewModel> wallets;
   final String messageText;
 
   @override
@@ -30,7 +30,7 @@ final class WalletLoadSuccess extends WalletsState {
   const WalletLoadSuccess({
     this.wallets = const [],
   });
-  final List<BaseWalletModel> wallets;
+  final List<WalletViewModel> wallets;
 
   @override
   List<Object> get props => [wallets];

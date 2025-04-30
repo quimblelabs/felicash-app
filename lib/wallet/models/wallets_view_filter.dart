@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_models/shared_models.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 class WalletsViewFilter extends Equatable {
   const WalletsViewFilter({
@@ -27,34 +27,32 @@ class WalletsViewFilter extends Equatable {
 }
 
 extension WalletsViewFilterX on WalletsViewFilter {
-  bool apply(BaseWalletModel wallet) {
+  bool apply(WalletViewModel walletViewModel) {
+    final wallet = walletViewModel.wallet;
     if (walletTypeEnum != null) {
       if (wallet.walletType != walletTypeEnum) {
         return false;
       }
     }
     if (searchQuery != null) {
-      if (!wallet.name.toLowerCase().contains(searchQuery!.toLowerCase())) {
-        return false;
-      }
-      if (wallet.description != null &&
-          !wallet.description!
-              .toLowerCase()
-              .contains(searchQuery!.toLowerCase())) {
-        return false;
-      }
-      if (wallet.currencyCode.code
-          .toLowerCase()
-          .contains(searchQuery!.toLowerCase())) {
+      final searchTerm = [wallet.name, wallet.description, wallet.currencyCode];
+      if (!searchTerm.any(_matchSearchQuery)) {
         return false;
       }
     }
     return true;
   }
 
-  Iterable<BaseWalletModel> applyAll(
-    Iterable<BaseWalletModel> wallets,
+  Iterable<WalletViewModel> applyAll(
+    Iterable<WalletViewModel> wallets,
   ) {
     return wallets.where(apply);
+  }
+
+  bool _matchSearchQuery(String? value) {
+    if (searchQuery == null || value == null) {
+      return false;
+    }
+    return value.toLowerCase().contains(searchQuery!.toLowerCase());
   }
 }

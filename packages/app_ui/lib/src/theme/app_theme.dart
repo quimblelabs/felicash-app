@@ -44,6 +44,18 @@ class AppTheme {
       inputDecorationTheme: _inputDecorationTheme(colorScheme),
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       chipTheme: _chipTheme(colorScheme),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: colorScheme.surface,
+        contentTextStyle: textTheme.bodyMedium?.copyWith(
+          color: colorScheme.onSurface,
+        ),
+        elevation: 4,
+        closeIconColor: colorScheme.onSurface,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppRadius.lg)),
+        ),
+      ),
     );
   }
 
@@ -60,9 +72,12 @@ class AppTheme {
 
   CardTheme _cardTheme(ColorScheme colorScheme) {
     return CardTheme(
-      color: colorScheme.surface,
-      surfaceTintColor: colorScheme.surface,
-      elevation: 1,
+      color: colorScheme.surfaceContainerLowest,
+      surfaceTintColor: colorScheme.surfaceContainerLowest,
+      elevation: 0,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AppRadius.xlg)),
+      ),
     );
   }
 

@@ -1,19 +1,29 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:felicash/l10n/l10n.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
+import 'package:felicash/wallet/view/wallets/wallets_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_models/shared_models.dart';
 
 class WalletCard extends StatelessWidget {
   const WalletCard({
-    required this.block,
+    required this.walletViewModel,
     super.key,
     this.selected = false,
   });
-  final WalletBlock block;
+  final WalletViewModel walletViewModel;
   final bool selected;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
+    final wallet = walletViewModel.wallet;
+    final currency = walletViewModel.currency;
+    final balance = wallet.balance.toCurrency(
+      symbol: currency.symbol,
+      locale: l10n.localeName,
+    );
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.xlg,
@@ -31,16 +41,16 @@ class WalletCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 24,
-                backgroundColor: block.color,
+                backgroundColor: wallet.color,
                 child: IconWidget(
-                  icon: block.icon,
-                  color: block.color.onContainer,
+                  icon: wallet.icon,
+                  color: wallet.color.onContainer,
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Text(
-                  block.name,
+                  wallet.name,
                   style: theme.textTheme.headlineSmall,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -62,20 +72,8 @@ class WalletCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: AppSpacing.xs),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: block.currency,
-                            style: TextStyle(
-                              color: theme.colorScheme.outline,
-                            ),
-                          ),
-                          TextSpan(
-                            text: ' ${block.balance.toStringAsFixed(2)}',
-                          ),
-                        ],
-                      ),
+                    Text(
+                      balance,
                       style: theme.textTheme.headlineSmall,
                     ),
                   ],

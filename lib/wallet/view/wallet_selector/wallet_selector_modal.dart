@@ -1,11 +1,11 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/wallet/cubit/wallets_filter_cubit.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:felicash/wallet/models/wallets_view_filter.dart';
 import 'package:felicash/wallet/widgets/wallet_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 class WalletSelectorModal extends StatelessWidget {
   const WalletSelectorModal({
@@ -16,8 +16,8 @@ class WalletSelectorModal extends StatelessWidget {
   });
 
   final String title;
-  final BaseWalletModel? initialWallet;
-  final List<BaseWalletModel> wallets;
+  final WalletViewModel? initialWallet;
+  final List<WalletViewModel> wallets;
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +40,8 @@ class _WalletSelectorView extends HookWidget {
   });
 
   final String title;
-  final List<BaseWalletModel> wallets;
-  final BaseWalletModel? initialWallet;
+  final List<WalletViewModel> wallets;
+  final WalletViewModel? initialWallet;
 
   @override
   Widget build(BuildContext context) {
@@ -98,14 +98,7 @@ class _WalletSelectorView extends HookWidget {
                           Navigator.of(context).pop(wallet);
                         },
                         child: WalletCard(
-                          block: WalletBlock(
-                            id: wallet.id,
-                            name: wallet.name,
-                            color: wallet.color,
-                            balance: wallet.balance,
-                            currency: wallet.currencyCode.code,
-                            icon: wallet.icon,
-                          ),
+                          walletViewModel: wallet,
                           selected: isSelected,
                         ),
                       );

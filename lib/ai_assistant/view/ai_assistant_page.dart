@@ -7,16 +7,16 @@ import 'package:felicash/ai_assistant/widgets/input_box.dart';
 import 'package:felicash/category/bloc/categories_bloc.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 class AiAssistantPage extends StatelessWidget {
   const AiAssistantPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
+    final wallets = context.select<WalletsBloc, List<WalletViewModel>>(
       (bloc) => switch (bloc.state) {
         WalletLoadSuccess(:final wallets) => wallets,
         _ => [],
@@ -44,7 +44,7 @@ class AiAssistantPage extends StatelessWidget {
             transactionRepository: context.read(),
           )..add(
               AiAssistantLoadResourceRequested(
-                walletsParameter: wallets,
+                walletsParameter: wallets.map((e) => e.wallet).toList(),
                 categoriesParameter: categories,
               ),
             ),
@@ -54,7 +54,6 @@ class AiAssistantPage extends StatelessWidget {
             speechToTextClient: context.read(),
             walletRepository: context.read(),
             categoryRepository: context.read(),
-            transactionRepository: context.read(),
           )..add(SpeechRecognitionClientStarted()),
         ),
       ],
@@ -82,20 +81,14 @@ class _AiAssistantView extends StatelessWidget {
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('AI Assistant'),
           ),
-          body: Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: const Column(
-              children: [
-                Expanded(child: ChatBox()),
-                InputBox(),
-              ],
-            ),
+          body: const Column(
+            children: [
+              Expanded(child: ChatBox()),
+              InputBox(),
+            ],
           ),
         ),
       ),
@@ -112,7 +105,8 @@ class _ListenForUserSpeechDone extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<SpeechRecognitionBloc, SpeechRecognitionState>(
       listenWhen: (previous, current) =>
-          current is SpeechRecognitionListeningSuccess,
+          current is SpeechRecognitionListeningSuccess ||
+          current is SpeechRecognitionPausedSuccess,
       listener: (context, state) {
         if (state is SpeechRecognitionListeningSuccess) {
           final text = state.recognizedText;
@@ -129,7 +123,7 @@ class _ListenForUserSpeechDone extends StatelessWidget {
           context.read<AiAssistantBloc>().add(
                 AiAssistantStartProcessing(
                   requestMessage: text,
-                  sourceWallet: sourceWallet!,
+                  sourceWallet: sourceWallet!.wallet,
                 ),
               );
         }

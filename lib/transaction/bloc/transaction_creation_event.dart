@@ -23,7 +23,7 @@ class TransactionCreationWalletChanged extends TransactionCreationEvent {
           'Either wallet or walletId must be provided',
         );
 
-  final BaseWalletModel? wallet;
+  final WalletViewModel? wallet;
   final String? id;
 
   @override
@@ -61,7 +61,7 @@ class TransactionCreationNoteChanged extends TransactionCreationEvent {
 class TransactionCreationTransferToWalletChanged
     extends TransactionCreationEvent {
   const TransactionCreationTransferToWalletChanged(this.wallet);
-  final BaseWalletModel wallet;
+  final WalletViewModel wallet;
   @override
   List<Object> get props => [wallet];
 }

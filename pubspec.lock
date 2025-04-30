@@ -102,6 +102,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.12.0"
+  audio_session:
+    dependency: transitive
+    description:
+      name: audio_session
+      sha256: f100a780050adf5c552d8b59d7af32a60229fda79c623e64004caf9368ccc748
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   authentication_client:
     dependency: "direct main"
     description:
@@ -323,6 +331,14 @@ packages:
       relative: true
     source: path
     version: "0.1.0+1"
+  dart_openai:
+    dependency: transitive
+    description:
+      name: dart_openai
+      sha256: "853bb57fed6a71c3ba0324af5cb40c16d196cf3aa55b91d244964ae4a241ccf1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.0"
   dart_style:
     dependency: transitive
     description:
@@ -393,6 +409,13 @@ packages:
       relative: true
     source: path
     version: "0.1.0+1"
+  felicash_storage_client:
+    dependency: "direct main"
+    description:
+      path: "packages/clients/felicash_storage_client"
+      relative: true
+    source: path
+    version: "0.0.1"
   fetch_api:
     dependency: transitive
     description:
@@ -812,6 +835,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.9.5"
+  just_audio:
+    dependency: transitive
+    description:
+      name: just_audio
+      sha256: "369100a808395fc863d304cce97b920efcca71157b9705b0b3d21d415af344fd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.1"
+  just_audio_platform_interface:
+    dependency: transitive
+    description:
+      name: just_audio_platform_interface
+      sha256: "4cd94536af0219fa306205a58e78d67e02b0555283c1c094ee41e402a14a5c4a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.5.0"
+  just_audio_web:
+    dependency: transitive
+    description:
+      name: just_audio_web
+      sha256: "8c7e779892e180cbc9ffb5a3c52f6e90e1cbbf4a63694cc450972a7edbd2bb6d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.15"
   jwt_decode:
     dependency: transitive
     description:
@@ -1659,6 +1706,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.8"
+  text_to_speech_client:
+    dependency: "direct main"
+    description:
+      path: "packages/clients/text_to_speech_client"
+      relative: true
+    source: path
+    version: "0.0.1"
   timing:
     dependency: transitive
     description:
@@ -1765,6 +1819,13 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/repositories/user_repository"
+      relative: true
+    source: path
+    version: "0.1.0+1"
+  user_setting_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/repositories/user_setting_repository"
       relative: true
     source: path
     version: "0.1.0+1"
