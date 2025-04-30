@@ -18,7 +18,7 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
         super(const TransactionsState.initial()) {
     on<TransactionsInitialSubscriptionRequested>(
       _onInitialSubscriptionRequested,
-      transformer: droppable(),
+      transformer: restartable(),
     );
     on<TransactionsNextSubscriptionRequested>(
       _onNextSubscriptionRequested,
@@ -133,7 +133,7 @@ extension on TransactionListFilter {
       // TODO(dangddt): Add multiple category id
       categoryId: categories.firstOrNull?.id,
       // TODO(dangddt): Add multiple wallet id
-      walletId: wallets.firstOrNull?.id,
+      walletId: wallets.firstOrNull?.wallet.id,
       transactionNotes: searchKey,
     );
   }

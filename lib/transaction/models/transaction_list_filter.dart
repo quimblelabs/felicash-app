@@ -1,4 +1,5 @@
 import 'package:category_repository/category_repository.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -12,7 +13,7 @@ abstract class TransactionListFilter with _$TransactionListFilter {
     @Default('') String searchKey,
     @Default({}) Set<CategoryModel> categories,
     @Default({}) Set<TransactionTypeEnum> types,
-    @Default({}) Set<BaseWalletModel> wallets,
+    @Default({}) Set<WalletViewModel> wallets,
     DateTime? from,
     DateTime? to,
   }) = _TransactionListFilter;

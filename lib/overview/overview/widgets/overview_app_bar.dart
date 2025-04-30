@@ -3,6 +3,7 @@ import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash/currency/bloc/currencies_bloc.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -66,15 +67,16 @@ class _TotalBalance extends StatelessWidget {
 
   double _calculateTotalBalance(
     Set<CurrencyModel> currencies,
-    Set<BaseWalletModel> wallets,
+    Set<WalletViewModel> wallets,
     CurrencyModel baseCurrency,
   ) {
     double totalBalance = 0;
 
-    for (final wallet in wallets) {
+    for (final walletViewModel in wallets) {
+      final wallet = walletViewModel.wallet;
       if (wallet.excludeFromTotal || wallet.isArchived) continue;
 
-      if (wallet.currencyCode.code == baseCurrency.code) {
+      if (wallet.currencyCode == baseCurrency.code) {
         totalBalance += wallet.balance;
       } else {
         // TODO: Implement exchange rate conversion
@@ -99,7 +101,7 @@ class _TotalBalance extends StatelessWidget {
       },
     );
 
-    final wallets = context.select<WalletsBloc, Set<BaseWalletModel>>(
+    final wallets = context.select<WalletsBloc, Set<WalletViewModel>>(
       (value) {
         final state = value.state;
         if (state is WalletLoadSuccess) {

@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:category_repository/category_repository.dart';
+import 'package:currency_repository/currency_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -11,11 +13,13 @@ part 'transaction_creation_state.dart';
 class TransactionCreationBloc
     extends Bloc<TransactionCreationEvent, TransactionCreationState> {
   TransactionCreationBloc({
+    required CurrencyRepository currencyRepository,
     required WalletRepository walletRepository,
   })  : _walletRepository = walletRepository,
+        _currencyRepository = currencyRepository,
         super(
           TransactionCreationState(
-            wallet: BasicWalletModel.empty,
+            wallet: null,
             date: DateTime.now(),
           ),
         ) {
@@ -29,6 +33,7 @@ class TransactionCreationBloc
   }
 
   final WalletRepository _walletRepository;
+  final CurrencyRepository _currencyRepository;
 
   void _onTransactionTypeChanged(
     TransactionCreationTypeChanged event,
@@ -55,11 +60,18 @@ class TransactionCreationBloc
       );
       return;
     } else if (event.id case final id?) {
+      final currencies = await _currencyRepository.getCurrencies();
       await emit.forEach(
         _walletRepository.getWalletByIdStream(id),
         onData: (wallet) {
+          final currency = currencies.firstWhere(
+            (currency) => currency.code == wallet.currencyCode,
+          );
           return state.copyWith(
-            wallet: wallet,
+            wallet: WalletViewModel(
+              wallet: wallet,
+              currency: currency,
+            ),
             isValid: _validateForm(),
           );
         },
@@ -150,8 +162,9 @@ class TransactionCreationBloc
     final effectiveAmount = amount ?? state.amount;
     final effectiveNote = note ?? state.note;
     final effectiveType = type ?? state.type;
-    final effectiveWallet = wallet ?? state.wallet;
-    final effectiveTransferWallet = transferToWallet ?? state.transferToWallet;
+    final effectiveWallet = wallet ?? state.wallet?.wallet;
+    final effectiveTransferWallet =
+        transferToWallet ?? state.transferToWallet?.wallet;
     final effectiveCategory = category ?? state.category;
     final effectiveDate = date ?? state.date;
 

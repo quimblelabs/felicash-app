@@ -200,10 +200,10 @@ class _DateFilterTabBar extends StatelessWidget {
       labelStyle:
           theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
       tabs: [
-        Tab(text: 'Ngày'.hardCoded),
-        Tab(text: 'Tuần'.hardCoded),
-        Tab(text: 'Tháng'.hardCoded),
-        Tab(text: 'Tùy chỉnh'.hardCoded),
+        Tab(text: 'Day'.hardCoded),
+        Tab(text: 'Week'.hardCoded),
+        Tab(text: 'Month'.hardCoded),
+        Tab(text: 'Custom'.hardCoded),
       ],
     );
   }
@@ -353,9 +353,9 @@ class _CustomRangePickerView extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          title: Text('Từ ngày'.hardCoded),
+          title: Text('From'.hardCoded),
           subtitle: Text(
-            startDate?.toString().split(' ')[0] ?? 'Chọn ngày'.hardCoded,
+            startDate?.toString().split(' ')[0] ?? 'Select date'.hardCoded,
             style: theme.textTheme.bodyLarge,
           ),
           trailing: const Icon(Icons.calendar_today),
@@ -373,9 +373,9 @@ class _CustomRangePickerView extends StatelessWidget {
         ),
         const Divider(),
         ListTile(
-          title: Text('Đến ngày'.hardCoded),
+          title: Text('To'.hardCoded),
           subtitle: Text(
-            endDate?.toString().split(' ')[0] ?? 'Chọn ngày'.hardCoded,
+            endDate?.toString().split(' ')[0] ?? 'Select date'.hardCoded,
             style: theme.textTheme.bodyLarge,
           ),
           trailing: const Icon(Icons.calendar_today),

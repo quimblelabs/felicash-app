@@ -95,16 +95,7 @@ class _ListWalletBuilder extends StatelessWidget {
         final wallet = filteredWallets[index];
         return Padding(
           padding: const EdgeInsets.all(AppSpacing.md),
-          child: WalletCard(
-            block: WalletBlock(
-              id: wallet.id,
-              name: wallet.name,
-              color: wallet.color,
-              balance: wallet.balance,
-              currency: wallet.currencyCode.code,
-              icon: wallet.icon,
-            ),
-          ),
+          child: WalletCard(walletViewModel: wallet),
         );
       },
     );

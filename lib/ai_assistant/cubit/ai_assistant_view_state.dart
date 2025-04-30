@@ -14,12 +14,12 @@ class AiAssistantViewState extends Equatable {
   final String message;
 
   /// The current wallet selected by the user.
-  final BaseWalletModel? sourceWallet;
+  final WalletViewModel? sourceWallet;
 
   AiAssistantViewState copyWith({
     Size? chatBoxSize,
     String? message,
-    BaseWalletModel? sourceWallet,
+    WalletViewModel? sourceWallet,
   }) {
     return AiAssistantViewState(
       chatBoxSize: chatBoxSize ?? this.chatBoxSize,

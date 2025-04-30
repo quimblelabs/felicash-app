@@ -3,6 +3,8 @@ import 'package:category_repository/category_repository.dart';
 import 'package:felicash/app/routes/app_router.dart';
 import 'package:felicash/transaction/cubit/transaction_list_filter_cubit.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
+import 'package:felicash/wallet/view/wallets/wallets_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -48,6 +50,7 @@ class _AllFiltersView extends StatelessWidget {
         ),
       ),
       child: SheetContentScaffold(
+        backgroundColor: theme.colorScheme.surfaceContainer,
         topBar: AppBar(
           title: Text('Transaction Filters'.hardCoded),
           automaticallyImplyLeading: false,
@@ -59,22 +62,54 @@ class _AllFiltersView extends StatelessWidget {
             left: AppSpacing.lg,
             right: AppSpacing.lg,
           ),
-          child: Material(
-            color: theme.colorScheme.surface,
-            child: const Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _CategoriesFilter(),
-                _WalletsFilter(),
-                _TypesFilter(),
-                _TransactionDateFilter(),
-                SizedBox(height: AppSpacing.lg),
-                _SubmitButton(),
-              ],
-            ),
+          child: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: _ClearButton(),
+              ),
+              Card(
+                child: Column(
+                  children: [
+                    _CategoriesFilter(),
+                    Divider(height: 0),
+                    _WalletsFilter(),
+                    Divider(height: 0),
+                    _TypesFilter(),
+                    Divider(height: 0),
+                    _TransactionDateFilter(),
+                  ],
+                ),
+              ),
+              SizedBox(height: AppSpacing.lg),
+              _SubmitButton(),
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ClearButton extends StatelessWidget {
+  const _ClearButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final isEmpty = context.select<TransactionListFilterCubit, bool>(
+      (value) => value.state.filter.isEmpty,
+    );
+
+    return TextButton(
+      onPressed: isEmpty
+          ? null
+          : () {
+              context
+                  .read<TransactionListFilterCubit>()
+                  .updateFilter(TransactionListFilter.empty);
+            },
+      child: Text('Clear all'.hardCoded),
     );
   }
 }
@@ -125,12 +160,12 @@ class _WalletsFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<TransactionListFilterCubit, TransactionListFilterState,
-        Set<BaseWalletModel>>(
+        Set<WalletViewModel>>(
       selector: (state) => state.filter.wallets,
       builder: (context, wallets) {
         return ListTile(
           onTap: () async {
-            final result = await context.pushNamed<Set<BaseWalletModel>?>(
+            final result = await context.pushNamed<Set<WalletViewModel>?>(
               AppRouteNames.transactionListFilterWallets,
               extra: wallets,
             );

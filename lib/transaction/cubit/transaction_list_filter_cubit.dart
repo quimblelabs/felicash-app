@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:category_repository/category_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_models/shared_models.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 part 'transaction_list_filter_state.dart';
 
@@ -53,7 +53,7 @@ class TransactionListFilterCubit extends Cubit<TransactionListFilterState> {
     );
   }
 
-  void updateWallets(Set<BaseWalletModel> wallets) {
+  void updateWallets(Set<WalletViewModel> wallets) {
     emit(
       state.copyWith(
         filter: state.filter.copyWith(wallets: wallets),

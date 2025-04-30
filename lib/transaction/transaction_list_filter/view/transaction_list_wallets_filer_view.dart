@@ -1,11 +1,11 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
-import 'package:wallet_repository/wallet_repository.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TransactionListWalletsFilerView extends StatefulWidget {
   const TransactionListWalletsFilerView({
@@ -13,7 +13,7 @@ class TransactionListWalletsFilerView extends StatefulWidget {
     super.key,
   });
 
-  final Set<BaseWalletModel> initialSelected;
+  final Set<WalletViewModel> initialSelected;
 
   @override
   State<TransactionListWalletsFilerView> createState() =>
@@ -24,7 +24,7 @@ class _TransactionListWalletsFilerViewState
     extends State<TransactionListWalletsFilerView> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = '';
-  late Set<BaseWalletModel> _selectedWallets;
+  late Set<WalletViewModel> _selectedWallets;
 
   @override
   void initState() {
@@ -47,10 +47,10 @@ class _TransactionListWalletsFilerViewState
     });
   }
 
-  void _onWalletSelected(BaseWalletModel wallet, bool? value) {
+  void _onWalletSelected(WalletViewModel wallet, bool? value) {
     setState(() {
       final isSelected = value ?? false;
-      final newSelectedWallets = Set<BaseWalletModel>.from(_selectedWallets);
+      final newSelectedWallets = Set<WalletViewModel>.from(_selectedWallets);
       if (!isSelected) {
         newSelectedWallets.remove(wallet);
       } else {
@@ -82,8 +82,9 @@ class _TransactionListWalletsFilerViewState
     final wallets = (walletsState as WalletLoadSuccess)
         .wallets
         .where(
-          (wallet) =>
-              wallet.name.toLowerCase().contains(_searchText.toLowerCase()),
+          (wallet) => wallet.wallet.name
+              .toLowerCase()
+              .contains(_searchText.toLowerCase()),
         )
         .toList();
     final canSelectAll =
@@ -113,7 +114,7 @@ class _TransactionListWalletsFilerViewState
                 onSelectedAll: canSelectAll
                     ? () {
                         setState(() {
-                          _selectedWallets = Set<BaseWalletModel>.from(wallets);
+                          _selectedWallets = Set<WalletViewModel>.from(wallets);
                         });
                       }
                     : null,
@@ -176,7 +177,7 @@ class _SelectionsToggle extends StatelessWidget {
     required this.onDeselectedAll,
   });
 
-  final Set<BaseWalletModel> selectedWallets;
+  final Set<WalletViewModel> selectedWallets;
   final VoidCallback? onSelectedAll;
   final VoidCallback? onDeselectedAll;
 
@@ -204,9 +205,9 @@ class _WalletList extends StatelessWidget {
     required this.onWalletSelected,
   });
 
-  final List<BaseWalletModel> wallets;
-  final Set<BaseWalletModel> selectedWallets;
-  final void Function(BaseWalletModel, bool?) onWalletSelected;
+  final List<WalletViewModel> wallets;
+  final Set<WalletViewModel> selectedWallets;
+  final void Function(WalletViewModel, bool?) onWalletSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -244,12 +245,13 @@ class _WalletItem extends StatelessWidget {
     required this.onSelected,
   });
 
-  final BaseWalletModel wallet;
+  final WalletViewModel wallet;
   final bool isSelected;
   final ValueChanged<bool?> onSelected;
 
   @override
   Widget build(BuildContext context) {
+    final wallet = this.wallet.wallet;
     return CheckboxListTile(
       dense: true,
       value: isSelected,
@@ -271,8 +273,8 @@ class _SubmitButton extends HookWidget {
     required this.initialSelected,
   });
 
-  final Set<BaseWalletModel> selectedWallets;
-  final Set<BaseWalletModel> initialSelected;
+  final Set<WalletViewModel> selectedWallets;
+  final Set<WalletViewModel> initialSelected;
 
   bool _hasChanges() {
     return !initialSelected.isSameOfAll(selectedWallets);
@@ -336,10 +338,10 @@ class _SubmitButton extends HookWidget {
   }
 }
 
-extension on Set<BaseWalletModel> {
+extension on Set<WalletViewModel> {
   /// Returns true if the set contains all the elements of the other
   /// set and vice versa, also length must be the same.
-  bool isSameOfAll(Set<BaseWalletModel> other) {
+  bool isSameOfAll(Set<WalletViewModel> other) {
     if (length != other.length) {
       return false;
     }

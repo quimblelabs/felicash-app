@@ -107,6 +107,7 @@ class App extends StatelessWidget {
           ),
           BlocProvider<WalletsBloc>(
             create: (context) => WalletsBloc(
+              currencyRepository: _currencyRepository,
               walletRepository: _walletRepository,
             )..add(
                 const WalletsSubscriptionRequested(

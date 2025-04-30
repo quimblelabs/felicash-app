@@ -18,7 +18,7 @@ mixin _$TransactionListFilter {
   String get searchKey;
   Set<CategoryModel> get categories;
   Set<TransactionTypeEnum> get types;
-  Set<BaseWalletModel> get wallets;
+  Set<WalletViewModel> get wallets;
   DateTime? get from;
   DateTime? get to;
 
@@ -75,7 +75,7 @@ abstract mixin class $TransactionListFilterCopyWith<$Res> {
       {String searchKey,
       Set<CategoryModel> categories,
       Set<TransactionTypeEnum> types,
-      Set<BaseWalletModel> wallets,
+      Set<WalletViewModel> wallets,
       DateTime? from,
       DateTime? to});
 }
@@ -116,7 +116,7 @@ class _$TransactionListFilterCopyWithImpl<$Res>
       wallets: null == wallets
           ? _self.wallets
           : wallets // ignore: cast_nullable_to_non_nullable
-              as Set<BaseWalletModel>,
+              as Set<WalletViewModel>,
       from: freezed == from
           ? _self.from
           : from // ignore: cast_nullable_to_non_nullable
@@ -136,7 +136,7 @@ class _TransactionListFilter extends TransactionListFilter {
       {this.searchKey = '',
       final Set<CategoryModel> categories = const {},
       final Set<TransactionTypeEnum> types = const {},
-      final Set<BaseWalletModel> wallets = const {},
+      final Set<WalletViewModel> wallets = const {},
       this.from,
       this.to})
       : _categories = categories,
@@ -167,10 +167,10 @@ class _TransactionListFilter extends TransactionListFilter {
     return EqualUnmodifiableSetView(_types);
   }
 
-  final Set<BaseWalletModel> _wallets;
+  final Set<WalletViewModel> _wallets;
   @override
   @JsonKey()
-  Set<BaseWalletModel> get wallets {
+  Set<WalletViewModel> get wallets {
     if (_wallets is EqualUnmodifiableSetView) return _wallets;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableSetView(_wallets);
@@ -241,7 +241,7 @@ abstract mixin class _$TransactionListFilterCopyWith<$Res>
       {String searchKey,
       Set<CategoryModel> categories,
       Set<TransactionTypeEnum> types,
-      Set<BaseWalletModel> wallets,
+      Set<WalletViewModel> wallets,
       DateTime? from,
       DateTime? to});
 }
@@ -282,7 +282,7 @@ class __$TransactionListFilterCopyWithImpl<$Res>
       wallets: null == wallets
           ? _self._wallets
           : wallets // ignore: cast_nullable_to_non_nullable
-              as Set<BaseWalletModel>,
+              as Set<WalletViewModel>,
       from: freezed == from
           ? _self.from
           : from // ignore: cast_nullable_to_non_nullable

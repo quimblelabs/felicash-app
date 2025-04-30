@@ -15,7 +15,7 @@ class TransactionCreationState extends Equatable {
   final TransactionTypeEnum type;
 
   /// The wallet that the transaction is going to be created for.
-  final BaseWalletModel? wallet;
+  final WalletViewModel? wallet;
   final TransactionMonetaryAmount amount;
   final CategoryModel? category;
   final DateTime? date;
@@ -23,18 +23,18 @@ class TransactionCreationState extends Equatable {
 
   // Transfers
   /// The wallet that the transaction is going to be created for.
-  final BaseWalletModel? transferToWallet;
+  final WalletViewModel? transferToWallet;
 
   final bool isValid;
 
   TransactionCreationState copyWith({
     TransactionTypeEnum? type,
-    BaseWalletModel? wallet,
+    WalletViewModel? wallet,
     TransactionMonetaryAmount? amount,
     CategoryModel? category,
     DateTime? date,
     TransactionNote? note,
-    BaseWalletModel? transferToWallet,
+    WalletViewModel? transferToWallet,
     bool? isValid,
   }) {
     return TransactionCreationState(

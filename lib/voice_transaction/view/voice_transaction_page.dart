@@ -7,16 +7,16 @@ import 'package:felicash/voice_transaction/cubit/speech_language_cubit.dart';
 import 'package:felicash/voice_transaction/widgets/voice_transaction_bottom_buttons.dart';
 import 'package:felicash/voice_transaction/widgets/voice_transaction_result_view.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 class VoiceTransactionPage extends StatelessWidget {
   const VoiceTransactionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final wallets = context.select<WalletsBloc, List<BaseWalletModel>>(
+    final wallets = context.select<WalletsBloc, List<WalletViewModel>>(
       (bloc) => switch (bloc.state) {
         WalletLoadSuccess(:final wallets) => wallets,
         _ => [],
@@ -35,11 +35,10 @@ class VoiceTransactionPage extends StatelessWidget {
             speechToTextClient: context.read(),
             walletRepository: context.read(),
             categoryRepository: context.read(),
-            transactionRepository: context.read(),
           )
             ..add(
               SpeechRecognitionLoadResourceRequested(
-                walletsParameter: wallets,
+                walletsParameter: wallets.map((e) => e.wallet).toList(),
                 categoriesParameter: categories,
               ),
             )
@@ -59,7 +58,7 @@ class VoiceTransactionPage extends StatelessWidget {
             transactionRepository: context.read(),
           )..add(
               AiAssistantLoadResourceRequested(
-                walletsParameter: wallets,
+                walletsParameter: wallets.map((e) => e.wallet).toList(),
                 categoriesParameter: categories,
               ),
             ),
@@ -145,7 +144,7 @@ class _ListenForUserSpeechCompleted extends StatelessWidget {
               .read<SpeechRecognitionBloc>()
               .add(const SpeechRecognitionStopListeningRequested());
           // TODO(tuanhm): Get the source wallet from the current state
-          const sourceWallet = null as BaseWalletModel?;
+          const sourceWallet = null as WalletViewModel?;
           if (sourceWallet == null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -156,7 +155,7 @@ class _ListenForUserSpeechCompleted extends StatelessWidget {
           context.read<AiAssistantBloc>().add(
                 AiAssistantStartProcessing(
                   requestMessage: recognizedText,
-                  sourceWallet: sourceWallet!,
+                  sourceWallet: sourceWallet!.wallet,
                 ),
               );
         }

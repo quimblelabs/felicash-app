@@ -24,13 +24,11 @@ class SpeechRecognitionBloc
     required SpeechToTextClient speechToTextClient,
     required WalletRepository walletRepository,
     required CategoryRepository categoryRepository,
-    required TransactionRepository transactionRepository,
     Duration delayForFinalRecognizedText = kDelayForFinalRecognizedText,
   })  : _sttClient = speechToTextClient,
         _delayForFinalRecognizedText = delayForFinalRecognizedText,
         _walletRepository = walletRepository,
         _categoryRepository = categoryRepository,
-        _transactionRepository = transactionRepository,
         super(const SpeechRecognitionInitial()) {
     _statusSubscription = _sttClient.statusStream.listen(_listenForClientError);
     on<SpeechRecognitionClientStarted>(
@@ -50,7 +48,6 @@ class SpeechRecognitionBloc
   late StreamSubscription<SpeechToTextStatus> _statusSubscription;
   final WalletRepository _walletRepository;
   final CategoryRepository _categoryRepository;
-  final TransactionRepository _transactionRepository;
 
   List<BaseWalletModel> walletsParameter = [];
   List<CategoryModel> categoriesParameter = [];
@@ -174,14 +171,19 @@ class SpeechRecognitionBloc
     Emitter<SpeechRecognitionState> emit,
   ) async {
     try {
-      await _sttClient.stop();
       if (state case final SpeechRecognitionListeningInProgress currentState) {
-        emit(
-          SpeechRecognitionListeningSuccess(
-            recognizedText: currentState.recognizedText,
-          ),
-        );
+        switch (event.reason) {
+          case StopListeningReason.noSpeechAfterDelay:
+            emit(
+              SpeechRecognitionListeningSuccess(
+                recognizedText: currentState.recognizedText,
+              ),
+            );
+          case StopListeningReason.manual:
+            emit(const SpeechRecognitionPausedSuccess());
+        }
       }
+      await _sttClient.stop();
     } catch (e) {
       emit(
         SpeechRecognitionFailure(
