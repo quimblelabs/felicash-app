@@ -253,10 +253,10 @@ class WalletRepository {
     WHERE w.${WalletFields.walletId} = ?1
   ''';
 
-  /// Fetches a wallet by id.
+  /// Fetches a wallet by id as a stream.
   ///
   /// Throws a [GetWalletByIdFailure] if an error occurs.
-  Stream<BaseWalletModel> getWalletById(String id) {
+  Stream<BaseWalletModel> getWalletByIdStream(String id) {
     final params = [id];
     return _client.db
         .watch(
@@ -288,6 +288,41 @@ class WalletRepository {
         Error.throwWithStackTrace(GetWalletByIdFailure(e), stacktrace);
       },
     );
+  }
+
+  /// Fetches a wallet by id as a Future.
+  ///
+  /// Throws a [GetWalletByIdFailure] if an error occurs.
+  Future<BaseWalletModel> getWalletByIdFuture(String id) async {
+    final params = [id];
+    try {
+      final row = await _client.db.get(
+        _query(_getWalletByIdQuery, params),
+        params,
+      );
+
+      if (row.isEmpty) throw const GetWalletByUserIdNotFound();
+
+      final walletMap = _processWalletRow(row);
+
+      if (walletMap.isEmpty) {
+        throw const GetWalletByUserIdParseFailure();
+      }
+
+      final wallet = walletMap.values.first;
+
+      return switch (wallet.walletWalletType) {
+        WalletType.basic => BasicWalletModel.fromWallet(wallet: wallet),
+        WalletType.credit => CreditWalletModel.fromWallet(wallet: wallet),
+        WalletType.savings => SavingsWalletModel.fromWallet(wallet: wallet),
+        _ => throw UnimplementedError(
+            'Wallet type ${wallet.walletWalletType} is not implemented.',
+          ),
+      };
+    } catch (e, stacktrace) {
+      if (e is GetWalletByUserIdNotFound) rethrow;
+      Error.throwWithStackTrace(GetWalletByIdFailure(e), stacktrace);
+    }
   }
 
   static const _insertWalletQuery = '''

@@ -56,7 +56,7 @@ class TransactionCreationBloc
       return;
     } else if (event.id case final id?) {
       await emit.forEach(
-        _walletRepository.getWalletById(id),
+        _walletRepository.getWalletByIdStream(id),
         onData: (wallet) {
           return state.copyWith(
             wallet: wallet,

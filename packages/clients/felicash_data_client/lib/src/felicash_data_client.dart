@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:felicash_data_client/src/models/models.dart';
-import 'package:felicash_data_client/src/models/schema.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
@@ -243,6 +242,7 @@ class FelicashBackendConnector extends PowerSyncBackendConnector {
       SavingsWallet.tableName: SavingsWalletFields.savingsWalletId,
       Transaction.tableName: TransactionFields.transactionId,
       Wallet.tableName: WalletFields.walletId,
+      UserSetting.tableName: UserSettingFields.userSettingId,
     };
 
     try {
