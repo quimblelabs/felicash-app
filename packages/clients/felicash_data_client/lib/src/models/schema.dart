@@ -234,6 +234,25 @@ const schema = Schema([
   ),
 
   Table(
+    'user_settings',
+    [
+      Column.text('user_setting_id'),
+      Column.text('user_setting_base_currency_code'),
+      Column.text('user_setting_language_code'),
+      Column.text('user_setting_date_format'),
+      Column.text('user_setting_default_walllet'),
+      Column.text('user_setting_created_at'),
+      Column.text('user_setting_updated_at'),
+      Column.text('user_setting_theme'),
+      Column.text('user_setting_monetary_format'),
+      Column.text('user_setting_user_id'),
+    ],
+    indexes: [
+      Index('user_setting_user', [IndexedColumn('user_setting_user_id')]),
+    ],
+  ),
+
+  Table(
     'wallets',
     [
       Column.text('wallet_id'),

@@ -9,5 +9,7 @@ export 'payback_link.dart';
 export 'profile.dart';
 export 'recurrence.dart';
 export 'saving_wallet.dart';
+export 'schema.dart';
 export 'transaction.dart';
+export 'user_setting.dart';
 export 'wallet.dart';

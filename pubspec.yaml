@@ -79,6 +79,10 @@ dependencies:
   uuid: ^4.5.1
   wallet_repository:
     path: packages/repositories/wallet_repository
+  user_setting_repository:
+    path: packages/repositories/user_setting_repository
+  text_to_speech_client:
+    path: packages/clients/text_to_speech_client
 
 dev_dependencies:
   bloc_test: ^10.0.0

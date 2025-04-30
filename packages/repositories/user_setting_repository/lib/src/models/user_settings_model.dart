@@ -1,3 +1,4 @@
+import 'package:felicash_data_client/felicash_data_client.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,7 +15,7 @@ abstract class UserSettingsModel with _$UserSettingsModel {
   const factory UserSettingsModel({
     String? id,
     @Default('system') String theme,
-    @Default('en') String language,
+    @Default('system') String language,
     String? defaultWalletId,
     String? currency,
     @Default('system') String txDateFormat,
@@ -26,6 +27,20 @@ abstract class UserSettingsModel with _$UserSettingsModel {
   /// {@macro user_settings_model}
   factory UserSettingsModel.fromJson(Map<String, dynamic> json) =>
       _$UserSettingsModelFromJson(json);
+
+  /// Factory constructor for [UserSettingsModel] from [UserSetting]
+  ///
+  /// {@macro user_settings_model}
+  factory UserSettingsModel.fromUserSetting(UserSetting userSetting) =>
+      UserSettingsModel(
+        id: userSetting.id,
+        theme: userSetting.userSettingTheme,
+        language: userSetting.userSettingTheme,
+        defaultWalletId: userSetting.userSettingDefaultWallet,
+        currency: userSetting.userSettingBaseCurrencyCode,
+        txDateFormat: userSetting.userSettingDateFormat,
+        monetaryFormat: userSetting.userSettingMonetaryFormat,
+      );
 
   /// Create a new user settings model.
   ///
@@ -42,7 +57,7 @@ abstract class UserSettingsModel with _$UserSettingsModel {
     return UserSettingsModel(
       id: id ?? const Uuid().v4(),
       theme: theme ?? 'system',
-      language: language ?? 'en',
+      language: language ?? 'system',
       defaultWalletId: defaultWalletId,
       currency: currency,
       txDateFormat: txDateFormat ?? 'system',

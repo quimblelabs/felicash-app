@@ -7,14 +7,17 @@ import 'package:felicash/app/routes/app_router.dart';
 import 'package:felicash/category/bloc/categories_bloc.dart';
 import 'package:felicash/currency/bloc/currencies_bloc.dart';
 import 'package:felicash/l10n/arb/app_localizations.dart';
+import 'package:felicash/user_setting/bloc/user_setting_bloc.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:speech_to_text_client/speech_to_text_client.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
+import 'package:text_to_speech_client/text_to_speech_client.dart';
 import 'package:transaction_repository/transaction_repository.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:user_setting_repository/user_setting_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class App extends StatelessWidget {
@@ -25,6 +28,9 @@ class App extends StatelessWidget {
     required CategoryRepository categoryRepository,
     required CurrencyRepository currencyRepository,
     required TransactionRepository transactionRepository,
+    required UserSettingRepository userSettingRepository,
+    required ElevenLabsTextToSpeechClient elevenLabsTextToSpeechClient,
+    required OpenAITextToSpeechClient openAITextToSpeechClient,
     required AiClient aiClient,
     super.key,
   })  : _userRepository = userRepository,
@@ -32,6 +38,9 @@ class App extends StatelessWidget {
         _categoryRepository = categoryRepository,
         _currencyRepository = currencyRepository,
         _transactionRepository = transactionRepository,
+        _userSettingRepository = userSettingRepository,
+        _elevenLabsTextToSpeechClient = elevenLabsTextToSpeechClient,
+        _openAITextToSpeechClient = openAITextToSpeechClient,
         _user = user,
         _aiClient = aiClient;
   final UserRepository _userRepository;
@@ -39,6 +48,9 @@ class App extends StatelessWidget {
   final CategoryRepository _categoryRepository;
   final CurrencyRepository _currencyRepository;
   final TransactionRepository _transactionRepository;
+  final UserSettingRepository _userSettingRepository;
+  final ElevenLabsTextToSpeechClient _elevenLabsTextToSpeechClient;
+  final OpenAITextToSpeechClient _openAITextToSpeechClient;
   final User _user;
   final AiClient _aiClient;
 
@@ -66,6 +78,15 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider<SpeechToTextClient>.value(
           value: SpeechToTextClient(),
+        ),
+        RepositoryProvider<UserSettingRepository>.value(
+          value: _userSettingRepository,
+        ),
+        RepositoryProvider<ElevenLabsTextToSpeechClient>.value(
+          value: _elevenLabsTextToSpeechClient,
+        ),
+        RepositoryProvider<OpenAITextToSpeechClient>.value(
+          value: _openAITextToSpeechClient,
         ),
       ],
       child: MultiBlocProvider(
@@ -103,6 +124,13 @@ class App extends StatelessWidget {
               currencyRepository: _currencyRepository,
             )..add(
                 const CurrenciesFetched(),
+              ),
+          ),
+          BlocProvider<UserSettingBloc>(
+            create: (context) => UserSettingBloc(
+              userSettingRepository: _userSettingRepository,
+            )..add(
+                const UserSettingSubscriptionRequested(),
               ),
           ),
         ],

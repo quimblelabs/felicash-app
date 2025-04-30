@@ -9,9 +9,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:n8n_ai_client/n8n_ai_client.dart';
 import 'package:supabase_authentication_client/supabase_authentication_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:text_to_speech_client/text_to_speech_client.dart';
 import 'package:token_storage/token_storage.dart';
 import 'package:transaction_repository/transaction_repository.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:user_setting_repository/user_setting_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 void main() {
@@ -42,6 +44,10 @@ void main() {
       client: dataClient,
     );
 
+    final userSettingRepository = UserSettingRepository(
+      client: dataClient,
+    );
+
     final dio = Dio();
     dio.interceptors.add(
       BearerTokenInterceptor(
@@ -55,16 +61,30 @@ void main() {
 
     final aiClient = N8nAiClient(
       dio,
-      baseUrl: '',
+      baseUrl: const String.fromEnvironment('N8N_BASE_URL'),
     );
+
+    final elevenLabsTextToSpeechClient = ElevenLabsTextToSpeechClient(
+      apiKey: const String.fromEnvironment('ELEVENLABS_API_KEY'),
+      baseUrl: const String.fromEnvironment('ELEVENLABS_BASE_URL'),
+    );
+
+    final openAITextToSpeechClient = OpenAITextToSpeechClient(
+      apiKey: const String.fromEnvironment('OPENAI_API_KEY'),
+      baseUrl: const String.fromEnvironment('OPENAI_BASE_URL'),
+    );
+
     return App(
       user: await userRepository.user.first,
       aiClient: aiClient,
+      elevenLabsTextToSpeechClient: elevenLabsTextToSpeechClient,
+      openAITextToSpeechClient: openAITextToSpeechClient,
       userRepository: userRepository,
       walletRepository: walletRepository,
       categoryRepository: categoryRepository,
       currencyRepository: currencyRepository,
       transactionRepository: transactionRepository,
+      userSettingRepository: userSettingRepository,
     );
   });
 }

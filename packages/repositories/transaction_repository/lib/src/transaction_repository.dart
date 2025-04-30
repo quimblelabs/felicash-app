@@ -762,13 +762,3 @@ class TransactionRepository {
     );
   }
 }
-
-// SELECT c.category_id,c.category_name,c.category_icon,c.category_color, count(t.transaction_id) as transaction_count, (sum(t.transaction_amount) * er.exchange_rate_rate) as total_amount, er.exchange_rate_rate, er.exchange_rate_effective_date
-// FROM transactions t
-// JOIN categories c ON t.transaction_category_id = c.category_id
-// JOIN wallets w ON t.transaction_wallet_id = w.wallet_id
-// JOIN exchange_rates er ON w.wallet_base_currency = er.exchange_rate_from_currency 
-//     AND er.exchange_rate_to_currency = '4de39ed1-0743-4e90-a234-4788ce1bda77' 
-//     AND date(er.exchange_rate_effective_date) = date(now())
-// WHERE transaction_transaction_type = 'expense'
-// GROUP BY c.category_id, er.exchange_rate_id
