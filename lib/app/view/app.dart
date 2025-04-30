@@ -9,6 +9,7 @@ import 'package:felicash/currency/bloc/currencies_bloc.dart';
 import 'package:felicash/l10n/arb/app_localizations.dart';
 import 'package:felicash/user_setting/bloc/user_setting_bloc.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
+import 'package:felicash_storage_client/felicash_storage_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,6 +32,7 @@ class App extends StatelessWidget {
     required UserSettingRepository userSettingRepository,
     required ElevenLabsTextToSpeechClient elevenLabsTextToSpeechClient,
     required OpenAITextToSpeechClient openAITextToSpeechClient,
+    required FelicashStorageClient felicashStorageClient,
     required AiClient aiClient,
     super.key,
   })  : _userRepository = userRepository,
@@ -41,18 +43,21 @@ class App extends StatelessWidget {
         _userSettingRepository = userSettingRepository,
         _elevenLabsTextToSpeechClient = elevenLabsTextToSpeechClient,
         _openAITextToSpeechClient = openAITextToSpeechClient,
+        _felicashStorageClient = felicashStorageClient,
         _user = user,
         _aiClient = aiClient;
-  final UserRepository _userRepository;
-  final WalletRepository _walletRepository;
+
+  final AiClient _aiClient;
   final CategoryRepository _categoryRepository;
   final CurrencyRepository _currencyRepository;
-  final TransactionRepository _transactionRepository;
-  final UserSettingRepository _userSettingRepository;
   final ElevenLabsTextToSpeechClient _elevenLabsTextToSpeechClient;
+  final FelicashStorageClient _felicashStorageClient;
   final OpenAITextToSpeechClient _openAITextToSpeechClient;
+  final TransactionRepository _transactionRepository;
   final User _user;
-  final AiClient _aiClient;
+  final UserRepository _userRepository;
+  final UserSettingRepository _userSettingRepository;
+  final WalletRepository _walletRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +92,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider<OpenAITextToSpeechClient>.value(
           value: _openAITextToSpeechClient,
+        ),
+        RepositoryProvider<FelicashStorageClient>.value(
+          value: _felicashStorageClient,
         ),
       ],
       child: MultiBlocProvider(
