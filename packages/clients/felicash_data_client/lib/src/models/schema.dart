@@ -240,7 +240,7 @@ const schema = Schema([
       Column.text('user_setting_base_currency_code'),
       Column.text('user_setting_language_code'),
       Column.text('user_setting_date_format'),
-      Column.text('user_setting_default_walllet'),
+      Column.text('user_setting_default_wallet'),
       Column.text('user_setting_created_at'),
       Column.text('user_setting_updated_at'),
       Column.text('user_setting_theme'),
