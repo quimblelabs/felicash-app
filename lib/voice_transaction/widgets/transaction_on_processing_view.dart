@@ -92,6 +92,7 @@ class _ImThinking extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final isProcessing = context.select<AiAssistantBloc, bool>(
       (bloc) => bloc.state is AiAssistantInProgress,
@@ -132,7 +133,7 @@ class _ImThinking extends StatelessWidget {
               ),
               const SizedBox(width: AppSpacing.md),
               Text(
-                'Thinking...'.hardCoded,
+                l10n.thinking,
                 style: theme.textTheme.labelLarge,
               )
                   .animate(
@@ -265,6 +266,7 @@ class _TransactionResultCard extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Builder(
           builder: (context) {
+            final l10n = context.l10n;
             final state = context.watch<AiAssistantBloc>().state;
 
             if (state is! AiAssistantCompleted) {
@@ -290,7 +292,9 @@ class _TransactionResultCard extends StatelessWidget {
                         onPressed: () {
                           // TODO(tuanhm): Implement this
                         },
-                        child: Text('Edit transaction'.hardCoded),
+                        child: Text(
+                          l10n.transactionOnProcessingViewEditTransactionButtonLabel,
+                        ),
                       ),
                     ),
                     const SizedBox(width: AppSpacing.md),
@@ -305,7 +309,7 @@ class _TransactionResultCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
-                  'Edit or keep talking to create next transaction'.hardCoded,
+                  l10n.transactionOnProcessingViewCreateNextTransactionText,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),

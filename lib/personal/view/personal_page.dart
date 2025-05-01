@@ -1,4 +1,5 @@
 import 'package:felicash/app/bloc/app_bloc.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,16 +17,17 @@ class PersonalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Personal'),
+        title: Text(l10n.personalPageAppBarTitle),
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
             context.read<AppBloc>().add(const AppLogOutRequested());
           },
-          child: const Text('Logout'),
+          child: Text(l10n.personalPageLogoutButtonLabel),
         ),
       ),
     );

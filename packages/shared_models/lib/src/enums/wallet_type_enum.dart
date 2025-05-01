@@ -4,22 +4,19 @@ import 'package:json_annotation/json_annotation.dart';
 enum WalletTypeEnum {
   /// Basic wallet type
   @JsonValue('basic')
-  basic._('basic', 'Basic'),
+  basic._('basic'),
 
   /// Credit wallet type
   @JsonValue('credit')
-  credit._('credit', 'Credit'),
+  credit._('credit'),
 
   /// Savings wallet type
   @JsonValue('savings')
-  savings._('savings', 'Savings');
+  savings._('savings');
 
   /// The json key of the enum
   final String jsonKey;
 
-  /// The name of the enum
-  final String name;
-
   // ignore: sort_constructors_first
-  const WalletTypeEnum._(this.jsonKey, this.name);
+  const WalletTypeEnum._(this.jsonKey);
 }

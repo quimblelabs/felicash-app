@@ -48,7 +48,7 @@ class _SpendingByCategoryItem extends StatelessWidget {
         ),
       ),
       title: stat.category.isEmpty
-          ? Text('No Category'.hardCoded)
+          ? Text(l10n.spendingByCategoryListNoCategoryText)
           : Text(stat.category.name),
       trailing: Text(
         stat.spending.toCurrency(

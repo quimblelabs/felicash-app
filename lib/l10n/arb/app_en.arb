@@ -1,7 +1,797 @@
+
+
 {
     "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
+    "@_GENERAL": {},
+    "unknown": "Unknown",
+    "@unknown": {
+        "description": "Text shown when an unknown value"
+    },
+    "unknownError": "Unknown error",
+    "@unknownError": {
+        "description": "Text shown when an unknown error occurs"
+    },
+    "today": "Today",
+    "@today": {
+        "description": "Text shown when the current date is today"
+    },
+    "yesterday": "Yesterday",
+    "@yesterday": {
+        "description": "Text shown when the current date is yesterday"
+    },
+    "from": "From",
+    "@from": {
+        "description": "Text shown when the from filter is selected"
+    },
+    "to": "To",
+    "@to": {
+        "description": "Text shown when the to filter is selected"
+    },
+    "update": "Update",
+    "@update": {
+        "description": "Text shown when the update button is pressed"
+    },
+    "day": "Day",
+    "@day": {
+        "description": "Text shown when the day filter is selected"
+    },
+    "week": "Week",
+    "@week": {
+        "description": "Text shown when the week filter is selected"
+    },
+    "month": "Month",
+    "@month": {
+        "description": "Text shown when the month filter is selected"
+    },
+    "custom": "Custom",
+    "@custom": {
+        "description": "Text shown when the custom filter is selected"
+    },
+    "thinking": "Thinking",
+    "@thinking": {
+        "description": "Text shown when AI is thinking"
+    },
+    "copy": "Copy",
+    "@copy": {
+        "description": "Text shown when copying a message"
+    },
+    "done": "Done",
+    "@done": {
+        "description": "Text shown when done"
+    },
+    "selectAll": "Select all",
+    "@selectAll": {
+        "description": "Text shown when selecting all"
+    },
+    "deselectAll": "Deselect all",
+    "@deselectAll": {
+        "description": "Text shown when deselecting all"
+    },
+    "@_AI_ASSISTANT_PAGE": {},
+    "aiAssistantPageNoSourceWalletFoundErrorMessage": "No source wallet found",
+    "@aiAssistantPageNoSourceWalletFoundErrorMessage": {
+        "description": "Error message shown when no source wallet is found"
+    },
+    "aiAssistantPageAppBarTitle": "AI Assistant",
+    "@aiAssistantPageAppBarTitle": {
+        "description": "Title shown in AI assistant page app bar"
+    },
+    "@_CHAT_BOT": {},
+    "chatBotErrorMessage": "Something went wrong",
+    "@chatBotErrorMessage": {
+        "description": "Error message shown when something goes wrong"
+    },
+    "chatBotHelloText": "Hello there !",
+    "@chatBotHelloText": {
+        "description": "Text shown when chat bot says hello"
+    },
+    "@_INPUT_BOX": {},
+    "inputBoxListeningHintText": "Listening",
+    "@inputBoxListeningHintText": {
+        "description": "Hint text shown when input box is listening"
+    },
+    "inputBoxDescribeTransactionHintText": "Describe your transaction",
+    "@inputBoxDescribeTransactionHintText": {
+        "description": "Hint text shown when input box is describing a transaction"
+    },
+    "inputBoxSelectorModalTitle": "Select a wallet",
+    "@inputBoxSelectorModalTitle": {
+        "description": "Title shown when selecting a wallet"
+    },
+    "inputBoxNoWalletFoundErrorMessage": "No wallet found",
+    "@inputBoxNoWalletFoundErrorMessage": {
+        "description": "Error message shown when no wallet is found"
+    },
+    "inputBoxNoSourceWalletFoundErrorMessage": "No source wallet found",
+    "@inputBoxNoSourceWalletFoundErrorMessage": {
+        "description": "Error message shown when no source wallet is found"
+    },
+    "@_CURRENCY_SELECTOR": {},
+    "currencySelectorTextFormFieldDefaultHintText": "Currency",
+    "@currencySelectorTextFormFieldDefaultHintText": {
+        "description": "Hint text shown when searching for a currency"
+    },
+    "currencySelectorModalTitle": "Pick a currency",
+    "@currencySelectorModalTitle": {
+        "description": "Title shown when picking a currency"
+    },
+    "@_LOGIN_PAGE": {},
+    "loginPageTitle": "Login to FeliCash",
+    "@loginPageTitle": {
+        "description": "Title shown when logging in"
+    },
+    "loginPageSubtitle": "Welcome back! Please enter your details",
+    "@loginPageSubtitle": {
+        "description": "Subtitle shown when logging in"
+    },
+    "loginPageProvidersSeparatorText": "Or continue with",
+    "@loginPageProvidersSeparatorText": {
+        "description": "Text shown when logging in"
+    },
+    "loginPageContinueWithGoogleButtonText": "Continue with Google",
+    "@loginPageContinueWithGoogleButtonText": {
+        "description": "Text shown when logging in with Google"
+    },
+    "loginPageContinueWithAppleButtonText": "Continue with Apple",
+    "@loginPageContinueWithAppleButtonText": {
+        "description": "Text shown when logging in with Apple"
+    },
+    "loginPageDontHaveAccountText": "Don't have an account?",
+    "@loginPageDontHaveAccountText": {
+        "description": "Text shown when logging in"
+    },
+    "loginPageSignUpButtonText": "Sign up",
+    "@loginPageSignUpButtonText": {
+        "description": "Text shown when signing up"
+    },
+    "@_LOGIN_WITH_EMAIL_PASSWORD_LOGIN_FORM": {},
+    "loginWithEmailPasswordLoginFormEmailFieldLabel": "Email",
+    "@loginWithEmailPasswordLoginFormEmailFieldLabel": {
+        "description": "Label shown when logging in with email and password"
+    },
+    "loginWithEmailPasswordLoginFormEmailFieldErrorText": "Please enter a valid email",
+    "@loginWithEmailPasswordLoginFormEmailFieldErrorText": {
+        "description": "Error text shown when logging in with email and password"
+    },
+    "loginWithEmailPasswordLoginFormPasswordFieldLabel": "Password",
+    "@loginWithEmailPasswordLoginFormPasswordFieldLabel": {
+        "description": "Label shown when logging in with email and password"
+    },
+    "loginWithEmailPasswordLoginFormPasswordFieldErrorText": "Please enter a valid password",
+    "@loginWithEmailPasswordLoginFormPasswordFieldErrorText": {
+        "description": "Error text shown when logging in with email and password"
+    },
+    "loginWithEmailPasswordLoginFormLoginButtonText": "Login",
+    "@loginWithEmailPasswordLoginFormLoginButtonText": {
+        "description": "Text shown when logging in with email and password"
+    },
+    "@_BOTTOM_NAVIGATION_BAR": {},
+    "bottomNavigationBarOverviewButtonLabel": "Overview",
+    "@bottomNavigationBarOverviewButtonLabel": {
+        "description": "Label shown when navigating to the overview page"
+    },
+    "bottomNavigationBarTransactionsButtonLabel": "Transactions",
+    "@bottomNavigationBarTransactionsButtonLabel": {
+        "description": "Label shown when navigating to the transactions page"
+    },
+    "bottomNavigationBarWalletsButtonLabel": "Wallets",
+    "@bottomNavigationBarWalletsButtonLabel": {
+        "description": "Label shown when navigating to the wallets page"
+    },
+    "bottomNavigationBarPersonalButtonLabel": "Personal",
+    "@bottomNavigationBarPersonalButtonLabel": {
+        "description": "Label shown when navigating to the personal page"
+    },
+    "@_ONBOARDING_PAGE": {},
+    "onboardingPageWithFelicashTitle": "With Felicash",
+    "@onboardingPageWithFelicashTitle": {
+        "description": "Title shown in with felicash text in onboarding page"
+    },
+    "onboardingPageTakeControlOfYourText": "Take control of your",
+    "@onboardingPageTakeControlOfYourText": {
+        "description": "Subtitle shown in take control of your text in onboarding page"
+    },
+    "onboardingPageFinancialText": "financial",
+    "@onboardingPageFinancialText": {
+        "description": "Subtitle shown in financial text in onboarding page"
+    },
+    "onboardingPageExperienceTheText": "Experience the",
+    "@onboardingPageExperienceTheText": {
+        "description": "Subtitle shown in experience the text in onboarding page"
+    },
+    "onboardingPageAIText": "AI",
+    "@onboardingPageAIText": {
+        "description": "Subtitle shown in AI text in onboarding page"
+    },
+    "onboardingPageAssistantText": "assistant",
+    "@onboardingPageAssistantText": {
+        "description": "Subtitle shown in assistant text in onboarding page"
+    },
+    "onboardingPageGetStartedButtonLabel": "Get started",
+    "@onboardingPageGetStartedButtonLabel": {
+        "description": "Button label shown in get started button in onboarding page"
+    },
+    "onboardingPageAlreadyHaveAccountText": "Already have an account?",
+    "@onboardingPageAlreadyHaveAccountText": {
+        "description": "Text shown in already have an account text in onboarding page"
+    },
+    "onboardingPageLoginButtonLabel": "Login now",
+    "@onboardingPageLoginButtonLabel": {
+        "description": "Button label shown in login button in onboarding page"
+    },
+    "@_OVERVIEW_APP_BAR": {},
+    "overviewAppBarTotalBalanceText": "Total balance",
+    "@overviewAppBarTotalBalanceText": {
+        "description": "Text shown in total balance in overview app bar"
+    },
+    "overviewAppBarOverviewTabBarLabel": "Overview",
+    "@overviewAppBarOverviewTabBarLabel": {
+        "description": "Label shown in overview tab bar in overview app bar"
+    },
+    "overviewAppBarIncomeTabBarLabel": "Income",
+    "@overviewAppBarIncomeTabBarLabel": {
+        "description": "Label shown in income tab bar in overview app bar"
+    },
+    "overviewAppBarExpensesTabBarLabel": "Expenses",
+    "@overviewAppBarExpensesTabBarLabel": {
+        "description": "Label shown in expenses tab bar in overview app bar"
+    },
+    "@_SPENDING_BY_CATEGORY_SECTION": {},
+    "spendingByCategorySectionEmptyStateTitle": "No spending data available",
+    "@spendingByCategorySectionEmptyStateTitle": {
+        "description": "Title shown in spending by category section"
+    },
+    "spendingByCategorySectionEmptyStateSubtitle": "Add some transactions to see your spending by category",
+    "@spendingByCategorySectionEmptyStateSubtitle": {
+        "description": "Subtitle shown in spending by category section"
+    },
+    "spendingByCategorySectionTitle": "Spending by category",
+    "@spendingByCategorySectionTitle": {
+        "description": "Title shown in spending by category section"
+    },
+    "@_SPENDING_BY_CATEGORY_LIST": {},
+    "spendingByCategoryListNoCategoryText": "No Category",
+    "@spendingByCategoryListNoCategoryText": {
+        "description": "Text shown in spending by category list when no category is selected"
+    },
+    "@_SPENDING_BY_CATEGORY_PIE_CHART": {},
+    "spendingByCategoryPieChartEmptyCategoriesText": "No categories",
+    "@spendingByCategoryPieChartEmptyCategoriesText": {
+        "description": "Text shown in spending by category pie chart when no categories are available"
+    },
+    "@_SUMMARY_TRENDING_SECTION": {},
+    "summaryTrendingSectionTitle": "Monthly Trending",
+    "@summaryTrendingSectionTitle": {
+        "description": "Title shown in summary trending section"
+    },
+    "summaryTrendingSectionExpenseTypeLabel": "Expense",
+    "@summaryTrendingSectionExpenseTypeLabel": {
+        "description": "Label shown in summary trending section for expense type"
+    },
+    "summaryTrendingSectionIncomeTypeLabel": "Income",
+    "@summaryTrendingSectionIncomeTypeLabel": {
+        "description": "Label shown in summary trending section for income type"
+    },
+    "summaryTrendingSectionTransferTypeLabel": "Transfer",
+    "@summaryTrendingSectionTransferTypeLabel": {
+        "description": "Label shown in summary trending section for transfer type"
+    },
+    "summaryTrendingSectionUnknownTypeLabel": "Unknown",
+    "@summaryTrendingSectionUnknownTypeLabel": {
+        "description": "Label shown in summary trending section for unknown type"
+    },
+    "summaryTrendingSectionTotalAmountText": "Total amount",
+    "@summaryTrendingSectionTotalAmountText": {
+        "description": "Text shown in summary trending section for total amount"
+    },
+    "@_TRANSACTION_CREATION_MODAL": {},
+    "transactionCreationModalTitle": "New Transaction",
+    "@transactionCreationModalTitle": {
+        "description": "Title shown in transaction creation modal"
+    },
+    "transactionCreationModalAreYouSureText": "Are you sure?",
+    "@transactionCreationModalAreYouSureText": {
+        "description": "Text shown in transaction creation modal for are you sure"
+    },
+    "transactionCreationModalThisActionCannotBeUndoneText": "This action cannot be undone.",
+    "@transactionCreationModalThisActionCannotBeUndoneText": {
+        "description": "Text shown in transaction creation modal for this action cannot be undone"
+    },
+    "transactionCreationModalCancelButtonText": "Cancel",
+    "@transactionCreationModalCancelButtonText": {
+        "description": "Text shown in transaction creation modal for cancel button"
+    },
+    "transactionCreationModalYesButtonText": "Yes",
+    "@transactionCreationModalYesButtonText": {
+        "description": "Text shown in transaction creation modal for yes button"
+    },
+    "transactionCreationModalAddTransactionButtonText": "Add Transaction",
+    "@transactionCreationModalAddTransactionButtonText": {
+        "description": "Text shown in transaction creation modal for add transaction button"
+    },
+    "@_ADD_TRANSACTION_MENU_BUTTON": {},
+    "addTransactionMenuButtonReceptScannerButtonText": "Receipt Scanner",
+    "@addTransactionMenuButtonReceptScannerButtonText": {
+        "description": "Text shown in add transaction menu button for receipt scanner button"
+    },
+    "addTransactionMenuButtonAIInputButtonText": "AI Input",
+    "@addTransactionMenuButtonAIInputButtonText": {
+        "description": "Text shown in add transaction menu button for AI input button"
+    },
+    "addTransactionMenuButtonManualInputButtonText": "Manual Input",
+    "@addTransactionMenuButtonManualInputButtonText": {
+        "description": "Text shown in add transaction menu button for manual input button"
+    },
+    "@_TRANSACTION_CREATION_FORM": {},
+    "transactionCreationFormExpenseTypeLabel": "Expense",
+    "@transactionCreationFormExpenseTypeLabel": {
+        "description": "Label shown in transaction creation form for expense type"
+    },
+    "transactionCreationFormIncomeTypeLabel": "Income",
+    "@transactionCreationFormIncomeTypeLabel": {
+        "description": "Label shown in transaction creation form for income type"
+    },
+    "transactionCreationFormTransferTypeLabel": "Transfer",
+    "@transactionCreationFormTransferTypeLabel": {
+        "description": "Label shown in transaction creation form for transfer type"
+    },
+    "transactionCreationFormUnknownTypeLabel": "Unknown",
+    "@transactionCreationFormUnknownTypeLabel": {
+        "description": "Label shown in transaction creation form for unknown type"
+    },
+    "transactionCreationFormTransactionAmountFieldLabel": "Transaction Amount",
+    "@transactionCreationFormTransactionAmountFieldLabel": {
+        "description": "Label shown in transaction creation form for transaction amount field"
+    },
+    "transactionCreationFormCategoryFieldLabel": "Category",
+    "@transactionCreationFormCategoryFieldLabel": {
+        "description": "Label shown in transaction creation form for category field"
+    },
+    "transactionCreationFormDateFieldLabel": "Date",
+    "@transactionCreationFormDateFieldLabel": {
+        "description": "Label shown in transaction creation form for date field"
+    },
+    "transactionCreationFormNotesFieldLabel": "Notes",
+    "@transactionCreationFormNotesFieldLabel": {
+        "description": "Label shown in transaction creation form for notes field"
+    },
+    "transactionCreationFormTypeText": "Type",
+    "@transactionCreationFormTypeText": {
+        "description": "Text shown in transaction creation form for type"
+    },
+    "transactionCreationFormEnterAmountHintText": "Enter amount",
+    "@transactionCreationFormEnterAmountHintText": {
+        "description": "Hint text shown in transaction creation form for enter amount"
+    },
+    "transactionCreationFormEnterDateHintText": "Select a date",
+    "@transactionCreationFormEnterDateHintText": {
+        "description": "Hint text shown in transaction creation form for enter date"
+    },
+    "transactionCreationFormEnterNotesHintText": "Add notes",
+    "@transactionCreationFormEnterNotesHintText": {
+        "description": "Hint text shown in transaction creation form for enter notes"
+    },
+    "@_TRANSACTION_PAGE": {},
+    "transactionPageTitle": "Transactions",
+    "@_TRANSACTION_LIST_SEARCH_BAR": {},
+    "transactionListSearchBarHintText": "Search transactions",
+    "@_TRANSACTION_LIST": {},
+    "transactionListFailedToFetchTransactionsErrorMessage": "Failed to fetch transactions",
+    "@transactionListFailedToFetchTransactionsErrorMessage": {
+        "description": "Error message shown when failed to fetch transactions"
+    },
+    "transactionListNoTransactionsFoundErrorMessage": "No transactions found",
+    "@transactionListNoTransactionsFoundErrorMessage": {
+        "description": "Error message shown when no transactions are found"
+    },
+    "transactionListAddTransactionToGetStartedText": "Add a transaction to get started",
+    "@transactionListAddTransactionToGetStartedText": {
+        "description": "Text shown when no transactions are found"
+    },
+    "@_TRANSACTION_LIST_ALL_FILTERS_VIEW": {},
+    "transactionListAllFiltersViewTitle": "Transaction Filters",
+    "@transactionListAllFiltersViewTitle": {
+        "description": "Title shown in transaction list all filters view"
+    },
+    "transactionListAllFiltersViewClearAllButtonText": "Clear all",
+    "@transactionListAllFiltersViewClearAllButtonText": {
+        "description": "Text shown in transaction list all filters view for clear all button"
+    },
+    "transactionListAllFiltersViewCategoriesFilterTitle": "Categories",
+    "@transactionListAllFiltersViewCategoriesFilterTitle": {
+        "description": "Title shown in transaction list all filters view for categories filter"
+    },
+    "transactionListAllFiltersViewWalletsFilterTitle": "Wallets",
+    "@transactionListAllFiltersViewWalletsFilterTitle": {
+        "description": "Title shown in transaction list all filters view for wallets filter"
+    },
+    "transactionListAllFiltersViewTransactionTypesFilterTitle": "Transaction Types",
+    "@transactionListAllFiltersViewTransactionTypesFilterTitle": {
+        "description": "Title shown in transaction list all filters view for transaction types filter"
+    },
+    "transactionListAllFiltersViewTransactionDateFilterTitle": "Transaction Date",
+    "@transactionListAllFiltersViewTransactionDateFilterTitle": {
+        "description": "Title shown in transaction list all filters view for transaction date filter"
+    },
+    "transactionListAllFiltersViewApplyButtonText": "Apply",
+    "@transactionListAllFiltersViewApplyButtonText": {
+        "description": "Text shown in transaction list all filters view for apply button"
+    },
+    "@_TRANSACTION_LIST_CATEGORIES_FILTER_VIEW": {},
+    "transactionListCategoriesFilterViewFailedToFetchCategoriesErrorMessage": "Failed to fetch categories",
+    "@transactionListCategoriesFilterViewFailedToFetchCategoriesErrorMessage": {
+        "description": "Error message shown when failed to fetch categories"
+    },
+    "transactionListCategoriesFilterViewTitle": "Transaction Categories",
+    "@transactionListCategoriesFilterViewTitle": {
+        "description": "Title shown in transaction list categories filter view"
+    },
+    "transactionListCategoriesFilterViewSearchCategoriesHintText": "Search categories",
+    "@transactionListCategoriesFilterViewSearchCategoriesHintText": {
+        "description": "Hint text shown in transaction list categories filter view for search categories"
+    },
+    "transactionListCategoriesFilterViewNoCategoriesFoundErrorMessage": "No categories found",
+    "@transactionListCategoriesFilterViewNoCategoriesFoundErrorMessage": {
+        "description": "Error message shown when no categories are found"
+    },
+    "transactionListCategoriesFilterViewCancelButtonLabel": "Cancel",
+    "@transactionListCategoriesFilterViewCancelButtonLabel": {
+        "description": "Text shown in transaction list categories filter view for cancel button"
+    },
+    "@_TRANSACTION_LIST_DATE_FILTER_VIEW": {},
+    "transactionListDateFilterViewTransactionDateAppBarTitle": "Transaction Date",
+    "@transactionListDateFilterViewTransactionDateAppBarTitle": {
+        "description": "Title shown in transaction list date filter view"
+    },
+    "transactionListDateFilterViewSelectDateButtonText": "Select Date",
+    "@transactionListDateFilterViewSelectDateButtonText": {
+        "description": "Text shown in transaction list date filter view for select date button"
+    },
+    "transactionListDateFilterViewTodayCancelButtonText": "Cancel",
+    "@transactionListDateFilterViewTodayCancelButtonText": {
+        "description": "Text shown in transaction list date filter view for cancel button"
+    },
+    "transactionListDateFilterViewTodayApplyButtonText": "Apply",
+    "@transactionListDateFilterViewTodayApplyButtonText": {
+        "description": "Text shown in transaction list date filter view for apply button"
+    },
+    "@_TRANSACTION_LIST_TYPES_FILTER_VIEW": {},
+    "transactionListTypesFilterViewTitle": "Transaction Types",
+    "@transactionListTypesFilterViewTitle": {
+        "description": "Title shown in transaction list types filter view"
+    },
+    "transactionListTypesFilterViewNoTypesFoundErrorMessage": "No types found",
+    "@transactionListTypesFilterViewNoTypesFoundErrorMessage": {
+        "description": "Error message shown when no types are found"
+    },
+    "transactionListTypesFilterViewCancelButtonLabel": "Cancel",
+    "@transactionListTypesFilterViewCancelButtonLabel": {
+        "description": "Text shown in transaction list types filter view for cancel button"
+    },
+    "transactionListTypesFilterViewExpenseTypeLabel": "Expense",
+    "@transactionListTypesFilterViewExpenseTypeLabel": {
+        "description": "Label shown in transaction list types filter view for expense type"
+    },
+    "transactionListTypesFilterViewIncomeTypeLabel": "Income",
+    "@transactionListTypesFilterViewIncomeTypeLabel": {
+        "description": "Label shown in transaction list types filter view for income type"
+    },
+    "transactionListTypesFilterViewTransferTypeLabel": "Transfer",
+    "@transactionListTypesFilterViewTransferTypeLabel": {
+        "description": "Label shown in transaction list types filter view for transfer type"
+    },
+    "transactionListTypesFilterViewUnknownTypeLabel": "Unknown",
+    "@transactionListTypesFilterViewUnknownTypeLabel": {
+        "description": "Label shown in transaction list types filter view for unknown type"
+    },
+    "@_TRANSACTION_LIST_WALLETS_FILTER_VIEW": {},
+    "transactionListWalletsFilterViewTitle": "Transaction Wallets",
+    "@transactionListWalletsFilterViewTitle": {
+        "description": "Title shown in transaction list wallets filter view"
+    },
+    "transactionListWalletsFilterViewSearchWalletsHintText": "Search wallets",
+    "@transactionListWalletsFilterViewSearchWalletsHintText": {
+        "description": "Hint text shown in transaction list wallets filter view for search wallets"
+    },
+    "transactionListWalletsFilterViewFailedToLoadWalletsErrorMessage": "Failed to load wallets",
+    "@transactionListWalletsFilterViewFailedToLoadWalletsErrorMessage": {
+        "description": "Error message shown when failed to load wallets"
+    },
+    "transactionListWalletsFilterViewNoWalletsFoundErrorMessage": "No wallets found",
+    "@transactionListWalletsFilterViewNoWalletsFoundErrorMessage": {
+        "description": "Error message shown when no wallets are found"
+    },
+    "transactionListWalletsFilterViewCancelButtonLabel": "Cancel",
+    "@transactionListWalletsFilterViewCancelButtonLabel": {
+        "description": "Text shown in transaction list wallets filter view for cancel button"
+    },
+    "@_VOICE_TRANSACTION_PAGE": {},
+    "voiceTransactionPageNoSourceWalletFoundErrorMessage": "No source wallet found",
+    "@voiceTransactionPageNoSourceWalletFoundErrorMessage": {
+        "description": "Error message shown when no source wallet is found"
+    },
+    "@_TRANSACTION_ON_PROCESSING_VIEW": {},
+    "transactionOnProcessingViewEditTransactionButtonLabel": "Edit transaction",
+    "@transactionOnProcessingViewEditTransactionButtonLabel": {
+        "description": "Text shown in transaction on processing view for edit transaction button"
+    },
+    "transactionOnProcessingViewCreateNextTransactionText": "Edit or keep talking to create next transaction",
+    "@transactionOnProcessingViewCreateNextTransactionText": {
+        "description": "Text shown in transaction on processing view for create next transaction"
+    },
+    "@_VOICE_TRANSACTION_ON_HOLD_VIEW": {},
+    "voiceTransactionOnHoldViewOnHoldTitle": "On Hold",
+    "@voiceTransactionOnHoldViewOnHoldTitle": {
+        "description": "Title shown in voice transaction on hold view"
+    },
+    "voiceTransactionOnHoldViewOnHoldSubtitle": "To turn the mic on and continue, tap the play button.",
+    "@voiceTransactionOnHoldViewOnHoldSubtitle": {
+        "description": "Subtitle shown in voice transaction on hold view"
+    },
+    "@_WALLET_SELECTOR": {},
+    "walletSelectorBalanceText": "Balance {balance}",
+    "@walletSelectorBalanceText": {
+        "description": "Text shown in wallet selector for balance",
+        "placeholders": {
+            "balance": {
+                "type": "String",
+                "description": "Balance"
+            }
+        }
+    },
+    "@_WALLET_PAGE": {},
+    "walletPageWalletsAppBarTitle": "Wallets",
+    "@walletPageWalletsAppBarTitle": {
+        "description": "Title shown in wallet page for wallets app bar"
+    },
+    "walletPageBasicWalletTypeLabel": "Basic",
+    "@walletPageBasicWalletTypeLabel": {
+        "description": "Label shown in wallet page for basic wallet type"
+    },
+    "walletPageCreditWalletTypeLabel": "Credit",
+    "@walletPageCreditWalletTypeLabel": {
+        "description": "Label shown in wallet page for credit wallet type"
+    },
+    "walletPageSavingsWalletTypeLabel": "Savings",
+    "@walletPageSavingsWalletTypeLabel": {
+        "description": "Label shown in wallet page for savings wallet type"
+    },
+    "@_WALLET_CARD": {},
+    "walletCardCurrentBalanceText": "Current Balance",
+    "@walletCardCurrentBalanceText": {
+        "description": "Text shown in wallet card for current balance"
+    },
+    "@_MONETARY_INPUT_MODAL": {},
+    "@_WALLET_CREATION_MODAL": {},
+    "walletCreationModalBasicWalletTypeLabel": "Basic",
+    "@walletCreationModalBasicWalletTypeLabel": {
+        "description": "Label shown in wallet creation modal for basic wallet type"
+    },
+    "walletCreationModalCreditWalletTypeLabel": "Credit",
+    "@walletCreationModalCreditWalletTypeLabel": {
+        "description": "Label shown in wallet creation modal for credit wallet type"
+    },
+    "walletCreationModalSavingsWalletTypeLabel": "Savings",
+    "@walletCreationModalSavingsWalletTypeLabel": {
+        "description": "Label shown in wallet creation modal for savings wallet type"
+    },
+    "walletCreationModalWalletCreatedSuccessfullyText": "Wallet created successfully",
+    "@walletCreationModalWalletCreatedSuccessfullyText": {
+        "description": "Text shown in wallet creation modal for wallet created successfully"
+    },
+    "walletCreationModalAreYouSureText": "Are you sure?",
+    "@walletCreationModalAreYouSureText": {
+        "description": "Text shown in wallet creation modal for are you sure"
+    },
+    "walletCreationModalThisActionCannotBeUndoneText": "This action cannot be undone.",
+    "@walletCreationModalThisActionCannotBeUndoneText": {
+        "description": "Text shown in wallet creation modal for this action cannot be undone"
+    },
+    "walletCreationModalCancelButtonText": "Cancel",
+    "@walletCreationModalCancelButtonText": {
+        "description": "Text shown in wallet creation modal for cancel button"
+    },
+    "walletCreationModalYesButtonText": "Yes",
+    "@walletCreationModalYesButtonText": {
+        "description": "Text shown in wallet creation modal for yes button"
+    },
+    "walletCreationModalCreateWithWalletTypeText": "Create {walletName} wallet",
+    "@walletCreationModalCreateWithWalletTypeText": {
+        "description": "Text shown in wallet creation modal for create with wallet type",
+        "placeholders": {
+            "walletName": {
+                "type": "String",
+                "description": "Name of the wallet"
+            }
+        }
+    },
+    "walletCreationModalCreateWalletButtonText": "Create Wallet",
+    "@walletCreationModalCreateWalletButtonText": {
+        "description": "Text shown in wallet creation modal for create wallet button"
+    },
+    "@_WALLET_TYPE_SELECTOR_MODAL": {},
+    "walletTypeSelectorModalTitle": "Select wallet type",
+    "@walletTypeSelectorModalTitle": {
+        "description": "Title shown in wallet type selector modal"
+    },
+    "walletTypeSelectorModalBasicWalletTypeLabel": "Basic wallet",
+    "@walletTypeSelectorModalBasicWalletTypeLabel": {
+        "description": "Label shown in wallet type selector modal for basic wallet type"
+    },
+    "walletTypeSelectorModalBasicWalletTypeSubtitle": "The wallet for your daily spending and payments.",
+    "@walletTypeSelectorModalBasicWalletTypeSubtitle": {
+        "description": "Subtitle shown in wallet type selector modal for basic wallet type"
+    },
+    "walletTypeSelectorModalCreditWalletTypeLabel": "Credit wallet",
+    "@walletTypeSelectorModalCreditWalletTypeLabel": {
+        "description": "Label shown in wallet type selector modal for credit wallet type"
+    },
+    "walletTypeSelectorModalCreditWalletTypeSubtitle": "The wallet for your credit card and other credit needs.",
+    "@walletTypeSelectorModalCreditWalletTypeSubtitle": {
+        "description": "Subtitle shown in wallet type selector modal for credit wallet type"
+    },
+    "walletTypeSelectorModalSavingsWalletTypeLabel": "Savings wallet",
+    "@walletTypeSelectorModalSavingsWalletTypeLabel": {
+        "description": "Label shown in wallet type selector modal for savings wallet type"
+    },
+    "walletTypeSelectorModalSavingsWalletTypeSubtitle": "The wallet for your savings and investments.",
+    "@walletTypeSelectorModalSavingsWalletTypeSubtitle": {
+        "description": "Subtitle shown in wallet type selector modal for savings wallet type"
+    },
+    "@_WALLET_CREATION_FORM": {},
+    "walletCreationFormWalletNameFieldLabel": "Wallet name",
+    "@walletCreationFormWalletNameFieldLabel": {
+        "description": "Label shown in wallet creation form for wallet name field"
+    },
+    "walletCreationFormWalletDescriptionFieldLabel": "Wallet description",
+    "@walletCreationFormWalletDescriptionFieldLabel": {
+        "description": "Label shown in wallet creation form for wallet description field"
+    },
+    "walletCreationFormWalletCurrencyFieldLabel": "Currency",
+    "@walletCreationFormWalletCurrencyFieldLabel": {
+        "description": "Label shown in wallet creation form for wallet currency field"
+    },
+    "walletCreationFormWalletBalanceFieldLabel": "Balance",
+    "@walletCreationFormWalletBalanceFieldLabel": {
+        "description": "Label shown in wallet creation form for wallet balance field"
+    },
+    "walletCreationFormWalletCreditLimitFieldLabel": "Credit limit",
+    "@walletCreationFormWalletCreditLimitFieldLabel": {
+        "description": "Label shown in wallet creation form for wallet credit limit field"
+    },
+    "walletCreationFormWalletSavingsGoalFieldLabel": "Savings goal",
+    "@walletCreationFormWalletSavingsGoalFieldLabel": {
+        "description": "Label shown in wallet creation form for wallet savings goal field"
+    },
+    "walletCreationFormWalletPickAnIconText": "Pick an icon",
+    "@walletCreationFormWalletPickAnIconText": {
+        "description": "Text shown in wallet creation form for wallet pick an icon"
+    },
+    "walletCreationFormWalletWalletNameIsRequiredErrorMessage": "Wallet name is required",
+    "@walletCreationFormWalletWalletNameIsRequiredErrorMessage": {
+        "description": "Error message shown in wallet creation form for wallet name is required"
+    },
+    "walletCreationFormWalletWalletNameIsTooLongErrorMessage": "Wallet name is too long",
+    "@walletCreationFormWalletWalletNameIsTooLongErrorMessage": {
+        "description": "Error message shown in wallet creation form for wallet name is too long"
+    },
+    "walletCreationFormWalletNameFieldHintText": "Name your wallet",
+    "@walletCreationFormWalletNameFieldHintText": {
+        "description": "Hint text shown in wallet creation form for wallet name field"
+    },
+    "walletCreationFormWalletDescriptionIsTooLongErrorMessage": "Description is too long",
+    "@walletCreationFormWalletDescriptionIsTooLongErrorMessage": {
+        "description": "Error message shown in wallet creation form for wallet description is too long"
+    },
+    "walletCreationFormWalletDescriptionFieldHintText": "Describe your wallet for easier identification",
+    "@walletCreationFormWalletDescriptionFieldHintText": {
+        "description": "Hint text shown in wallet creation form for wallet description field"
+    },
+    "walletCreationFormWalletBalanceMustBeLessThanMaxErrorMessage": "Balance must be less than ${maxAcceptedBalance}",
+    "@walletCreationFormWalletBalanceMustBeLessThanMaxErrorMessage": {
+        "description": "Error message shown in wallet creation form for wallet balance must be less than max",
+        "placeholders": {
+            "maxAcceptedBalance": {
+                "type": "double",
+                "description": "Max accepted balance"
+            }
+        }
+    },
+    "walletCreationFormWalletBalanceMustBeGreaterThanMinErrorMessage": "Balance must be greater than ${minAcceptedBalance}",
+    "@walletCreationFormWalletBalanceMustBeGreaterThanMinErrorMessage": {
+        "description": "Error message shown in wallet creation form for wallet balance must be greater than min",
+        "placeholders": {
+            "minAcceptedBalance": {
+                "type": "double",
+                "description": "Min accepted balance"
+            }
+        }
+    },
+    "walletCreationFormWalletBalanceFieldHintText": "Set the current balance",
+    "@walletCreationFormWalletBalanceFieldHintText": {
+        "description": "Hint text shown in wallet creation form for wallet balance field"
+    },
+    "walletCreationFormWalletExcludeFromTotalCheckboxLabel": "Exclude from total",
+    "@walletCreationFormWalletExcludeFromTotalCheckboxLabel": {
+        "description": "Label shown in wallet creation form for wallet exclude from total checkbox"
+    },
+    "walletCreationFormCreditLimitMustBeLessThanMaxErrorMessage": "Credit limit must be less than ${maxAcceptedCreditLimit}",
+    "@walletCreationFormCreditLimitMustBeLessThanMaxErrorMessage": {
+        "description": "Error message shown in wallet creation form for wallet credit limit must be less than max",
+        "placeholders": {
+            "maxAcceptedCreditLimit": {
+                "type": "double",
+                "description": "Max accepted credit limit"
+            }
+        }
+    },
+    "walletCreationFormCreditLimitMustBeGreaterThanMinErrorMessage": "Credit limit must be greater than ${minAcceptedCreditLimit}",
+    "@walletCreationFormCreditLimitMustBeGreaterThanMinErrorMessage": {
+        "description": "Error message shown in wallet creation form for wallet credit limit must be greater than min",
+        "placeholders": {
+            "minAcceptedCreditLimit": {
+                "type": "double",
+                "description": "Min accepted credit limit"
+            }
+        }
+    },
+    "walletCreationFormCreditLimitMustBeGreaterThanZeroErrorMessage": "Credit limit must be greater than 0",
+    "@walletCreationFormCreditLimitMustBeGreaterThanZeroErrorMessage": {
+        "description": "Error message shown in wallet creation form for wallet credit limit must be greater than zero"
+    },
+    "walletCreationFormCreditLimitFieldHintText": "Set the credit limit",
+    "@walletCreationFormCreditLimitFieldHintText": {
+        "description": "Hint text shown in wallet creation form for wallet credit limit field"
+    },
+
+    "walletCreationFormCreditWalletDayOfMonthText": "Day of month",
+    "@walletCreationFormCreditWalletDayOfMonthText": {
+        "description": "Text shown in wallet creation form for wallet credit wallet day of month"
+    },
+    "walletCreationFormCreditWalletPaymentDayOfMonthText": "Payment day of month",
+    "@walletCreationFormCreditWalletPaymentDayOfMonthText": {
+        "description": "Text shown in wallet creation form for wallet credit wallet payment day of month"
+    },
+    "walletCreationFormSavingsGoalMustBeGreaterThanZeroErrorMessage": "Savings goal must be greater than 0",
+    "@walletCreationFormSavingsGoalMustBeGreaterThanZeroErrorMessage": {
+        "description": "Error message shown in wallet creation form for wallet savings goal must be greater than zero"
+    },
+    "walletCreationFormSavingsGoalMustBeLessThanMaxErrorMessage": "Savings goal must be less than ${maxAcceptedSavingsGoal}",
+    "@walletCreationFormSavingsGoalMustBeLessThanMaxErrorMessage": {
+        "description": "Error message shown in wallet creation form for wallet savings goal must be less than max",
+        "placeholders": {
+            "maxAcceptedSavingsGoal": {
+                "type": "double",
+                "description": "Max accepted savings goal"
+            }
+        }
+    },
+    "walletCreationFormSavingsGoalMustBeGreaterThanMinErrorMessage": "Savings goal must be greater than ${minAcceptedSavingsGoal}",
+    "@walletCreationFormSavingsGoalMustBeGreaterThanMinErrorMessage": {
+        "description": "Error message shown in wallet creation form for wallet savings goal must be greater than min",
+        "placeholders": {
+            "minAcceptedSavingsGoal": {
+                "type": "double",
+                "description": "Min accepted savings goal"
+            }
+        }
+    },
+    "walletCreationFormSavingsGoalFieldHintText": "Set the savings goal",
+    "@walletCreationFormSavingsGoalFieldHintText": {
+        "description": "Hint text shown in wallet creation form for wallet savings goal field"
+    },
+    "@_PERSONAL_PAGE": {},
+    "personalPageAppBarTitle": "Personal",
+    "@personalPageAppBarTitle": {
+        "description": "Title shown in personal page app bar"
+    },
+    "personalPageLogoutButtonLabel": "Logout",
+    "@personalPageLogoutButtonLabel": {
+        "description": "Text shown in personal page for logout button"
+    },
+    "@_WALLET_SELECTOR_MODAL": {},
+    "walletSelectorModalSearchWalletsHintText": "Search wallets",
+    "@walletSelectorModalSearchWalletsHintText": {
+        "description": "Hint text shown in wallet selector modal for search wallets"
     }
 }

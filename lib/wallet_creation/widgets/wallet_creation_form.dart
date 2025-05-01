@@ -4,6 +4,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash/app/routes/app_router.dart';
 import 'package:felicash/currency/views/currency_selector/currency_selector.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/wallet_creation/bloc/wallet_creation_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,11 +19,12 @@ class WalletCreationForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final walletType = context.read<WalletCreationBloc>().state.walletType;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        InputLabel(text: Text('Wallet name'.hardCoded)),
+        InputLabel(text: Text(l10n.walletCreationFormWalletNameFieldLabel)),
         const Row(
           spacing: AppSpacing.md,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,17 +38,21 @@ class WalletCreationForm extends StatelessWidget {
         const SizedBox(height: AppSpacing.md),
         const _WalletColorPicker(),
         const SizedBox(height: AppSpacing.md),
-        InputLabel(text: Text('Wallet description'.hardCoded)),
+        InputLabel(
+          text: Text(l10n.walletCreationFormWalletDescriptionFieldLabel),
+        ),
         const _WalletDescription(),
         const SizedBox(height: AppSpacing.md),
-        InputLabel(text: Text('Currency'.hardCoded)),
+        InputLabel(text: Text(l10n.walletCreationFormWalletCurrencyFieldLabel)),
         const _WalletCurrency(),
         const SizedBox(height: AppSpacing.md),
-        InputLabel(text: Text('Balance'.hardCoded)),
+        InputLabel(text: Text(l10n.walletCreationFormWalletBalanceFieldLabel)),
         const _WalletBalance(),
         if (walletType == WalletTypeEnum.credit) ...[
           const SizedBox(height: AppSpacing.md),
-          InputLabel(text: Text('Credit limit'.hardCoded)),
+          InputLabel(
+            text: Text(l10n.walletCreationFormWalletCreditLimitFieldLabel),
+          ),
           const _WalletCreditLimit(),
           const SizedBox(height: AppSpacing.md),
           const _WalletStateDayOfMonth(),
@@ -54,7 +60,9 @@ class WalletCreationForm extends StatelessWidget {
           const _WalletPaymentDayOfMonth(),
         ] else if (walletType == WalletTypeEnum.savings) ...[
           const SizedBox(height: AppSpacing.md),
-          InputLabel(text: Text('Savings goal'.hardCoded)),
+          InputLabel(
+            text: Text(l10n.walletCreationFormWalletSavingsGoalFieldLabel),
+          ),
           const _WalletSavingsGoal(),
         ],
         const SizedBox(height: AppSpacing.md),
@@ -88,14 +96,16 @@ class _WalletIcon extends StatelessWidget {
   }
 
   Future<void> _pickIcon(BuildContext context) async {
+    final l10n = context.l10n;
     unawaited(HapticFeedback.lightImpact());
     final picked = await showModalBottomSheet<IconData?>(
       context: context,
       isScrollControlled: true,
       builder: (context) {
         return IconPickerModal(
-          title: Text('Pick an icon'.hardCoded),
+          title: Text(l10n.walletCreationFormWalletPickAnIconText),
           iconPacks: const [IconPacks.wallets],
+          doneButtonText: l10n.done,
         );
       },
     );
@@ -111,12 +121,15 @@ class _WalletName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final displayError = context
         .select((WalletCreationBloc bloc) => bloc.state.name.displayError);
     final maxLength = context.read<WalletCreationBloc>().state.name.maxLength;
     final errorText = switch (displayError) {
-      WalletNameValidationError.empty => 'Wallet name is required'.hardCoded,
-      WalletNameValidationError.tooLong => 'Wallet name is too long'.hardCoded,
+      WalletNameValidationError.empty =>
+        l10n.walletCreationFormWalletWalletNameIsRequiredErrorMessage,
+      WalletNameValidationError.tooLong =>
+        l10n.walletCreationFormWalletWalletNameIsTooLongErrorMessage,
       null => null,
     };
     return TextFormField(
@@ -127,7 +140,7 @@ class _WalletName extends StatelessWidget {
             .add(WalletCreationNameChanged(value));
       },
       decoration: InputDecoration(
-        hintText: 'Name your wallet'.hardCoded,
+        hintText: l10n.walletCreationFormWalletNameFieldHintText,
         errorText: errorText,
       ),
     );
@@ -202,12 +215,13 @@ class _WalletDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final displayError = context.select(
       (WalletCreationBloc bloc) => bloc.state.description.displayError,
     );
     final errorText = switch (displayError) {
       WalletDescriptionValidationError.tooLong =>
-        'Wallet description is too long'.hardCoded,
+        l10n.walletCreationFormWalletDescriptionIsTooLongErrorMessage,
       null => null,
     };
     final maxLength =
@@ -223,7 +237,7 @@ class _WalletDescription extends StatelessWidget {
             .add(WalletCreationDescriptionChanged(value));
       },
       decoration: InputDecoration(
-        hintText: 'Describe your wallet for easier identification'.hardCoded,
+        hintText: l10n.walletCreationFormWalletDescriptionFieldHintText,
         errorText: errorText,
       ),
     );
@@ -255,7 +269,7 @@ class _WalletBalance extends HookWidget {
   const _WalletBalance();
 
   String _buildPrefixText(BuildContext context, WalletCreationState state) {
-    return '${state.currency?.symbol ?? '?'.hardCoded} ';
+    return '${state.currency?.symbol ?? '?'} ';
   }
 
   TextStyle _buildPrefixStyle(BuildContext context, WalletCreationState state) {
@@ -266,6 +280,7 @@ class _WalletBalance extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final acceptedRange =
         context.read<WalletCreationBloc>().state.balance.acceptedRange;
     final displayError = context.select(
@@ -278,9 +293,13 @@ class _WalletBalance extends HookWidget {
 
     final errorText = switch (displayError) {
       WalletMonetaryBalanceValidationError.over =>
-        'Balance must be less than ${acceptedRange.max}'.hardCoded,
+        l10n.walletCreationFormWalletBalanceMustBeLessThanMaxErrorMessage(
+          acceptedRange.max,
+        ),
       WalletMonetaryBalanceValidationError.under =>
-        'Balance must be greater than ${acceptedRange.min}'.hardCoded,
+        l10n.walletCreationFormWalletBalanceMustBeGreaterThanMinErrorMessage(
+          acceptedRange.min,
+        ),
       null => null,
     };
 
@@ -302,7 +321,7 @@ class _WalletBalance extends HookWidget {
           prefixStyle: context.select<WalletCreationBloc, TextStyle>(
             (bloc) => _buildPrefixStyle(context, bloc.state),
           ),
-          hintText: 'Set the current balance'.hardCoded,
+          hintText: l10n.walletCreationFormWalletBalanceFieldHintText,
           errorText: errorText,
           suffixIcon: const Icon(Icons.chevron_right),
         ),
@@ -338,6 +357,7 @@ class _ExclueFromToal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(
@@ -350,7 +370,7 @@ class _ExclueFromToal extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              'Exclude from total'.hardCoded,
+              l10n.walletCreationFormWalletExcludeFromTotalCheckboxLabel,
               style: theme.textTheme.bodyLarge,
             ),
           ),
@@ -378,6 +398,7 @@ class _WalletCreditLimit extends HookWidget {
   const _WalletCreditLimit();
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final acceptedRange =
         context.read<WalletCreationBloc>().state.creditLimit.acceptedRange;
     final displayError = context.select(
@@ -390,11 +411,15 @@ class _WalletCreditLimit extends HookWidget {
 
     final errorText = switch (displayError) {
       WalletCreditLimitValidationError.over =>
-        'The credit limit must be less than ${acceptedRange.max}'.hardCoded,
+        l10n.walletCreationFormCreditLimitMustBeLessThanMaxErrorMessage(
+          acceptedRange.max,
+        ),
       WalletCreditLimitValidationError.under =>
-        'The credit limit must be greater than ${acceptedRange.min}'.hardCoded,
+        l10n.walletCreationFormCreditLimitMustBeGreaterThanMinErrorMessage(
+          acceptedRange.min,
+        ),
       WalletCreditLimitValidationError.canNotBeZero =>
-        'The credit limit must be greater than 0'.hardCoded,
+        l10n.walletCreationFormCreditLimitMustBeGreaterThanZeroErrorMessage,
       null => null,
     };
 
@@ -415,7 +440,7 @@ class _WalletCreditLimit extends HookWidget {
         readOnly: true,
         decoration: InputDecoration(
           prefixText: '$currencySymbol ',
-          hintText: 'Set the credit limit'.hardCoded,
+          hintText: l10n.walletCreationFormCreditLimitFieldHintText,
           errorText: errorText,
           suffixIcon: const Icon(Icons.chevron_right),
         ),
@@ -451,6 +476,7 @@ class _WalletStateDayOfMonth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final range =
         context.read<WalletCreationBloc>().state.stateDayOfMonth.acceptedRange;
     final items = List.generate(
@@ -472,7 +498,7 @@ class _WalletStateDayOfMonth extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              'Day of month'.hardCoded,
+              l10n.walletCreationFormCreditWalletDayOfMonthText,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
@@ -501,6 +527,7 @@ class _WalletPaymentDayOfMonth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final range = context
         .read<WalletCreationBloc>()
         .state
@@ -525,7 +552,7 @@ class _WalletPaymentDayOfMonth extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              'Payment day of month'.hardCoded,
+              l10n.walletCreationFormCreditWalletPaymentDayOfMonthText,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
@@ -555,6 +582,7 @@ class _WalletSavingsGoal extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final acceptedRange =
         context.read<WalletCreationBloc>().state.savingsGoal.acceptedRange;
     final displayError = context.select(
@@ -570,11 +598,15 @@ class _WalletSavingsGoal extends HookWidget {
 
     final errorText = switch (displayError) {
       WalletMonetarySavingsGoalValidationError.zero =>
-        'The savings goal must be greater than 0'.hardCoded,
+        l10n.walletCreationFormSavingsGoalMustBeGreaterThanZeroErrorMessage,
       WalletMonetarySavingsGoalValidationError.over =>
-        'The savings goal must be less than ${acceptedRange.max}'.hardCoded,
+        l10n.walletCreationFormSavingsGoalMustBeLessThanMaxErrorMessage(
+          acceptedRange.max,
+        ),
       WalletMonetarySavingsGoalValidationError.under =>
-        'The savings goal must be greater than ${acceptedRange.min}'.hardCoded,
+        l10n.walletCreationFormSavingsGoalMustBeGreaterThanMinErrorMessage(
+          acceptedRange.min,
+        ),
       null => null,
     };
 
@@ -591,7 +623,7 @@ class _WalletSavingsGoal extends HookWidget {
         readOnly: true,
         decoration: InputDecoration(
           prefixText: '$currencySymbol ',
-          hintText: 'Set the savings goal'.hardCoded,
+          hintText: l10n.walletCreationFormSavingsGoalFieldHintText,
           errorText: errorText,
           suffixIcon: const Icon(Icons.chevron_right),
         ),

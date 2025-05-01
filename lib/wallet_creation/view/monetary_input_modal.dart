@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -19,6 +20,7 @@ class MonetaryInputModal extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
     final controller = useTextEditingController(text: initialValue.toString());
@@ -57,7 +59,7 @@ class MonetaryInputModal extends HookWidget {
                       final parsed = double.tryParse(controller.text);
                       Navigator.of(context).pop(parsed);
                     },
-                    child: Text('Update'.hardCoded),
+                    child: Text(l10n.update),
                   ),
                 ),
               ),

@@ -1,7 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/wallet/models/wallet_view_model.dart';
-import 'package:felicash/wallet/view/wallets/wallets_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_models/shared_models.dart';
 
@@ -66,7 +65,7 @@ class WalletCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Current balance'.hardCoded,
+                      l10n.walletCardCurrentBalanceText,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),

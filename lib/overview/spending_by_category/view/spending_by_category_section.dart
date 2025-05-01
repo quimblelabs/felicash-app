@@ -58,41 +58,43 @@ class _EmptyStateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           const _Title(),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.xlg,
-              vertical: AppSpacing.xxlg,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: AppSpacing.lg),
-                Icon(
-                  Icons.pie_chart_outline,
-                  size: 64,
-                  color: Theme.of(context).colorScheme.outline,
-                ),
-                const SizedBox(height: AppSpacing.md),
-                Text(
-                  'No spending data available'.hardCoded,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  'Add some transactions to see your spending by category'
-                      .hardCoded,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xlg,
+                vertical: AppSpacing.xxlg,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: AppSpacing.lg),
+                  Icon(
+                    Icons.pie_chart_outline,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  Text(
+                    l10n.spendingByCategorySectionEmptyStateTitle,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  Text(
+                    l10n.spendingByCategorySectionEmptyStateSubtitle,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -106,11 +108,12 @@ class _Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Text(
-        'Spending by category',
+        l10n.spendingByCategorySectionTitle,
         style: theme.textTheme.titleMedium,
       ),
     );

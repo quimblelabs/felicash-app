@@ -2,6 +2,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
 import 'package:felicash/ai_assistant/models/ai_assistant_request_model.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/transaction/transaction_list/widgets/transaction_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -102,6 +103,7 @@ class _EmptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final dolarBill = AppColors.dollarBill.colorSchemeOf(context);
     final crimsionRed = AppColors.crimsionRed.colorSchemeOf(context);
@@ -121,7 +123,7 @@ class _EmptyView extends StatelessWidget {
           ],
         ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
         child: Text(
-          'Hello there!',
+          l10n.chatBotHelloText,
           style: theme.textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.w500,
           ),
@@ -152,6 +154,7 @@ class _MessageItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final chatBoxSize = context.select(
       (AiAssistantViewCubit cubit) => cubit.state.chatBoxSize,
     );
@@ -202,12 +205,12 @@ class _MessageItem extends HookWidget {
                     AiProcessingStatus.completed => _AssistantResponse(
                         response: message.response ??
                             ProcessingResponse(
-                              responseText: 'Something went wrong'.hardCoded,
+                              responseText: l10n.chatBotErrorMessage,
                             ),
                       ),
                     AiProcessingStatus.failed => _AssistantResponse(
                         response: ProcessingResponse(
-                          responseText: 'Something went wrong'.hardCoded,
+                          responseText: l10n.chatBotErrorMessage,
                         ),
                       ),
                   },
@@ -228,6 +231,7 @@ class _UserMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
     final maxWidth = mediaQuery.size.width * 0.7;
@@ -241,7 +245,7 @@ class _UserMessage extends StatelessWidget {
           },
           trailingIcon: IconsaxPlusLinear.copy,
           child: Text(
-            'Copy'.hardCoded,
+            l10n.copy,
             style: theme.textTheme.bodyLarge,
           ),
         ),
@@ -332,6 +336,7 @@ class _ImThinking extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return Row(
@@ -357,7 +362,7 @@ class _ImThinking extends StatelessWidget {
         if (!_isDone) ...[
           const SizedBox(width: AppSpacing.md),
           Text(
-            'Thinking...'.hardCoded,
+            l10n.thinking,
             style: theme.textTheme.labelLarge,
           )
               .animate(

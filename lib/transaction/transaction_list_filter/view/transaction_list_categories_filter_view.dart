@@ -1,11 +1,12 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/category/bloc/categories_bloc.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TransactionListCategoriesFilterView extends StatefulWidget {
   const TransactionListCategoriesFilterView({
@@ -63,6 +64,7 @@ class _TransactionListCategoriesFilterViewState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final categoriesState = context.select<CategoriesBloc, CategoriesState>(
       (value) => value.state,
@@ -70,7 +72,9 @@ class _TransactionListCategoriesFilterViewState
 
     if (categoriesState is CategoriesLoadFailure) {
       return Center(
-        child: Text('Failed to load categories'.hardCoded),
+        child: Text(
+          l10n.transactionListCategoriesFilterViewFailedToFetchCategoriesErrorMessage,
+        ),
       );
     }
 
@@ -94,7 +98,7 @@ class _TransactionListCategoriesFilterViewState
         categories.isNotEmpty && _selectedCategories.isNotEmpty;
     return SheetContentScaffold(
       topBar: AppBar(
-        title: Text('Transaction Categories'.hardCoded),
+        title: Text(l10n.transactionListCategoriesFilterViewTitle),
       ),
       body: Material(
         color: theme.colorScheme.surface,
@@ -182,15 +186,16 @@ class _SelectionsToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Row(
       children: [
         TextButton(
           onPressed: onSelectedAll,
-          child: const Text('Select all'),
+          child: Text(l10n.selectAll),
         ),
         TextButton(
           onPressed: onDeselectedAll,
-          child: const Text('Deselect all'),
+          child: Text(l10n.deselectAll),
         ),
       ],
     );
@@ -204,13 +209,15 @@ class _CategorySearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return TextField(
       controller: controller,
-      decoration: const InputDecoration(
-        hintText: 'Search categories',
+      decoration: InputDecoration(
+        hintText:
+            l10n.transactionListCategoriesFilterViewSearchCategoriesHintText,
         isDense: true,
-        prefixIcon: Icon(Icons.search),
-        contentPadding: EdgeInsets.symmetric(
+        prefixIcon: const Icon(Icons.search),
+        contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm,
         ),
@@ -233,11 +240,12 @@ class _CategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     if (categories.isEmpty) {
       return Center(
         child: Text(
-          'No categories found'.hardCoded,
+          l10n.transactionListCategoriesFilterViewNoCategoriesFoundErrorMessage,
           style: theme.textTheme.bodyLarge?.copyWith(
             color: theme.hintColor,
           ),
@@ -299,6 +307,7 @@ class _SubmitButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final hasChanges = _hasChanges();
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 300),
@@ -334,7 +343,9 @@ class _SubmitButton extends HookWidget {
           Expanded(
             child: OutlinedButton(
               onPressed: () => context.pop(),
-              child: Text('Cancel'.hardCoded),
+              child: Text(
+                l10n.transactionListCategoriesFilterViewCancelButtonLabel,
+              ),
             ),
           ),
           const SizedBox(width: AppSpacing.md),
@@ -348,8 +359,9 @@ class _SubmitButton extends HookWidget {
                   position: slideAnimation,
                   child: FilledButton(
                     onPressed: () => context.pop(selectedCategories),
-                    child:
-                        Text('Update (${selectedCategories.length})'.hardCoded),
+                    child: Text(
+                      '${l10n.update} (${selectedCategories.length})',
+                    ),
                   ),
                 ),
               ),

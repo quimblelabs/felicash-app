@@ -236,8 +236,8 @@ class _WalletItem extends StatelessWidget {
           icon: wallet?.icon ?? const IconDataIcon(raw: '', icon: Icons.wallet),
         ),
       ),
-      title: Text(wallet?.name ?? 'Select a wallet'.hardCoded),
-      subtitle: Text('Balance $balance'),
+      title: Text(wallet?.name ?? l10n.unknown),
+      subtitle: Text(l10n.walletSelectorBalanceText(balance ?? '0')),
       trailing: const Icon(Icons.arrow_forward_ios),
     );
   }

@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:app_ui/app_ui.dart';
 import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash/currency/bloc/currencies_bloc.dart';
 import 'package:felicash/currency/views/currency_selector/currency_selector_modal.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,8 +60,9 @@ class CurrencySelectorView extends HookWidget {
   }
 
   String _buildHintText(BuildContext context, CurrenciesState state) {
+    final l10n = context.l10n;
     return switch (state) {
-      CurrenciesInitial() => 'Currency'.hardCoded,
+      CurrenciesInitial() => l10n.currencySelectorTextFormFieldDefaultHintText,
       CurrenciesLoadInProgress(:final messageText) => messageText,
       CurrenciesLoadSuccess(:final currencies) => currencies.first.code,
       CurrenciesLoadFailure(:final messageText) => messageText,
@@ -127,13 +128,14 @@ class CurrencySelectorView extends HookWidget {
     List<CurrencyModel> currencies,
     CurrencyModel? initialCurrency,
   ) async {
+    final l10n = context.l10n;
     unawaited(HapticFeedback.lightImpact());
     final picked = await showModalBottomSheet<CurrencyModel?>(
       context: context,
       isScrollControlled: true,
       builder: (context) {
         return CurrencySelectorModal(
-          title: 'Pick a currency'.hardCoded,
+          title: l10n.currencySelectorModalTitle,
           currencyPack: currencies,
           initialCurrency: initialCurrency,
         );

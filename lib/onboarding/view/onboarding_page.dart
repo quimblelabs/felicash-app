@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/app/routes/app_router.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -71,11 +72,12 @@ class _AppSlogan extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return Column(
       children: [
         Text(
-          'With Felicash'.hardCoded,
+          l10n.onboardingPageWithFelicashTitle,
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -83,7 +85,7 @@ class _AppSlogan extends StatelessWidget {
         const Gap(AppSpacing.md),
         Text.rich(
           TextSpan(
-            text: 'Take control of your '.hardCoded,
+            text: l10n.onboardingPageTakeControlOfYourText,
             children: [
               WidgetSpan(
                 child: Container(
@@ -96,7 +98,7 @@ class _AppSlogan extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Text(
-                    'financial'.hardCoded,
+                    l10n.onboardingPageFinancialText,
                     style: theme.textTheme.titleLarge?.copyWith(
                       color: theme.colorScheme.onSecondaryContainer,
                     ),
@@ -113,7 +115,7 @@ class _AppSlogan extends StatelessWidget {
             style: theme.textTheme.titleLarge,
             children: [
               TextSpan(
-                text: 'Experience the '.hardCoded,
+                text: l10n.onboardingPageExperienceTheText,
               ),
               WidgetSpan(
                 child: Container(
@@ -126,7 +128,7 @@ class _AppSlogan extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Text(
-                    'AI'.hardCoded,
+                    l10n.onboardingPageAIText,
                     style: theme.textTheme.titleLarge?.copyWith(
                       color: theme.colorScheme.onTertiaryContainer,
                     ),
@@ -134,7 +136,7 @@ class _AppSlogan extends StatelessWidget {
                 ),
               ),
               TextSpan(
-                text: ' assistant'.hardCoded,
+                text: l10n.onboardingPageAssistantText,
               ),
             ],
           ),
@@ -149,9 +151,10 @@ class _GetStartedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return FilledButton(
       onPressed: () {},
-      child: Text('Get started'.hardCoded),
+      child: Text(l10n.onboardingPageGetStartedButtonLabel),
     );
   }
 }
@@ -161,18 +164,19 @@ class _AlreadyHaveAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return Column(
       children: [
         Text(
-          'Already have an account?'.hardCoded,
+          l10n.onboardingPageAlreadyHaveAccountText,
           style: theme.textTheme.labelLarge,
         ),
         TextButton(
           onPressed: () {
             context.push(AppRoutes.login);
           },
-          child: Text('Login now'.hardCoded),
+          child: Text(l10n.onboardingPageLoginButtonLabel),
         ),
       ],
     );

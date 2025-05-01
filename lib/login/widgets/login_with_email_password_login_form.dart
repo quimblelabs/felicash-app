@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/login/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ class _EmailInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final displayError = context.select(
       (LoginBloc bloc) => bloc.state.email.displayError,
     );
@@ -36,9 +38,9 @@ class _EmailInput extends StatelessWidget {
           .read<LoginBloc>() //
           .add(LoginEmailChanged(value)),
       decoration: InputDecoration(
-        hintText: 'Email'.hardCoded,
+        hintText: l10n.loginWithEmailPasswordLoginFormEmailFieldLabel,
         errorText: displayError != null
-            ? 'Please enter a valid email'.hardCoded
+            ? l10n.loginWithEmailPasswordLoginFormEmailFieldErrorText
             : null,
       ),
       textInputAction: TextInputAction.next,
@@ -50,6 +52,7 @@ class _PasswordInput extends StatelessWidget {
   const _PasswordInput();
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final displayError = context.select(
       (LoginBloc bloc) => bloc.state.password.displayError,
     );
@@ -61,9 +64,9 @@ class _PasswordInput extends StatelessWidget {
           .read<LoginBloc>() //
           .add(LoginPasswordChanged(value)),
       decoration: InputDecoration(
-        hintText: 'Password'.hardCoded,
+        hintText: l10n.loginWithEmailPasswordLoginFormPasswordFieldLabel,
         errorText: displayError != null
-            ? 'Please enter your password'.hardCoded
+            ? l10n.loginWithEmailPasswordLoginFormPasswordFieldErrorText
             : null,
       ),
       onFieldSubmitted: valid
@@ -78,6 +81,7 @@ class _LoginButton extends StatelessWidget {
   const _LoginButton();
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final state = context.select((LoginBloc bloc) => bloc.state);
     return SizedBox(
       width: double.infinity,
@@ -97,7 +101,7 @@ class _LoginButton extends StatelessWidget {
                   );
                 },
               )
-            : Text('Login'.hardCoded),
+            : Text(l10n.loginWithEmailPasswordLoginFormLoginButtonText),
       ),
     );
   }

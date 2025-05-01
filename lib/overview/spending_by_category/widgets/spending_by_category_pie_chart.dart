@@ -8,6 +8,7 @@ class _PieChart extends StatelessWidget {
     CategorySpendingStat? selectedItem,
     BuildContext context,
   ) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final reversed = data.reversed.toList();
     final explodeIndex = reversed.indexWhere((e) => e == selectedItem);
@@ -38,7 +39,7 @@ class _PieChart extends StatelessWidget {
         pointColorMapper: (CategorySpendingStat data, _) => data.category.color,
         xValueMapper: (CategorySpendingStat data, _) {
           if (data.category.isEmpty) {
-            return 'No Category'.hardCoded;
+            return l10n.spendingByCategoryPieChartEmptyCategoriesText;
           }
           return data.category.name;
         },
@@ -133,7 +134,7 @@ class _SelectedCategorySection extends StatelessWidget {
               ),
               Text(
                 selectedItem.category.isEmpty
-                    ? 'No Category'.hardCoded
+                    ? l10n.spendingByCategoryPieChartEmptyCategoriesText
                     : selectedItem.category.name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

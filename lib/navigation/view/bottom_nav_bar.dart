@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/transaction/transaction_creation/widgets/add_transaction_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,7 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return Theme(
       data: theme.copyWith(
@@ -32,7 +34,7 @@ class BottomNavBar extends StatelessWidget {
                     icon: currentIndex == 0
                         ? IconsaxPlusBold.chart
                         : IconsaxPlusLinear.chart_3,
-                    label: 'Overview'.hardCoded,
+                    label: l10n.bottomNavigationBarOverviewButtonLabel,
                     isSelected: currentIndex == 0,
                     onTap: () => onTabChanged(0),
                   ),
@@ -42,7 +44,7 @@ class BottomNavBar extends StatelessWidget {
                     icon: currentIndex == 1
                         ? IconsaxPlusBold.arrow_swap_horizontal
                         : IconsaxPlusLinear.arrow_swap_horizontal,
-                    label: 'Transactions'.hardCoded,
+                    label: l10n.bottomNavigationBarTransactionsButtonLabel,
                     isSelected: currentIndex == 1,
                     onTap: () => onTabChanged(1),
                   ),
@@ -53,7 +55,7 @@ class BottomNavBar extends StatelessWidget {
                     icon: currentIndex == 2
                         ? IconsaxPlusBold.wallet
                         : IconsaxPlusLinear.wallet,
-                    label: 'Wallets'.hardCoded,
+                    label: l10n.bottomNavigationBarWalletsButtonLabel,
                     isSelected: currentIndex == 2,
                     onTap: () => onTabChanged(2),
                   ),
@@ -63,7 +65,7 @@ class BottomNavBar extends StatelessWidget {
                     icon: currentIndex == 3
                         ? IconsaxPlusBold.user
                         : IconsaxPlusLinear.user,
-                    label: 'Personal'.hardCoded,
+                    label: l10n.bottomNavigationBarPersonalButtonLabel,
                     isSelected: currentIndex == 3,
                     onTap: () => onTabChanged(3),
                   ),

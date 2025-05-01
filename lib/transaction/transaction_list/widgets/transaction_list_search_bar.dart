@@ -47,6 +47,7 @@ class _TransactionListSearchBarState extends State<TransactionListSearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return SizedBox(
@@ -56,7 +57,7 @@ class _TransactionListSearchBarState extends State<TransactionListSearchBar> {
         textAlignVertical: TextAlignVertical.center,
         style: theme.textTheme.bodySmall,
         decoration: InputDecoration(
-          hintText: 'Search transactions...'.hardCoded,
+          hintText: l10n.transactionListSearchBarHintText,
           hintStyle: theme.textTheme.bodySmall?.copyWith(
             color: theme.hintColor,
           ),

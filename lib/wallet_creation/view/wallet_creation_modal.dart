@@ -1,6 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash/currency/bloc/currencies_bloc.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/wallet_creation/bloc/wallet_creation_bloc.dart';
 import 'package:felicash/wallet_creation/widgets/wallet_creation_form.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_models/shared_models.dart';
+
+extension on WalletTypeEnum {
+  String name(BuildContext context) {
+    final l10n = context.l10n;
+    return switch (this) {
+      WalletTypeEnum.basic => l10n.walletCreationModalBasicWalletTypeLabel,
+      WalletTypeEnum.credit => l10n.walletCreationModalCreditWalletTypeLabel,
+      WalletTypeEnum.savings => l10n.walletCreationModalSavingsWalletTypeLabel,
+    };
+  }
+}
 
 class WalletCreationModal extends StatelessWidget {
   const WalletCreationModal({required this.walletType, super.key});
@@ -39,19 +51,22 @@ class WalletCreationModal extends StatelessWidget {
       child: BlocListener<WalletCreationBloc, WalletCreationState>(
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
+          final l10n = context.l10n;
           // Check if WalletCreationState is successful created a
           // wallet and get back true
           if (state.status == WalletCreationStatus.success) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Wallet created successfully'.hardCoded),
+                content: Text(
+                  l10n.walletCreationModalWalletCreatedSuccessfullyText,
+                ),
               ),
             );
             context.pop();
           } else if (state.status == WalletCreationStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.errorMessage ?? 'Unknown error'),
+                content: Text(state.errorMessage ?? l10n.unknownError),
               ),
             );
           }
@@ -142,20 +157,21 @@ class _WalletCreationView extends HookWidget {
   }
 
   Future<bool> _checkAndShowPopConfirmation(BuildContext context) async {
+    final l10n = context.l10n;
     // TODO(tuanhm): Check if form is dirty, and show confirmation dialog
     final confirm = await showDialog<bool?>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Are you sure?'.hardCoded),
-        content: Text('This action cannot be undone.'.hardCoded),
+        title: Text(l10n.walletCreationModalAreYouSureText),
+        content: Text(l10n.walletCreationModalThisActionCannotBeUndoneText),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text('Cancel'.hardCoded),
+            child: Text(l10n.walletCreationModalCancelButtonText),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text('Yes'.hardCoded),
+            child: Text(l10n.walletCreationModalYesButtonText),
           ),
         ],
       ),
@@ -176,11 +192,14 @@ class _Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final walletType = context.read<WalletCreationBloc>().state.walletType;
     return Padding(
       padding: const EdgeInsets.only(top: AppSpacing.md),
       child: Text(
-        'Create ${walletType.name} wallet'.hardCoded,
+        l10n.walletCreationModalCreateWithWalletTypeText(
+          walletType.name(context),
+        ),
         style: Theme.of(context).textTheme.titleLarge,
       ),
     );
@@ -192,6 +211,7 @@ class _CreateWalletButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return SafeArea(
       top: false,
       left: false,
@@ -206,7 +226,7 @@ class _CreateWalletButton extends StatelessWidget {
           builder: (context, isValid) {
             return FilledButton(
               onPressed: isValid ? () => _createWallet(context) : null,
-              child: Text('Create wallet'.hardCoded),
+              child: Text(l10n.walletCreationModalCreateWalletButtonText),
             );
           },
         ),

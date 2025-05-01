@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/app/routes/app_router.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -101,6 +102,7 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
   }
 
   Widget _buildOverlay(BuildContext context, Widget child) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
     final childRenderBox =
@@ -164,7 +166,8 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
                               _toggle(visible: false);
                             },
                             icon: IconsaxPlusBold.scanner,
-                            label: 'Recept Scanner'.hardCoded,
+                            label: l10n
+                                .addTransactionMenuButtonReceptScannerButtonText,
                           ),
                         ),
                         Transform.translate(
@@ -181,7 +184,8 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
                               _toggle(visible: false);
                             },
                             icon: FeliCashIcons.magic,
-                            label: 'AI Input'.hardCoded,
+                            label:
+                                l10n.addTransactionMenuButtonAIInputButtonText,
                           ),
                         ),
                         Transform.translate(
@@ -200,7 +204,8 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
                               _toggle(visible: false);
                             },
                             icon: IconsaxPlusBold.money_add,
-                            label: 'Manual Entry'.hardCoded,
+                            label: l10n
+                                .addTransactionMenuButtonManualInputButtonText,
                           ),
                         ),
                       ],

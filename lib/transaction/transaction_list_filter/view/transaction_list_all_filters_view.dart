@@ -1,16 +1,15 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/app/routes/app_router.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/transaction/cubit/transaction_list_filter_cubit.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
 import 'package:felicash/wallet/models/wallet_view_model.dart';
-import 'package:felicash/wallet/view/wallets/wallets_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 typedef _TxDateRange = ({DateTime? from, DateTime? to});
 
@@ -38,6 +37,7 @@ class _AllFiltersView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return Theme(
       data: theme.copyWith(
@@ -52,7 +52,7 @@ class _AllFiltersView extends StatelessWidget {
       child: SheetContentScaffold(
         backgroundColor: theme.colorScheme.surfaceContainer,
         topBar: AppBar(
-          title: Text('Transaction Filters'.hardCoded),
+          title: Text(l10n.transactionListAllFiltersViewTitle),
           automaticallyImplyLeading: false,
           actions: const [ModalCloseButton()],
         ),
@@ -97,6 +97,7 @@ class _ClearButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final isEmpty = context.select<TransactionListFilterCubit, bool>(
       (value) => value.state.filter.isEmpty,
     );
@@ -109,7 +110,7 @@ class _ClearButton extends StatelessWidget {
                   .read<TransactionListFilterCubit>()
                   .updateFilter(TransactionListFilter.empty);
             },
-      child: Text('Clear all'.hardCoded),
+      child: Text(l10n.transactionListAllFiltersViewClearAllButtonText),
     );
   }
 }
@@ -119,6 +120,7 @@ class _CategoriesFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocSelector<TransactionListFilterCubit, TransactionListFilterState,
         Set<CategoryModel>>(
       selector: (state) => state.filter.categories,
@@ -137,7 +139,7 @@ class _CategoriesFilter extends StatelessWidget {
               }
             }
           },
-          title: Text('Categories'.hardCoded),
+          title: Text(l10n.transactionListAllFiltersViewCategoriesFilterTitle),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -159,6 +161,7 @@ class _WalletsFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocSelector<TransactionListFilterCubit, TransactionListFilterState,
         Set<WalletViewModel>>(
       selector: (state) => state.filter.wallets,
@@ -177,7 +180,7 @@ class _WalletsFilter extends StatelessWidget {
               }
             }
           },
-          title: Text('Wallets'.hardCoded),
+          title: Text(l10n.transactionListAllFiltersViewWalletsFilterTitle),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -199,6 +202,7 @@ class _TypesFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocSelector<TransactionListFilterCubit, TransactionListFilterState,
         Set<TransactionTypeEnum>>(
       selector: (state) => state.filter.types,
@@ -215,7 +219,9 @@ class _TypesFilter extends StatelessWidget {
               }
             }
           },
-          title: Text('Transaction Types'.hardCoded),
+          title: Text(
+            l10n.transactionListAllFiltersViewTransactionTypesFilterTitle,
+          ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -235,7 +241,13 @@ class _TypesFilter extends StatelessWidget {
 class _TransactionDateFilter extends StatelessWidget {
   const _TransactionDateFilter();
 
-  String? _getLabel(DateTime? from, DateTime? to, [String? locale]) {
+  String? _getLabel(
+    BuildContext context,
+    DateTime? from,
+    DateTime? to, [
+    String? locale,
+  ]) {
+    final l10n = context.l10n;
     if (from == null && to == null) return null;
 
     if (from != null && to != null) {
@@ -250,11 +262,11 @@ class _TransactionDateFilter extends StatelessWidget {
         if (fromDate.year == now.year &&
             fromDate.month == now.month &&
             fromDate.day == now.day) {
-          return 'Today';
+          return l10n.today;
         } else if (fromDate.year == yesterday.year &&
             fromDate.month == yesterday.month &&
             fromDate.day == yesterday.day) {
-          return 'Yesterday';
+          return l10n.yesterday;
         } else {
           return fromDate.toLocal().yMMMd(locale);
         }
@@ -275,22 +287,27 @@ class _TransactionDateFilter extends StatelessWidget {
       // Custom range
       return '${fromDate.toLocal().yMMMd(locale)} - ${toDate.toLocal().yMMMd(locale)}';
     } else if (from != null) {
-      return 'From ${from.toLocal().yMMMd(locale)}'.hardCoded;
+      return '${l10n.from} ${from.toLocal().yMMMd(locale)}';
     } else if (to != null) {
-      return 'To ${to.toLocal().yMMMd(locale)}'.hardCoded;
+      return '${l10n.to} ${to.toLocal().yMMMd(locale)}';
     }
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocSelector<TransactionListFilterCubit, TransactionListFilterState,
         _TxDateRange>(
       selector: (state) => (from: state.filter.from, to: state.filter.to),
       builder: (context, range) {
         final locale = Localizations.localeOf(context).toString();
-        final label = _getLabel(range.from, range.to, locale);
-
+        final label = _getLabel(
+          context,
+          range.from,
+          range.to,
+          locale,
+        );
         return ListTile(
           onTap: () async {
             final result = await context.pushNamed<(DateTime?, DateTime?)?>(
@@ -309,7 +326,9 @@ class _TransactionDateFilter extends StatelessWidget {
               }
             }
           },
-          title: Text('Transaction Date'.hardCoded),
+          title: Text(
+            l10n.transactionListAllFiltersViewTransactionDateFilterTitle,
+          ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -336,6 +355,7 @@ class _SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final initialFilter =
         context.read<TransactionListFilterCubit>().state.initialFilter;
     final currentFilter =
@@ -355,7 +375,7 @@ class _SubmitButton extends StatelessWidget {
           context.pop(currentFilter);
         }
       },
-      child: Text('Apply'.hardCoded),
+      child: Text(l10n.transactionListAllFiltersViewApplyButtonText),
     );
   }
 }

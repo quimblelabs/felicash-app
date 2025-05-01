@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/wallet/cubit/wallets_filter_cubit.dart';
 import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:felicash/wallet/models/wallets_view_filter.dart';
@@ -73,7 +74,7 @@ class _WalletSelectorView extends HookWidget {
       snap: true,
       builder: (context, scrollController) {
         return ModalScaffold(
-          header: Text(title.hardCoded),
+          header: Text(title),
           content: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: AppSpacing.md,
@@ -123,12 +124,13 @@ class _SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return TextField(
       controller: controller,
-      decoration: const InputDecoration(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16),
-        hintText: 'Search wallets',
-        prefixIcon: Icon(Icons.search),
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+        hintText: l10n.walletSelectorModalSearchWalletsHintText,
+        prefixIcon: const Icon(Icons.search),
       ),
     );
   }

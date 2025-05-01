@@ -60,6 +60,7 @@ class _TransactionsViewState extends State<TransactionsView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
       child: Scaffold(
@@ -71,7 +72,7 @@ class _TransactionsViewState extends State<TransactionsView> {
               slivers: [
                 SliverAppBar.medium(
                   centerTitle: false,
-                  title: Text('Transactions'.hardCoded),
+                  title: Text(l10n.transactionPageTitle),
                   bottom: const PreferredSize(
                     preferredSize: Size.fromHeight(56),
                     child: Padding(
