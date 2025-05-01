@@ -44,17 +44,31 @@ class AppTheme {
       inputDecorationTheme: _inputDecorationTheme(colorScheme),
       dropdownMenuTheme: _dropdownMenuTheme(colorScheme),
       chipTheme: _chipTheme(colorScheme),
-      snackBarTheme: SnackBarThemeData(
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: colorScheme.surface,
-        contentTextStyle: textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurface,
-        ),
-        elevation: 4,
-        closeIconColor: colorScheme.onSurface,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(AppRadius.lg)),
-        ),
+      snackBarTheme: _snackBarTheme(colorScheme),
+      dialogTheme: _dialogTheme(colorScheme),
+    );
+  }
+
+  DialogThemeData _dialogTheme(ColorScheme colorScheme) {
+    return DialogThemeData(
+      backgroundColor: colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AppRadius.xlg)),
+      ),
+    );
+  }
+
+  SnackBarThemeData _snackBarTheme(ColorScheme colorScheme) {
+    return SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: colorScheme.surface,
+      contentTextStyle: textTheme.bodyMedium?.copyWith(
+        color: colorScheme.onSurface,
+      ),
+      elevation: 4,
+      closeIconColor: colorScheme.onSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AppRadius.lg)),
       ),
     );
   }
@@ -75,8 +89,9 @@ class AppTheme {
       color: colorScheme.surfaceContainerLowest,
       surfaceTintColor: colorScheme.surfaceContainerLowest,
       elevation: 0,
+      clipBehavior: Clip.antiAlias,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AppRadius.xlg)),
+        borderRadius: BorderRadius.all(Radius.circular(AppRadius.lg)),
       ),
     );
   }

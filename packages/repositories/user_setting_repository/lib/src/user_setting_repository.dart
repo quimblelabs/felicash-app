@@ -164,22 +164,22 @@ class UserSettingRepository {
   }
 
   static const _insertUserSettingQuery = '''
-  INSERT INTO ${UserSetting.tableName} 
+  INSERT INTO ${UserSetting.tableName}
   (
     ${UserSettingFields.id},
     ${UserSettingFields.userSettingId},
-    ${UserSettingFields.userSettingUserId}, 
-    ${UserSettingFields.userSettingTheme}, 
-    ${UserSettingFields.userSettingLanguageCode}, 
+    ${UserSettingFields.userSettingUserId},
+    ${UserSettingFields.userSettingTheme},
+    ${UserSettingFields.userSettingLanguageCode},
 
-    ${UserSettingFields.userSettingDefaultWallet}, 
-    ${UserSettingFields.userSettingBaseCurrencyCode}, 
-    ${UserSettingFields.userSettingDateFormat}, 
-    ${UserSettingFields.userSettingMonetaryFormat}, 
+    ${UserSettingFields.userSettingDefaultWallet},
+    ${UserSettingFields.userSettingBaseCurrencyCode},
+    ${UserSettingFields.userSettingDateFormat},
+    ${UserSettingFields.userSettingMonetaryFormat},
     ${UserSettingFields.userSettingCreatedAt},
 
     ${UserSettingFields.userSettingUpdatedAt}
-  ) 
+  )
   VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)
   ''';
 
@@ -221,14 +221,14 @@ class UserSettingRepository {
   }
 
   static const _updateUserSettingQuery = '''
-  UPDATE ${UserSetting.tableName} 
-  SET 
-    ${UserSettingFields.userSettingTheme} = ?1, 
-    ${UserSettingFields.userSettingLanguageCode} = ?2, 
-    ${UserSettingFields.userSettingDefaultWallet} = ?3, 
-    ${UserSettingFields.userSettingBaseCurrencyCode} = ?4, 
-    ${UserSettingFields.userSettingDateFormat} = ?5, 
-    ${UserSettingFields.userSettingMonetaryFormat} = ?6, 
+  UPDATE ${UserSetting.tableName}
+  SET
+    ${UserSettingFields.userSettingTheme} = ?1,
+    ${UserSettingFields.userSettingLanguageCode} = ?2,
+    ${UserSettingFields.userSettingDefaultWallet} = ?3,
+    ${UserSettingFields.userSettingBaseCurrencyCode} = ?4,
+    ${UserSettingFields.userSettingDateFormat} = ?5,
+    ${UserSettingFields.userSettingMonetaryFormat} = ?6,
     ${UserSettingFields.userSettingUpdatedAt} = ?7
   WHERE ${UserSettingFields.userSettingUserId} = ?8
   RETURNING *
