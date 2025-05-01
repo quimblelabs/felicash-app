@@ -207,6 +207,7 @@ class UserSettingRepository {
               _insertUserSettingQuery,
               params,
             ),
+            params,
           );
         },
       );
