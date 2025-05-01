@@ -15,8 +15,9 @@ class OverviewPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => SummaryTrendingSectionBloc()
-            ..add(SummaryTrendingSectionSubscriptionRequested()),
+          create: (_) => SummaryTrendingSectionBloc(
+            transactionRepository: context.read(),
+          )..add(SummaryTrendingSectionSubscriptionRequested()),
         ),
         BlocProvider(
           create: (_) => SpendingByCategoryBloc(

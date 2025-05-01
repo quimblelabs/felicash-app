@@ -207,7 +207,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get summaryTrendingSectionUnknownTypeLabel => 'Không xác định';
 
   @override
-  String get summaryTrendingSectionTotalAmountText => 'Tổng số dư';
+  String get summaryTrendingSectionTotalAmountText => 'Tổng số tiền';
 
   @override
   String get transactionCreationModalTitle => 'Giao dịch mới';

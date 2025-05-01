@@ -31,14 +31,15 @@ class SpendingByCategoryBloc
     Emitter<SpendingByCategoryState> emit,
   ) async {
     emit(state.copyWith(status: SpendingByCategoryStatus.loading));
+    final now = DateTime.now();
     await emit.forEach<List<TransactionSummaryByCategoryModel>>(
       // TODO(tuanhm): remove hard code currency id
       _transactionRepository.getTransactionSummaryByCategory(
         GetTransactionSummaryByCategoryQuery(
-          convertToCurrencyId: '9c37561e-3b22-49c2-b153-39de15be36e7'.hardCoded,
+          convertToCurrencyCode: 'VND'.hardCoded,
           transactionType: TransactionTypeEnum.expense,
-          startDate: DateTime.now().subtract(const Duration(days: 30)),
-          endDate: DateTime.now(),
+          startDate: now.startOfMonth(),
+          endDate: now.endOfMonth(),
         ),
       ),
       onData: (result) {

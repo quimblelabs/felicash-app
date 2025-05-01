@@ -1,24 +1,33 @@
 import 'dart:math';
 
+import 'package:app_ui/app_ui.dart';
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:felicash/overview/summary_trending/models/daily_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:transaction_repository/transaction_repository.dart';
 
 part 'summary_trending_section_event.dart';
 part 'summary_trending_section_state.dart';
 
 class SummaryTrendingSectionBloc
     extends Bloc<SummaryTrendingSectionEvent, SummaryTrendingSectionState> {
-  SummaryTrendingSectionBloc() : super(const SummaryTrendingSectionState()) {
+  SummaryTrendingSectionBloc({
+    required TransactionRepository transactionRepository,
+  })  : _transactionRepository = transactionRepository,
+        super(const SummaryTrendingSectionState()) {
     on<SummaryTrendingSectionSubscriptionRequested>(
       _onSummaryTrendingSectionSubscriptionRequested,
+      transformer: restartable(),
     );
     on<SummaryTrendingSectionTransactionTypeChanged>(
       _onSummaryTrendingSectionTransactionTypeChanged,
     );
   }
+
+  final TransactionRepository _transactionRepository;
 
   Future<void> _onSummaryTrendingSectionSubscriptionRequested(
     SummaryTrendingSectionSubscriptionRequested event,
@@ -26,20 +35,32 @@ class SummaryTrendingSectionBloc
   ) async {
     emit(state.copyWith(status: SummaryTrendingSectionStatus.loading));
 
-    try {
-      // TODO(dangddt): Implement get daily summaries from API
-
-      final summaries = _getFakeDailySummaries();
-      emit(
-        state.copyWith(
+    final now = DateTime.now();
+    final summariesStream =
+        _transactionRepository.getTransactionSummaryByTransactionDate(
+      GetTransactionSummaryByTransactionDateQuery(
+        convertToCurrencyCode: 'VND'.hardCoded,
+        transactionType: state.selectedTransactionType,
+        startDate: now.startOfMonth(),
+        endDate: now.endOfMonth(),
+      ),
+    );
+    await emit.forEach(
+      summariesStream,
+      onData: (summaries) {
+        return state.copyWith(
           status: SummaryTrendingSectionStatus.success,
-          dailySummaries: summaries,
-        ),
-      );
-    } catch (e) {
-      debugPrint(e.toString());
-      emit(state.copyWith(status: SummaryTrendingSectionStatus.failure));
-    }
+          dailySummaries:
+              DailySummaryListX.fromTransactionSummaryByTransactionDateModels(
+            summaries,
+          ),
+        );
+      },
+      onError: (error, stackTrace) {
+        debugPrint(error.toString());
+        return state.copyWith(status: SummaryTrendingSectionStatus.failure);
+      },
+    );
   }
 
   void _onSummaryTrendingSectionTransactionTypeChanged(

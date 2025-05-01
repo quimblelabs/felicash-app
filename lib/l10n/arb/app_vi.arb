@@ -291,9 +291,9 @@
     "@summaryTrendingSectionUnknownTypeLabel": {
         "description": "Label hiển thị khi điều hướng đến trang không xác định"
     },
-    "summaryTrendingSectionTotalAmountText": "Tổng số dư",
+    "summaryTrendingSectionTotalAmountText": "Tổng số tiền",
     "@summaryTrendingSectionTotalAmountText": {
-        "description": "Text hiển thị trên thanh tiêu đề tổng số dư"
+        "description": "Text hiển thị trên thanh tiêu đề tổng số tiền"
     },
     "@_TRANSACTION_CREATION_MODAL": {},
     "transactionCreationModalTitle": "Giao dịch mới",

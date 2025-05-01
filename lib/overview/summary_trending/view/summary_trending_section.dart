@@ -125,11 +125,6 @@ class _TotalAmount extends StatelessWidget {
         .fold<double>(
       0,
       (previousValue, element) {
-        if (selectedType == TransactionTypeEnum.expense) {
-          return previousValue - element.expense;
-        }
-
-        if (selectedType == TransactionTypeEnum.income) {}
         return previousValue + element.income;
       },
     );

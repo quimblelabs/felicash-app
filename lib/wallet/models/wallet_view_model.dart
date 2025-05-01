@@ -1,5 +1,4 @@
 import 'package:currency_repository/currency_repository.dart';
-import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
