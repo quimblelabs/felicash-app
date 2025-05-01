@@ -6,8 +6,10 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:shared_models/shared_models.dart';
 import 'package:transaction_repository/src/models/transaction_model.dart';
 import 'package:transaction_repository/src/models/transaction_summary_by_category_model.dart';
+import 'package:transaction_repository/src/models/transaction_summary_by_transaction_date_model.dart';
 import 'package:transaction_repository/src/queries/get_transaction_query.dart';
 import 'package:transaction_repository/src/queries/get_transaction_summary_by_category_query.dart';
+import 'package:transaction_repository/src/queries/get_transaction_summary_by_transaction_date_query.dart';
 import 'package:uuid/uuid.dart';
 
 /// {@template transaction_failure}
@@ -733,8 +735,8 @@ class TransactionRepository {
       AND t.${TransactionFields.transactionTransactionType} = ?3
       AND (?4 IS NULL OR t.${TransactionFields.transactionTransactionDate} >= ?4)
       AND (?5 IS NULL OR t.${TransactionFields.transactionTransactionDate} <= ?5)
-    GROUP BY c.${CategoryFields.categoryId}, er.${ExchangeRateFields.exchangeRateId}
-    ORDER BY total_amount DESC
+    GROUP BY c.${CategoryFields.categoryId}, er.${ExchangeRateFields.exchangeRateId}, w.${WalletFields.walletId}
+    ORDER BY ${TransactionSummaryByCategoryModelFields.totalAmount} DESC
   ''';
 
   /// Get transaction summary by category.
@@ -743,11 +745,11 @@ class TransactionRepository {
     GetTransactionSummaryByCategoryQuery query,
   ) {
     final params = [
-      query.convertToCurrencyId,
+      query.convertToCurrencyCode,
       _client.getUserId(),
-      query.transactionType?.jsonKey,
-      query.startDate?.toUtc().toIso8601String(),
-      query.endDate?.toUtc().toIso8601String(),
+      query.transactionType.jsonKey,
+      query.startDate.toUtc().toIso8601String(),
+      query.endDate.toUtc().toIso8601String(),
     ];
 
     return _client.db
@@ -758,6 +760,70 @@ class TransactionRepository {
         .map(
       (results) {
         return results.map(TransactionSummaryByCategoryModel.fromRow).toList();
+      },
+    );
+  }
+
+  /// Query to get transaction summary by categories
+  /// Summarizes transaction amounts by category, converting all amounts to a
+  /// single currency
+  static const String _getTransactionSummaryByTransactionDateQuery = '''
+    SELECT 
+      date(${TransactionFields.transactionTransactionDate}) as ${TransactionSummaryByTransactionDateModelFields.transactionDate},
+      COUNT(t.${TransactionFields.transactionId}) as ${TransactionSummaryByTransactionDateModelFields.transactionCount},
+      SUM(t.${TransactionFields.transactionAmount}) as ${TransactionSummaryByTransactionDateModelFields.totalAmount},
+      w.${WalletFields.walletCurrencyCode} as ${TransactionSummaryByTransactionDateModelFields.baseCurrencyCode},
+      SUM(t.${TransactionFields.transactionAmount} * COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0)) as ${TransactionSummaryByTransactionDateModelFields.totalAmountExchanged},
+      ?1 as ${TransactionSummaryByTransactionDateModelFields.exchangeCurrencyCode},
+      COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) as ${TransactionSummaryByTransactionDateModelFields.exchangeRateRate},
+      COALESCE(er.${ExchangeRateFields.exchangeRateEffectiveDate}, 
+        (
+          SELECT MAX(${ExchangeRateFields.exchangeRateEffectiveDate}) 
+          FROM ${ExchangeRate.tableName}
+          WHERE ${ExchangeRateFields.exchangeRateToCurrency} = ?1
+        )
+      ) as ${TransactionSummaryByTransactionDateModelFields.exchangeRateEffectiveDate}
+    FROM ${Transaction.tableName} t
+    LEFT JOIN ${Category.tableName} c ON t.${TransactionFields.transactionCategoryId} = c.${CategoryFields.categoryId}
+    JOIN ${Wallet.tableName} w ON t.${TransactionFields.transactionWalletId} = w.${WalletFields.walletId}
+    LEFT JOIN ${ExchangeRate.tableName} er ON w.${WalletFields.walletCurrencyCode} = er.${ExchangeRateFields.exchangeRateFromCurrency} 
+      AND er.${ExchangeRateFields.exchangeRateToCurrency} = ?1 AND date(er.${ExchangeRateFields.exchangeRateEffectiveDate}) = 
+      (
+        SELECT MAX(date(${ExchangeRateFields.exchangeRateEffectiveDate})) 
+        FROM ${ExchangeRate.tableName}
+        WHERE ${ExchangeRateFields.exchangeRateToCurrency} = ?1
+      )
+    WHERE t.${TransactionFields.transactionUserId} = ?2
+      AND t.${TransactionFields.transactionTransactionType} = ?3
+      AND (?4 IS NULL OR t.${TransactionFields.transactionTransactionDate} >= ?4)
+      AND (?5 IS NULL OR t.${TransactionFields.transactionTransactionDate} <= ?5)
+    GROUP BY date(${TransactionFields.transactionTransactionDate}), er.${ExchangeRateFields.exchangeRateId}, w.${WalletFields.walletId}
+    ORDER BY ${TransactionSummaryByTransactionDateModelFields.totalAmount} DESC
+  ''';
+
+  /// Get transaction summary by transaction date.
+  Stream<List<TransactionSummaryByTransactionDateModel>>
+      getTransactionSummaryByTransactionDate(
+    GetTransactionSummaryByTransactionDateQuery query,
+  ) {
+    final params = [
+      query.convertToCurrencyCode,
+      _client.getUserId(),
+      query.transactionType.jsonKey,
+      query.startDate.toUtc().toIso8601String(),
+      query.endDate.toUtc().toIso8601String(),
+    ];
+
+    return _client.db
+        .watch(
+      _query(_getTransactionSummaryByTransactionDateQuery, params),
+      parameters: params,
+    )
+        .map(
+      (results) {
+        return results
+            .map(TransactionSummaryByTransactionDateModel.fromRow)
+            .toList();
       },
     );
   }

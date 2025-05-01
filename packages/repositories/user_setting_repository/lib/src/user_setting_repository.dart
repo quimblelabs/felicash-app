@@ -100,7 +100,7 @@ class UserSettingRepository {
   ''';
 
   /// Get user setting as a stream.
-  Stream<UserSettingsModel> getUserSettingStream() {
+  Stream<UserSettingsModel?> getUserSettingStream() {
     try {
       final params = [
         _client.getUserId(),
@@ -114,7 +114,8 @@ class UserSettingRepository {
       );
       return stream.map(
         (results) {
-          final result = results.first;
+          final result = results.firstOrNull;
+          if (result == null) return null;
           final userSetting = UserSetting.fromRow(result);
           return UserSettingsModel.fromUserSetting(userSetting);
         },
@@ -125,18 +126,20 @@ class UserSettingRepository {
   }
 
   /// Get user setting as a future.
-  Future<UserSettingsModel> getUserSettingFuture() async {
+  Future<UserSettingsModel?> getUserSettingFuture() async {
     try {
       final params = [
         _client.getUserId(),
       ];
-      final result = await _client.db.get(
+      final results = await _client.db.getAll(
         _query(
           _getUserSettingQuery,
           params,
         ),
         params,
       );
+      final result = results.firstOrNull;
+      if (result == null) return null;
       final userSetting = UserSetting.fromRow(result);
       return UserSettingsModel.fromUserSetting(userSetting);
     } catch (e) {

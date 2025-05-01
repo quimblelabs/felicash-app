@@ -1,11 +1,11 @@
 import 'package:shared_models/shared_models.dart';
 
-/// {@template get_transaction_summary_by_category_query}
-/// A query to get the transaction summary by category.
+/// {@template get_transaction_summary_by_transaction_date_query}
+/// A query to get the transaction summary by transaction date.
 /// {@endtemplate}
-class GetTransactionSummaryByCategoryQuery {
-  /// {@macro get_transaction_summary_by_category_query}
-  const GetTransactionSummaryByCategoryQuery({
+class GetTransactionSummaryByTransactionDateQuery {
+  /// {@macro get_transaction_summary_by_transaction_date_query}
+  const GetTransactionSummaryByTransactionDateQuery({
     required this.convertToCurrencyCode,
     required this.transactionType,
     required this.startDate,
