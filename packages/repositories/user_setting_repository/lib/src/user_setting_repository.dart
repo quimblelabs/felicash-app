@@ -27,6 +27,14 @@ class GetUserSettingFailure extends UserSettingFailure {
   const GetUserSettingFailure(super.error);
 }
 
+/// {@template create_user_setting_failure}
+/// Failure when creating user setting.
+/// {@endtemplate}
+class CreateUserSettingFailure extends UserSettingFailure {
+  /// {@macro create_user_setting_failure}
+  const CreateUserSettingFailure(super.error);
+}
+
 /// {@template update_user_setting_failure}
 /// Failure when updating user setting.
 /// {@endtemplate}
@@ -120,8 +128,12 @@ class UserSettingRepository {
           return UserSettingsModel.fromUserSetting(userSetting);
         },
       );
-    } catch (e) {
-      throw GetUserSettingFailure(e);
+    } catch (e, stackTrace) {
+      if (e is GetUserSettingFailure) rethrow;
+      Error.throwWithStackTrace(
+        GetUserSettingFailure(e),
+        stackTrace,
+      );
     }
   }
 
@@ -142,8 +154,68 @@ class UserSettingRepository {
       if (result == null) return null;
       final userSetting = UserSetting.fromRow(result);
       return UserSettingsModel.fromUserSetting(userSetting);
-    } catch (e) {
-      throw GetUserSettingFailure(e);
+    } catch (e, stackTrace) {
+      if (e is GetUserSettingFailure) rethrow;
+      Error.throwWithStackTrace(
+        GetUserSettingFailure(e),
+        stackTrace,
+      );
+    }
+  }
+
+  static const _insertUserSettingQuery = '''
+  INSERT INTO ${UserSetting.tableName} 
+  (
+    ${UserSettingFields.id},
+    ${UserSettingFields.userSettingId},
+    ${UserSettingFields.userSettingUserId}, 
+    ${UserSettingFields.userSettingTheme}, 
+    ${UserSettingFields.userSettingLanguageCode}, 
+
+    ${UserSettingFields.userSettingDefaultWallet}, 
+    ${UserSettingFields.userSettingBaseCurrencyCode}, 
+    ${UserSettingFields.userSettingDateFormat}, 
+    ${UserSettingFields.userSettingMonetaryFormat}, 
+    ${UserSettingFields.userSettingCreatedAt},
+
+    ${UserSettingFields.userSettingUpdatedAt}
+  ) 
+  VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)
+  ''';
+
+  /// Create user setting.
+  Future<void> createUserSetting(UserSettingsModel userSettings) async {
+    try {
+      final now = DateTime.now().toUtc();
+      final params = [
+        userSettings.id,
+        userSettings.id,
+        _client.getUserId(),
+        userSettings.theme,
+        userSettings.language,
+        userSettings.defaultWalletId,
+        userSettings.currency,
+        userSettings.txDateFormat,
+        userSettings.monetaryFormat,
+        now.toIso8601String(),
+        now.toIso8601String(),
+      ];
+      await _client.db.writeTransaction(
+        (tx) async {
+          await tx.execute(
+            _query(
+              _insertUserSettingQuery,
+              params,
+            ),
+          );
+        },
+      );
+    } catch (e, stackTrace) {
+      if (e is CreateUserSettingFailure) rethrow;
+      Error.throwWithStackTrace(
+        CreateUserSettingFailure(e),
+        stackTrace,
+      );
     }
   }
 
@@ -184,8 +256,12 @@ class UserSettingRepository {
           );
         },
       );
-    } catch (e) {
-      throw UpdateUserSettingFailure(e);
+    } catch (e, stackTrace) {
+      if (e is UpdateUserSettingFailure) rethrow;
+      Error.throwWithStackTrace(
+        UpdateUserSettingFailure(e),
+        stackTrace,
+      );
     }
   }
 }
