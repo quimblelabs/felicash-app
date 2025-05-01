@@ -15,12 +15,12 @@ import 'package:felicash/personal/view/personal_page.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
 import 'package:felicash/transaction/transaction_creation/view/transaction_creation_modal.dart';
 import 'package:felicash/transaction/transaction_list/view/transactions_page.dart';
-import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_categories_filter_view.dart';
 import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_all_filters_view.dart';
-import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_filter_shell_modal.dart';
-import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_wallets_filer_view.dart';
-import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_types_filter_view.dart';
+import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_categories_filter_view.dart';
 import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_date_filter_view.dart';
+import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_filter_shell_modal.dart';
+import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_types_filter_view.dart';
+import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_wallets_filer_view.dart';
 import 'package:felicash/voice_transaction/view/voice_transaction_page.dart';
 import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:felicash/wallet/view/wallets/wallets_page.dart';
@@ -32,7 +32,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 part 'app_routes.dart';
 

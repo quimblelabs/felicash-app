@@ -111,9 +111,7 @@ class App extends StatelessWidget {
               walletRepository: _walletRepository,
             )..add(
                 const WalletsSubscriptionRequested(
-                  query: GetWalletQuery(
-                    archived: false,
-                  ),
+                  query: GetWalletQuery(archived: false),
                 ),
               ),
           ),
@@ -122,25 +120,19 @@ class App extends StatelessWidget {
               categoryRepository: _categoryRepository,
             )..add(
                 const CategoriesSubscriptionRequested(
-                  query: GetCategoryQuery(
-                    enabled: true,
-                  ),
+                  query: GetCategoryQuery(enabled: true),
                 ),
               ),
           ),
           BlocProvider<CurrenciesBloc>(
             create: (context) => CurrenciesBloc(
               currencyRepository: _currencyRepository,
-            )..add(
-                const CurrenciesFetched(),
-              ),
+            )..add(const CurrenciesFetched()),
           ),
           BlocProvider<UserSettingBloc>(
             create: (context) => UserSettingBloc(
               userSettingRepository: _userSettingRepository,
-            )..add(
-                const UserSettingSubscriptionRequested(),
-              ),
+            )..add(const UserSettingSubscriptionRequested()),
           ),
         ],
         child: RepositoryProvider<AppRouter>(
@@ -163,11 +155,14 @@ class AppView extends StatelessWidget {
     final interTextTheme = GoogleFonts.interTextTheme();
     final theme = AppTheme(interTextTheme);
     final router = context.read<AppRouter>().router;
+    final themeMode =
+        context.select((UserSettingBloc appBloc) => appBloc.state.themeMode);
     return _OnAuthenticatedUser(
       child: KeyboardHeightProvider(
         child: MaterialApp.router(
           theme: theme.light(),
           darkTheme: theme.dark(),
+          themeMode: themeMode,
           localizationsDelegates: const [
             ...AppLocalizations.localizationsDelegates,
             SfGlobalLocalizations.delegate,
