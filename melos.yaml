@@ -1,6 +1,14 @@
 name: felicash
 
 packages:
-  - apps/**
-  - packages/**
-  - packages/**/example/**
+  - packages/*
+  - packages/*/example/*
+  - packages/clients/*
+  - packages/clients/*/example/*
+  - packages/clients/ai_client/*
+  - packages/clients/ai_client/*/example/*
+  - packages/clients/authentication_client/*
+  - packages/clients/authentication_client/*/example/*
+  - packages/repositories/*
+  - packages/repositories/*/example/*
+  

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/app/routes/routes.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -12,10 +13,11 @@ class WalletTypeSelectorModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return ModalScaffold(
-      header: const Text('Select wallet type'),
+      header: Text(l10n.walletTypeSelectorModalTitle),
       backgroundColor: theme.colorScheme.surfaceContainer,
       content: ListTileTheme(
         data: ListTileThemeData(
@@ -42,10 +44,9 @@ class WalletTypeSelectorModal extends StatelessWidget {
                     child: Icon(Icons.wallet),
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios),
-                  title: Text('Basic wallet'.hardCoded),
+                  title: Text(l10n.walletTypeSelectorModalBasicWalletTypeLabel),
                   subtitle: Text(
-                    'The wallet for your daily spending and payments.'
-                        .hardCoded,
+                    l10n.walletTypeSelectorModalBasicWalletTypeSubtitle,
                   ),
                   onTap: () => _onTap(context, WalletTypeEnum.basic),
                 ),
@@ -63,11 +64,11 @@ class WalletTypeSelectorModal extends StatelessWidget {
                     child: const Icon(Icons.credit_card),
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios),
-                  title: Text('Credit wallet'.hardCoded),
+                  title: Text(
+                    l10n.walletTypeSelectorModalCreditWalletTypeLabel,
+                  ),
                   subtitle: Text(
-                    'For your credit card or other '
-                            'payment with credit limit.'
-                        .hardCoded,
+                    l10n.walletTypeSelectorModalCreditWalletTypeSubtitle,
                   ),
                   onTap: () => _onTap(context, WalletTypeEnum.credit),
                 ),
@@ -87,11 +88,11 @@ class WalletTypeSelectorModal extends StatelessWidget {
                     child: const Icon(Icons.savings),
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios),
-                  title: Text('Savings'.hardCoded),
+                  title: Text(
+                    l10n.walletTypeSelectorModalSavingsWalletTypeLabel,
+                  ),
                   subtitle: Text(
-                    'For your savings purpose, you can set a goal '
-                            'and track your progress.'
-                        .hardCoded,
+                    l10n.walletTypeSelectorModalSavingsWalletTypeSubtitle,
                   ),
                   onTap: () => _onTap(context, WalletTypeEnum.savings),
                 ),

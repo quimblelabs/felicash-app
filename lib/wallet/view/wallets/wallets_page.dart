@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/app/routes/app_router.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/wallet/cubit/wallets_filter_cubit.dart';
 import 'package:felicash/wallet/models/wallets_view_filter.dart';
@@ -16,6 +17,15 @@ extension on WalletTypeEnum {
         WalletTypeEnum.credit => IconsaxPlusBold.wallet_2,
         WalletTypeEnum.savings => Icons.savings,
       };
+
+  String name(BuildContext context) {
+    final l10n = context.l10n;
+    return switch (this) {
+      WalletTypeEnum.basic => l10n.walletPageBasicWalletTypeLabel,
+      WalletTypeEnum.credit => l10n.walletPageCreditWalletTypeLabel,
+      WalletTypeEnum.savings => l10n.walletPageSavingsWalletTypeLabel,
+    };
+  }
 }
 
 class WalletPage extends StatelessWidget {
@@ -40,13 +50,14 @@ class WalletView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final walletsState = context.watch<WalletsBloc>().state;
     return DefaultTabController(
       length: WalletTypeEnum.values.length,
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('Wallets'),
+          title: Text(l10n.walletPageWalletsAppBarTitle),
           bottom: const PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight),
             child: Padding(
@@ -152,7 +163,7 @@ class _WalletTypeTabBar extends StatelessWidget {
                           children: [
                             Icon(entry.icon),
                             const SizedBox(width: AppSpacing.md),
-                            Text(entry.name.hardCoded),
+                            Text(entry.name(context)),
                           ],
                         ),
                       ),

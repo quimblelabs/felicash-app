@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/transaction/bloc/transaction_creation_bloc.dart';
 import 'package:felicash/transaction/transaction_creation/widgets/transaction_creation_form.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared_models/shared_models.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 class TransactionCreationModal extends StatelessWidget {
   const TransactionCreationModal({super.key, this.walletId});
@@ -78,6 +78,7 @@ class _TransactionCreationView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final viewPadding = MediaQuery.of(context).viewInsets;
     final draggableScrollableController = useDraggableScrollableController();
     final isAnimatingBack = useState(false);
@@ -128,7 +129,7 @@ class _TransactionCreationView extends HookWidget {
             return Padding(
               padding: EdgeInsets.only(bottom: viewPadding.bottom),
               child: ModalScaffold(
-                header: Text('New Transaction'.hardCoded),
+                header: Text(l10n.transactionCreationModalTitle),
                 content: Column(
                   children: [
                     Expanded(
@@ -155,20 +156,25 @@ class _TransactionCreationView extends HookWidget {
     // TODO(tuanhm): Check if form is dirty, and show confirmation dialog
     final confirm = await showDialog<bool?>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Are you sure?'.hardCoded),
-        content: Text('This action cannot be undone.'.hardCoded),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text('Cancel'.hardCoded),
+      builder: (context) {
+        final l10n = context.l10n;
+        return AlertDialog(
+          title: Text(l10n.transactionCreationModalAreYouSureText),
+          content: Text(
+            l10n.transactionCreationModalThisActionCannotBeUndoneText,
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text('Yes'.hardCoded),
-          ),
-        ],
-      ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(l10n.transactionCreationModalCancelButtonText),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(l10n.transactionCreationModalYesButtonText),
+            ),
+          ],
+        );
+      },
     );
 
     if (confirm == null) return false;
@@ -186,6 +192,7 @@ class _AddTransactionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return SafeArea(
       top: false,
       left: false,
@@ -201,7 +208,9 @@ class _AddTransactionButton extends StatelessWidget {
           builder: (context, isValid) {
             return FilledButton(
               onPressed: isValid ? () => _createWallet(context) : null,
-              child: Text('Add Transation'.hardCoded),
+              child: Text(
+                l10n.transactionCreationModalAddTransactionButtonText,
+              ),
             );
           },
         ),

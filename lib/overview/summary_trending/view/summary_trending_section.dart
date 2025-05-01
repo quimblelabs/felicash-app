@@ -11,6 +11,21 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 part '../widgets/trending_chart.dart';
 
+extension on TransactionTypeEnum {
+  String name(BuildContext context) {
+    final l10n = context.l10n;
+    return switch (this) {
+      TransactionTypeEnum.expense =>
+        l10n.summaryTrendingSectionExpenseTypeLabel,
+      TransactionTypeEnum.income => l10n.summaryTrendingSectionIncomeTypeLabel,
+      TransactionTypeEnum.transfer =>
+        l10n.summaryTrendingSectionTransferTypeLabel,
+      TransactionTypeEnum.unknown =>
+        l10n.summaryTrendingSectionUnknownTypeLabel,
+    };
+  }
+}
+
 class SummaryTrendingSection extends StatelessWidget {
   const SummaryTrendingSection({super.key});
   @override
@@ -38,11 +53,12 @@ class _Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.lg),
       child: Text(
-        'Monthly Trending',
+        l10n.summaryTrendingSectionTitle,
         style: theme.textTheme.titleMedium,
       ),
     );
@@ -71,7 +87,7 @@ class _TransactionTypeSelector extends StatelessWidget {
               .map(
                 (e) => DropdownMenuEntry(
                   value: e,
-                  label: e.name.hardCoded,
+                  label: e.name(context),
                   leadingIcon: Icon(
                     e.icon,
                     color: theme.colorScheme.onSurfaceVariant,
@@ -137,7 +153,7 @@ class _TotalAmount extends StatelessWidget {
             ),
           ),
           Text(
-            'Total amount'.hardCoded,
+            l10n.summaryTrendingSectionTotalAmountText,
             style: theme.textTheme.bodySmall,
           ),
         ],

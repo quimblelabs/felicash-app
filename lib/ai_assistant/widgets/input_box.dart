@@ -1,6 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/voice_transaction/view/speech_recognition_permission_modal.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
@@ -85,6 +86,7 @@ class _TextInput extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final inputScrollController = useScrollController();
     final inputTextEditingController = useTextEditingController();
     final isListening = context.select<SpeechRecognitionBloc, bool>(
@@ -141,8 +143,8 @@ class _TextInput extends HookWidget {
             0,
           ),
           hintText: isListening
-              ? 'Listening'.hardCoded
-              : 'Describe your transaction'.hardCoded,
+              ? l10n.inputBoxListeningHintText
+              : l10n.inputBoxDescribeTransactionHintText,
           filled: false,
         ),
       ),
@@ -155,6 +157,7 @@ class _WalletSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final cubit = context.read<AiAssistantViewCubit>();
     final walletsBloc = context.read<WalletsBloc>();
@@ -208,7 +211,7 @@ class _WalletSelector extends StatelessWidget {
                     isScrollControlled: true,
                     useRootNavigator: true,
                     builder: (_) => WalletSelectorModal(
-                      title: 'Select a wallet'.hardCoded,
+                      title: l10n.inputBoxSelectorModalTitle,
                       wallets: wallets.toList(),
                       initialWallet: sourceWallet,
                     ),
@@ -307,6 +310,7 @@ class _ActionButton extends StatelessWidget {
   void submitMessage(
     BuildContext context,
   ) {
+    final l10n = context.l10n;
     // Message
     final message = context.read<AiAssistantViewCubit>().state.message;
 
@@ -319,7 +323,7 @@ class _ActionButton extends StatelessWidget {
     if (wallets.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('No wallets found'.hardCoded),
+          content: Text(l10n.inputBoxNoWalletFoundErrorMessage),
           showCloseIcon: true,
         ),
       );
@@ -332,7 +336,7 @@ class _ActionButton extends StatelessWidget {
     if (sourceWallet == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('No source wallet found'.hardCoded),
+          content: Text(l10n.inputBoxNoSourceWalletFoundErrorMessage),
           showCloseIcon: true,
         ),
       );

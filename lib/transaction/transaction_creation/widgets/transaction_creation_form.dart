@@ -11,11 +11,27 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:shared_models/shared_models.dart';
 
+extension on TransactionTypeEnum {
+  String name(BuildContext context) {
+    final l10n = context.l10n;
+    return switch (this) {
+      TransactionTypeEnum.expense =>
+        l10n.transactionCreationFormExpenseTypeLabel,
+      TransactionTypeEnum.income => l10n.transactionCreationFormIncomeTypeLabel,
+      TransactionTypeEnum.transfer =>
+        l10n.transactionCreationFormTransferTypeLabel,
+      TransactionTypeEnum.unknown =>
+        l10n.transactionCreationFormUnknownTypeLabel,
+    };
+  }
+}
+
 class TransactionCreationForm extends StatelessWidget {
   const TransactionCreationForm({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,7 +41,9 @@ class TransactionCreationForm extends StatelessWidget {
             children: [
               const _TransactionTypeSelector(),
               const SizedBox(height: AppSpacing.xlg),
-              InputLabel(text: Text('Transaction Amount'.hardCoded)),
+              InputLabel(
+                  text: Text(
+                      l10n.transactionCreationFormTransactionAmountFieldLabel)),
               const SizedBox(height: AppSpacing.md),
               const _TransactionAmount(),
             ],
@@ -34,13 +52,13 @@ class TransactionCreationForm extends StatelessWidget {
         const SizedBox(height: AppSpacing.lg),
         const _WalletsSelector(),
         const SizedBox(height: AppSpacing.lg),
-        InputLabel(text: Text('Category'.hardCoded)),
+        InputLabel(text: Text(l10n.transactionCreationFormCategoryFieldLabel)),
         const _CategorySelector(),
         const SizedBox(height: AppSpacing.lg),
-        InputLabel(text: Text('Date'.hardCoded)),
+        InputLabel(text: Text(l10n.transactionCreationFormDateFieldLabel)),
         const _TransactionDate(),
         const SizedBox(height: AppSpacing.lg),
-        InputLabel(text: Text('Notes'.hardCoded)),
+        InputLabel(text: Text(l10n.transactionCreationFormNotesFieldLabel)),
         const _TransactionNotes(),
       ],
     );
@@ -68,6 +86,7 @@ class _TransactionTypeSelector extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final type = context.select(
       (TransactionCreationBloc bloc) => bloc.state.type,
@@ -87,14 +106,14 @@ class _TransactionTypeSelector extends HookWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Type'.hardCoded,
+                      l10n.transactionCreationFormTypeText,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.outline,
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     Text(
-                      e.name.hardCoded,
+                      e.name(context),
                       style: theme.textTheme.labelLarge,
                     ),
                   ],
@@ -115,7 +134,7 @@ class _TransactionTypeSelector extends HookWidget {
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Text(
-                    e.name.hardCoded,
+                    e.name(context),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -152,6 +171,7 @@ class _TransactionAmount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return TextFormField(
       textAlign: TextAlign.center,
@@ -159,7 +179,7 @@ class _TransactionAmount extends StatelessWidget {
       style: theme.textTheme.displaySmall,
       decoration: InputDecoration(
         filled: false,
-        hintText: 'Enter amount...'.hardCoded,
+        hintText: l10n.transactionCreationFormEnterAmountHintText,
         hintStyle: TextStyle(
           color: theme.hintColor,
         ),
@@ -232,7 +252,7 @@ class _TransactionDate extends HookWidget {
         decoration: InputDecoration(
           prefixIcon: const Icon(IconsaxPlusLinear.calendar),
           suffixIcon: const Icon(Icons.arrow_forward_ios_outlined),
-          hintText: 'Select a date'.hardCoded,
+          hintText: l10n.transactionCreationFormEnterDateHintText,
         ),
         onTap: () async {
           final date = await showDatePicker(
@@ -258,6 +278,7 @@ class _TransactionNotes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final maxLength = context.select(
       (TransactionCreationBloc bloc) => bloc.state.note.maxLength,
     );
@@ -268,7 +289,7 @@ class _TransactionNotes extends StatelessWidget {
             .add(TransactionCreationNoteChanged(value));
       },
       decoration: InputDecoration(
-        hintText: 'Add notes...'.hardCoded,
+        hintText: l10n.transactionCreationFormEnterNotesHintText,
       ),
       maxLines: 3,
       minLines: 3,

@@ -1,7 +1,7 @@
-import 'package:app_ui/app_ui.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/category/bloc/categories_bloc.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/voice_transaction/cubit/speech_language_cubit.dart';
 import 'package:felicash/voice_transaction/widgets/voice_transaction_bottom_buttons.dart';
@@ -137,6 +137,7 @@ class _ListenForUserSpeechCompleted extends StatelessWidget {
         return current.recognizedText.isNotEmpty;
       },
       listener: (context, state) {
+        final l10n = context.l10n;
         if (state case final SpeechRecognitionListeningSuccess successState) {
           final recognizedText = successState.recognizedText;
           if (recognizedText.isEmpty) return;
@@ -148,7 +149,9 @@ class _ListenForUserSpeechCompleted extends StatelessWidget {
           if (sourceWallet == null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('No source wallet found'.hardCoded),
+                content: Text(
+                  l10n.voiceTransactionPageNoSourceWalletFoundErrorMessage,
+                ),
               ),
             );
           }

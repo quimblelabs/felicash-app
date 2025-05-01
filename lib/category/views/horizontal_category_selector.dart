@@ -117,7 +117,7 @@ class _CategorySelections extends StatelessWidget {
               color: theme.colorScheme.onSurface,
             ),
             labelStyle: theme.textTheme.labelLarge,
-            label: Text(category.name.hardCoded),
+            label: Text(category.name),
           ),
         ),
       ],

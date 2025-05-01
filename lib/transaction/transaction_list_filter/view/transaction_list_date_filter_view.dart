@@ -1,10 +1,11 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TransactionListDateFilterView extends StatefulWidget {
   const TransactionListDateFilterView({
@@ -85,8 +86,7 @@ class _TransactionListDateFilterViewState
       context.pop((_selectedRange?.startDate, _selectedRange?.endDate));
     } else if (_tabController.index == 2) {
       if (_selectedMonth != null) {
-        final firstDay =
-            DateTime(_selectedMonth!.year, _selectedMonth!.month, 1);
+        final firstDay = DateTime(_selectedMonth!.year, _selectedMonth!.month);
         final lastDay =
             DateTime(_selectedMonth!.year, _selectedMonth!.month + 1, 0);
         context.pop((firstDay, lastDay));
@@ -100,6 +100,7 @@ class _TransactionListDateFilterViewState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return SfDateRangePickerTheme(
       data: SfDateRangePickerThemeData(
@@ -115,7 +116,9 @@ class _TransactionListDateFilterViewState
       ),
       child: SheetContentScaffold(
         topBar: AppBar(
-          title: Text('Transaction Date'.hardCoded),
+          title: Text(
+            l10n.transactionListDateFilterViewTransactionDateAppBarTitle,
+          ),
         ),
         body: Material(
           color: theme.colorScheme.surface,
@@ -191,6 +194,7 @@ class _DateFilterTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return TabBar(
       controller: controller,
@@ -200,10 +204,10 @@ class _DateFilterTabBar extends StatelessWidget {
       labelStyle:
           theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
       tabs: [
-        Tab(text: 'Day'.hardCoded),
-        Tab(text: 'Week'.hardCoded),
-        Tab(text: 'Month'.hardCoded),
-        Tab(text: 'Custom'.hardCoded),
+        Tab(text: l10n.day),
+        Tab(text: l10n.week),
+        Tab(text: l10n.month),
+        Tab(text: l10n.custom),
       ],
     );
   }
@@ -349,13 +353,18 @@ class _CustomRangePickerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
+    final startDateString = startDate?.toString().split(' ')[0] ??
+        l10n.transactionListDateFilterViewSelectDateButtonText;
+    final endDateString = endDate?.toString().split(' ')[0] ??
+        l10n.transactionListDateFilterViewSelectDateButtonText;
     return Column(
       children: [
         ListTile(
-          title: Text('From'.hardCoded),
+          title: Text(l10n.from),
           subtitle: Text(
-            startDate?.toString().split(' ')[0] ?? 'Select date'.hardCoded,
+            startDateString,
             style: theme.textTheme.bodyLarge,
           ),
           trailing: const Icon(Icons.calendar_today),
@@ -373,9 +382,9 @@ class _CustomRangePickerView extends StatelessWidget {
         ),
         const Divider(),
         ListTile(
-          title: Text('To'.hardCoded),
+          title: Text(l10n.to),
           subtitle: Text(
-            endDate?.toString().split(' ')[0] ?? 'Select date'.hardCoded,
+            endDateString,
             style: theme.textTheme.bodyLarge,
           ),
           trailing: const Icon(Icons.calendar_today),
@@ -425,7 +434,7 @@ class _SubmitButton extends HookWidget {
           selectedRange?.endDate != initialTo;
     } else if (tabIndex == 2) {
       if (selectedMonth == null) return initialFrom != null;
-      final firstDay = DateTime(selectedMonth!.year, selectedMonth!.month, 1);
+      final firstDay = DateTime(selectedMonth!.year, selectedMonth!.month);
       final lastDay =
           DateTime(selectedMonth!.year, selectedMonth!.month + 1, 0);
       return firstDay != initialFrom || lastDay != initialTo;
@@ -437,6 +446,7 @@ class _SubmitButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final hasChanges = _hasChanges();
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 300),
@@ -472,7 +482,9 @@ class _SubmitButton extends HookWidget {
           Expanded(
             child: OutlinedButton(
               onPressed: () => context.pop(),
-              child: Text('Cancel'.hardCoded),
+              child: Text(
+                l10n.transactionListDateFilterViewTodayCancelButtonText,
+              ),
             ),
           ),
           const SizedBox(width: AppSpacing.md),
@@ -509,7 +521,9 @@ class _SubmitButton extends HookWidget {
                         context.pop((null, null));
                       }
                     },
-                    child: Text('Apply'.hardCoded),
+                    child: Text(
+                      l10n.transactionListDateFilterViewTodayApplyButtonText,
+                    ),
                   ),
                 ),
               ),

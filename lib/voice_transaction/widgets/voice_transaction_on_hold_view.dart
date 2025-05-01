@@ -5,6 +5,7 @@ class _VoiceTransactionOnHoldView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final animationController = useAnimationController(duration: 410.ms);
 
@@ -37,13 +38,12 @@ class _VoiceTransactionOnHoldView extends HookWidget {
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(
-                'On Hold'.hardCoded,
+                l10n.voiceTransactionOnHoldViewOnHoldTitle,
                 style: theme.textTheme.titleLarge,
               ),
               const SizedBox(height: AppSpacing.xs),
               Text(
-                'To turn the mic on and continue, tap the play button.'
-                    .hardCoded,
+                l10n.voiceTransactionOnHoldViewOnHoldSubtitle,
               ),
             ],
           ),

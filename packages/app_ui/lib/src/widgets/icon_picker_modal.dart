@@ -71,11 +71,15 @@ class IconPickerModal extends StatefulWidget {
   const IconPickerModal({
     required this.iconPacks,
     this.title,
+    this.doneButtonText = 'Done',
     super.key,
   });
 
   /// The title of the picker
   final Widget? title;
+
+  /// The title of the picker
+  final String doneButtonText;
 
   /// The icon packs to pick from.
   ///
@@ -228,7 +232,7 @@ class _IconPickerModalState extends State<IconPickerModal> {
                 const SizedBox(height: AppSpacing.md),
                 FilledButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Done'.hardCoded),
+                  child: Text(widget.doneButtonText),
                 ),
               ],
             ),

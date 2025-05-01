@@ -1,10 +1,10 @@
-import 'package:app_ui/app_ui.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
 import 'package:felicash/ai_assistant/widgets/chat_box.dart';
 import 'package:felicash/ai_assistant/widgets/input_box.dart';
 import 'package:felicash/category/bloc/categories_bloc.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/wallet/models/wallet_view_model.dart';
@@ -77,12 +77,13 @@ class _AiAssistantView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return _ListenForUserSpeechDone(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('AI Assistant'),
+            title: Text(l10n.aiAssistantPageAppBarTitle),
           ),
           body: const Column(
             children: [
@@ -103,6 +104,7 @@ class _ListenForUserSpeechDone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocListener<SpeechRecognitionBloc, SpeechRecognitionState>(
       listenWhen: (previous, current) =>
           current is SpeechRecognitionListeningSuccess ||
@@ -116,7 +118,9 @@ class _ListenForUserSpeechDone extends StatelessWidget {
           if (sourceWallet == null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('No source wallet found'.hardCoded),
+                content: Text(
+                  l10n.aiAssistantPageNoSourceWalletFoundErrorMessage,
+                ),
               ),
             );
           }

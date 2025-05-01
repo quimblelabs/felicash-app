@@ -72,7 +72,7 @@ class _CurrencySelectorView extends HookWidget {
       snap: true,
       builder: (context, scrollController) {
         return ModalScaffold(
-          header: Text(title.hardCoded),
+          header: Text(title),
           content: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: AppSpacing.md,

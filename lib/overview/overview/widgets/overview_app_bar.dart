@@ -6,7 +6,6 @@ import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 class OverviewAppBar extends StatelessWidget {
   const OverviewAppBar({super.key});
@@ -33,14 +32,14 @@ class OverviewAppBar extends StatelessWidget {
         title: _TotalBalance(),
         titlePadding: EdgeInsets.only(
           left: 70,
-          bottom: kToolbarHeight + AppSpacing.lg,
+          bottom: AppSpacing.lg,
           right: AppSpacing.lg,
         ),
       ),
-      bottom: const PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: _SectionsSlider(),
-      ),
+      // bottom: const PreferredSize(
+      //   preferredSize: Size.fromHeight(kToolbarHeight),
+      //   child: _SectionsSlider(),
+      // ),
     );
   }
 }
@@ -133,12 +132,13 @@ class _TotalBalance extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Text(
-          'Total Balance'.hardCoded,
+          l10n.overviewAppBarTotalBalanceText,
           style: theme.textTheme.labelSmall?.copyWith(
             color: theme.hintColor,
             height: 0.2,
           ),
         ),
+        const SizedBox(height: AppSpacing.sm),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -179,6 +179,7 @@ class _SectionsSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.lg,
@@ -188,21 +189,21 @@ class _SectionsSlider extends StatelessWidget {
       child: Row(
         children: [
           _SectionButton(
-            label: 'Overview'.hardCoded,
+            label: l10n.overviewAppBarOverviewTabBarLabel,
             isSelected: true,
             onTap: () {
               // Handle overview section tap
             },
           ),
           _SectionButton(
-            label: 'Income'.hardCoded,
+            label: l10n.overviewAppBarIncomeTabBarLabel,
             isSelected: false,
             onTap: () {
               // Handle income section tap
             },
           ),
           _SectionButton(
-            label: 'Expenses'.hardCoded,
+            label: l10n.overviewAppBarExpensesTabBarLabel,
             isSelected: false,
             onTap: () {
               // Handle expenses section tap

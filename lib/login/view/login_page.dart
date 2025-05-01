@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/app/routes/app_router.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/login/bloc/login_bloc.dart';
 import 'package:felicash/login/widgets/login_with_email_password_login_form.dart';
 import 'package:flutter/material.dart';
@@ -98,9 +99,10 @@ class _LoginTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return Text(
-      'Login to FeliCash'.hardCoded,
+      l10n.loginPageTitle,
       style: theme.textTheme.titleLarge?.copyWith(
         fontWeight: FontWeight.bold,
       ),
@@ -113,8 +115,9 @@ class _LoginSubtitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Text(
-      'Welcome back! Please enter your details'.hardCoded,
+      l10n.loginPageSubtitle,
       style: Theme.of(context).textTheme.bodyMedium,
     );
   }
@@ -124,6 +127,7 @@ class _ProvidersSeparator extends StatelessWidget {
   const _ProvidersSeparator();
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Row(
       children: [
         Expanded(
@@ -134,7 +138,7 @@ class _ProvidersSeparator extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
           child: Text(
-            'Or continue with'.hardCoded,
+            l10n.loginPageProvidersSeparatorText,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
@@ -153,12 +157,13 @@ class _ContinueWithGoogleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return OutlinedButton.icon(
       onPressed: () {
         context.read<LoginBloc>().add(LoginWithGoogleSubmitted());
       },
       icon: const Icon(FontAwesomeIcons.google),
-      label: const Text('Continue with Google'),
+      label: Text(l10n.loginPageContinueWithGoogleButtonText),
     );
   }
 }
@@ -168,12 +173,13 @@ class _ContinueWithAppleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return OutlinedButton.icon(
       onPressed: () {
         context.read<LoginBloc>().add(LoginWithAppleSubmitted());
       },
       icon: const Icon(FontAwesomeIcons.apple),
-      label: const Text('Continue with Apple'),
+      label: Text(l10n.loginPageContinueWithAppleButtonText),
     );
   }
 }
@@ -183,17 +189,18 @@ class _DontHaveAnAccount extends StatelessWidget {
   const _DontHaveAnAccount();
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return Column(
       children: [
         Text(
-          "Don't have an account?".hardCoded,
+          l10n.loginPageDontHaveAccountText,
           style: theme.textTheme.bodyMedium,
         ),
         TextButton(
           onPressed: () {},
           child: Text(
-            'Sign up'.hardCoded,
+            l10n.loginPageSignUpButtonText,
             style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),

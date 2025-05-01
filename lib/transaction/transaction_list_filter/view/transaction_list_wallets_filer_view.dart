@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +63,7 @@ class _TransactionListWalletsFilerViewState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final walletsState = context.select<WalletsBloc, WalletsState>(
       (value) => value.state,
@@ -69,7 +71,9 @@ class _TransactionListWalletsFilerViewState
 
     if (walletsState is WalletLoadFailure) {
       return Center(
-        child: Text('Failed to load wallets'.hardCoded),
+        child: Text(
+          l10n.transactionListWalletsFilterViewFailedToLoadWalletsErrorMessage,
+        ),
       );
     }
 
@@ -92,7 +96,7 @@ class _TransactionListWalletsFilerViewState
     final canDeselectAll = wallets.isNotEmpty && _selectedWallets.isNotEmpty;
     return SheetContentScaffold(
       topBar: AppBar(
-        title: Text('Transaction Wallets'.hardCoded),
+        title: Text(l10n.transactionListWalletsFilterViewTitle),
       ),
       body: Material(
         color: theme.colorScheme.surface,
@@ -155,13 +159,14 @@ class _WalletSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return TextField(
       controller: controller,
-      decoration: const InputDecoration(
-        hintText: 'Search wallets',
+      decoration: InputDecoration(
+        hintText: l10n.transactionListWalletsFilterViewSearchWalletsHintText,
         isDense: true,
-        prefixIcon: Icon(Icons.search),
-        contentPadding: EdgeInsets.symmetric(
+        prefixIcon: const Icon(Icons.search),
+        contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm,
         ),
@@ -183,15 +188,16 @@ class _SelectionsToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Row(
       children: [
         TextButton(
           onPressed: onSelectedAll,
-          child: const Text('Select all'),
+          child: Text(l10n.selectAll),
         ),
         TextButton(
           onPressed: onDeselectedAll,
-          child: const Text('Deselect all'),
+          child: Text(l10n.deselectAll),
         ),
       ],
     );
@@ -211,11 +217,12 @@ class _WalletList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     if (wallets.isEmpty) {
       return Center(
         child: Text(
-          'No wallets found'.hardCoded,
+          l10n.transactionListWalletsFilterViewNoWalletsFoundErrorMessage,
           style: theme.textTheme.bodyLarge?.copyWith(
             color: theme.hintColor,
           ),
@@ -282,28 +289,34 @@ class _SubmitButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final hasChanges = _hasChanges();
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 300),
       initialValue: hasChanges ? 1.0 : 0.0,
     );
 
-    useEffect(() {
-      if (hasChanges) {
-        animationController.forward();
-      } else {
-        animationController.reverse();
-      }
-      return null;
-    }, [hasChanges]);
+    useEffect(
+      () {
+        if (hasChanges) {
+          animationController.forward();
+        } else {
+          animationController.reverse();
+        }
+        return null;
+      },
+      [hasChanges],
+    );
 
     final slideAnimation = Tween<Offset>(
       begin: const Offset(1, 0),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: animationController,
-      curve: Curves.easeInOut,
-    ));
+    ).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
 
     return SizedBox(
       height: kToolbarHeight,
@@ -312,7 +325,9 @@ class _SubmitButton extends HookWidget {
           Expanded(
             child: OutlinedButton(
               onPressed: () => context.pop(),
-              child: Text('Cancel'.hardCoded),
+              child: Text(
+                l10n.transactionListWalletsFilterViewCancelButtonLabel,
+              ),
             ),
           ),
           const SizedBox(width: AppSpacing.md),
@@ -326,7 +341,9 @@ class _SubmitButton extends HookWidget {
                   position: slideAnimation,
                   child: FilledButton(
                     onPressed: () => context.pop(selectedWallets),
-                    child: Text('Update (${selectedWallets.length})'.hardCoded),
+                    child: Text(
+                      '${l10n.update} (${selectedWallets.length})',
+                    ),
                   ),
                 ),
               ),

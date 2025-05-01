@@ -21,6 +21,7 @@ class _TransactionListState extends State<TransactionList> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     return BlocBuilder<TransactionsBloc, TransactionsState>(
       builder: (context, state) {
@@ -28,7 +29,9 @@ class _TransactionListState extends State<TransactionList> {
           case TransactionsStatus.failure:
             return SliverToBoxAdapter(
               child: Center(
-                child: Text('Failed to fetch transactions'.hardCoded),
+                child: Text(
+                  l10n.transactionListFailedToFetchTransactionsErrorMessage,
+                ),
               ),
             );
           case TransactionsStatus.success:
@@ -38,8 +41,8 @@ class _TransactionListState extends State<TransactionList> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('No transactions'.hardCoded),
-                    Text('Add a transaction to get started'.hardCoded),
+                    Text(l10n.transactionListNoTransactionsFoundErrorMessage),
+                    Text(l10n.transactionListAddTransactionToGetStartedText),
                   ],
                 ),
               );
@@ -154,11 +157,11 @@ class _DateHeader extends StatelessWidget {
     if (date.year == today.year &&
         date.month == today.month &&
         date.day == today.day) {
-      dateText = 'Today'.hardCoded;
+      dateText = l10n.today;
     } else if (date.year == yesterday.year &&
         date.month == yesterday.month &&
         date.day == yesterday.day) {
-      dateText = 'Yesterday'.hardCoded;
+      dateText = l10n.yesterday;
     } else {
       dateText = date.yMMMMEEEEd(l10n.localeName);
     }

@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
+import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/transaction/transaction_list/widgets/transaction_item.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:flutter/material.dart';
