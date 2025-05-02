@@ -1,6 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:felicash/category/views/horizontal_category_selector.dart';
+import 'package:felicash/category/categories/view/horizontal_category_selector.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/transaction/bloc/transaction_creation_bloc.dart';
 import 'package:felicash/transaction/transaction_creation/widgets/wallet_selector.dart';
@@ -42,8 +42,10 @@ class TransactionCreationForm extends StatelessWidget {
               const _TransactionTypeSelector(),
               const SizedBox(height: AppSpacing.xlg),
               InputLabel(
-                  text: Text(
-                      l10n.transactionCreationFormTransactionAmountFieldLabel)),
+                text: Text(
+                  l10n.transactionCreationFormTransactionAmountFieldLabel,
+                ),
+              ),
               const SizedBox(height: AppSpacing.md),
               const _TransactionAmount(),
             ],

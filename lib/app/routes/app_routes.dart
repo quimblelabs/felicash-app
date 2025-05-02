@@ -2,53 +2,66 @@ part of 'app_router.dart';
 
 /// Contains all route-related constants and names for the application.
 class AppRoutes {
-  // Base routes
+  // ==================== MAIN NAVIGATION ROUTES ====================
+  /// Onboarding screen for new users
   static const onboarding = '/onboarding';
+
+  /// Login screen
   static const login = '/login';
+
+  /// Main overview/dashboard screen (app home)
   static const overview = '/';
+
+  /// Personal profile and settings
   static const personal = '/personal';
+
+  /// Wallets management screen
   static const wallets = '/wallets';
+
+  /// AI assistant feature
   static const aiAssistant = '/ai-assistant';
 
-  // Transaction routes
+  // ==================== TRANSACTION ROUTES ====================
+  /// Main transactions list screen
   static const transactions = '/transactions';
-  static const transactionListFilters = '/filters';
-  static const transactionListFilterCategories = '/categories';
-  static const transactionListFilterWallets = '/wallets';
-  static const transactionListFilterTypes = '/types';
-  static const transactionListFilterDate = '/date';
-  static const transactionCreation = '/create-transaction';
+
+  /// Transaction voice input screen
   static const voiceTransaction = '/voice-transaction';
 
-  // Wallet creation flow
-  static const walletTypeSelector = '/select-type';
-  static const walletCreation = '/create/:type';
-  static const balanceUpdate = '/update-balance';
-}
+  /// Transaction creation modal
+  static const transactionCreation = '/transactions';
 
-/// Contains all route names for the application.
-class AppRouteNames {
-  // Base routes
-  static const login = 'login';
-  static const onboarding = 'onboarding';
-  static const overview = 'overview';
-  static const personal = 'personal';
-  static const wallets = 'wallets';
-  static const aiAssistant = 'aiAssistant';
+  // Transaction filters
+  /// Main filters screen
+  static const transactionListFilters = '/transactions/filters';
 
-  // Transaction routes
-  static const transactions = 'transactions';
-  static const transactionListFilters = 'transactionListFilters';
+  /// Category filter selection
   static const transactionListFilterCategories =
-      'transactionListFilterCategories';
-  static const transactionListFilterWallets = 'transactionListFilterWallets';
-  static const transactionListFilterTypes = 'transactionListFilterTypes';
-  static const transactionListFilterDate = 'transactionListFilterDate';
-  static const transactionCreation = 'createTransaction';
-  static const voiceTransaction = 'voiceTransaction';
+      '/transactions/filters/categories';
 
-  // Wallet creation flow
-  static const walletTypeSelector = 'selectWalletType';
-  static const walletCreation = 'createWallet';
-  static const balanceUpdate = 'updateBalance';
+  /// Wallet filter selection
+  static const transactionListFilterWallets = '/transactions/filters/wallets';
+
+  /// Transaction type filter selection
+  static const transactionListFilterTypes = '/transactions/filters/types';
+
+  /// Date range filter selection
+  static const transactionListFilterDate = '/transactions/filters/date';
+
+  // ==================== WALLET ROUTES ====================
+  /// Wallet type selection screen
+  static const walletTypeSelector = '/wallets/select-type';
+
+  /// Wallet creation screen with type parameter
+  static const walletCreation = '/wallets/create/:type';
+
+  /// Balance update screen for wallet creation
+  static const balanceUpdate = '/wallets/create/:type/update-balance';
+
+  // ==================== CATEGORY ROUTES ====================
+  /// Category list management screen
+  static const categoryList = '/categories';
+
+  /// Category creation screen
+  static const categoryCreation = '/categories/create';
 }

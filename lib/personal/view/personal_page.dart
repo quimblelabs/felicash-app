@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/app/bloc/app_bloc.dart';
+import 'package:felicash/app/routes/app_router.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/user_setting/bloc/user_setting_bloc.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,7 @@ class _ManageSection extends StatelessWidget {
                   title: Text('Categories'.hardCoded),
                   leading: const Icon(IconsaxPlusBold.category),
                   onTap: () {
-                    // Navigate to categories management
+                    context.pushNamed(AppRouteNames.categoryList);
                   },
                   trailing: const Icon(Icons.arrow_forward_ios_rounded),
                 ),

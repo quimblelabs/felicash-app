@@ -1,3 +1,5 @@
+export 'category_description.dart';
+export 'category_name.dart';
 export 'email.dart';
 export 'password.dart';
 export 'simple_password.dart';
