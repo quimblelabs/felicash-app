@@ -96,11 +96,11 @@ class _SelectedCategorySection extends StatelessWidget {
     final amountValue = selectedItem.spending > 100000
         ? selectedItem.spending.toCompactCurrency(
             locale: l10n.localeName,
-            symbol: r'$',
+            symbol: SupportedCurrencies.vnd.symbol,
           )
         : selectedItem.spending.toCurrency(
             locale: l10n.localeName,
-            symbol: r'$',
+            symbol: SupportedCurrencies.vnd.symbol,
           );
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 150),

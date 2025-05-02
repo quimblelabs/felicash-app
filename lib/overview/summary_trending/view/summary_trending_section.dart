@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:app_utils/app_utils.dart';
+import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/overview/summary_trending/bloc/summary_trending_section_bloc.dart';
 import 'package:felicash/overview/summary_trending/models/daily_summary.dart';
@@ -142,7 +143,7 @@ class _TotalAmount extends StatelessWidget {
             totalAmount.toCurrency(
               locale: l10n.localeName,
               // TODO(tuanhm): Replace with your currency symbol
-              symbol: r'$',
+              symbol: SupportedCurrencies.vnd.symbol,
             ),
             style: theme.textTheme.headlineMedium?.copyWith(
               color: selectedType == TransactionTypeEnum.expense

@@ -115,11 +115,7 @@ class _TotalBalance extends StatelessWidget {
     //   (currency) => currency.code == 'USD',
     //   orElse: () => currencies.first,
     // );
-    const baseCurrency = CurrencyModel(
-      code: 'USD',
-      symbol: r'$',
-      name: 'United States Dollar',
-    );
+    const baseCurrency = SupportedCurrencies.vnd;
 
     final totalBalance = _calculateTotalBalance(
       currencies,
@@ -145,7 +141,7 @@ class _TotalBalance extends StatelessWidget {
             Text(
               totalBalance.toCurrency(
                 locale: l10n.localeName,
-                symbol: r'$',
+                symbol: baseCurrency.symbol,
               ),
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,

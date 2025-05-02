@@ -202,7 +202,7 @@ class _TooltipItem extends StatelessWidget {
             (type == TransactionTypeEnum.expense ? -amount : amount).toCurrency(
               locale: l10n.localeName,
               // TODO: Replace with currency symbol
-              symbol: r'$',
+              symbol: SupportedCurrencies.vnd.symbol,
             ),
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onPrimary,
