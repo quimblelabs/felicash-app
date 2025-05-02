@@ -52,6 +52,7 @@ class VoiceTransactionPage extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AiAssistantBloc(
+            felicashStorageClient: context.read(),
             aiClient: context.read(),
             walletRepository: context.read(),
             categoryRepository: context.read(),

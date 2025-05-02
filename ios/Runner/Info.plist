@@ -71,5 +71,7 @@
 		<string>We need access to the microphone to enable voice transaction recording</string>
 		<key>NSSpeechRecognitionUsageDescription</key>
 		<string>We need access to speech recognition to enable voice transaction recording</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We need access to the photo library so you can select images for transaction records and to recognize text from bills.</string>
 	</dict>
 </plist>

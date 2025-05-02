@@ -28,8 +28,11 @@ class AiAssistantStartProcessing extends AiAssistantEvent {
   const AiAssistantStartProcessing({
     required this.requestMessage,
     required this.sourceWallet,
+    this.images = const [],
   });
+
   final String requestMessage;
+  final List<String> images;
 
   final BaseWalletModel sourceWallet;
 
@@ -38,7 +41,20 @@ class AiAssistantStartProcessing extends AiAssistantEvent {
         ...super.props,
         requestMessage,
         sourceWallet,
+        images,
       ];
+}
+
+class AiAssistantRetryProcess extends AiAssistantEvent {
+  const AiAssistantRetryProcess({
+    required this.sourceWallet,
+    required this.processId,
+  });
+  final BaseWalletModel sourceWallet;
+  final String processId;
+
+  @override
+  List<Object?> get props => [...super.props, processId, sourceWallet];
 }
 
 /// Cancel the current transaction processing

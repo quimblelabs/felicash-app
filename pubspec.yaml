@@ -32,6 +32,7 @@ dependencies:
     path: packages/clients/felicash_data_client
   felicash_storage_client:
     path: packages/clients/felicash_storage_client
+  file_picker: ^10.1.2
   firebase_core: ^3.12.1
   flutter:
     sdk: flutter

@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:path/path.dart' as path_package;
 import 'package:equatable/equatable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -39,18 +39,36 @@ class FelicashStorageClient {
 
   /// Upload a file to the storage.
   ///
+  /// The [path] is the path to the file on the device.
+  /// The [bucketName] is the name of the bucket to upload the file to.
+  /// The [bucketFileName] is the name of the file in the bucket.
+  /// if not provided, it will be the same as the file name in the path.
+  ///
+  /// Returns the path to the file in the bucket.
   /// {@macro upload_file_failure}
-  Future<String> uploadFileFromPath({required String path}) async {
+  Future<String> uploadFileFromPath({
+    required String path,
+    required String bucketName,
+    String? bucketFileName,
+  }) async {
     try {
       final file = File(path);
       final userId = _supabaseClient.auth.currentUser?.id;
       if (userId == null) {
         throw Exception('Current user not found');
       }
+
+      final fileName = bucketFileName ?? path_package.basename(path);
+      final userBasedBucketPath = path_package.join(userId, fileName);
+
       final filePath = await _supabaseClient.storage
-          .from(userId)
-          .upload(path, file);
-      return filePath;
+          .from(bucketName)
+          .upload(userBasedBucketPath, file);
+      final publicUrl = _supabaseClient.storage
+          .from(bucketName)
+          .getPublicUrl(filePath);
+
+      return publicUrl;
     } catch (e, stackTrace) {
       if (e is UploadFileFailure) rethrow;
       Error.throwWithStackTrace(UploadFileFailure(e), stackTrace);

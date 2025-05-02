@@ -184,7 +184,7 @@ class AppTheme {
         border: const OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.all(
-            Radius.circular(AppRadius.xlg),
+            Radius.circular(AppRadius.lg),
           ),
         ),
       ),
@@ -196,8 +196,18 @@ class AppTheme {
             ),
           ),
         ),
-        backgroundColor: WidgetStateProperty.all(colorScheme.surface),
-        elevation: WidgetStateProperty.all(2),
+        backgroundColor: WidgetStateProperty.all(
+          colorScheme.surfaceContainerLowest,
+        ),
+        surfaceTintColor: WidgetStateProperty.all(
+          colorScheme.surfaceContainer,
+        ),
+        elevation: WidgetStateProperty.all(0),
+        side: WidgetStateProperty.all(
+          BorderSide(
+            color: colorScheme.outlineVariant.withAlpha(100),
+          ),
+        ),
         padding: WidgetStateProperty.all(EdgeInsets.zero),
       ),
     );

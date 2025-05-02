@@ -139,7 +139,7 @@ class AppRouter {
 
   // Transaction routes
   static final _transactionCreationRoute = GoRoute(
-    path: AppRoutes.transactions,
+    path: AppRoutes.transactionCreation,
     name: AppRouteNames.transactionCreation,
     parentNavigatorKey: _rootNavigatorKey,
     pageBuilder: (context, state) {
