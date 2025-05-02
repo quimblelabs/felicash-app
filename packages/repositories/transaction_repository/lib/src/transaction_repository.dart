@@ -768,37 +768,52 @@ class TransactionRepository {
   /// Summarizes transaction amounts by category, converting all amounts to a
   /// single currency
   static const String _getTransactionSummaryByTransactionDateQuery = '''
-    SELECT 
-      date(${TransactionFields.transactionTransactionDate}) as ${TransactionSummaryByTransactionDateModelFields.transactionDate},
-      COUNT(t.${TransactionFields.transactionId}) as ${TransactionSummaryByTransactionDateModelFields.transactionCount},
-      SUM(t.${TransactionFields.transactionAmount}) as ${TransactionSummaryByTransactionDateModelFields.totalAmount},
-      w.${WalletFields.walletCurrencyCode} as ${TransactionSummaryByTransactionDateModelFields.baseCurrencyCode},
-      SUM(t.${TransactionFields.transactionAmount} * COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0)) as ${TransactionSummaryByTransactionDateModelFields.totalAmountExchanged},
-      ?1 as ${TransactionSummaryByTransactionDateModelFields.exchangeCurrencyCode},
-      COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) as ${TransactionSummaryByTransactionDateModelFields.exchangeRateRate},
-      COALESCE(er.${ExchangeRateFields.exchangeRateEffectiveDate}, 
+  SELECT
+      DATE(t.${TransactionFields.transactionTransactionDate}) AS ${TransactionSummaryByTransactionDateModelFields.transactionDate},
+      -- Đếm số lượng giao dịch theo loại
+      COUNT(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'income' THEN 1 END) AS ${TransactionSummaryByTransactionDateModelFields.incomeCount},
+      COUNT(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'expense' THEN 1 END) AS ${TransactionSummaryByTransactionDateModelFields.expenseCount},
+      -- Tổng tiền gốc theo loại
+      SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'income' THEN t.${TransactionFields.transactionAmount} ELSE 0 END) AS ${TransactionSummaryByTransactionDateModelFields.totalIncome},
+      SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'expense' THEN t.${TransactionFields.transactionAmount} ELSE 0 END) AS ${TransactionSummaryByTransactionDateModelFields.totalExpense},
+      -- Tổng tiền đã quy đổi sang VND theo loại
+      SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'income' THEN t.${TransactionFields.transactionAmount} * COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) ELSE 0 END) AS ${TransactionSummaryByTransactionDateModelFields.totalIncomeExchanged},
+      SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'expense' THEN t.${TransactionFields.transactionAmount} * COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) ELSE 0 END) AS ${TransactionSummaryByTransactionDateModelFields.totalExpenseExchanged},
+      -- Thông tin tiền tệ
+      w.${WalletFields.walletCurrencyCode} AS ${TransactionSummaryByTransactionDateModelFields.baseCurrencyCode},
+      ?1 AS ${TransactionSummaryByTransactionDateModelFields.exchangeCurrencyCode},
+      COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) AS ${TransactionSummaryByTransactionDateModelFields.exchangeRateRate},
+      COALESCE(
+        er.${ExchangeRateFields.exchangeRateEffectiveDate},
         (
-          SELECT MAX(${ExchangeRateFields.exchangeRateEffectiveDate}) 
+          SELECT MAX(${ExchangeRateFields.exchangeRateEffectiveDate})
           FROM ${ExchangeRate.tableName}
           WHERE ${ExchangeRateFields.exchangeRateToCurrency} = ?1
         )
-      ) as ${TransactionSummaryByTransactionDateModelFields.exchangeRateEffectiveDate}
-    FROM ${Transaction.tableName} t
-    LEFT JOIN ${Category.tableName} c ON t.${TransactionFields.transactionCategoryId} = c.${CategoryFields.categoryId}
-    JOIN ${Wallet.tableName} w ON t.${TransactionFields.transactionWalletId} = w.${WalletFields.walletId}
-    LEFT JOIN ${ExchangeRate.tableName} er ON w.${WalletFields.walletCurrencyCode} = er.${ExchangeRateFields.exchangeRateFromCurrency} 
-      AND er.${ExchangeRateFields.exchangeRateToCurrency} = ?1 AND date(er.${ExchangeRateFields.exchangeRateEffectiveDate}) = 
-      (
-        SELECT MAX(date(${ExchangeRateFields.exchangeRateEffectiveDate})) 
-        FROM ${ExchangeRate.tableName}
-        WHERE ${ExchangeRateFields.exchangeRateToCurrency} = ?1
-      )
-    WHERE t.${TransactionFields.transactionUserId} = ?2
-      AND t.${TransactionFields.transactionTransactionType} = ?3
-      AND (?4 IS NULL OR t.${TransactionFields.transactionTransactionDate} >= ?4)
-      AND (?5 IS NULL OR t.${TransactionFields.transactionTransactionDate} <= ?5)
-    GROUP BY date(${TransactionFields.transactionTransactionDate}), er.${ExchangeRateFields.exchangeRateId}, w.${WalletFields.walletId}
-    ORDER BY ${TransactionSummaryByTransactionDateModelFields.totalAmount} DESC
+      ) AS ${TransactionSummaryByTransactionDateModelFields.exchangeRateEffectiveDate}
+  FROM
+      ${Transaction.tableName} t
+      LEFT JOIN ${Category.tableName} c ON t.${TransactionFields.transactionCategoryId} = c.${CategoryFields.categoryId}
+      JOIN ${Wallet.tableName} w ON t.${TransactionFields.transactionWalletId} = w.${WalletFields.walletId}
+      LEFT JOIN ${ExchangeRate.tableName} er
+        ON w.${WalletFields.walletCurrencyCode} = er.${ExchangeRateFields.exchangeRateFromCurrency}
+        AND er.${ExchangeRateFields.exchangeRateToCurrency} = ?1
+        AND DATE(er.${ExchangeRateFields.exchangeRateEffectiveDate}) = (
+          SELECT MAX(DATE(${ExchangeRateFields.exchangeRateEffectiveDate}))
+          FROM ${ExchangeRate.tableName}
+          WHERE ${ExchangeRateFields.exchangeRateToCurrency} = ?1
+        )
+  WHERE
+      t.${TransactionFields.transactionUserId} = ?2
+      AND t.${TransactionFields.transactionTransactionType} IN ('expense', 'income')
+      AND (?3 IS NULL OR t.${TransactionFields.transactionTransactionDate} >= ?3)
+      AND (?4 IS NULL OR t.${TransactionFields.transactionTransactionDate} <= ?4)
+  GROUP BY
+      DATE(t.${TransactionFields.transactionTransactionDate}),
+      er.${ExchangeRateFields.exchangeRateId},
+      w.${WalletFields.walletId}
+  ORDER BY
+      ${TransactionSummaryByTransactionDateModelFields.transactionDate} ASC;
   ''';
 
   /// Get transaction summary by transaction date.
@@ -809,14 +824,16 @@ class TransactionRepository {
     final params = [
       query.convertToCurrencyCode,
       _client.getUserId(),
-      query.transactionType.jsonKey,
       query.startDate.toUtc().toIso8601String(),
       query.endDate.toUtc().toIso8601String(),
     ];
 
     return _client.db
         .watch(
-      _query(_getTransactionSummaryByTransactionDateQuery, params),
+      _query(
+        _getTransactionSummaryByTransactionDateQuery,
+        params,
+      ),
       parameters: params,
     )
         .map(

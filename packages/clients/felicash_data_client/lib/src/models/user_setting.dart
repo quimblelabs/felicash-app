@@ -43,7 +43,7 @@ class UserSetting {
       userSettingDateFormat:
           row[UserSettingFields.userSettingDateFormat] as String,
       userSettingDefaultWallet:
-          row[UserSettingFields.userSettingDefaultWallet] as String,
+          row[UserSettingFields.userSettingDefaultWallet] as String?,
       userSettingCreatedAt: DateTime.parse(
         row[UserSettingFields.userSettingCreatedAt] as String,
       ),

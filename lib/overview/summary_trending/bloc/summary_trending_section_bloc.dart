@@ -40,7 +40,6 @@ class SummaryTrendingSectionBloc
         _transactionRepository.getTransactionSummaryByTransactionDate(
       GetTransactionSummaryByTransactionDateQuery(
         convertToCurrencyCode: 'VND'.hardCoded,
-        transactionType: state.selectedTransactionType,
         startDate: now.startOfMonth(),
         endDate: now.endOfMonth(),
       ),

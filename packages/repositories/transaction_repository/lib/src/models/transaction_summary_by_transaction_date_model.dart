@@ -22,10 +22,13 @@ class TransactionSummaryByTransactionDateModel {
   /// {@macro transaction_summary_by_transaction_date_model}
   const TransactionSummaryByTransactionDateModel({
     required this.transactionDate,
-    required this.transactionCount,
-    required this.totalAmount,
+    required this.incomeCount,
+    required this.expenseCount,
+    required this.totalIncome,
+    required this.totalExpense,
+    required this.totalIncomeExchanged,
+    required this.totalExpenseExchanged,
     required this.baseCurrencyCode,
-    required this.totalAmountExchanged,
     required this.exchangeCurrencyCode,
     required this.exchangeRateRate,
     required this.exchangeRateEffectiveDate,
@@ -38,17 +41,25 @@ class TransactionSummaryByTransactionDateModel {
         row[TransactionSummaryByTransactionDateModelFields.transactionDate]
             as String,
       ),
-      transactionCount:
-          row[TransactionSummaryByTransactionDateModelFields.transactionCount]
+      incomeCount:
+          row[TransactionSummaryByTransactionDateModelFields.incomeCount]
               as int,
-      totalAmount:
-          row[TransactionSummaryByTransactionDateModelFields.totalAmount]
+      expenseCount:
+          row[TransactionSummaryByTransactionDateModelFields.expenseCount]
+              as int,
+      totalIncome:
+          row[TransactionSummaryByTransactionDateModelFields.totalIncome]
               as double,
+      totalExpense:
+          row[TransactionSummaryByTransactionDateModelFields.totalExpense]
+              as double,
+      totalIncomeExchanged: row[TransactionSummaryByTransactionDateModelFields
+          .totalIncomeExchanged] as double,
+      totalExpenseExchanged: row[TransactionSummaryByTransactionDateModelFields
+          .totalExpenseExchanged] as double,
       baseCurrencyCode:
           row[TransactionSummaryByTransactionDateModelFields.baseCurrencyCode]
               as String,
-      totalAmountExchanged: row[TransactionSummaryByTransactionDateModelFields
-          .totalAmountExchanged] as double,
       exchangeCurrencyCode: row[TransactionSummaryByTransactionDateModelFields
           .exchangeCurrencyCode] as String,
       exchangeRateRate:
@@ -64,17 +75,26 @@ class TransactionSummaryByTransactionDateModel {
   /// The date of the transaction.
   final DateTime transactionDate;
 
-  /// The number of transactions.
-  final int transactionCount;
+  /// The number of income transactions.
+  final int incomeCount;
 
-  /// The total amount of the transactions.
-  final double totalAmount;
+  /// The number of expense transactions.
+  final int expenseCount;
+
+  /// The total amount of income transactions.
+  final double totalIncome;
+
+  /// The total amount of expense transactions.
+  final double totalExpense;
+
+  /// The total amount of income transactions in the exchange currency.
+  final double totalIncomeExchanged;
+
+  /// The total amount of expense transactions in the exchange currency.
+  final double totalExpenseExchanged;
 
   /// The base currency code of the transactions.
   final String baseCurrencyCode;
-
-  /// The total amount of the transactions in the exchange currency.
-  final double totalAmountExchanged;
 
   /// The exchange currency code of the transactions.
   final String exchangeCurrencyCode;
@@ -89,10 +109,13 @@ class TransactionSummaryByTransactionDateModel {
   static TransactionSummaryByTransactionDateModel empty =
       TransactionSummaryByTransactionDateModel(
     transactionDate: DateTime(1),
-    transactionCount: 0,
-    totalAmount: 0,
+    incomeCount: 0,
+    expenseCount: 0,
+    totalIncome: 0,
+    totalExpense: 0,
+    totalIncomeExchanged: 0,
+    totalExpenseExchanged: 0,
     baseCurrencyCode: '',
-    totalAmountExchanged: 0,
     exchangeCurrencyCode: '',
     exchangeRateRate: 0,
     exchangeRateEffectiveDate: DateTime(1),

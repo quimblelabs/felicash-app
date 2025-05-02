@@ -1,5 +1,3 @@
-import 'package:shared_models/shared_models.dart';
-
 /// {@template get_transaction_summary_by_transaction_date_query}
 /// A query to get the transaction summary by transaction date.
 /// {@endtemplate}
@@ -7,16 +5,12 @@ class GetTransactionSummaryByTransactionDateQuery {
   /// {@macro get_transaction_summary_by_transaction_date_query}
   const GetTransactionSummaryByTransactionDateQuery({
     required this.convertToCurrencyCode,
-    required this.transactionType,
     required this.startDate,
     required this.endDate,
   });
 
   /// The id of the currency to convert to.
   final String convertToCurrencyCode;
-
-  /// The type of the transaction.
-  final TransactionTypeEnum transactionType;
 
   /// The start date of the query.
   final DateTime startDate;
