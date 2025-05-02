@@ -199,8 +199,8 @@ class CategoryRepository {
 
   static const _createCategoryQuery = '''
     INSERT INTO categories (
-      ${CategoryFields.id}
-      ${CategoryFields.categoryId}
+      ${CategoryFields.id},
+      ${CategoryFields.categoryId},
       ${CategoryFields.categoryUserId},
       ${CategoryFields.categoryParentCategoryId},
       ${CategoryFields.categoryTransactionType},
@@ -213,38 +213,25 @@ class CategoryRepository {
 
       ${CategoryFields.categoryUpdatedAt},
       ${CategoryFields.categoryEnabled},
-    ) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,datetime(),datetime(),false)
-    RETURNING *
+    ) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,datetime(),datetime(),1)
   ''';
 
-  Future<CategoryModel> createCategory(CategoryModel category) async {
+  Future<void> createCategory(CategoryModel category) async {
     try {
-      final createdCategory = await _client.db.writeTransaction<Category>((
-        tx,
-      ) async {
+      await _client.db.writeTransaction((tx) async {
         final params = [
           category.id,
           category.id,
           _client.getUserId(),
           category.parentCategoryId,
-          category.transactionType,
+          category.transactionType.jsonKey,
           category.name,
           category.icon.toRaw(),
           category.color.toHex(),
           category.description,
         ];
-        final rows = await tx.execute(
-          _query(_createCategoryQuery, params),
-          params,
-        );
-        if (rows.isEmpty) {
-          throw CreateCategoryFailure('Failed to create category');
-        }
-        final row = rows.first;
-        return Category.fromRow(row);
+        await tx.execute(_query(_createCategoryQuery, params), params);
       });
-      final categoryModel = CategoryModel.fromCategory(createdCategory);
-      return categoryModel;
     } on CreateCategoryFailure {
       rethrow;
     } catch (e, stacktrace) {
