@@ -1,6 +1,6 @@
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
-import 'package:felicash/category/bloc/categories_bloc.dart';
+import 'package:felicash/category/categories/bloc/categories_bloc.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/voice_transaction/cubit/speech_language_cubit.dart';

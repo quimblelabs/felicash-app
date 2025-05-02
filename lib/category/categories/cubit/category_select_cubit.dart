@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:category_repository/category_repository.dart';
-import 'package:felicash/category/cubit/category_select_state.dart';
+import 'package:felicash/category/categories/cubit/category_select_state.dart';
 
 class CategorySelectCubit extends Cubit<CategorySelectState> {
   CategorySelectCubit()

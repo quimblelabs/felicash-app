@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
+import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -94,7 +95,7 @@ class _AppRouterExtraCodecEncoder extends Converter<Object?, Object?> {
           'TransactionTypeSet',
           input.map((e) => e.jsonKey).toList(),
         ],
-      Set<BaseWalletModel> _ => [
+      Set<WalletViewModel> _ => [
           'WalletSet',
           input.map((e) => e.toJson()).toList(),
         ],

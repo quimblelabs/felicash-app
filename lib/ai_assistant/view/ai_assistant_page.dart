@@ -3,7 +3,7 @@ import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
 import 'package:felicash/ai_assistant/widgets/chat_box.dart';
 import 'package:felicash/ai_assistant/widgets/input_box.dart';
-import 'package:felicash/category/bloc/categories_bloc.dart';
+import 'package:felicash/category/categories/bloc/categories_bloc.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/voice_transaction/bloc/speech_recognition_bloc.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';

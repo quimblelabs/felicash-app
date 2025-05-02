@@ -263,4 +263,32 @@ class IconPacks {
       ),
     ],
   );
+
+  static const category = IconPack(
+    name: 'Category',
+    icons: [
+      IconPickerIcon(name: 'food', data: Icons.fastfood),
+      IconPickerIcon(name: 'shopping', data: Icons.shopping_bag),
+      IconPickerIcon(name: 'entertainment', data: Icons.movie),
+      IconPickerIcon(name: 'travel', data: Icons.flight_takeoff),
+      IconPickerIcon(name: 'health', data: Icons.medical_services),
+      IconPickerIcon(name: 'education', data: Icons.school),
+      IconPickerIcon(name: 'home', data: Icons.home),
+      IconPickerIcon(name: 'work', data: Icons.work),
+      IconPickerIcon(name: 'transportation', data: Icons.directions_car),
+      IconPickerIcon(name: 'utilities', data: Icons.build),
+      IconPickerIcon(name: 'charity', data: Icons.volunteer_activism),
+      IconPickerIcon(name: 'pets', data: Icons.pets),
+      IconPickerIcon(name: 'sports', data: Icons.sports),
+      IconPickerIcon(name: 'hobbies', data: Icons.favorite),
+      IconPickerIcon(name: 'nature', data: Icons.nature),
+      IconPickerIcon(name: 'music', data: Icons.music_note),
+      IconPickerIcon(name: 'books', data: Icons.book),
+      IconPickerIcon(name: 'movies', data: Icons.movie),
+      IconPickerIcon(name: 'games', data: Icons.videogame_asset),
+      IconPickerIcon(name: 'photography', data: Icons.photo),
+      IconPickerIcon(name: 'gardening', data: Icons.grass),
+      IconPickerIcon(name: 'fitness', data: Icons.fitness_center),
+    ],
+  );
 }

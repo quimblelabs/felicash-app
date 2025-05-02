@@ -7,6 +7,8 @@ import 'package:felicash/app/bloc/app_bloc.dart';
 import 'package:felicash/app/routes/app_router_extra_codec.dart';
 import 'package:felicash/app/routes/pages/fade_transition_page.dart';
 import 'package:felicash/app/routes/pages/modal_page.dart';
+import 'package:felicash/category/creation/view/category_creation_modal.dart';
+import 'package:felicash/category/categories/view/category_list_page.dart';
 import 'package:felicash/home/view/home_page.dart';
 import 'package:felicash/login/view/login_page.dart';
 import 'package:felicash/onboarding/view/onboarding_page.dart';
@@ -34,6 +36,7 @@ import 'package:shared_models/shared_models.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
 
 part 'app_routes.dart';
+part 'app_routes_names.dart';
 
 /// The main router class for the application.
 class AppRouter {
@@ -130,12 +133,13 @@ class AppRouter {
       _transactionCreationRoute,
       _voiceTransactionRoute,
       _aiAssistantRoute,
+      _categoryListRoute,
     ],
   );
 
   // Transaction routes
   static final _transactionCreationRoute = GoRoute(
-    path: AppRoutes.transactionCreation,
+    path: AppRoutes.transactions,
     name: AppRouteNames.transactionCreation,
     parentNavigatorKey: _rootNavigatorKey,
     pageBuilder: (context, state) {
@@ -345,5 +349,26 @@ class AppRouter {
     pageBuilder: (context, state) => const FadeTransitionPage(
       child: PersonalPage(),
     ),
+  );
+
+  // Category routes
+  static final _categoryListRoute = GoRoute(
+    name: AppRouteNames.categoryList,
+    path: AppRoutes.categoryList,
+    builder: (context, state) => const CategoryListPage(),
+    routes: [
+      GoRoute(
+        name: AppRouteNames.categoryCreation,
+        path: AppRoutes.categoryCreation,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => ModalSheetPage(
+          swipeDismissible: true,
+          viewportPadding: EdgeInsets.only(
+            top: MediaQuery.viewPaddingOf(context).top,
+          ),
+          child: const CategoryCreationModal(),
+        ),
+      ),
+    ],
   );
 }

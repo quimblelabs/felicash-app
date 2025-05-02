@@ -4,7 +4,7 @@ import 'package:category_repository/category_repository.dart';
 import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash/app/bloc/app_bloc.dart';
 import 'package:felicash/app/routes/app_router.dart';
-import 'package:felicash/category/bloc/categories_bloc.dart';
+import 'package:felicash/category/categories/bloc/categories_bloc.dart';
 import 'package:felicash/currency/bloc/currencies_bloc.dart';
 import 'package:felicash/l10n/arb/app_localizations.dart';
 import 'package:felicash/user_setting/bloc/user_setting_bloc.dart';
@@ -132,7 +132,8 @@ class App extends StatelessWidget {
           BlocProvider<UserSettingBloc>(
             create: (context) => UserSettingBloc(
               userSettingRepository: _userSettingRepository,
-            )..add(const UserSettingSubscriptionRequested()),
+            ),
+            //..add(const UserSettingSubscriptionRequested()),
           ),
         ],
         child: RepositoryProvider<AppRouter>(
