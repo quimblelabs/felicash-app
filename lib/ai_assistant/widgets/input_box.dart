@@ -7,6 +7,7 @@ import 'package:felicash/voice_transaction/view/speech_recognition_permission_mo
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/wallet/models/wallet_view_model.dart';
 import 'package:felicash/wallet/view/wallet_selector/wallet_selector_modal.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,7 +58,7 @@ class InputBox extends StatelessWidget {
                   _TextInput(),
                   Padding(
                     padding: EdgeInsets.fromLTRB(
-                      AppSpacing.sm,
+                      0,
                       0,
                       AppSpacing.xxs,
                       AppSpacing.xxs,
@@ -65,6 +66,7 @@ class InputBox extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
+                        _AttachmentSelector(),
                         _WalletSelector(),
                         Spacer(),
                         _ActionButton(),
@@ -146,6 +148,63 @@ class _TextInput extends HookWidget {
               ? l10n.inputBoxListeningHintText
               : l10n.inputBoxDescribeTransactionHintText,
           filled: false,
+        ),
+      ),
+    );
+  }
+}
+
+class _AttachmentSelector extends StatelessWidget {
+  const _AttachmentSelector();
+
+  @override
+  Widget build(BuildContext context) {
+    final inProcessing = context.select(
+      (AiAssistantBloc bloc) =>
+          bloc.state is SpeechRecognitionListeningInProgress,
+    );
+    return Padding(
+      padding: const EdgeInsets.all(AppSpacing.xxs),
+      child: ActionChip(
+        // visualDensity: VisualDensity.compact,
+        labelPadding: EdgeInsets.zero,
+        onPressed: inProcessing
+            ? null
+            : () async {
+                final sourceWallet =
+                    context.read<AiAssistantViewCubit>().state.sourceWallet;
+                if (sourceWallet == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        context.l10n
+                            .aiAssistantPageNoSourceWalletFoundErrorMessage,
+                      ),
+                    ),
+                  );
+                  return;
+                }
+                final result = await FilePicker.platform.pickFiles(
+                  type: FileType.image,
+                  compressionQuality: 40,
+                );
+                if (result == null) return;
+                if (result.files.isEmpty) return;
+                final file = result.files.first;
+                if (file.path == null) return;
+                final filePath = file.path!;
+                if (!context.mounted) return;
+                context.read<AiAssistantBloc>().add(
+                      AiAssistantStartProcessing(
+                        requestMessage: '',
+                        images: [filePath],
+                        sourceWallet: sourceWallet.wallet,
+                      ),
+                    );
+              },
+        label: const Icon(
+          IconsaxPlusLinear.add,
+          size: 16,
         ),
       ),
     );

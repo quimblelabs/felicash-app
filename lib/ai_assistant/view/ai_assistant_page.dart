@@ -31,14 +31,13 @@ class AiAssistantPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => AiAssistantViewCubit()
-            ..updateSourceWallet(
-              wallets.firstOrNull,
-            ),
+          create: (_) =>
+              AiAssistantViewCubit()..updateSourceWallet(wallets.firstOrNull),
         ),
         BlocProvider(
           create: (_) => AiAssistantBloc(
             aiClient: context.read(),
+            felicashStorageClient: context.read(),
             categoryRepository: context.read(),
             walletRepository: context.read(),
             transactionRepository: context.read(),

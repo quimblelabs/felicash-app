@@ -182,7 +182,7 @@ class _MessageItem extends HookWidget {
               children: [
                 Align(
                   alignment: Alignment.centerRight,
-                  child: _UserMessage(message: message.source),
+                  child: _UserMessage(message: message),
                 ),
                 AnimatedSwitcher(
                   duration: 310.ms,
@@ -203,15 +203,12 @@ class _MessageItem extends HookWidget {
                     AiProcessingStatus.initial => const SizedBox.shrink(),
                     AiProcessingStatus.processing => const _ImThinking(),
                     AiProcessingStatus.completed => _AssistantResponse(
-                        response: message.response ??
-                            ProcessingResponse(
-                              responseText: l10n.chatBotErrorMessage,
-                            ),
+                        isLastMessage: isLastMessage,
+                        message: message,
                       ),
                     AiProcessingStatus.failed => _AssistantResponse(
-                        response: ProcessingResponse(
-                          responseText: l10n.chatBotErrorMessage,
-                        ),
+                        isLastMessage: isLastMessage,
+                        message: message,
                       ),
                   },
                 ),
@@ -227,21 +224,53 @@ class _MessageItem extends HookWidget {
 class _UserMessage extends StatelessWidget {
   const _UserMessage({required this.message});
 
-  final String message;
+  final AiAssistantRequestModel message;
 
   @override
   Widget build(BuildContext context) {
+    final textMessage = message.text;
+    final attachments = message.attachments;
+
     final l10n = context.l10n;
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
     final maxWidth = mediaQuery.size.width * 0.7;
+    if (attachments.isNotEmpty) {
+      return FittedBox(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: maxWidth),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...attachments.map(
+                (attachment) => _AttachmentItem(
+                  attachment: attachment,
+                  onTap: () {
+                    // TODO: Implement attachment tap action
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return CupertinoContextMenu(
-      enableHapticFeedback: true,
+      enableHapticFeedback: attachments.isEmpty,
       actions: [
         CupertinoContextMenuAction(
           onPressed: () {
             Navigator.pop(context);
-            Clipboard.setData(ClipboardData(text: message));
+
+            Clipboard.setData(ClipboardData(text: textMessage));
           },
           trailingIcon: IconsaxPlusLinear.copy,
           child: Text(
@@ -262,7 +291,7 @@ class _UserMessage extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppSpacing.lg),
           ),
           child: Text(
-            message,
+            textMessage,
             style: theme.textTheme.bodyLarge?.copyWith(
               color: theme.colorScheme.onPrimary,
             ),
@@ -273,15 +302,66 @@ class _UserMessage extends StatelessWidget {
   }
 }
 
-class _AssistantResponse extends HookWidget {
-  const _AssistantResponse({
-    required this.response,
+class _AttachmentItem extends StatelessWidget {
+  const _AttachmentItem({
+    required this.attachment,
+    required this.onTap,
   });
-  final ProcessingResponse response;
+  final String attachment;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.sm),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.attach_file_rounded,
+              size: AppRadius.lg,
+              color: theme.colorScheme.onPrimaryContainer,
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Text(
+                attachment.split('/').last,
+                maxLines: 2,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.onPrimaryContainer,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AssistantResponse extends HookWidget {
+  const _AssistantResponse({
+    required this.isLastMessage,
+    required this.message,
+  });
+  final bool isLastMessage;
+  final AiAssistantRequestModel message;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final response = message.response ??
+        ProcessingResponse(
+          responseText: l10n.chatBotErrorMessage,
+        );
+    final theme = Theme.of(context);
+    final isFailed = message.status == AiProcessingStatus.failed;
     return Align(
       alignment: Alignment.centerLeft,
       child: AnimatedSize(
@@ -306,6 +386,36 @@ class _AssistantResponse extends HookWidget {
                   ),
                 ],
               ),
+              if (isFailed && isLastMessage)
+                OutlinedButton(
+                  onPressed: () {
+                    final sourceWallet =
+                        context.read<AiAssistantViewCubit>().state.sourceWallet;
+                    if (sourceWallet == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            l10n.aiAssistantPageNoSourceWalletFoundErrorMessage,
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+                    context.read<AiAssistantBloc>().add(
+                          AiAssistantRetryProcess(
+                            processId: message.id,
+                            sourceWallet: sourceWallet.wallet,
+                          ),
+                        );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: theme.colorScheme.onSurface,
+                    side: BorderSide(
+                      color: theme.colorScheme.outlineVariant,
+                    ),
+                  ),
+                  child: Text('Retry'.hardCoded),
+                ),
               if (response.transactions.isNotEmpty)
                 for (final transaction in response.transactions)
                   Container(

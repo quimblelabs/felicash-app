@@ -29,7 +29,7 @@ class AppRoutes {
   static const voiceTransaction = '/voice-transaction';
 
   /// Transaction creation modal
-  static const transactionCreation = '/transactions';
+  static const transactionCreation = '/transactions/create';
 
   // Transaction filters
   /// Main filters screen
