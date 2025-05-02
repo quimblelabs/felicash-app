@@ -1,6 +1,7 @@
 import 'dart:io';
-import 'package:path/path.dart' as path_package;
+
 import 'package:equatable/equatable.dart';
+import 'package:path/path.dart' as path_package;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// {@template storage_client_exception}
@@ -61,12 +62,12 @@ class FelicashStorageClient {
       final fileName = bucketFileName ?? path_package.basename(path);
       final userBasedBucketPath = path_package.join(userId, fileName);
 
-      final filePath = await _supabaseClient.storage
+      await _supabaseClient.storage
           .from(bucketName)
           .upload(userBasedBucketPath, file);
       final publicUrl = _supabaseClient.storage
           .from(bucketName)
-          .getPublicUrl(filePath);
+          .getPublicUrl(userBasedBucketPath);
 
       return publicUrl;
     } catch (e, stackTrace) {

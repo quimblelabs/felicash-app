@@ -54,7 +54,7 @@ class _SpendingByCategoryItem extends StatelessWidget {
         stat.spending.toCurrency(
           locale: l10n.localeName,
           // TODO(tuanhm): Replace with user setting base currency
-          symbol: r'$',
+          symbol: SupportedCurrencies.vnd.symbol,
         ),
       ),
     );

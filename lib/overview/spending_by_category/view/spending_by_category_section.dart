@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:currency_repository/currency_repository.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/overview/spending_by_category/bloc/spending_by_category_bloc.dart';
 import 'package:felicash/overview/spending_by_category/models/category_spending_stat.dart';
