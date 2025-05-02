@@ -20,4 +20,8 @@ class AiAssistantViewCubit extends Cubit<AiAssistantViewState> {
   void updateSourceWallet(WalletViewModel? sourceWallet) {
     emit(state.copyWith(sourceWallet: sourceWallet));
   }
+
+  void updateMode(AiAssistantMode mode) {
+    emit(state.copyWith(mode: mode));
+  }
 }

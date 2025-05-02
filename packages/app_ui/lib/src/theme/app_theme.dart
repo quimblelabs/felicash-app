@@ -46,6 +46,7 @@ class AppTheme {
       chipTheme: _chipTheme(colorScheme),
       snackBarTheme: _snackBarTheme(colorScheme),
       dialogTheme: _dialogTheme(colorScheme),
+      popupMenuTheme: _popupMenuTheme(colorScheme),
     );
   }
 
@@ -209,6 +210,22 @@ class AppTheme {
           ),
         ),
         padding: WidgetStateProperty.all(EdgeInsets.zero),
+      ),
+    );
+  }
+
+  PopupMenuThemeData _popupMenuTheme(ColorScheme colorScheme) {
+    return PopupMenuThemeData(
+      enableFeedback: true,
+      position: PopupMenuPosition.under,
+      menuPadding: EdgeInsets.zero,
+      color: colorScheme.surface,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.all(Radius.circular(AppRadius.md)),
+        side: BorderSide(
+          color: colorScheme.outlineVariant.withAlpha(100),
+        ),
       ),
     );
   }

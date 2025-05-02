@@ -8,8 +8,10 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
 import 'package:felicash/ai_assistant/models/ai_assistant_request_model.dart';
 import 'package:felicash_storage_client/felicash_storage_client.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:transaction_repository/transaction_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -120,9 +122,13 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
       final knowledgeBase = _createKnowledgeBaseBody(event.sourceWallet);
 
       // Choose processing method based on input type
-      final handler = event.images.isNotEmpty
-          ? _handleExtractFromImage(newProcess, event, knowledgeBase)
-          : _handleExtractFromText(newProcess, event, knowledgeBase);
+      final handler = switch (event.mode) {
+        AiAssistantMode.assistant =>
+          _handleOnAssistantMode(newProcess, event, knowledgeBase),
+        AiAssistantMode.transaction => event.images.isNotEmpty
+            ? _handleExtractFromImage(newProcess, event, knowledgeBase)
+            : _handleExtractFromText(newProcess, event, knowledgeBase),
+      };
 
       _processingCancelable = CancelableOperation.fromFuture(handler);
 
@@ -199,6 +205,7 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
         handler = _handleExtractFromImage(
           newProcess,
           AiAssistantStartProcessing(
+            mode: event.mode,
             requestMessage: newProcess.text,
             images: newProcess.attachments,
             sourceWallet: event.sourceWallet,
@@ -209,6 +216,7 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
         handler = _handleExtractFromText(
           newProcess,
           AiAssistantStartProcessing(
+            mode: event.mode,
             requestMessage: newProcess.text,
             sourceWallet: event.sourceWallet,
           ),
@@ -363,6 +371,37 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
       response: ProcessingResponse(
         responseText: res.output?.responseText ?? '',
         transactions: transactions,
+      ),
+    );
+  }
+
+  Future<AiAssistantRequestModel> _handleOnAssistantMode(
+    AiAssistantRequestModel newProcess,
+    AiAssistantStartProcessing event,
+    KnowledgeBaseBody knowledgeBase,
+  ) async {
+    final timezoneNamed = await FlutterTimezone.getLocalTimezone();
+    final res = await _aiClient
+        .postQuery(
+          PostQueryBody(
+            queryText: event.requestMessage,
+            timezone: timezoneNamed,
+          ),
+        )
+        .then((r) => r.firstOrNull);
+    if (res == null) {
+      return newProcess.copyWith(
+        status: AiProcessingStatus.failed,
+        response: const ProcessingResponse(
+          responseText: 'Transaction processing failed',
+        ),
+      );
+    }
+
+    return newProcess.copyWith(
+      status: AiProcessingStatus.completed,
+      response: ProcessingResponse(
+        responseText: res.response?.response ?? '',
       ),
     );
   }

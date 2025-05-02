@@ -66,8 +66,7 @@ class InputBox extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        _AttachmentSelector(),
-                        _WalletSelector(),
+                        _ToolsBox(),
                         Spacer(),
                         _ActionButton(),
                       ],
@@ -154,6 +153,47 @@ class _TextInput extends HookWidget {
   }
 }
 
+class _ToolsBox extends StatelessWidget {
+  const _ToolsBox();
+
+  @override
+  Widget build(BuildContext context) {
+    final mode = context.select<AiAssistantViewCubit, AiAssistantMode>(
+      (cubit) => cubit.state.mode,
+    );
+    return ClipRRect(
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 110),
+        transitionBuilder: (child, animation) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 0.5),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeInOut,
+              ),
+            ),
+            child: child,
+          );
+        },
+        child: switch (mode) {
+          AiAssistantMode.transaction => const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                _AttachmentSelector(),
+                _WalletSelector(),
+              ],
+            ),
+          AiAssistantMode.assistant => const SizedBox.shrink(),
+        },
+      ),
+    );
+  }
+}
+
 class _AttachmentSelector extends StatelessWidget {
   const _AttachmentSelector();
 
@@ -196,6 +236,7 @@ class _AttachmentSelector extends StatelessWidget {
                 if (!context.mounted) return;
                 context.read<AiAssistantBloc>().add(
                       AiAssistantStartProcessing(
+                        mode: AiAssistantMode.transaction,
                         requestMessage: '',
                         images: [filePath],
                         sourceWallet: sourceWallet.wallet,
@@ -406,6 +447,7 @@ class _ActionButton extends StatelessWidget {
     FocusScope.of(context).unfocus();
     context.read<AiAssistantBloc>().add(
           AiAssistantStartProcessing(
+            mode: context.read<AiAssistantViewCubit>().state.mode,
             requestMessage: message,
             sourceWallet: sourceWallet.wallet,
           ),

@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
@@ -76,13 +77,12 @@ class _AiAssistantView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     return _ListenForUserSpeechDone(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(l10n.aiAssistantPageAppBarTitle),
+            title: const _AiAssistantModeSelector(),
           ),
           body: const Column(
             children: [
@@ -125,6 +125,7 @@ class _ListenForUserSpeechDone extends StatelessWidget {
           }
           context.read<AiAssistantBloc>().add(
                 AiAssistantStartProcessing(
+                  mode: context.read<AiAssistantViewCubit>().state.mode,
                   requestMessage: text,
                   sourceWallet: sourceWallet!.wallet,
                 ),
@@ -133,5 +134,88 @@ class _ListenForUserSpeechDone extends StatelessWidget {
       },
       child: child,
     );
+  }
+}
+
+class _AiAssistantModeSelector extends StatelessWidget {
+  const _AiAssistantModeSelector();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final mode = context.select<AiAssistantViewCubit, AiAssistantMode>(
+      (cubit) => cubit.state.mode,
+    );
+
+    return PopupMenuButton(
+      clipBehavior: Clip.antiAlias,
+      offset: const Offset(-24, 0),
+      initialValue: mode,
+      itemBuilder: (context) {
+        return AiAssistantMode.values
+            .map(
+              (mode) => PopupMenuItem<AiAssistantMode>(
+                value: mode,
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        mode.getLocalizedName(context),
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                      const SizedBox(width: AppSpacing.sm),
+                      Icon(
+                        mode.getIcon(),
+                        color: theme.colorScheme.primary,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+            .toList();
+      },
+      onSelected: (mode) {
+        context.read<AiAssistantViewCubit>().updateMode(mode);
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            mode.getLocalizedName(context),
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          Icon(
+            Icons.chevron_right,
+            color: theme.hintColor,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+extension on AiAssistantMode {
+  String getLocalizedName(BuildContext context) {
+    // final l10n = context.l10n;
+    switch (this) {
+      case AiAssistantMode.transaction:
+        return 'Transaction'.hardCoded;
+      // return context.l10n.aiAssistantPageTransactionMode;
+      case AiAssistantMode.assistant:
+        return 'Assistant'.hardCoded;
+      // return context.l10n.aiAssistantPageCategoryMode;
+    }
+  }
+
+  IconData getIcon() {
+    switch (this) {
+      case AiAssistantMode.transaction:
+        return Icons.monetization_on;
+      case AiAssistantMode.assistant:
+        return Icons.chat;
+    }
   }
 }
