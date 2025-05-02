@@ -34,22 +34,12 @@ extension DailySummaryListX on List<DailySummary> {
   static List<DailySummary> fromTransactionSummaryByTransactionDateModels(
     List<TransactionSummaryByTransactionDateModel> models,
   ) {
-    final summaries = <DateTime, DailySummary>{};
-    for (final model in models) {
-      final date = model.transactionDate;
-      if (summaries.containsKey(date)) {
-        summaries[date] = summaries[date]!.copyWith(
-          expense: summaries[date]!.expense + model.totalAmount,
-          income: summaries[date]!.income + model.totalAmountExchanged,
-        );
-      } else {
-        summaries[date] = DailySummary(
-          date: date,
-          expense: model.totalAmount,
-          income: model.totalAmountExchanged,
-        );
-      }
-    }
-    return summaries.values.toList();
+    return models.map((model) {
+      return DailySummary(
+        date: model.transactionDate,
+        expense: model.totalExpenseExchanged,
+        income: model.totalIncomeExchanged,
+      );
+    }).toList();
   }
 }
