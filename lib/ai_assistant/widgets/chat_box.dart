@@ -154,7 +154,6 @@ class _MessageItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     final chatBoxSize = context.select(
       (AiAssistantViewCubit cubit) => cubit.state.chatBoxSize,
     );
@@ -403,6 +402,8 @@ class _AssistantResponse extends HookWidget {
                     }
                     context.read<AiAssistantBloc>().add(
                           AiAssistantRetryProcess(
+                            mode:
+                                context.read<AiAssistantViewCubit>().state.mode,
                             processId: message.id,
                             sourceWallet: sourceWallet.wallet,
                           ),

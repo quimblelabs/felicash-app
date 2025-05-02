@@ -42,6 +42,7 @@ dependencies:
   flutter_hooks: ^0.21.2
   flutter_localizations:
     sdk: flutter
+  flutter_timezone: ^4.1.0
   font_awesome_flutter: ^10.8.0
   form_builder_validators: ^11.1.2
   form_inputs:

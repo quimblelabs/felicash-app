@@ -26,11 +26,13 @@ class AiAssistantLoadResourceRequested extends AiAssistantEvent {
 
 class AiAssistantStartProcessing extends AiAssistantEvent {
   const AiAssistantStartProcessing({
+    required this.mode,
     required this.requestMessage,
     required this.sourceWallet,
     this.images = const [],
   });
 
+  final AiAssistantMode mode;
   final String requestMessage;
   final List<String> images;
 
@@ -39,6 +41,7 @@ class AiAssistantStartProcessing extends AiAssistantEvent {
   @override
   List<Object?> get props => [
         ...super.props,
+        mode,
         requestMessage,
         sourceWallet,
         images,
@@ -47,14 +50,17 @@ class AiAssistantStartProcessing extends AiAssistantEvent {
 
 class AiAssistantRetryProcess extends AiAssistantEvent {
   const AiAssistantRetryProcess({
+    required this.mode,
     required this.sourceWallet,
     required this.processId,
   });
+
+  final AiAssistantMode mode;
   final BaseWalletModel sourceWallet;
   final String processId;
 
   @override
-  List<Object?> get props => [...super.props, processId, sourceWallet];
+  List<Object?> get props => [...super.props, mode, processId, sourceWallet];
 }
 
 /// Cancel the current transaction processing
