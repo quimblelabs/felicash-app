@@ -1,6 +1,7 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
+import 'package:felicash/ai_assistant/bloc/text_to_speech_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
 import 'package:felicash/ai_assistant/widgets/chat_box.dart';
 import 'package:felicash/ai_assistant/widgets/input_box.dart';
@@ -56,18 +57,13 @@ class AiAssistantPage extends StatelessWidget {
             categoryRepository: context.read(),
           )..add(SpeechRecognitionClientStarted()),
         ),
+        BlocProvider(
+          create: (context) => TextToSpeechBloc(
+            textToSpeechClient: context.read(),
+          ),
+        ),
       ],
-      child: BlocListener<WalletsBloc, WalletsState>(
-        listener: (context, state) {
-          if (state is WalletLoadSuccess) {
-            final cubit = context.read<AiAssistantViewCubit>();
-            if (cubit.state.sourceWallet == null) {
-              cubit.updateSourceWallet(state.wallets.firstOrNull);
-            }
-          }
-        },
-        child: const _AiAssistantView(),
-      ),
+      child: const _AiAssistantView(),
     );
   }
 }
@@ -77,18 +73,22 @@ class _AiAssistantView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _ListenForUserSpeechDone(
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(
-          appBar: AppBar(
-            title: const _AiAssistantModeSelector(),
-          ),
-          body: const Column(
-            children: [
-              Expanded(child: ChatBox()),
-              InputBox(),
-            ],
+    return _WalledLoadedSuccess(
+      child: _ListenForUserSpeechDone(
+        child: _AiAssistantProcessUpdated(
+          child: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: Scaffold(
+              appBar: AppBar(
+                title: const _AiAssistantModeSelector(),
+              ),
+              body: const Column(
+                children: [
+                  Expanded(child: ChatBox()),
+                  InputBox(),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -130,6 +130,50 @@ class _ListenForUserSpeechDone extends StatelessWidget {
                   sourceWallet: sourceWallet!.wallet,
                 ),
               );
+        }
+      },
+      child: child,
+    );
+  }
+}
+
+class _AiAssistantProcessUpdated extends StatelessWidget {
+  const _AiAssistantProcessUpdated({required this.child});
+  final Widget child;
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AiAssistantBloc, AiAssistantState>(
+      listenWhen: (previous, current) =>
+          current is AiAssistantCompleted || current is AiAssistantInProgress,
+      listener: (context, state) {
+        if (state is AiAssistantCompleted) {
+          final text = state.process.response?.responseText;
+          if (text == null) return;
+          if (text.trim().isEmpty) return;
+          context.read<TextToSpeechBloc>().add(SpeechToTextStarted(text: text));
+        } else if (state is AiAssistantInProgress) {
+          context.read<TextToSpeechBloc>().add(const SpeechToTextStopped());
+        }
+      },
+      child: child,
+    );
+  }
+}
+
+class _WalledLoadedSuccess extends StatelessWidget {
+  const _WalledLoadedSuccess({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<WalletsBloc, WalletsState>(
+      listenWhen: (previous, current) => current is WalletLoadSuccess,
+      listener: (context, state) {
+        if (state is WalletLoadSuccess) {
+          final cubit = context.read<AiAssistantViewCubit>();
+          if (cubit.state.sourceWallet == null) {
+            cubit.updateSourceWallet(state.wallets.firstOrNull);
+          }
         }
       },
       child: child,
