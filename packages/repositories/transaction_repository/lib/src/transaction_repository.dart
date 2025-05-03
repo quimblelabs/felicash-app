@@ -191,7 +191,9 @@ class TransactionRepository {
 
   static const _getTransactionByIdQuery = '''
     SELECT *
-    FROM transactions t
+    FROM ${Transaction.tableName} t
+    JOIN ${Wallet.tableName} w ON t.${TransactionFields.transactionWalletId} = w.${WalletFields.walletId}
+    LEFT JOIN ${Category.tableName} c ON t.${TransactionFields.transactionCategoryId} = c.${CategoryFields.categoryId}
     WHERE t.${TransactionFields.transactionId} = ?1
   ''';
 
@@ -203,7 +205,14 @@ class TransactionRepository {
         _query(_getTransactionByIdQuery, params),
         params,
       );
-      final transaction = Transaction.fromRow(row);
+      final transaction = Transaction.fromRow(row).copyWith(
+        wallets: [
+          if (row[WalletFields.walletId] != null) Wallet.fromRow(row),
+        ],
+        categories: [
+          if (row[CategoryFields.categoryId] != null) Category.fromRow(row),
+        ],
+      );
       return TransactionModel.fromTransaction(transaction);
     } on GetTransactionByIdFailure {
       rethrow;
