@@ -703,7 +703,7 @@ class TransactionRepository {
   /// Summarizes transaction amounts by category, converting all amounts to a
   /// single currency
   static const String _getTransactionSummaryByCategoryQuery = '''
-    SELECT 
+    SELECT
       c.${CategoryFields.categoryId} as ${TransactionSummaryByCategoryModelFields.categoryId},
       c.${CategoryFields.categoryName} as ${TransactionSummaryByCategoryModelFields.categoryName},
       c.${CategoryFields.categoryIcon} as ${TransactionSummaryByCategoryModelFields.categoryIcon},
@@ -714,9 +714,9 @@ class TransactionRepository {
       SUM(t.${TransactionFields.transactionAmount} * COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0)) as ${TransactionSummaryByCategoryModelFields.totalAmountExchanged},
       ?1 as ${TransactionSummaryByCategoryModelFields.exchangeCurrencyCode},
       COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) as ${TransactionSummaryByCategoryModelFields.exchangeRateRate},
-      COALESCE(er.${ExchangeRateFields.exchangeRateEffectiveDate}, 
+      COALESCE(er.${ExchangeRateFields.exchangeRateEffectiveDate},
         (
-          SELECT MAX(${ExchangeRateFields.exchangeRateEffectiveDate}) 
+          SELECT MAX(${ExchangeRateFields.exchangeRateEffectiveDate})
           FROM ${ExchangeRate.tableName}
           WHERE ${ExchangeRateFields.exchangeRateToCurrency} = ?1
         )
@@ -724,10 +724,10 @@ class TransactionRepository {
     FROM ${Transaction.tableName} t
     LEFT JOIN ${Category.tableName} c ON t.${TransactionFields.transactionCategoryId} = c.${CategoryFields.categoryId}
     JOIN ${Wallet.tableName} w ON t.${TransactionFields.transactionWalletId} = w.${WalletFields.walletId}
-    LEFT JOIN ${ExchangeRate.tableName} er ON w.${WalletFields.walletCurrencyCode} = er.${ExchangeRateFields.exchangeRateFromCurrency} 
-      AND er.${ExchangeRateFields.exchangeRateToCurrency} = ?1 AND date(er.${ExchangeRateFields.exchangeRateEffectiveDate}) = 
+    LEFT JOIN ${ExchangeRate.tableName} er ON w.${WalletFields.walletCurrencyCode} = er.${ExchangeRateFields.exchangeRateFromCurrency}
+      AND er.${ExchangeRateFields.exchangeRateToCurrency} = ?1 AND date(er.${ExchangeRateFields.exchangeRateEffectiveDate}) =
       (
-        SELECT MAX(date(${ExchangeRateFields.exchangeRateEffectiveDate})) 
+        SELECT MAX(date(${ExchangeRateFields.exchangeRateEffectiveDate}))
         FROM ${ExchangeRate.tableName}
         WHERE ${ExchangeRateFields.exchangeRateToCurrency} = ?1
       )
@@ -774,11 +774,11 @@ class TransactionRepository {
       COUNT(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'income' THEN 1 END) AS ${TransactionSummaryByTransactionDateModelFields.incomeCount},
       COUNT(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'expense' THEN 1 END) AS ${TransactionSummaryByTransactionDateModelFields.expenseCount},
       -- Tổng tiền gốc theo loại
-      SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'income' THEN t.${TransactionFields.transactionAmount} ELSE 0 END) AS ${TransactionSummaryByTransactionDateModelFields.totalIncome},
-      SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'expense' THEN t.${TransactionFields.transactionAmount} ELSE 0 END) AS ${TransactionSummaryByTransactionDateModelFields.totalExpense},
+      CAST(SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'income' THEN t.${TransactionFields.transactionAmount} ELSE 0 END) AS REAL) AS ${TransactionSummaryByTransactionDateModelFields.totalIncome},
+      CAST(SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'expense' THEN t.${TransactionFields.transactionAmount} ELSE 0 END) AS REAL) AS ${TransactionSummaryByTransactionDateModelFields.totalExpense},
       -- Tổng tiền đã quy đổi sang VND theo loại
-      SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'income' THEN t.${TransactionFields.transactionAmount} * COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) ELSE 0 END) AS ${TransactionSummaryByTransactionDateModelFields.totalIncomeExchanged},
-      SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'expense' THEN t.${TransactionFields.transactionAmount} * COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) ELSE 0 END) AS ${TransactionSummaryByTransactionDateModelFields.totalExpenseExchanged},
+      CAST(SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'income' THEN t.${TransactionFields.transactionAmount} * COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) ELSE 0 END) AS REAL) AS ${TransactionSummaryByTransactionDateModelFields.totalIncomeExchanged},
+      CAST(SUM(CASE WHEN t.${TransactionFields.transactionTransactionType} = 'expense' THEN t.${TransactionFields.transactionAmount} * COALESCE(er.${ExchangeRateFields.exchangeRateRate}, 1.0) ELSE 0 END) AS REAL) AS ${TransactionSummaryByTransactionDateModelFields.totalExpenseExchanged},
       -- Thông tin tiền tệ
       w.${WalletFields.walletCurrencyCode} AS ${TransactionSummaryByTransactionDateModelFields.baseCurrencyCode},
       ?1 AS ${TransactionSummaryByTransactionDateModelFields.exchangeCurrencyCode},
