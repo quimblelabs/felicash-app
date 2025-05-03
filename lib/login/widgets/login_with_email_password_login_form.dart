@@ -69,6 +69,7 @@ class _PasswordInput extends StatelessWidget {
             ? l10n.loginWithEmailPasswordLoginFormPasswordFieldErrorText
             : null,
       ),
+      obscureText: true,
       onFieldSubmitted: valid
           ? (_) =>
               context.read<LoginBloc>().add(LoginWithEmailPasswordSubmitted())

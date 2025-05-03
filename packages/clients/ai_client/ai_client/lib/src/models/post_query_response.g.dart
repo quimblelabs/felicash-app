@@ -23,4 +23,4 @@ PostQueryResponse _$PostQueryResponseFromJson(Map<String, dynamic> json) =>
     );
 
 PostQueryOutput _$PostQueryOutputFromJson(Map<String, dynamic> json) =>
-    PostQueryOutput(response: json['response'] as String?);
+    PostQueryOutput(text: json['text'] as String?);

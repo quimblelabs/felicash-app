@@ -156,7 +156,7 @@ class _General extends StatelessWidget {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('English'.hardCoded),
+                      Text('Vietnamese'.hardCoded),
                       const SizedBox(width: AppSpacing.sm),
                       const Icon(Icons.arrow_forward_ios_rounded),
                     ],

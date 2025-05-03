@@ -46,8 +46,8 @@ class TransactionItem extends StatelessWidget {
         children: [
           Text(
             transaction.notes ?? '',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+            // maxLines: 1,
+            // overflow: TextOverflow.ellipsis,
             style: theme.textTheme.bodySmall,
           ),
           if (showWalletName)

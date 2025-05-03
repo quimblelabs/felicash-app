@@ -28,13 +28,13 @@ class PostQueryResponse extends Equatable {
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class PostQueryOutput extends Equatable {
-  final String? response;
+  final String? text;
 
-  const PostQueryOutput({this.response});
+  const PostQueryOutput({this.text});
 
   factory PostQueryOutput.fromJson(Map<String, dynamic> json) =>
       _$PostQueryOutputFromJson(json);
 
   @override
-  List<Object?> get props => [response];
+  List<Object?> get props => [text];
 }

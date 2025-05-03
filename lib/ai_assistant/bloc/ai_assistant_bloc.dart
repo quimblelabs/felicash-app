@@ -207,21 +207,31 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
           AiAssistantStartProcessing(
             mode: event.mode,
             requestMessage: newProcess.text,
-            images: newProcess.attachments,
             sourceWallet: event.sourceWallet,
           ),
           knowledgeBase,
         );
       } else {
-        handler = _handleExtractFromText(
-          newProcess,
-          AiAssistantStartProcessing(
-            mode: event.mode,
-            requestMessage: newProcess.text,
-            sourceWallet: event.sourceWallet,
-          ),
-          knowledgeBase,
-        );
+        handler = switch (event.mode) {
+          AiAssistantMode.assistant => _handleOnAssistantMode(
+              newProcess,
+              AiAssistantStartProcessing(
+                mode: event.mode,
+                requestMessage: newProcess.text,
+                sourceWallet: event.sourceWallet,
+              ),
+              knowledgeBase,
+            ),
+          AiAssistantMode.transaction => _handleExtractFromText(
+              newProcess,
+              AiAssistantStartProcessing(
+                mode: event.mode,
+                requestMessage: newProcess.text,
+                sourceWallet: event.sourceWallet,
+              ),
+              knowledgeBase,
+            ),
+        };
       }
 
       _processingCancelable = CancelableOperation.fromFuture(handler);
@@ -315,7 +325,7 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
         );
       }
 
-      final transactions = await _processExtractedTransactions(
+      final transactions = await processExtractedTransactions(
         data.output?.extractedTransactions,
         event.sourceWallet,
       );
@@ -361,7 +371,7 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
       );
     }
 
-    final transactions = await _processExtractedTransactions(
+    final transactions = await processExtractedTransactions(
       res.output?.extractedTransactions,
       event.sourceWallet,
     );
@@ -401,13 +411,13 @@ class AiAssistantBloc extends Bloc<AiAssistantEvent, AiAssistantState> {
     return newProcess.copyWith(
       status: AiProcessingStatus.completed,
       response: ProcessingResponse(
-        responseText: res.response?.response ?? '',
+        responseText: res.response?.text ?? '',
       ),
     );
   }
 
   /// Processes extracted transactions, creates transaction models and saves them
-  Future<List<TransactionModel>> _processExtractedTransactions(
+  Future<List<TransactionModel>> processExtractedTransactions(
     List<ExtractedTransaction>? extractedTransactions,
     BaseWalletModel sourceWallet,
   ) async {

@@ -21,7 +21,7 @@ class _CategoryListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Category List'),
+        title: Text('Danh sách danh mục'.hardCoded),
       ),
       body: const _CategoriesListView(),
       floatingActionButton: FloatingActionButton(

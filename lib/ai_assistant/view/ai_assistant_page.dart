@@ -146,6 +146,8 @@ class _AiAssistantProcessUpdated extends StatelessWidget {
       listenWhen: (previous, current) =>
           current is AiAssistantCompleted || current is AiAssistantInProgress,
       listener: (context, state) {
+        final mode = context.read<AiAssistantViewCubit>().state.mode;
+        if (mode != AiAssistantMode.transaction) return;
         if (state is AiAssistantCompleted) {
           final text = state.process.response?.responseText;
           if (text == null) return;
@@ -246,10 +248,10 @@ extension on AiAssistantMode {
     // final l10n = context.l10n;
     switch (this) {
       case AiAssistantMode.transaction:
-        return 'Transaction'.hardCoded;
+        return 'Giao dịch'.hardCoded;
       // return context.l10n.aiAssistantPageTransactionMode;
       case AiAssistantMode.assistant:
-        return 'Assistant'.hardCoded;
+        return 'Trợ lý'.hardCoded;
       // return context.l10n.aiAssistantPageCategoryMode;
     }
   }

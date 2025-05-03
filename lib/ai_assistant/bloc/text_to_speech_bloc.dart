@@ -4,9 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:text_to_speech_client/text_to_speech_client.dart';
 
+part 'text_to_speech_bloc.freezed.dart';
 part 'text_to_speech_event.dart';
 part 'text_to_speech_state.dart';
-part 'text_to_speech_bloc.freezed.dart';
 
 class TextToSpeechBloc extends Bloc<TextToSpeechEvent, TextToSpeechState> {
   TextToSpeechBloc({
@@ -25,10 +25,11 @@ class TextToSpeechBloc extends Bloc<TextToSpeechEvent, TextToSpeechState> {
   ) async {
     emit(const TextToSpeechState.playing());
     try {
+      await _textToSpeechClient.stop();
       await _textToSpeechClient.speak(
         event.text,
         voice: TTSElevenLabsVoice.tvcAiHanh,
-        model: TTSElevenLabsModel.elevenFlashV25,
+        model: TTSElevenLabsModel.elevenTurboV25,
       );
       emit(const TextToSpeechState.completed());
     } catch (e, stackTrace) {

@@ -152,24 +152,24 @@ class _AddTransactionMenuButtonState extends State<AddTransactionMenuButton>
                     child: Column(
                       spacing: AppRadius.md,
                       children: [
-                        Transform.translate(
-                          offset: Offset(
-                            0,
-                            (1 - _animationController.value) * 120,
-                          ),
-                          child: _ActionButton(
-                            onPressed: () {
-                              HapticFeedback.lightImpact();
-                              _onClosedCallback = () {
-                                // TODO(tuanhm):  Add recept scanner
-                              };
-                              _toggle(visible: false);
-                            },
-                            icon: IconsaxPlusBold.scanner,
-                            label: l10n
-                                .addTransactionMenuButtonReceptScannerButtonText,
-                          ),
-                        ),
+                        // Transform.translate(
+                        //   offset: Offset(
+                        //     0,
+                        //     (1 - _animationController.value) * 120,
+                        //   ),
+                        //   child: _ActionButton(
+                        //     onPressed: () {
+                        //       HapticFeedback.lightImpact();
+                        //       _onClosedCallback = () {
+                        //         // TODO(tuanhm):  Add recept scanner
+                        //       };
+                        //       _toggle(visible: false);
+                        //     },
+                        //     icon: IconsaxPlusBold.scanner,
+                        //     label: l10n
+                        //         .addTransactionMenuButtonReceptScannerButtonText,
+                        //   ),
+                        // ),
                         Transform.translate(
                           offset: Offset(
                             0,

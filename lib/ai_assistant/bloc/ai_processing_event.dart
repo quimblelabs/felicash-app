@@ -60,7 +60,12 @@ class AiAssistantRetryProcess extends AiAssistantEvent {
   final String processId;
 
   @override
-  List<Object?> get props => [...super.props, mode, processId, sourceWallet];
+  List<Object?> get props => [
+        ...super.props,
+        mode,
+        processId,
+        sourceWallet,
+      ];
 }
 
 /// Cancel the current transaction processing

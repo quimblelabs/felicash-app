@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/ai_assistant/bloc/ai_assistant_bloc.dart';
 import 'package:felicash/ai_assistant/cubit/ai_assistant_view_cubit.dart';
@@ -312,35 +314,42 @@ class _AttachmentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.sm),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(AppRadius.md),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              Icons.attach_file_rounded,
-              size: AppRadius.lg,
-              color: theme.colorScheme.onPrimaryContainer,
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Text(
-                attachment.split('/').last,
-                maxLines: 2,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onPrimaryContainer,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return Image.file(
+      File(attachment),
+      fit: BoxFit.cover,
     );
+
+    // GestureDetector(
+    //   onTap: onTap,
+    // child: Container(
+    //   padding: const EdgeInsets.all(AppSpacing.sm),
+    //   decoration: BoxDecoration(
+    //     color: theme.colorScheme.primaryContainer,
+    //     borderRadius: BorderRadius.circular(AppRadius.md),
+    //   ),
+    //   child: Row(
+    //     children: [
+    //       Icon(
+    //         Icons.attach_file_rounded,
+    //         size: AppRadius.lg,
+    //         color: theme.colorScheme.onPrimaryContainer,
+    //       ),
+    //       const SizedBox(width: AppSpacing.sm),
+    //       Expanded(
+    //         child:
+
+    //         // Text(
+    //         //   attachment.split('/').last,
+    //         //   maxLines: 2,
+    //         //   style: theme.textTheme.bodyLarge?.copyWith(
+    //         //     color: theme.colorScheme.onPrimaryContainer,
+    //         //   ),
+    //         // ),
+    //       ),
+    //     ],
+    //   ),
+    // ),
+    // );
   }
 }
 
