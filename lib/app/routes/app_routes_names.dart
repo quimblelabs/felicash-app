@@ -12,6 +12,7 @@ class AppRouteNames {
 
   // Transaction routes
   static const transactions = 'transactions';
+  static const transactionDetails = 'transactionDetails';
   static const transactionListFilters = 'transactionListFilters';
   static const transactionListFilterCategories =
       'transactionListFilterCategories';

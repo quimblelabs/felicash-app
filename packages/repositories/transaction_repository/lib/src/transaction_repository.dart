@@ -507,10 +507,11 @@ class TransactionRepository {
             'Unknown transaction type',
           );
       }
+      final originalTransaction =
+          await getTransactionByIdFuture(transaction.id);
+
       final updatedTransaction = await _client.db.writeTransaction((tx) async {
         // Get original transaction to calculate balance adjustment
-        final originalTransaction =
-            await getTransactionByIdFuture(transaction.id);
 
         // Update transaction
         final transactionParams = [
@@ -640,7 +641,23 @@ class TransactionRepository {
       await _client.db.writeTransaction(
         (tx) async {
           // Get original transaction to calculate balance adjustment
-          final originalTransaction = await getTransactionByIdFuture(id);
+          final originalTransaction = await tx.get(
+            _query(
+              _getTransactionByIdQuery,
+              [id],
+            ),
+            [id],
+          ).then(
+            (row) => Transaction.fromRow(row).copyWith(
+              wallets: [
+                if (row[WalletFields.walletId] != null) Wallet.fromRow(row),
+              ],
+              categories: [
+                if (row[CategoryFields.categoryId] != null)
+                  Category.fromRow(row),
+              ],
+            ),
+          );
 
           final params = [id];
           final rows = await tx.execute(
@@ -654,8 +671,8 @@ class TransactionRepository {
 
           // Update wallet balance
           final updateWalletBalanceParams = [
-            originalTransaction.amount,
-            originalTransaction.wallet.id,
+            originalTransaction.transactionAmount,
+            originalTransaction.transactionWalletId,
           ];
 
           await tx.execute(
@@ -672,23 +689,37 @@ class TransactionRepository {
             );
           }
 
-          if (originalTransaction.transactionType ==
-              TransactionTypeEnum.transfer) {
+          if (originalTransaction.transactionTransferId
+              case final destinationTransactionId?) {
             // Update destination transaction
-            final destinationTransaction = await getTransactionByIdFuture(
-              originalTransaction.transferTransaction!.id,
+            final destinationTransaction = await tx.get(
+              _query(
+                _getTransactionByIdQuery,
+                [destinationTransactionId],
+              ),
+              [destinationTransactionId],
+            ).then(
+              (row) => Transaction.fromRow(row).copyWith(
+                wallets: [
+                  if (row[WalletFields.walletId] != null) Wallet.fromRow(row),
+                ],
+                categories: [
+                  if (row[CategoryFields.categoryId] != null)
+                    Category.fromRow(row),
+                ],
+              ),
             );
 
             // Delete destination transaction
             await tx.execute(
-              _query(_deleteTransactionQuery, [destinationTransaction.id]),
-              [destinationTransaction.id],
+              _query(_deleteTransactionQuery, [destinationTransactionId]),
+              [destinationTransactionId],
             );
 
             // Update destination wallet balance
             final updateDestinationWalletBalanceParams = [
-              destinationTransaction.amount,
-              originalTransaction.wallet.id,
+              destinationTransaction.transactionAmount,
+              originalTransaction.transactionWalletId,
             ];
 
             await tx.execute(

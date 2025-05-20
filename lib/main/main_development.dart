@@ -7,6 +7,7 @@ import 'package:felicash/main/bootstrap.dart';
 import 'package:felicash/main/firebase_options_dev.dart';
 import 'package:felicash_storage_client/felicash_storage_client.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/rendering.dart';
 import 'package:n8n_ai_client/n8n_ai_client.dart';
 import 'package:supabase_authentication_client/supabase_authentication_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

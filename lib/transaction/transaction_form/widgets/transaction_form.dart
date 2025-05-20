@@ -2,8 +2,8 @@ import 'package:app_ui/app_ui.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:felicash/category/categories/view/horizontal_category_selector.dart';
 import 'package:felicash/l10n/l10n.dart';
-import 'package:felicash/transaction/bloc/transaction_creation_bloc.dart';
-import 'package:felicash/transaction/transaction_creation/widgets/wallet_selector.dart';
+import 'package:felicash/transaction/transaction_form/bloc/transaction_form_bloc.dart';
+import 'package:felicash/transaction/transaction_form/widgets/wallet_selector.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,8 +26,8 @@ extension on TransactionTypeEnum {
   }
 }
 
-class TransactionCreationForm extends StatelessWidget {
-  const TransactionCreationForm({super.key});
+class TransactionForm extends StatelessWidget {
+  const TransactionForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +76,8 @@ class _CategorySelector extends StatelessWidget {
       onCategorySelected: (category) {
         if (category == null) return;
         context
-            .read<TransactionCreationBloc>()
-            .add(TransactionCreationCategoryChanged(category));
+            .read<TransactionFormBloc>()
+            .add(TransactionFormCategoryChanged(category));
       },
     );
   }
@@ -91,15 +91,15 @@ class _TransactionTypeSelector extends HookWidget {
     final l10n = context.l10n;
     final theme = Theme.of(context);
     final type = context.select(
-      (TransactionCreationBloc bloc) => bloc.state.type,
+      (TransactionFormBloc bloc) => bloc.state.type,
     );
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
         value: type,
         onChanged: (value) {
           context
-              .read<TransactionCreationBloc>() //
-              .add(TransactionCreationTypeChanged(value ?? type));
+              .read<TransactionFormBloc>() //
+              .add(TransactionFormTypeChanged(value ?? type));
         },
         selectedItemBuilder: (context) {
           return TransactionTypeEnum.availableValues
@@ -168,14 +168,40 @@ class _TransactionTypeSelector extends HookWidget {
   }
 }
 
-class _TransactionAmount extends StatelessWidget {
+class _TransactionAmount extends HookWidget {
   const _TransactionAmount();
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final amount = context.select(
+      (TransactionFormBloc bloc) => bloc.state.amount.value,
+    );
+    final amountString = amount.abs().toAmountValue(locale: l10n.localeName);
+    final controller = useTextEditingController(
+      text: amountString,
+    );
+
+    useEffect(
+      () {
+        if (amountString != controller.text) {
+          controller.text = amountString;
+        }
+        return null;
+      },
+      [amount],
+    );
+
     final theme = Theme.of(context);
     return TextFormField(
+      controller: controller,
+      onChanged: (value) {
+        final amount = double.tryParse(value);
+        if (amount == null) return;
+        context
+            .read<TransactionFormBloc>()
+            .add(TransactionFormAmountChanged(amount));
+      },
       textAlign: TextAlign.center,
       keyboardType: TextInputType.number,
       style: theme.textTheme.displaySmall,
@@ -196,13 +222,13 @@ class _WalletsSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wallet = context.select(
-      (TransactionCreationBloc bloc) => bloc.state.wallet,
+      (TransactionFormBloc bloc) => bloc.state.wallet,
     );
     final transferToWallet = context.select(
-      (TransactionCreationBloc bloc) => bloc.state.transferToWallet,
+      (TransactionFormBloc bloc) => bloc.state.transferToWallet,
     );
     final isTransfer = context.select(
-      (TransactionCreationBloc bloc) =>
+      (TransactionFormBloc bloc) =>
           bloc.state.type == TransactionTypeEnum.transfer,
     );
     return BlocBuilder<WalletsBloc, WalletsState>(
@@ -214,13 +240,13 @@ class _WalletsSelector extends StatelessWidget {
           onChanged: (from, to) {
             if (from != wallet) {
               context
-                  .read<TransactionCreationBloc>() //
-                  .add(TransactionCreationWalletChanged(wallet: wallet));
+                  .read<TransactionFormBloc>() //
+                  .add(TransactionFormWalletChanged(wallet: wallet));
             }
             if (to != transferToWallet) {
               context
-                  .read<TransactionCreationBloc>() //
-                  .add(TransactionCreationTransferToWalletChanged(to));
+                  .read<TransactionFormBloc>() //
+                  .add(TransactionFormTransferToWalletChanged(to));
             }
           },
         );
@@ -236,12 +262,12 @@ class _TransactionDate extends HookWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final dateStr = context
-        .read<TransactionCreationBloc>()
+        .read<TransactionFormBloc>()
         .state //
         .date
         ?.yMMMEd(l10n.localeName);
     final controller = useTextEditingController(text: dateStr);
-    return BlocListener<TransactionCreationBloc, TransactionCreationState>(
+    return BlocListener<TransactionFormBloc, TransactionFormState>(
       listener: (context, state) {
         final dateStr = state.date?.yMMMEd(l10n.localeName);
         if (dateStr != null && controller.text != dateStr) {
@@ -266,8 +292,8 @@ class _TransactionDate extends HookWidget {
           );
           if (date != null && context.mounted) {
             context
-                .read<TransactionCreationBloc>()
-                .add(TransactionCreationDateChanged(date));
+                .read<TransactionFormBloc>()
+                .add(TransactionFormDateChanged(date));
           }
         },
       ),
@@ -275,21 +301,39 @@ class _TransactionDate extends HookWidget {
   }
 }
 
-class _TransactionNotes extends StatelessWidget {
+class _TransactionNotes extends HookWidget {
   const _TransactionNotes();
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final maxLength = context.select(
-      (TransactionCreationBloc bloc) => bloc.state.note.maxLength,
+      (TransactionFormBloc bloc) => bloc.state.note.maxLength,
+    );
+    final note = context.select(
+      (TransactionFormBloc bloc) => bloc.state.note.value,
+    );
+    final controller = useTextEditingController(text: note);
+    useEffect(
+      () {
+        void onChange(String value) {
+          context
+              .read<TransactionFormBloc>()
+              .add(TransactionFormNoteChanged(value));
+        }
+
+        controller.addListener(() {
+          final value = controller.text;
+          if (value != note) {
+            onChange(value);
+          }
+        });
+        return null;
+      },
+      [controller],
     );
     return TextFormField(
-      onChanged: (value) {
-        context
-            .read<TransactionCreationBloc>()
-            .add(TransactionCreationNoteChanged(value));
-      },
+      controller: controller,
       decoration: InputDecoration(
         hintText: l10n.transactionCreationFormEnterNotesHintText,
       ),

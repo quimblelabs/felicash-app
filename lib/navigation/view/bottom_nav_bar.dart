@@ -1,6 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/l10n/l10n.dart';
-import 'package:felicash/transaction/transaction_creation/widgets/add_transaction_menu_button.dart';
+import 'package:felicash/navigation/widgets/add_transaction_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';

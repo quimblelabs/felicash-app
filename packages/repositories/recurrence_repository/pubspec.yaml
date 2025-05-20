@@ -14,6 +14,8 @@ dependencies:
     path: ../../clients/felicash_data_client
   flutter:
     sdk: flutter
+  freezed_annotation: ^3.0.0
+  json_annotation: ^4.9.0
   shared_models:
     path: ../../shared_models
 
@@ -21,6 +23,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  build_runner: ^2.4.15
+  freezed: ^3.0.6
+  json_serializable: ^6.9.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
