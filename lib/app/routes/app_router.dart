@@ -4,7 +4,7 @@ import 'package:app_utils/app_utils.dart';
 import 'package:category_repository/category_repository.dart';
 import 'package:felicash/ai_assistant/view/ai_assistant_page.dart';
 import 'package:felicash/app/bloc/app_bloc.dart';
-import 'package:felicash/app/routes/app_router_extra_codec.dart';
+import 'package:felicash/app/routes/extra_codec/app_router_extra_codec.dart';
 import 'package:felicash/app/routes/pages/fade_transition_page.dart';
 import 'package:felicash/app/routes/pages/modal_page.dart';
 import 'package:felicash/category/creation/view/category_creation_modal.dart';
@@ -15,7 +15,7 @@ import 'package:felicash/onboarding/view/onboarding_page.dart';
 import 'package:felicash/overview/overview/view/overview_page.dart';
 import 'package:felicash/personal/view/personal_page.dart';
 import 'package:felicash/transaction/models/transaction_list_filter.dart';
-import 'package:felicash/transaction/transaction_creation/view/transaction_creation_modal.dart';
+import 'package:felicash/transaction/transaction_form/view/transaction_form_modal.dart';
 import 'package:felicash/transaction/transaction_list/view/transactions_page.dart';
 import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_all_filters_view.dart';
 import 'package:felicash/transaction/transaction_list_filter/view/transaction_list_categories_filter_view.dart';
@@ -34,6 +34,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_models/shared_models.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
+import 'package:transaction_repository/transaction_repository.dart';
 
 part 'app_routes.dart';
 part 'app_routes_names.dart';
@@ -147,7 +148,7 @@ class AppRouter {
       return ModalPage(
         isScrollControlled: true,
         useSafeArea: true,
-        child: TransactionCreationModal(
+        child: TransactionFormModal(
           walletId: walletId,
         ),
       );
@@ -186,8 +187,27 @@ class AppRouter {
       child: const TransactionsPage(),
     ),
     routes: [
+      _transactionDetailsRoute,
       _transactionListFiltersRoute,
     ],
+  );
+
+  static final _transactionDetailsRoute = GoRoute(
+    name: AppRouteNames.transactionDetails,
+    path: AppRoutes.transactionDetails,
+    parentNavigatorKey: _rootNavigatorKey,
+    pageBuilder: (context, state) {
+      final transactionId = state.pathParameters['transactionId'];
+      final transactionModel = state.extra as TransactionModel?;
+      return ModalPage(
+        isScrollControlled: true,
+        useSafeArea: true,
+        child: TransactionFormModal(
+          transactionId: transactionId,
+          transaction: transactionModel,
+        ),
+      );
+    },
   );
 
   static final _transactionListFiltersRoute = ShellRoute(

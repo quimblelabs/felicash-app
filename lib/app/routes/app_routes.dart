@@ -25,6 +25,9 @@ class AppRoutes {
   /// Main transactions list screen
   static const transactions = '/transactions';
 
+  /// Transaction details screen
+  static const transactionDetails = '/transactions/:transactionId';
+
   /// Transaction voice input screen
   static const voiceTransaction = '/voice-transaction';
 

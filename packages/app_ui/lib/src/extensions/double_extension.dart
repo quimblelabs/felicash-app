@@ -59,3 +59,18 @@ extension CurrencyEx on double {
     ).format(this);
   }
 }
+
+/// Extension to make displaying [double] objects simpler.
+extension AmountValueX on double {
+  /// Converts a double into a currency string.
+  String toAmountValue({
+    String? locale,
+    int? decimalDigits,
+  }) {
+    final digits = decimalDigits ?? calculateDecimalDigits();
+    return NumberFormat.decimalPatternDigits(
+      locale: locale,
+      decimalDigits: digits,
+    ).format(this);
+  }
+}

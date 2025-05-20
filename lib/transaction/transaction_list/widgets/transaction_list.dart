@@ -196,7 +196,18 @@ class _TransactionListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
-      child: TransactionItem(transaction: transaction),
+      child: TransactionItem(
+        transaction: transaction,
+        onTap: () {
+          context.goNamed(
+            AppRouteNames.transactionDetails,
+            pathParameters: {
+              'transactionId': transaction.id,
+            },
+            extra: transaction,
+          );
+        },
+      ),
     );
   }
 }

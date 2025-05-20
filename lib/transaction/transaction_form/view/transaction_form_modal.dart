@@ -1,7 +1,8 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/l10n/l10n.dart';
-import 'package:felicash/transaction/bloc/transaction_creation_bloc.dart';
-import 'package:felicash/transaction/transaction_creation/widgets/transaction_creation_form.dart';
+import 'package:felicash/transaction/transaction_form/bloc/transaction_form_bloc.dart';
+import 'package:felicash/transaction/transaction_form/widgets/transaction_form.dart';
+import 'package:felicash/transaction/transaction_list/bloc/transactions_bloc.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/wallet/cubit/wallets_filter_cubit.dart';
 import 'package:felicash/wallet/models/wallet_view_model.dart';
@@ -9,10 +10,20 @@ import 'package:felicash/wallet/models/wallets_view_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_models/shared_models.dart';
+import 'package:transaction_repository/transaction_repository.dart';
 
-class TransactionCreationModal extends StatelessWidget {
-  const TransactionCreationModal({super.key, this.walletId});
+class TransactionFormModal extends StatelessWidget {
+  const TransactionFormModal({
+    super.key,
+    this.transaction,
+    this.transactionId,
+    this.walletId,
+  });
+
+  final TransactionModel? transaction;
+  final String? transactionId;
 
   /// The target wallet id for the transaction.
   ///
@@ -36,36 +47,68 @@ class TransactionCreationModal extends StatelessWidget {
         ),
       child: BlocProvider(
         create: (context) {
-          final bloc = TransactionCreationBloc(
+          final bloc = TransactionFormBloc(
+            transactionRepository: context.read(),
             walletRepository: context.read(),
             currencyRepository: context.read(),
           );
           if (walletId != null) {
             bloc.add(
-              TransactionCreationWalletChanged(
+              TransactionFormWalletChanged(
                 id: walletId,
               ),
             );
           } else {
             bloc.add(
-              TransactionCreationWalletChanged(
+              TransactionFormWalletChanged(
                 id: '',
                 wallet: wallets.firstOrNull,
               ),
             );
           }
-          return bloc;
+          return bloc
+            ..add(
+              TransactionFormInitialized(
+                transaction: transaction,
+                transactionId: transactionId,
+              ),
+            );
         },
-        child: BlocListener<WalletsBloc, WalletsState>(
-          listener: (context, state) {
-            if (state is WalletLoadSuccess) {
-              context.read<TransactionCreationBloc>().add(
-                    TransactionCreationWalletChanged(
-                      wallet: state.wallets.firstOrNull,
+        child: MultiBlocListener(
+          listeners: [
+            BlocListener<WalletsBloc, WalletsState>(
+              listener: (context, state) {
+                if (state is WalletLoadSuccess) {
+                  context.read<TransactionFormBloc>().add(
+                        TransactionFormWalletChanged(
+                          wallet: state.wallets.firstOrNull,
+                        ),
+                      );
+                }
+              },
+            ),
+            BlocListener<TransactionFormBloc, TransactionFormState>(
+              listenWhen: (previous, current) =>
+                  previous.status != current.status,
+              listener: (context, state) {
+                if (state.status == TransactionFormStatus.success) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Transaction created'.hardCoded),
                     ),
                   );
-            }
-          },
+                  context.pop();
+                } else if (state.status == TransactionFormStatus.deleted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Transaction deleted'.hardCoded),
+                    ),
+                  );
+                  context.pop();
+                }
+              },
+            ),
+          ],
           child: const _TransactionCreationView(),
         ),
       ),
@@ -129,7 +172,7 @@ class _TransactionCreationView extends HookWidget {
             return Padding(
               padding: EdgeInsets.only(bottom: viewPadding.bottom),
               child: ModalScaffold(
-                header: Text(l10n.transactionCreationModalTitle),
+                header: const _Header(),
                 content: Column(
                   children: [
                     Expanded(
@@ -138,10 +181,10 @@ class _TransactionCreationView extends HookWidget {
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
                         ),
-                        child: const TransactionCreationForm(),
+                        child: const TransactionForm(),
                       ),
                     ),
-                    const _AddTransactionButton(),
+                    const _TransactionFormButtons(),
                   ],
                 ),
               ),
@@ -187,12 +230,45 @@ class _TransactionCreationView extends HookWidget {
   }
 }
 
-class _AddTransactionButton extends StatelessWidget {
-  const _AddTransactionButton();
+class _Header extends StatelessWidget {
+  const _Header();
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final mode = context.select<TransactionFormBloc, TransactionMode>(
+      (bloc) => bloc.state.mode,
+    );
+    final title = mode == TransactionMode.create
+        ? l10n.transactionCreationModalTitle
+        : 'Edit Transaction'.hardCoded; // TODO(dangddt): use l10n
+    //l10n.transactionCreationModalEditTransactionTitle;
+    return Text(
+      title,
+    );
+  }
+}
+
+class _TransactionFormButtons extends StatelessWidget {
+  const _TransactionFormButtons();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final isValid = context.select<TransactionFormBloc, bool>((bloc) {
+      return bloc.state.isValid;
+    });
+
+    final mode = context.select<TransactionFormBloc, TransactionMode>(
+      (bloc) => bloc.state.mode,
+    );
+    final isDirty = context.select<TransactionFormBloc, bool>((bloc) {
+      return bloc.state.isDirty;
+    });
+    final isLoading = context.select<TransactionFormBloc, bool>((bloc) {
+      return bloc.state.status == TransactionFormStatus.loading ||
+          bloc.state.status == TransactionFormStatus.submitting;
+    });
     return SafeArea(
       top: false,
       left: false,
@@ -202,23 +278,55 @@ class _AddTransactionButton extends StatelessWidget {
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm,
         ),
-        child: BlocSelector<TransactionCreationBloc, TransactionCreationState,
-            bool>(
-          selector: (state) => state.isValid,
-          builder: (context, isValid) {
-            return FilledButton(
-              onPressed: isValid ? () => _createWallet(context) : null,
-              child: Text(
-                l10n.transactionCreationModalAddTransactionButtonText,
+        child: Row(
+          children: [
+            if (mode == TransactionMode.edit) ...[
+              IconButton(
+                style: FilledButton.styleFrom(
+                  minimumSize: AppIconButtonSizes.defaultMinimumSize,
+                  maximumSize: AppIconButtonSizes.defaultMaximumSize,
+                ),
+                onPressed: () {
+                  context
+                      .read<TransactionFormBloc>()
+                      .add(const TransactionFormDeleted());
+                },
+                icon: const Icon(Icons.delete),
               ),
-            );
-          },
+              const SizedBox(width: AppSpacing.sm),
+            ],
+            Expanded(
+              child: Builder(
+                builder: (context) {
+                  final Widget child;
+                  if (isLoading) {
+                    child = const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    child = Text(
+                      mode == TransactionMode.create
+                          ? l10n
+                              .transactionCreationModalAddTransactionButtonText
+                          : 'Update'.hardCoded,
+                    );
+                  }
+                  return FilledButton(
+                    onPressed: isValid || isDirty
+                        ? () {
+                            context
+                                .read<TransactionFormBloc>()
+                                .add(const TransactionFormSubmitted());
+                          }
+                        : null,
+                    child: child,
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
-  }
-
-  void _createWallet(BuildContext context) {
-    // context.read<WalletCreationBloc>().add(const WalletCreationSubmitted());
   }
 }

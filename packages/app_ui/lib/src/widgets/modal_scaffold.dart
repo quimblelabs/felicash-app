@@ -82,6 +82,7 @@ class ModalScaffold extends StatelessWidget {
                 children: [
                   if (header != null || automaticallyImplyPopBack)
                     AppBar(
+                      automaticallyImplyLeading: false,
                       title: header,
                       actions: canPop ? [const ModalCloseButton()] : null,
                     ),

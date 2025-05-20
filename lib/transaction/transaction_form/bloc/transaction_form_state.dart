@@ -1,8 +1,22 @@
-part of 'transaction_creation_bloc.dart';
+part of 'transaction_form_bloc.dart';
 
-class TransactionCreationState extends Equatable {
-  const TransactionCreationState({
+enum TransactionMode { create, edit }
+
+enum TransactionFormStatus {
+  initial,
+  loading,
+  submitting,
+  success,
+  deleting,
+  deleted,
+  error
+}
+
+class TransactionFormState extends Equatable {
+  const TransactionFormState({
     required this.wallet,
+    this.transactionId,
+    this.mode = TransactionMode.create,
     this.type = TransactionTypeEnum.expense,
     this.amount = const TransactionMonetaryAmount.pure(),
     this.category,
@@ -10,24 +24,28 @@ class TransactionCreationState extends Equatable {
     this.note = const TransactionNote.pure(),
     this.transferToWallet,
     this.isValid = false,
+    this.isDirty = false,
+    this.status = TransactionFormStatus.initial,
+    this.errorMessage,
   });
 
+  final String? transactionId;
+  final TransactionMode mode;
   final TransactionTypeEnum type;
-
-  /// The wallet that the transaction is going to be created for.
   final WalletViewModel? wallet;
   final TransactionMonetaryAmount amount;
   final CategoryModel? category;
   final DateTime? date;
   final TransactionNote note;
-
-  // Transfers
-  /// The wallet that the transaction is going to be created for.
   final WalletViewModel? transferToWallet;
-
   final bool isValid;
+  final bool isDirty;
+  final TransactionFormStatus status;
+  final String? errorMessage;
 
-  TransactionCreationState copyWith({
+  TransactionFormState copyWith({
+    String? transactionId,
+    TransactionMode? mode,
     TransactionTypeEnum? type,
     WalletViewModel? wallet,
     TransactionMonetaryAmount? amount,
@@ -36,8 +54,13 @@ class TransactionCreationState extends Equatable {
     TransactionNote? note,
     WalletViewModel? transferToWallet,
     bool? isValid,
+    bool? isDirty,
+    TransactionFormStatus? status,
+    String? errorMessage,
   }) {
-    return TransactionCreationState(
+    return TransactionFormState(
+      transactionId: transactionId ?? this.transactionId,
+      mode: mode ?? this.mode,
       type: type ?? this.type,
       wallet: wallet ?? this.wallet,
       amount: amount ?? this.amount,
@@ -46,11 +69,16 @@ class TransactionCreationState extends Equatable {
       note: note ?? this.note,
       transferToWallet: transferToWallet ?? this.transferToWallet,
       isValid: isValid ?? this.isValid,
+      isDirty: isDirty ?? this.isDirty,
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
   List<Object?> get props => [
+        transactionId,
+        mode,
         type,
         wallet,
         amount,
@@ -59,5 +87,8 @@ class TransactionCreationState extends Equatable {
         note,
         transferToWallet,
         isValid,
+        isDirty,
+        status,
+        errorMessage,
       ];
 }
