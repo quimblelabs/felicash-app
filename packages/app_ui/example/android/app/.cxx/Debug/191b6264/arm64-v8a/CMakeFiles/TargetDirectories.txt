@@ -1,0 +1,2 @@
+/Users/doduongtamdang/Desktop/felicash/felicash-app/packages/app_ui/example/android/app/.cxx/Debug/191b6264/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/doduongtamdang/Desktop/felicash/felicash-app/packages/app_ui/example/android/app/.cxx/Debug/191b6264/arm64-v8a/CMakeFiles/rebuild_cache.dir

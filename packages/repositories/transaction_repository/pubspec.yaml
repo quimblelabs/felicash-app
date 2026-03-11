@@ -1,0 +1,36 @@
+name: transaction_repository
+description: The repository for transaction and it related domain data
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.5.0
+  flutter: ^3.24.0
+
+dependencies:
+  category_repository:
+    path: ../category_repository
+  equatable: ^2.0.7
+  felicash_data_client:
+    path: ../../clients/felicash_data_client
+  flutter:
+    sdk: flutter
+  recurrence_repository:
+    path: ../recurrence_repository
+  shared_models:
+    path: ../../shared_models
+  uuid: ^4.5.1
+  wallet_repository:
+    path: ../wallet_repository
+  json_annotation: ^4.9.0
+  freezed_annotation: ^3.0.0
+
+ 
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^6.0.0
+  build_runner: ^2.4.15
+  json_serializable: ^6.9.5
+  freezed: ^3.0.6
