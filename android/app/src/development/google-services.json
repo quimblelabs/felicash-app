@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1079817934266",
+    "project_id": "felicash-dev",
+    "storage_bucket": "felicash-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079817934266:android:0b79facf743d14b617f983",
+        "android_client_info": {
+          "package_name": "com.quimblelabs.felicash.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079817934266-hck1h3sn4oik5eokvm8c3d8jqe57c4ep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGsFOt6AxgxnX7-DWSykVp1TOkCWuH7pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079817934266-hck1h3sn4oik5eokvm8c3d8jqe57c4ep.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1079817934266-p400jraa3357vu3v24qovi8o9k7238ja.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.quimblelabs.felicash.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

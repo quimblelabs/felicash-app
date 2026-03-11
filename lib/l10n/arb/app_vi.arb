@@ -1,0 +1,803 @@
+
+
+{
+    "@@locale": "vi",
+    "@_GENERAL": {},
+    "unknown": "Không xác định",
+    "@unknown": {
+        "description": "Text hiển thị khi giá trị không xác định"
+    },
+    "unknownError": "Lỗi không xác định",
+    "@unknownError": {
+        "description": "Text hiển thị khi xảy ra lỗi không xác định"
+    },
+    "today": "Hôm nay",
+    "@today": {
+        "description": "Text shown when the current date is today"
+    },
+    "yesterday": "Hôm qua",
+    "@yesterday": {
+        "description": "Text shown when the current date is yesterday"
+    },
+    "from": "Từ",
+    "@from": {
+        "description": "Text shown when the from filter is selected"
+    },
+    "to": "Đến",
+    "@to": {
+        "description": "Text shown when the to filter is selected"
+    },
+    "update": "Cập nhật",
+    "@update": {
+        "description": "Text shown when the update button is pressed"
+    },
+    "day": "Ngày",
+    "@day": {
+        "description": "Text shown when the day filter is selected"
+    },
+    "week": "Tuần",
+    "@week": {
+        "description": "Text shown when the week filter is selected"
+    },
+    "month": "Tháng",
+    "@month": {
+        "description": "Text shown when the month filter is selected"
+    },
+    "custom": "Tùy chọn",
+    "@custom": {
+        "description": "Text shown when the custom filter is selected"
+    },
+    "thinking": "Đang suy nghĩ",
+    "@thinking": {
+        "description": "Text shown when AI is thinking"
+    },
+    "copy": "Sao chép",
+    "@copy": {
+        "description": "Text shown when copying a message"
+    },
+    "done": "Hoàn tất",
+    "@done": {
+        "description": "Text shown when done"
+    },
+    "selectAll": "Chọn tất cả",
+    "@selectAll": {
+        "description": "Text shown when selecting all"
+    },
+    "deselectAll": "Bỏ chọn tất cả",
+    "@deselectAll": {
+        "description": "Text shown when deselecting all"
+    },
+    "@_AI_ASSISTANT_PAGE": {},
+    "aiAssistantPageNoSourceWalletFoundErrorMessage": "Không tìm thấy ví nguồn",
+    "@aiAssistantPageNoSourceWalletFoundErrorMessage": {
+        "description": "Thông báo lỗi khi không tìm thấy ví nguồn"
+    },
+    "aiAssistantPageAppBarTitle": "Trợ lý AI",
+    "@aiAssistantPageAppBarTitle": {
+        "description": "Tiêu đề hiển thị trong thanh tiêu đề trang AI assistant"
+    },
+    "@_CHAT_BOT": {},
+    "chatBotErrorMessage": "Đã xảy ra lỗi",
+    "@chatBotErrorMessage": {
+        "description": "Thông báo lỗi khi đã xảy ra lỗi"
+    },
+    "chatBotHelloText": "Chào bạn !",
+    "@chatBotHelloText": {
+        "description": "Text hiển thị khi trợ lý AI nói chào"
+    },
+    "@_INPUT_BOX": {},
+    "inputBoxListeningHintText": "Đang lắng nghe",
+    "@inputBoxListeningHintText": {
+        "description": "Hint text hiển thị khi input box đang nghe"
+    },
+    "inputBoxDescribeTransactionHintText": "Mô tả giao dịch của bạn",
+    "@inputBoxDescribeTransactionHintText": {
+        "description": "Hint text hiển thị khi input box đang mô tả giao dịch"
+    },
+    "inputBoxSelectorModalTitle": "Chọn một ví",
+    "@inputBoxSelectorModalTitle": {
+        "description": "Title hiển thị khi chọn một ví"
+    },
+    "inputBoxNoWalletFoundErrorMessage": "Không tìm thấy ví",
+    "@inputBoxNoWalletFoundErrorMessage": {
+        "description": "Thông báo lỗi khi không tìm thấy ví"
+    },
+    "inputBoxNoSourceWalletFoundErrorMessage": "Không tìm thấy ví nguồn",
+    "@inputBoxNoSourceWalletFoundErrorMessage": {
+        "description": "Thông báo lỗi khi không tìm thấy ví nguồn"
+    },
+    "@_CURRENCY_SELECTOR": {},
+    "currencySelectorTextFormFieldDefaultHintText": "Tiền tệ",
+    "@currencySelectorTextFormFieldDefaultHintText": {
+        "description": "Hint text hiển thị khi tìm kiếm một loại tiền"
+    },
+    "currencySelectorModalTitle": "Chọn một loại tiền",
+    "@currencySelectorModalTitle": {
+        "description": "Title hiển thị khi chọn một loại tiền"
+    },
+    "@_WALLET_SELECTOR": {},
+    "walletSelectorBalanceText": "Số dư {balance}",
+    "@walletSelectorBalanceText": {
+        "description": "Text hiển thị trong ví chọn để số dư",
+        "placeholders": {
+            "balance": {
+                "type": "String",
+                "description": "Số dư"
+            }
+        }
+    },
+    "@_LOGIN_PAGE": {},
+    "loginPageTitle": "Đăng nhập vào Chiêu Chiêu",
+    "@loginPageTitle": {
+        "description": "Title hiển thị khi đăng nhập"
+    },
+    "loginPageSubtitle": "Chào mừng trở lại! Vui lòng nhập thông tin của bạn",
+    "@loginPageSubtitle": {
+        "description": "Subtitle hiển thị khi đăng nhập"
+    },
+    "loginPageProvidersSeparatorText": "Hoặc tiếp tục với",
+    "@loginPageProvidersSeparatorText": {
+        "description": "Text hiển thị khi đăng nhập"
+    },
+    "loginPageContinueWithGoogleButtonText": "Tiếp tục với Google",
+    "@loginPageContinueWithGoogleButtonText": {
+        "description": "Text hiển thị khi đăng nhập với Google"
+    },
+    "loginPageContinueWithAppleButtonText": "Tiếp tục với Apple",
+    "@loginPageContinueWithAppleButtonText": {
+        "description": "Text hiển thị khi đăng nhập với Apple"
+    },
+    "loginPageDontHaveAccountText": "Chưa có tài khoản?",
+    "@loginPageDontHaveAccountText": {
+        "description": "Text hiển thị khi đăng nhập"
+    },
+    "loginPageSignUpButtonText": "Đăng ký",
+    "@loginPageSignUpButtonText": {
+        "description": "Text hiển thị khi đăng ký"
+    },
+    "@_LOGIN_WITH_EMAIL_PASSWORD_LOGIN_FORM": {},
+    "loginWithEmailPasswordLoginFormEmailFieldLabel": "Email",
+    "@loginWithEmailPasswordLoginFormEmailFieldLabel": {
+        "description": "Label hiển thị khi đăng nhập với email và mật khẩu"
+    },
+    "loginWithEmailPasswordLoginFormEmailFieldErrorText": "Vui lòng nhập email hợp lệ",
+    "@loginWithEmailPasswordLoginFormEmailFieldErrorText": {
+        "description": "Error text hiển thị khi đăng nhập với email và mật khẩu"
+    },
+    "loginWithEmailPasswordLoginFormPasswordFieldLabel": "Mật khẩu",
+    "@loginWithEmailPasswordLoginFormPasswordFieldLabel": {
+        "description": "Label hiển thị khi đăng nhập với email và mật khẩu"
+    },
+    "loginWithEmailPasswordLoginFormPasswordFieldErrorText": "Vui lòng nhập mật khẩu hợp lệ",
+    "@loginWithEmailPasswordLoginFormPasswordFieldErrorText": {
+        "description": "Error text hiển thị khi đăng nhập với email và mật khẩu"
+    },
+    "loginWithEmailPasswordLoginFormLoginButtonText": "Đăng nhập",
+    "@loginWithEmailPasswordLoginFormLoginButtonText": {
+        "description": "Text hiển thị khi đăng nhập với email và mật khẩu"
+    },
+    "@_BOTTOM_NAVIGATION_BAR": {},
+    "bottomNavigationBarOverviewButtonLabel": "Tổng quan",
+    "@bottomNavigationBarOverviewButtonLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang tổng quan"
+    },
+    "bottomNavigationBarTransactionsButtonLabel": "Giao dịch",
+    "@bottomNavigationBarTransactionsButtonLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang giao dịch"
+    },
+    "bottomNavigationBarWalletsButtonLabel": "Ví",
+    "@bottomNavigationBarWalletsButtonLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "bottomNavigationBarPersonalButtonLabel": "Cá nhân",
+    "@bottomNavigationBarPersonalButtonLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang cá nhân"
+    },
+    "@_ONBOARDING_PAGE": {},
+    "onboardingPageWithFelicashTitle": "Với Chiêu Chiêu",
+    "@onboardingPageWithFelicashTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang với Chiêu Chiêu"
+    },
+    "onboardingPageTakeControlOfYourText": "Quản lý tài chính của bạn",
+    "@onboardingPageTakeControlOfYourText": {
+        "description": "Subtitle hiển thị khi điều hướng đến trang quản lý tài chính của bạn"
+    },
+    "onboardingPageFinancialText": "tài chính",
+    "@onboardingPageFinancialText": {
+        "description": "Subtitle hiển thị khi điều hướng đến trang tài chính"
+    },
+    "onboardingPageExperienceTheText": "Trải nghiệm",
+    "@onboardingPageExperienceTheText": {
+        "description": "Subtitle hiển thị khi điều hướng đến trang trải nghiệm"
+    },
+    "onboardingPageAIText": "AI",
+    "@onboardingPageAIText": {
+        "description": "Subtitle hiển thị khi điều hướng đến trang AI"
+    },
+    "onboardingPageAssistantText": "trợ lý",
+    "@onboardingPageAssistantText": {
+        "description": "Subtitle hiển thị khi điều hướng đến trang trợ lý"
+    },
+    "onboardingPageGetStartedButtonLabel": "Bắt đầu",
+    "@onboardingPageGetStartedButtonLabel": {
+        "description": "Button label hiển thị khi điều hướng đến trang bắt đầu"
+    },
+    "onboardingPageAlreadyHaveAccountText": "Đã có tài khoản?",
+    "@onboardingPageAlreadyHaveAccountText": {
+        "description": "Text hiển thị khi điều hướng đến trang đã có tài khoản"
+    },
+    "onboardingPageLoginButtonLabel": "Đăng nhập ngay",
+    "@onboardingPageLoginButtonLabel": {
+        "description": "Button label hiển thị khi điều hướng đến trang đăng nhập"
+    },
+    "@_OVERVIEW_APP_BAR": {},
+    "overviewAppBarTotalBalanceText": "Tổng số dư",
+    "@overviewAppBarTotalBalanceText": {
+        "description": "Text hiển thị trên thanh tiêu đề số dư"
+    },
+    "overviewAppBarOverviewTabBarLabel": "Tổng quan",
+    "@overviewAppBarOverviewTabBarLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang tổng quan"
+    },
+    "overviewAppBarIncomeTabBarLabel": "Thu nhập",
+    "@overviewAppBarIncomeTabBarLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang thu nhập"
+    },
+    "overviewAppBarExpensesTabBarLabel": "Chi tiêu",
+    "@overviewAppBarExpensesTabBarLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang chi tiêu"
+    },
+    "@_SPENDING_BY_CATEGORY_SECTION": {},
+    "spendingByCategorySectionEmptyStateTitle": "Không có dữ liệu chi tiêu",
+    "@spendingByCategorySectionEmptyStateTitle": {
+        "description": "Title hiển thị khi không có dữ liệu chi tiêu"
+    },
+    "spendingByCategorySectionEmptyStateSubtitle": "Thêm một số giao dịch để xem chi tiêu theo loại",
+    "@spendingByCategorySectionEmptyStateSubtitle": {
+        "description": "Subtitle hiển thị khi không có dữ liệu chi tiêu"
+    },
+    "spendingByCategorySectionTitle": "Chi tiêu theo danh mục",
+    "@spendingByCategorySectionTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang chi tiêu theo danh mục"
+    },
+    "@_SPENDING_BY_CATEGORY_LIST": {},
+    "spendingByCategoryListNoCategoryText": "Không có loại",
+    "@spendingByCategoryListNoCategoryText": {
+        "description": "Text hiển thị khi không có loại"
+    },
+    "@_SPENDING_BY_CATEGORY_PIE_CHART": {},
+    "spendingByCategoryPieChartEmptyCategoriesText": "Không có loại",
+    "@spendingByCategoryPieChartEmptyCategoriesText": {
+        "description": "Text hiển thị khi không có loại"
+    },
+    "@_SUMMARY_TRENDING_SECTION": {},
+    "summaryTrendingSectionTitle": "Xu hướng theo tháng",
+    "@summaryTrendingSectionTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang xu hướng theo tháng"
+    },
+    "summaryTrendingSectionExpenseTypeLabel": "Chi tiêu",
+    "@summaryTrendingSectionExpenseTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang chi tiêu"
+    },
+    "summaryTrendingSectionIncomeTypeLabel": "Thu nhập",
+    "@summaryTrendingSectionIncomeTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang thu nhập"
+    },
+    "summaryTrendingSectionTransferTypeLabel": "Chuyển",
+    "@summaryTrendingSectionTransferTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang chuyển"
+    },
+    "summaryTrendingSectionUnknownTypeLabel": "Không xác định",
+    "@summaryTrendingSectionUnknownTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang không xác định"
+    },
+    "summaryTrendingSectionTotalAmountText": "Tổng số tiền",
+    "@summaryTrendingSectionTotalAmountText": {
+        "description": "Text hiển thị trên thanh tiêu đề tổng số tiền"
+    },
+    "@_TRANSACTION_CREATION_MODAL": {},
+    "transactionCreationModalTitle": "Giao dịch mới",
+    "@transactionCreationModalTitle": {
+        "description": "Title hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationModalAreYouSureText": "Bạn có chắc chắn?",
+    "@transactionCreationModalAreYouSureText": {
+        "description": "Text hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationModalThisActionCannotBeUndoneText": "Hành động này không thể hoàn tác.",
+    "@transactionCreationModalThisActionCannotBeUndoneText": {
+        "description": "Text hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationModalCancelButtonText": "Hủy bỏ",
+    "@transactionCreationModalCancelButtonText": {
+        "description": "Text hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationModalYesButtonText": "Đồng ý",
+    "@transactionCreationModalYesButtonText": {
+        "description": "Text hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationModalAddTransactionButtonText": "Thêm giao dịch",
+    "@transactionCreationModalAddTransactionButtonText": {
+        "description": "Text hiển thị khi tạo giao dịch mới"
+    },
+    "@_ADD_TRANSACTION_MENU_BUTTON": {},
+    "addTransactionMenuButtonReceptScannerButtonText": "Quét hóa đơn",
+    "@addTransactionMenuButtonReceptScannerButtonText": {
+        "description": "Text hiển thị khi tạo giao dịch mới"
+    },
+    "addTransactionMenuButtonAIInputButtonText": "Trợ lý AI",
+    "@addTransactionMenuButtonAIInputButtonText": {
+        "description": "Text hiển thị khi tạo giao dịch mới"
+    },
+    "addTransactionMenuButtonManualInputButtonText": "Nhập thủ công",
+    "@addTransactionMenuButtonManualInputButtonText": {
+        "description": "Text hiển thị khi tạo giao dịch mới"
+    },
+    "@_TRANSACTION_CREATION_FORM": {},
+    "transactionCreationFormExpenseTypeLabel": "Chi tiêu",
+    "@transactionCreationFormExpenseTypeLabel": {
+        "description": "Label hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationFormIncomeTypeLabel": "Thu nhập",
+    "@transactionCreationFormIncomeTypeLabel": {
+        "description": "Label hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationFormTransferTypeLabel": "Chuyển",
+    "@transactionCreationFormTransferTypeLabel": {
+        "description": "Label hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationFormUnknownTypeLabel": "Không xác định",
+    "@transactionCreationFormUnknownTypeLabel": {
+        "description": "Label hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationFormTransactionAmountFieldLabel": "Số tiền giao dịch",
+    "@transactionCreationFormTransactionAmountFieldLabel": {
+        "description": "Label hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationFormCategoryFieldLabel": "Loại",
+    "@transactionCreationFormCategoryFieldLabel": {
+        "description": "Label hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationFormDateFieldLabel": "Ngày",
+    "@transactionCreationFormDateFieldLabel": {
+        "description": "Label hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationFormNotesFieldLabel": "Ghi chú",
+    "@transactionCreationFormNotesFieldLabel": {
+        "description": "Label hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationFormTypeText": "Loại",
+    "@transactionCreationFormTypeText": {
+        "description": "Text hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationFormEnterAmountHintText": "Nhập số tiền",
+    "@transactionCreationFormEnterAmountHintText": {
+        "description": "Hint text hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationFormEnterDateHintText": "Chọn ngày",
+    "@transactionCreationFormEnterDateHintText": {
+        "description": "Hint text hiển thị khi tạo giao dịch mới"
+    },
+    "transactionCreationFormEnterNotesHintText": "Thêm ghi chú",
+    "@transactionCreationFormEnterNotesHintText": {
+        "description": "Hint text hiển thị khi tạo giao dịch mới"
+    },
+    "@_TRANSACTION_PAGE": {},
+    "transactionPageTitle": "Giao dịch",
+    "@transactionPageTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang giao dịch"
+    },
+    "@_TRANSACTION_LIST_SEARCH_BAR": {},
+    "transactionListSearchBarHintText": "Tìm kiếm giao dịch",
+    "@transactionListSearchBarHintText": {
+        "description": "Hint text hiển thị khi tìm kiếm giao dịch"
+    },
+    "@_TRANSACTION_LIST": {},
+    "transactionListFailedToFetchTransactionsErrorMessage": "Lỗi khi tải giao dịch",
+    "@transactionListFailedToFetchTransactionsErrorMessage": {
+        "description": "Error message hiển thị khi tải giao dịch"
+    },
+    "transactionListNoTransactionsFoundErrorMessage": "Không tìm thấy giao dịch",
+    "@transactionListNoTransactionsFoundErrorMessage": {
+        "description": "Error message hiển thị khi không tìm thấy giao dịch"
+    },
+    "transactionListAddTransactionToGetStartedText": "Thêm một giao dịch để bắt đầu",
+    "@transactionListAddTransactionToGetStartedText": {
+        "description": "Text hiển thị khi không có giao dịch"
+    },
+    "@_TRANSACTION_LIST_ALL_FILTERS_VIEW": {},
+    "transactionListAllFiltersViewTitle": "Bộ lọc giao dịch",
+    "@transactionListAllFiltersViewTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListAllFiltersViewClearAllButtonText": "Xóa tất cả",
+    "@transactionListAllFiltersViewClearAllButtonText": {
+        "description": "Text hiển thị khi xóa tất cả"
+    },
+    "transactionListAllFiltersViewCategoriesFilterTitle": "Loại",
+    "@transactionListAllFiltersViewCategoriesFilterTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListAllFiltersViewWalletsFilterTitle": "Ví",
+    "@transactionListAllFiltersViewWalletsFilterTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListAllFiltersViewTransactionTypesFilterTitle": "Loại giao dịch",
+    "@transactionListAllFiltersViewTransactionTypesFilterTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListAllFiltersViewTransactionDateFilterTitle": "Ngày giao dịch",
+    "@transactionListAllFiltersViewTransactionDateFilterTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListAllFiltersViewApplyButtonText": "Áp dụng",
+    "@transactionListAllFiltersViewApplyButtonText": {
+        "description": "Text hiển thị khi áp dụng"
+    },
+    "@_TRANSACTION_LIST_CATEGORIES_FILTER_VIEW": {},
+    "transactionListCategoriesFilterViewFailedToFetchCategoriesErrorMessage": "Lỗi khi tải danh mục giao dịch",
+    "@transactionListCategoriesFilterViewFailedToFetchCategoriesErrorMessage": {
+        "description": "Error message hiển thị khi tải loại giao dịch"
+    },
+    "transactionListCategoriesFilterViewTitle": "Danh mục giao dịch",
+    "@transactionListCategoriesFilterViewTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListCategoriesFilterViewSearchCategoriesHintText": "Tìm kiếm danh mục",
+    "@transactionListCategoriesFilterViewSearchCategoriesHintText": {
+        "description": "Hint text hiển thị khi tìm kiếm danh mục"
+    },
+    "transactionListCategoriesFilterViewNoCategoriesFoundErrorMessage": "Không tìm thấy danh mục",
+    "@transactionListCategoriesFilterViewNoCategoriesFoundErrorMessage": {
+        "description": "Error message hiển thị khi không tìm thấy danh mục"
+    },
+    "transactionListCategoriesFilterViewCancelButtonLabel": "Hủy bỏ",
+    "@transactionListCategoriesFilterViewCancelButtonLabel": {
+        "description": "Text hiển thị khi hủy bỏ"
+    },
+    "@_TRANSACTION_LIST_DATE_FILTER_VIEW": {},
+    "transactionListDateFilterViewTransactionDateAppBarTitle": "Ngày giao dịch",
+    "@transactionListDateFilterViewTransactionDateAppBarTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListDateFilterViewSelectDateButtonText": "Chọn ngày",
+    "@transactionListDateFilterViewSelectDateButtonText": {
+        "description": "Text hiển thị khi chọn ngày"
+    },
+    "transactionListDateFilterViewTodayCancelButtonText": "Hủy bỏ",
+    "@transactionListDateFilterViewTodayCancelButtonText": {
+        "description": "Text hiển thị khi hủy bỏ"
+    },
+    "transactionListDateFilterViewTodayApplyButtonText": "Áp dụng",
+    "@transactionListDateFilterViewTodayApplyButtonText": {
+        "description": "Text hiển thị khi áp dụng"
+    },
+    "@_TRANSACTION_LIST_TYPES_FILTER_VIEW": {},
+    "transactionListTypesFilterViewTitle": "Loại giao dịch",
+    "@transactionListTypesFilterViewTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListTypesFilterViewNoTypesFoundErrorMessage": "Không tìm thấy loại",
+    "@transactionListTypesFilterViewNoTypesFoundErrorMessage": {
+        "description": "Error message hiển thị khi không tìm thấy loại"
+    },
+    "transactionListTypesFilterViewCancelButtonLabel": "Hủy bỏ",
+    "@transactionListTypesFilterViewCancelButtonLabel": {
+        "description": "Text hiển thị khi hủy bỏ"
+    },
+    "transactionListTypesFilterViewExpenseTypeLabel": "Chi tiêu",
+    "@transactionListTypesFilterViewExpenseTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListTypesFilterViewIncomeTypeLabel": "Thu nhập",
+    "@transactionListTypesFilterViewIncomeTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListTypesFilterViewTransferTypeLabel": "Chuyển",
+    "@transactionListTypesFilterViewTransferTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListTypesFilterViewUnknownTypeLabel": "Không xác định",
+    "@transactionListTypesFilterViewUnknownTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "@_TRANSACTION_LIST_WALLETS_FILTER_VIEW": {},
+    "transactionListWalletsFilterViewTitle": "Ví giao dịch",
+    "@transactionListWalletsFilterViewTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang bộ lọc giao dịch"
+    },
+    "transactionListWalletsFilterViewSearchWalletsHintText": "Tìm kiếm ví",
+    "@transactionListWalletsFilterViewSearchWalletsHintText": {
+        "description": "Hint text hiển thị khi tìm kiếm ví"
+    },
+    "transactionListWalletsFilterViewFailedToLoadWalletsErrorMessage": "Lỗi khi tải ví",
+    "@transactionListWalletsFilterViewFailedToLoadWalletsErrorMessage": {
+        "description": "Error message hiển thị khi tải ví"
+    },
+    "transactionListWalletsFilterViewNoWalletsFoundErrorMessage": "Không tìm thấy ví",
+    "@transactionListWalletsFilterViewNoWalletsFoundErrorMessage": {
+        "description": "Error message hiển thị khi không tìm thấy ví"
+    },
+    "transactionListWalletsFilterViewCancelButtonLabel": "Hủy bỏ",
+    "@transactionListWalletsFilterViewCancelButtonLabel": {
+        "description": "Text hiển thị khi hủy bỏ"
+    },
+    "@_VOICE_TRANSACTION_PAGE": {},
+    "voiceTransactionPageNoSourceWalletFoundErrorMessage": "Không tìm thấy ví nguồn",
+    "@voiceTransactionPageNoSourceWalletFoundErrorMessage": {
+        "description": "Error message hiển thị khi không tìm thấy ví nguồn"
+    },
+    "@_TRANSACTION_ON_PROCESSING_VIEW": {},
+    "transactionOnProcessingViewEditTransactionButtonLabel": "Chỉnh sửa giao dịch",
+    "@transactionOnProcessingViewEditTransactionButtonLabel": {
+        "description": "Text hiển thị khi chỉnh sửa giao dịch"
+    },
+    "transactionOnProcessingViewCreateNextTransactionText": "Chỉnh sửa hoặc tiếp tục nói để tạo giao dịch tiếp theo",
+    "@transactionOnProcessingViewCreateNextTransactionText": {
+        "description": "Text hiển thị khi tạo giao dịch tiếp theo"
+    },
+    "@_VOICE_TRANSACTION_ON_HOLD_VIEW": {},
+    "voiceTransactionOnHoldViewOnHoldTitle": "Đang chờ",
+    "@voiceTransactionOnHoldViewOnHoldTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang giao dịch đang chờ"
+    },
+    "voiceTransactionOnHoldViewOnHoldSubtitle": "Để bật mic và tiếp tục, nhấn vào nút phát.",
+    "@voiceTransactionOnHoldViewOnHoldSubtitle": {
+        "description": "Subtitle hiển thị khi điều hướng đến trang giao dịch đang chờ"
+    },
+    "@_WALLET_PAGE": {},
+    "walletPageWalletsAppBarTitle": "Ví",
+    "@walletPageWalletsAppBarTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang ví"
+    },
+    "walletPageBasicWalletTypeLabel": "Cơ bản",
+    "@walletPageBasicWalletTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletPageCreditWalletTypeLabel": "Tín dụng",
+    "@walletPageCreditWalletTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletPageSavingsWalletTypeLabel": "Tiết kiệm",
+    "@walletPageSavingsWalletTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+   
+    "@_WALLET_CARD": {},
+    "walletCardCurrentBalanceText": "Số dư hiện tại",
+    "@walletCardCurrentBalanceText": {
+        "description": "Text hiển thị khi điều hướng đến trang ví"
+    },
+    "@_MONETARY_INPUT_MODAL": {},
+    "@_WALLET_CREATION_MODAL": {},
+    "walletCreationModalBasicWalletTypeLabel": "Cơ bản",
+    "@walletCreationModalBasicWalletTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationModalCreditWalletTypeLabel": "Tín dụng",
+    "@walletCreationModalCreditWalletTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationModalSavingsWalletTypeLabel": "Savings",
+    "@walletCreationModalSavingsWalletTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationModalWalletCreatedSuccessfullyText": "Ví đã được tạo thành công",
+    "@walletCreationModalWalletCreatedSuccessfullyText": {
+        "description": "Text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationModalAreYouSureText": "Bạn có chắc chắn?",
+    "@walletCreationModalAreYouSureText": {
+        "description": "Text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationModalThisActionCannotBeUndoneText": "Hành động này không thể hoàn tác.",
+    "@walletCreationModalThisActionCannotBeUndoneText": {
+        "description": "Text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationModalCancelButtonText": "Hủy bỏ",
+    "@walletCreationModalCancelButtonText": {
+        "description": "Text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationModalYesButtonText": "Đồng ý",
+    "@walletCreationModalYesButtonText": {
+        "description": "Text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationModalCreateWithWalletTypeText": "Tạo {walletName} ví",
+    "@walletCreationModalCreateWithWalletTypeText": {
+        "description": "Text hiển thị khi điều hướng đến trang ví",
+        "placeholders": {
+            "walletName": {
+                "type": "String",
+                "description": "Tên của ví"
+            }
+        }
+    },
+    "walletCreationModalCreateWalletButtonText": "Tạo ví",
+    "@walletCreationModalCreateWalletButtonText": {
+        "description": "Text hiển thị khi điều hướng đến trang ví"
+    },
+    "@_WALLET_TYPE_SELECTOR_MODAL": {},
+    "walletTypeSelectorModalTitle": "Chọn loại ví",
+    "@walletTypeSelectorModalTitle": {
+        "description": "Title hiển thị khi điều hướng đến trang chọn loại ví"
+    },
+    "walletTypeSelectorModalBasicWalletTypeLabel": "Ví cơ bản",
+    "@walletTypeSelectorModalBasicWalletTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletTypeSelectorModalBasicWalletTypeSubtitle": "Ví cho việc tiêu dùng hàng ngày và thanh toán.",
+    "@walletTypeSelectorModalBasicWalletTypeSubtitle": {
+        "description": "Subtitle hiển thị khi điều hướng đến trang ví"
+    },
+    "walletTypeSelectorModalCreditWalletTypeLabel": "Ví tín dụng",
+    "@walletTypeSelectorModalCreditWalletTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletTypeSelectorModalCreditWalletTypeSubtitle": "Ví cho việc sử dụng thẻ tín dụng và các nhu cầu tín dụng khác.",
+    "@walletTypeSelectorModalCreditWalletTypeSubtitle": {
+        "description": "Subtitle hiển thị khi điều hướng đến trang ví"
+    },
+    "walletTypeSelectorModalSavingsWalletTypeLabel": "Ví tiết kiệm",
+    "@walletTypeSelectorModalSavingsWalletTypeLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletTypeSelectorModalSavingsWalletTypeSubtitle": "Ví cho việc tiết kiệm và đầu tư.",
+    "@walletTypeSelectorModalSavingsWalletTypeSubtitle": {
+        "description": "Subtitle hiển thị khi điều hướng đến trang ví"
+    },
+    "@_WALLET_CREATION_FORM": {},
+    "walletCreationFormWalletNameFieldLabel": "Tên ví",
+    "@walletCreationFormWalletNameFieldLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletDescriptionFieldLabel": "Mô tả ví",
+    "@walletCreationFormWalletDescriptionFieldLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletCurrencyFieldLabel": "Tiền tệ",
+    "@walletCreationFormWalletCurrencyFieldLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletBalanceFieldLabel": "Số dư",
+    "@walletCreationFormWalletBalanceFieldLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletCreditLimitFieldLabel": "Giới hạn tín dụng",
+    "@walletCreationFormWalletCreditLimitFieldLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletSavingsGoalFieldLabel": "Mục tiêu tiết kiệm",
+    "@walletCreationFormWalletSavingsGoalFieldLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletPickAnIconText": "Chọn một biểu tượng",
+    "@walletCreationFormWalletPickAnIconText": {
+        "description": "Text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletWalletNameIsRequiredErrorMessage": "Tên ví là bắt buộc",
+    "@walletCreationFormWalletWalletNameIsRequiredErrorMessage": {
+        "description": "Error message hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletWalletNameIsTooLongErrorMessage": "Tên ví quá dài",
+    "@walletCreationFormWalletWalletNameIsTooLongErrorMessage": {
+        "description": "Error message hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletNameFieldHintText": "Đặt tên cho ví",
+    "@walletCreationFormWalletNameFieldHintText": {
+        "description": "Hint text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletDescriptionIsTooLongErrorMessage": "Mô tả quá dài",
+    "@walletCreationFormWalletDescriptionIsTooLongErrorMessage": {
+        "description": "Error message hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletDescriptionFieldHintText": "Mô tả ví cho việc dễ dàng nhận biết",
+    "@walletCreationFormWalletDescriptionFieldHintText": {
+        "description": "Hint text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletBalanceMustBeLessThanMaxErrorMessage": "Số dư phải nhỏ hơn ${maxAcceptedBalance}",
+    "@walletCreationFormWalletBalanceMustBeLessThanMaxErrorMessage": {
+        "description": "Error message hiển thị khi điều hướng đến trang ví",
+        "placeholders": {
+            "maxAcceptedBalance": {
+                "type": "double",
+                "description": "Số dư tối đa được chấp nhận"
+            }
+        }
+    },
+    "walletCreationFormWalletBalanceMustBeGreaterThanMinErrorMessage": "Số dư phải lớn hơn ${minAcceptedBalance}",
+    "@walletCreationFormWalletBalanceMustBeGreaterThanMinErrorMessage": {
+        "description": "Error message hiển thị khi điều hướng đến trang ví",
+        "placeholders": {
+            "minAcceptedBalance": {
+                "type": "double",
+                "description": "Số dư tối thiểu được chấp nhận"
+            }
+        }
+    },
+    "walletCreationFormWalletBalanceFieldHintText": "Đặt số dư hiện tại",
+    "@walletCreationFormWalletBalanceFieldHintText": {
+        "description": "Hint text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormWalletExcludeFromTotalCheckboxLabel": "Loại trừ khỏi tổng số dư",
+    "@walletCreationFormWalletExcludeFromTotalCheckboxLabel": {
+        "description": "Label hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormCreditLimitMustBeLessThanMaxErrorMessage": "Giới hạn tín dụng phải nhỏ hơn ${maxAcceptedCreditLimit}",
+    "@walletCreationFormCreditLimitMustBeLessThanMaxErrorMessage": {
+        "description": "Error message hiển thị khi điều hướng đến trang ví",
+        "placeholders": {
+            "maxAcceptedCreditLimit": {
+                "type": "double",
+                "description": "Giới hạn tín dụng tối đa được chấp nhận"
+            }
+        }
+    },
+    "walletCreationFormCreditLimitMustBeGreaterThanMinErrorMessage": "Giới hạn tín dụng phải lớn hơn ${minAcceptedCreditLimit}",
+    "@walletCreationFormCreditLimitMustBeGreaterThanMinErrorMessage": {
+        "description": "Error message hiển thị khi điều hướng đến trang ví",
+        "placeholders": {
+            "minAcceptedCreditLimit": {
+                "type": "double",
+                "description": "Giới hạn tín dụng tối thiểu được chấp nhận"
+            }
+        }
+    },
+    "walletCreationFormCreditLimitMustBeGreaterThanZeroErrorMessage": "Giới hạn tín dụng phải lớn hơn 0",
+    "@walletCreationFormCreditLimitMustBeGreaterThanZeroErrorMessage": {
+        "description": "Error message hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormCreditLimitFieldHintText": "Đặt giới hạn tín dụng",
+    "@walletCreationFormCreditLimitFieldHintText": {
+        "description": "Hint text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormCreditWalletDayOfMonthText": "Ngày của tháng sao kê",
+    "@walletCreationFormCreditWalletDayOfMonthText": {
+        "description": "Text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormCreditWalletPaymentDayOfMonthText": "Ngày thanh toán",
+    "@walletCreationFormCreditWalletPaymentDayOfMonthText": {
+        "description": "Text hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormSavingsGoalMustBeGreaterThanZeroErrorMessage": "Mục tiêu tiết kiệm phải lớn hơn 0",
+    "@walletCreationFormSavingsGoalMustBeGreaterThanZeroErrorMessage": {
+        "description": "Error message hiển thị khi điều hướng đến trang ví"
+    },
+    "walletCreationFormSavingsGoalMustBeLessThanMaxErrorMessage": "Mục tiêu tiết kiệm phải nhỏ hơn ${maxAcceptedSavingsGoal}",
+    "@walletCreationFormSavingsGoalMustBeLessThanMaxErrorMessage": {
+        "description": "Error message hiển thị khi điều hướng đến trang ví",
+        "placeholders": {
+            "maxAcceptedSavingsGoal": {
+                "type": "double",
+                "description": "Mục tiêu tiết kiệm tối đa được chấp nhận"
+            }
+        }
+    },
+    "walletCreationFormSavingsGoalMustBeGreaterThanMinErrorMessage": "Mục tiêu tiết kiệm phải lớn hơn ${minAcceptedSavingsGoal}",
+    "@walletCreationFormSavingsGoalMustBeGreaterThanMinErrorMessage": {
+        "description": "Error message hiển thị khi điều hướng đến trang ví",
+        "placeholders": {
+            "minAcceptedSavingsGoal": {
+                "type": "double",
+                "description": "Mục tiêu tiết kiệm tối thiểu được chấp nhận"
+            }
+        }
+    },
+    "walletCreationFormSavingsGoalFieldHintText": "Đặt mục tiêu tiết kiệm",
+    "@walletCreationFormSavingsGoalFieldHintText": {
+        "description": "Hint text hiển thị khi điều hướng đến trang ví"
+    },
+    "@_PERSONAL_PAGE": {},
+    "personalPageAppBarTitle": "Cá nhân",
+    "@personalPageAppBarTitle": {
+        "description": "Tiêu đề hiển thị trong thanh tiêu đề trang cá nhân"
+    },
+    "personalPageLogoutButtonLabel": "Đăng xuất",
+    "@personalPageLogoutButtonLabel": {
+        "description": "Text hiển thị trong trang cá nhân cho nút đăng xuất"
+    },
+    "@_WALLET_SELECTOR_MODAL": {},
+    "walletSelectorModalSearchWalletsHintText": "Tìm kiếm ví",
+    "@walletSelectorModalSearchWalletsHintText": {
+        "description": "Hint text hiển thị khi điều hướng đến trang tìm kiếm ví"
+    }
+}
