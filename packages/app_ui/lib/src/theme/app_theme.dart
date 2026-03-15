@@ -85,8 +85,8 @@ class AppTheme {
     );
   }
 
-  CardTheme _cardTheme(ColorScheme colorScheme) {
-    return CardTheme(
+  CardThemeData _cardTheme(ColorScheme colorScheme) {
+    return CardThemeData(
       color: colorScheme.surfaceContainerLowest,
       surfaceTintColor: colorScheme.surfaceContainerLowest,
       elevation: 0,

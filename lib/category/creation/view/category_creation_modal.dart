@@ -22,44 +22,52 @@ class CategoryCreationModal extends StatelessWidget {
         categoryRepository: context.read(),
         color: primary,
       ),
-      child: const _CategoryCreationModalContent(),
+      child: const _CategoryCreationModalView(),
     );
   }
 }
 
-class _CategoryCreationModalContent extends StatelessWidget {
-  const _CategoryCreationModalContent();
+class _CategoryCreationModalView extends StatelessWidget {
+  const _CategoryCreationModalView();
 
   @override
   Widget build(BuildContext context) {
-    return Sheet(
-      initialOffset: const SheetOffset(.6),
-      snapGrid: const SheetSnapGrid(
-        snaps: [
-          SheetOffset(0.6),
-          SheetOffset(.8),
-        ],
-        minFlingSpeed: 0.5,
-      ),
-      scrollConfiguration: const SheetScrollConfiguration(),
-      decoration: MaterialSheetDecoration(
-        size: SheetSize.stretch,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(AppRadius.xlg),
+    return BlocListener<CategoryCreationBloc, CategoryCreationState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+        if (state.status == CategoryCreationStatus.success) {
+          Navigator.of(context).pop();
+        }
+      },
+      child: Sheet(
+        initialOffset: const SheetOffset(.6),
+        snapGrid: const SheetSnapGrid(
+          snaps: [
+            SheetOffset(0.6),
+            SheetOffset(.8),
+          ],
+          minFlingSpeed: 0.5,
         ),
-        clipBehavior: Clip.antiAlias,
-        color: Theme.of(context).colorScheme.surface,
-      ),
-      child: SafeArea(
-        child: SheetContentScaffold(
-          bottomBarVisibility: const BottomBarVisibility.always(),
-          topBar: AppBar(
-            title: Text('Create Category'.hardCoded),
-            automaticallyImplyLeading: false,
-            actions: const [ModalCloseButton()],
+        scrollConfiguration: const SheetScrollConfiguration(),
+        decoration: MaterialSheetDecoration(
+          size: SheetSize.stretch,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(AppRadius.xlg),
           ),
-          body: const _CategoryCreationForm(),
-          bottomBar: const _SubmitButton(),
+          clipBehavior: Clip.antiAlias,
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        child: SafeArea(
+          child: SheetContentScaffold(
+            bottomBarVisibility: const BottomBarVisibility.always(),
+            topBar: AppBar(
+              title: Text('Create Category'.hardCoded),
+              automaticallyImplyLeading: false,
+              actions: const [ModalCloseButton()],
+            ),
+            body: const _CategoryCreationForm(),
+            bottomBar: const _SubmitButton(),
+          ),
         ),
       ),
     );

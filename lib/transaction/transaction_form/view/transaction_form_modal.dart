@@ -2,7 +2,6 @@ import 'package:app_ui/app_ui.dart';
 import 'package:felicash/l10n/l10n.dart';
 import 'package:felicash/transaction/transaction_form/bloc/transaction_form_bloc.dart';
 import 'package:felicash/transaction/transaction_form/widgets/transaction_form.dart';
-import 'package:felicash/transaction/transaction_list/bloc/transactions_bloc.dart';
 import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/wallet/cubit/wallets_filter_cubit.dart';
 import 'package:felicash/wallet/models/wallet_view_model.dart';
@@ -61,7 +60,6 @@ class TransactionFormModal extends StatelessWidget {
           } else {
             bloc.add(
               TransactionFormWalletChanged(
-                id: '',
                 wallet: wallets.firstOrNull,
               ),
             );

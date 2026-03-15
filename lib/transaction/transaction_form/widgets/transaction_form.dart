@@ -238,12 +238,12 @@ class _WalletsSelector extends StatelessWidget {
           toWallet: transferToWallet,
           isTransfer: isTransfer,
           onChanged: (from, to) {
-            if (from != wallet) {
+            if (from != null && from != wallet) {
               context
                   .read<TransactionFormBloc>() //
-                  .add(TransactionFormWalletChanged(wallet: wallet));
+                  .add(TransactionFormWalletChanged(wallet: from));
             }
-            if (to != transferToWallet) {
+            if (to != null && to != transferToWallet) {
               context
                   .read<TransactionFormBloc>() //
                   .add(TransactionFormTransferToWalletChanged(to));
