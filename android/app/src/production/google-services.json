@@ -12,7 +12,12 @@
           "package_name": "com.quimblelabs.felicash"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "165761906001-ohpkub9v4he7fsbjjr4fuipc1qdmtulv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC7oCVj2D9zQouAI4Sdirtv9HE3lMxkBNI"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165761906001-ohpkub9v4he7fsbjjr4fuipc1qdmtulv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "165761906001-09aoaiubk8sq6uhdejv8hhae0hb6ig69.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.quimblelabs.felicash"
+              }
+            }
+          ]
         }
       }
     }
