@@ -113,9 +113,9 @@ class CategoryCreationBloc
       emit(state.copyWith(status: CategoryCreationStatus.submiting));
       await _categoryRepository.createCategory(category);
       emit(state.copyWith(status: CategoryCreationStatus.success));
-    } catch (e) {
-      emit(state.copyWith(status: CategoryCreationStatus.failure));
-      return;
+    } catch (e, s) {
+      addError(e, s);
+      return emit(state.copyWith(status: CategoryCreationStatus.failure));
     }
 
     emit(state.copyWith(status: CategoryCreationStatus.success));

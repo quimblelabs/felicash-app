@@ -57,7 +57,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deselectAll => 'Deselect all';
 
   @override
-  String get aiAssistantPageNoSourceWalletFoundErrorMessage => 'No source wallet found';
+  String get aiAssistantPageNoSourceWalletFoundErrorMessage =>
+      'No source wallet found';
 
   @override
   String get aiAssistantPageAppBarTitle => 'AI Assistant';
@@ -81,7 +82,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inputBoxNoWalletFoundErrorMessage => 'No wallet found';
 
   @override
-  String get inputBoxNoSourceWalletFoundErrorMessage => 'No source wallet found';
+  String get inputBoxNoSourceWalletFoundErrorMessage =>
+      'No source wallet found';
 
   @override
   String get currencySelectorTextFormFieldDefaultHintText => 'Currency';
@@ -114,13 +116,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginWithEmailPasswordLoginFormEmailFieldLabel => 'Email';
 
   @override
-  String get loginWithEmailPasswordLoginFormEmailFieldErrorText => 'Please enter a valid email';
+  String get loginWithEmailPasswordLoginFormEmailFieldErrorText =>
+      'Please enter a valid email';
 
   @override
   String get loginWithEmailPasswordLoginFormPasswordFieldLabel => 'Password';
 
   @override
-  String get loginWithEmailPasswordLoginFormPasswordFieldErrorText => 'Please enter a valid password';
+  String get loginWithEmailPasswordLoginFormPasswordFieldErrorText =>
+      'Please enter a valid password';
 
   @override
   String get loginWithEmailPasswordLoginFormLoginButtonText => 'Login';
@@ -177,10 +181,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get overviewAppBarExpensesTabBarLabel => 'Expenses';
 
   @override
-  String get spendingByCategorySectionEmptyStateTitle => 'No spending data available';
+  String get spendingByCategorySectionEmptyStateTitle =>
+      'No spending data available';
 
   @override
-  String get spendingByCategorySectionEmptyStateSubtitle => 'Add some transactions to see your spending by category';
+  String get spendingByCategorySectionEmptyStateSubtitle =>
+      'Add some transactions to see your spending by category';
 
   @override
   String get spendingByCategorySectionTitle => 'Spending by category';
@@ -216,7 +222,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transactionCreationModalAreYouSureText => 'Are you sure?';
 
   @override
-  String get transactionCreationModalThisActionCannotBeUndoneText => 'This action cannot be undone.';
+  String get transactionCreationModalThisActionCannotBeUndoneText =>
+      'This action cannot be undone.';
 
   @override
   String get transactionCreationModalCancelButtonText => 'Cancel';
@@ -225,10 +232,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transactionCreationModalYesButtonText => 'Yes';
 
   @override
-  String get transactionCreationModalAddTransactionButtonText => 'Add Transaction';
+  String get transactionCreationModalAddTransactionButtonText =>
+      'Add Transaction';
 
   @override
-  String get addTransactionMenuButtonReceptScannerButtonText => 'Receipt Scanner';
+  String get addTransactionMenuButtonReceptScannerButtonText =>
+      'Receipt Scanner';
 
   @override
   String get addTransactionMenuButtonAIInputButtonText => 'AI Input';
@@ -249,7 +258,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transactionCreationFormUnknownTypeLabel => 'Unknown';
 
   @override
-  String get transactionCreationFormTransactionAmountFieldLabel => 'Transaction Amount';
+  String get transactionCreationFormTransactionAmountFieldLabel =>
+      'Transaction Amount';
 
   @override
   String get transactionCreationFormCategoryFieldLabel => 'Category';
@@ -279,13 +289,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transactionListSearchBarHintText => 'Search transactions';
 
   @override
-  String get transactionListFailedToFetchTransactionsErrorMessage => 'Failed to fetch transactions';
+  String get transactionListFailedToFetchTransactionsErrorMessage =>
+      'Failed to fetch transactions';
 
   @override
-  String get transactionListNoTransactionsFoundErrorMessage => 'No transactions found';
+  String get transactionListNoTransactionsFoundErrorMessage =>
+      'No transactions found';
 
   @override
-  String get transactionListAddTransactionToGetStartedText => 'Add a transaction to get started';
+  String get transactionListAddTransactionToGetStartedText =>
+      'Add a transaction to get started';
 
   @override
   String get transactionListAllFiltersViewTitle => 'Transaction Filters';
@@ -300,31 +313,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transactionListAllFiltersViewWalletsFilterTitle => 'Wallets';
 
   @override
-  String get transactionListAllFiltersViewTransactionTypesFilterTitle => 'Transaction Types';
+  String get transactionListAllFiltersViewTransactionTypesFilterTitle =>
+      'Transaction Types';
 
   @override
-  String get transactionListAllFiltersViewTransactionDateFilterTitle => 'Transaction Date';
+  String get transactionListAllFiltersViewTransactionDateFilterTitle =>
+      'Transaction Date';
 
   @override
   String get transactionListAllFiltersViewApplyButtonText => 'Apply';
 
   @override
-  String get transactionListCategoriesFilterViewFailedToFetchCategoriesErrorMessage => 'Failed to fetch categories';
+  String
+      get transactionListCategoriesFilterViewFailedToFetchCategoriesErrorMessage =>
+          'Failed to fetch categories';
 
   @override
-  String get transactionListCategoriesFilterViewTitle => 'Transaction Categories';
+  String get transactionListCategoriesFilterViewTitle =>
+      'Transaction Categories';
 
   @override
-  String get transactionListCategoriesFilterViewSearchCategoriesHintText => 'Search categories';
+  String get transactionListCategoriesFilterViewSearchCategoriesHintText =>
+      'Search categories';
 
   @override
-  String get transactionListCategoriesFilterViewNoCategoriesFoundErrorMessage => 'No categories found';
+  String get transactionListCategoriesFilterViewNoCategoriesFoundErrorMessage =>
+      'No categories found';
 
   @override
   String get transactionListCategoriesFilterViewCancelButtonLabel => 'Cancel';
 
   @override
-  String get transactionListDateFilterViewTransactionDateAppBarTitle => 'Transaction Date';
+  String get transactionListDateFilterViewTransactionDateAppBarTitle =>
+      'Transaction Date';
 
   @override
   String get transactionListDateFilterViewSelectDateButtonText => 'Select Date';
@@ -339,7 +360,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transactionListTypesFilterViewTitle => 'Transaction Types';
 
   @override
-  String get transactionListTypesFilterViewNoTypesFoundErrorMessage => 'No types found';
+  String get transactionListTypesFilterViewNoTypesFoundErrorMessage =>
+      'No types found';
 
   @override
   String get transactionListTypesFilterViewCancelButtonLabel => 'Cancel';
@@ -360,31 +382,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transactionListWalletsFilterViewTitle => 'Transaction Wallets';
 
   @override
-  String get transactionListWalletsFilterViewSearchWalletsHintText => 'Search wallets';
+  String get transactionListWalletsFilterViewSearchWalletsHintText =>
+      'Search wallets';
 
   @override
-  String get transactionListWalletsFilterViewFailedToLoadWalletsErrorMessage => 'Failed to load wallets';
+  String get transactionListWalletsFilterViewFailedToLoadWalletsErrorMessage =>
+      'Failed to load wallets';
 
   @override
-  String get transactionListWalletsFilterViewNoWalletsFoundErrorMessage => 'No wallets found';
+  String get transactionListWalletsFilterViewNoWalletsFoundErrorMessage =>
+      'No wallets found';
 
   @override
   String get transactionListWalletsFilterViewCancelButtonLabel => 'Cancel';
 
   @override
-  String get voiceTransactionPageNoSourceWalletFoundErrorMessage => 'No source wallet found';
+  String get voiceTransactionPageNoSourceWalletFoundErrorMessage =>
+      'No source wallet found';
 
   @override
-  String get transactionOnProcessingViewEditTransactionButtonLabel => 'Edit transaction';
+  String get transactionOnProcessingViewEditTransactionButtonLabel =>
+      'Edit transaction';
 
   @override
-  String get transactionOnProcessingViewCreateNextTransactionText => 'Edit or keep talking to create next transaction';
+  String get transactionOnProcessingViewCreateNextTransactionText =>
+      'Edit or keep talking to create next transaction';
 
   @override
   String get voiceTransactionOnHoldViewOnHoldTitle => 'On Hold';
 
   @override
-  String get voiceTransactionOnHoldViewOnHoldSubtitle => 'To turn the mic on and continue, tap the play button.';
+  String get voiceTransactionOnHoldViewOnHoldSubtitle =>
+      'To turn the mic on and continue, tap the play button.';
 
   @override
   String walletSelectorBalanceText(String balance) {
@@ -416,13 +445,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walletCreationModalSavingsWalletTypeLabel => 'Savings';
 
   @override
-  String get walletCreationModalWalletCreatedSuccessfullyText => 'Wallet created successfully';
+  String get walletCreationModalWalletCreatedSuccessfullyText =>
+      'Wallet created successfully';
 
   @override
   String get walletCreationModalAreYouSureText => 'Are you sure?';
 
   @override
-  String get walletCreationModalThisActionCannotBeUndoneText => 'This action cannot be undone.';
+  String get walletCreationModalThisActionCannotBeUndoneText =>
+      'This action cannot be undone.';
 
   @override
   String get walletCreationModalCancelButtonText => 'Cancel';
@@ -445,25 +476,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walletTypeSelectorModalBasicWalletTypeLabel => 'Basic wallet';
 
   @override
-  String get walletTypeSelectorModalBasicWalletTypeSubtitle => 'The wallet for your daily spending and payments.';
+  String get walletTypeSelectorModalBasicWalletTypeSubtitle =>
+      'The wallet for your daily spending and payments.';
 
   @override
   String get walletTypeSelectorModalCreditWalletTypeLabel => 'Credit wallet';
 
   @override
-  String get walletTypeSelectorModalCreditWalletTypeSubtitle => 'The wallet for your credit card and other credit needs.';
+  String get walletTypeSelectorModalCreditWalletTypeSubtitle =>
+      'The wallet for your credit card and other credit needs.';
 
   @override
   String get walletTypeSelectorModalSavingsWalletTypeLabel => 'Savings wallet';
 
   @override
-  String get walletTypeSelectorModalSavingsWalletTypeSubtitle => 'The wallet for your savings and investments.';
+  String get walletTypeSelectorModalSavingsWalletTypeSubtitle =>
+      'The wallet for your savings and investments.';
 
   @override
   String get walletCreationFormWalletNameFieldLabel => 'Wallet name';
 
   @override
-  String get walletCreationFormWalletDescriptionFieldLabel => 'Wallet description';
+  String get walletCreationFormWalletDescriptionFieldLabel =>
+      'Wallet description';
 
   @override
   String get walletCreationFormWalletCurrencyFieldLabel => 'Currency';
@@ -481,73 +516,90 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walletCreationFormWalletPickAnIconText => 'Pick an icon';
 
   @override
-  String get walletCreationFormWalletWalletNameIsRequiredErrorMessage => 'Wallet name is required';
+  String get walletCreationFormWalletWalletNameIsRequiredErrorMessage =>
+      'Wallet name is required';
 
   @override
-  String get walletCreationFormWalletWalletNameIsTooLongErrorMessage => 'Wallet name is too long';
+  String get walletCreationFormWalletWalletNameIsTooLongErrorMessage =>
+      'Wallet name is too long';
 
   @override
   String get walletCreationFormWalletNameFieldHintText => 'Name your wallet';
 
   @override
-  String get walletCreationFormWalletDescriptionIsTooLongErrorMessage => 'Description is too long';
+  String get walletCreationFormWalletDescriptionIsTooLongErrorMessage =>
+      'Description is too long';
 
   @override
-  String get walletCreationFormWalletDescriptionFieldHintText => 'Describe your wallet for easier identification';
+  String get walletCreationFormWalletDescriptionFieldHintText =>
+      'Describe your wallet for easier identification';
 
   @override
-  String walletCreationFormWalletBalanceMustBeLessThanMaxErrorMessage(double maxAcceptedBalance) {
+  String walletCreationFormWalletBalanceMustBeLessThanMaxErrorMessage(
+      double maxAcceptedBalance) {
     return 'Balance must be less than \$$maxAcceptedBalance';
   }
 
   @override
-  String walletCreationFormWalletBalanceMustBeGreaterThanMinErrorMessage(double minAcceptedBalance) {
+  String walletCreationFormWalletBalanceMustBeGreaterThanMinErrorMessage(
+      double minAcceptedBalance) {
     return 'Balance must be greater than \$$minAcceptedBalance';
   }
 
   @override
-  String get walletCreationFormWalletBalanceFieldHintText => 'Set the current balance';
+  String get walletCreationFormWalletBalanceFieldHintText =>
+      'Set the current balance';
 
   @override
-  String get walletCreationFormWalletExcludeFromTotalCheckboxLabel => 'Exclude from total';
+  String get walletCreationFormWalletExcludeFromTotalCheckboxLabel =>
+      'Exclude from total';
 
   @override
-  String walletCreationFormCreditLimitMustBeLessThanMaxErrorMessage(double maxAcceptedCreditLimit) {
+  String walletCreationFormCreditLimitMustBeLessThanMaxErrorMessage(
+      double maxAcceptedCreditLimit) {
     return 'Credit limit must be less than \$$maxAcceptedCreditLimit';
   }
 
   @override
-  String walletCreationFormCreditLimitMustBeGreaterThanMinErrorMessage(double minAcceptedCreditLimit) {
+  String walletCreationFormCreditLimitMustBeGreaterThanMinErrorMessage(
+      double minAcceptedCreditLimit) {
     return 'Credit limit must be greater than \$$minAcceptedCreditLimit';
   }
 
   @override
-  String get walletCreationFormCreditLimitMustBeGreaterThanZeroErrorMessage => 'Credit limit must be greater than 0';
+  String get walletCreationFormCreditLimitMustBeGreaterThanZeroErrorMessage =>
+      'Credit limit must be greater than 0';
 
   @override
-  String get walletCreationFormCreditLimitFieldHintText => 'Set the credit limit';
+  String get walletCreationFormCreditLimitFieldHintText =>
+      'Set the credit limit';
 
   @override
   String get walletCreationFormCreditWalletDayOfMonthText => 'Day of month';
 
   @override
-  String get walletCreationFormCreditWalletPaymentDayOfMonthText => 'Payment day of month';
+  String get walletCreationFormCreditWalletPaymentDayOfMonthText =>
+      'Payment day of month';
 
   @override
-  String get walletCreationFormSavingsGoalMustBeGreaterThanZeroErrorMessage => 'Savings goal must be greater than 0';
+  String get walletCreationFormSavingsGoalMustBeGreaterThanZeroErrorMessage =>
+      'Savings goal must be greater than 0';
 
   @override
-  String walletCreationFormSavingsGoalMustBeLessThanMaxErrorMessage(double maxAcceptedSavingsGoal) {
+  String walletCreationFormSavingsGoalMustBeLessThanMaxErrorMessage(
+      double maxAcceptedSavingsGoal) {
     return 'Savings goal must be less than \$$maxAcceptedSavingsGoal';
   }
 
   @override
-  String walletCreationFormSavingsGoalMustBeGreaterThanMinErrorMessage(double minAcceptedSavingsGoal) {
+  String walletCreationFormSavingsGoalMustBeGreaterThanMinErrorMessage(
+      double minAcceptedSavingsGoal) {
     return 'Savings goal must be greater than \$$minAcceptedSavingsGoal';
   }
 
   @override
-  String get walletCreationFormSavingsGoalFieldHintText => 'Set the savings goal';
+  String get walletCreationFormSavingsGoalFieldHintText =>
+      'Set the savings goal';
 
   @override
   String get personalPageAppBarTitle => 'Personal';

@@ -48,29 +48,53 @@ class WalletCreationModal extends StatelessWidget {
         }
         return bloc;
       },
-      child: BlocListener<WalletCreationBloc, WalletCreationState>(
-        listenWhen: (previous, current) => previous.status != current.status,
-        listener: (context, state) {
-          final l10n = context.l10n;
-          // Check if WalletCreationState is successful created a
-          // wallet and get back true
-          if (state.status == WalletCreationStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  l10n.walletCreationModalWalletCreatedSuccessfullyText,
-                ),
-              ),
-            );
-            context.pop();
-          } else if (state.status == WalletCreationStatus.failure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage ?? l10n.unknownError),
-              ),
-            );
-          }
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<CurrenciesBloc, CurrenciesState>(
+            listener: (context, state) {
+              if (state is! CurrenciesLoadSuccess) {
+                return;
+              }
+
+              final walletCreationBloc = context.read<WalletCreationBloc>();
+              if (walletCreationBloc.state.currency != null) {
+                return;
+              }
+
+              final defaultCurrency = state.currencies.firstOrNull;
+              if (defaultCurrency != null) {
+                walletCreationBloc.add(
+                  WalletCreationCurrencyChanged(defaultCurrency),
+                );
+              }
+            },
+          ),
+          BlocListener<WalletCreationBloc, WalletCreationState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status,
+            listener: (context, state) {
+              final l10n = context.l10n;
+              // Check if WalletCreationState is successful created a
+              // wallet and get back true
+              if (state.status == WalletCreationStatus.success) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      l10n.walletCreationModalWalletCreatedSuccessfullyText,
+                    ),
+                  ),
+                );
+                context.pop();
+              } else if (state.status == WalletCreationStatus.failure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.errorMessage ?? l10n.unknownError),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
         child: const _WalletCreationView(),
       ),
     );

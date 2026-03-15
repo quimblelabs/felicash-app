@@ -140,7 +140,8 @@ class TransactionRepository {
     AND (?7 IS NULL OR t.${TransactionFields.transactionAmount} >= ?7)
     AND (?8 IS NULL OR t.${TransactionFields.transactionAmount} <= ?8)
     AND (?9 IS NULL OR t.${TransactionFields.transactionNotes} LIKE '%' || ?9 || '%')
-    ORDER BY t.${TransactionFields.transactionCreatedAt} DESC
+    ORDER BY t.${TransactionFields.transactionTransactionDate} DESC,
+             t.${TransactionFields.transactionCreatedAt} DESC
     LIMIT ?10 OFFSET ?11
   ''';
 

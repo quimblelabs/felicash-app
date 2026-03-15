@@ -57,7 +57,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get deselectAll => 'Bỏ chọn tất cả';
 
   @override
-  String get aiAssistantPageNoSourceWalletFoundErrorMessage => 'Không tìm thấy ví nguồn';
+  String get aiAssistantPageNoSourceWalletFoundErrorMessage =>
+      'Không tìm thấy ví nguồn';
 
   @override
   String get aiAssistantPageAppBarTitle => 'Trợ lý AI';
@@ -81,7 +82,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get inputBoxNoWalletFoundErrorMessage => 'Không tìm thấy ví';
 
   @override
-  String get inputBoxNoSourceWalletFoundErrorMessage => 'Không tìm thấy ví nguồn';
+  String get inputBoxNoSourceWalletFoundErrorMessage =>
+      'Không tìm thấy ví nguồn';
 
   @override
   String get currencySelectorTextFormFieldDefaultHintText => 'Tiền tệ';
@@ -93,7 +95,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get loginPageTitle => 'Đăng nhập vào Chiêu Chiêu';
 
   @override
-  String get loginPageSubtitle => 'Chào mừng trở lại! Vui lòng nhập thông tin của bạn';
+  String get loginPageSubtitle =>
+      'Chào mừng trở lại! Vui lòng nhập thông tin của bạn';
 
   @override
   String get loginPageProvidersSeparatorText => 'Hoặc tiếp tục với';
@@ -114,13 +117,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get loginWithEmailPasswordLoginFormEmailFieldLabel => 'Email';
 
   @override
-  String get loginWithEmailPasswordLoginFormEmailFieldErrorText => 'Vui lòng nhập email hợp lệ';
+  String get loginWithEmailPasswordLoginFormEmailFieldErrorText =>
+      'Vui lòng nhập email hợp lệ';
 
   @override
   String get loginWithEmailPasswordLoginFormPasswordFieldLabel => 'Mật khẩu';
 
   @override
-  String get loginWithEmailPasswordLoginFormPasswordFieldErrorText => 'Vui lòng nhập mật khẩu hợp lệ';
+  String get loginWithEmailPasswordLoginFormPasswordFieldErrorText =>
+      'Vui lòng nhập mật khẩu hợp lệ';
 
   @override
   String get loginWithEmailPasswordLoginFormLoginButtonText => 'Đăng nhập';
@@ -177,10 +182,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get overviewAppBarExpensesTabBarLabel => 'Chi tiêu';
 
   @override
-  String get spendingByCategorySectionEmptyStateTitle => 'Không có dữ liệu chi tiêu';
+  String get spendingByCategorySectionEmptyStateTitle =>
+      'Không có dữ liệu chi tiêu';
 
   @override
-  String get spendingByCategorySectionEmptyStateSubtitle => 'Thêm một số giao dịch để xem chi tiêu theo loại';
+  String get spendingByCategorySectionEmptyStateSubtitle =>
+      'Thêm một số giao dịch để xem chi tiêu theo loại';
 
   @override
   String get spendingByCategorySectionTitle => 'Chi tiêu theo danh mục';
@@ -216,7 +223,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get transactionCreationModalAreYouSureText => 'Bạn có chắc chắn?';
 
   @override
-  String get transactionCreationModalThisActionCannotBeUndoneText => 'Hành động này không thể hoàn tác.';
+  String get transactionCreationModalThisActionCannotBeUndoneText =>
+      'Hành động này không thể hoàn tác.';
 
   @override
   String get transactionCreationModalCancelButtonText => 'Hủy bỏ';
@@ -225,7 +233,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get transactionCreationModalYesButtonText => 'Đồng ý';
 
   @override
-  String get transactionCreationModalAddTransactionButtonText => 'Thêm giao dịch';
+  String get transactionCreationModalAddTransactionButtonText =>
+      'Thêm giao dịch';
 
   @override
   String get addTransactionMenuButtonReceptScannerButtonText => 'Quét hóa đơn';
@@ -249,7 +258,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get transactionCreationFormUnknownTypeLabel => 'Không xác định';
 
   @override
-  String get transactionCreationFormTransactionAmountFieldLabel => 'Số tiền giao dịch';
+  String get transactionCreationFormTransactionAmountFieldLabel =>
+      'Số tiền giao dịch';
 
   @override
   String get transactionCreationFormCategoryFieldLabel => 'Loại';
@@ -279,13 +289,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get transactionListSearchBarHintText => 'Tìm kiếm giao dịch';
 
   @override
-  String get transactionListFailedToFetchTransactionsErrorMessage => 'Lỗi khi tải giao dịch';
+  String get transactionListFailedToFetchTransactionsErrorMessage =>
+      'Lỗi khi tải giao dịch';
 
   @override
-  String get transactionListNoTransactionsFoundErrorMessage => 'Không tìm thấy giao dịch';
+  String get transactionListNoTransactionsFoundErrorMessage =>
+      'Không tìm thấy giao dịch';
 
   @override
-  String get transactionListAddTransactionToGetStartedText => 'Thêm một giao dịch để bắt đầu';
+  String get transactionListAddTransactionToGetStartedText =>
+      'Thêm một giao dịch để bắt đầu';
 
   @override
   String get transactionListAllFiltersViewTitle => 'Bộ lọc giao dịch';
@@ -300,31 +313,38 @@ class AppLocalizationsVi extends AppLocalizations {
   String get transactionListAllFiltersViewWalletsFilterTitle => 'Ví';
 
   @override
-  String get transactionListAllFiltersViewTransactionTypesFilterTitle => 'Loại giao dịch';
+  String get transactionListAllFiltersViewTransactionTypesFilterTitle =>
+      'Loại giao dịch';
 
   @override
-  String get transactionListAllFiltersViewTransactionDateFilterTitle => 'Ngày giao dịch';
+  String get transactionListAllFiltersViewTransactionDateFilterTitle =>
+      'Ngày giao dịch';
 
   @override
   String get transactionListAllFiltersViewApplyButtonText => 'Áp dụng';
 
   @override
-  String get transactionListCategoriesFilterViewFailedToFetchCategoriesErrorMessage => 'Lỗi khi tải danh mục giao dịch';
+  String
+      get transactionListCategoriesFilterViewFailedToFetchCategoriesErrorMessage =>
+          'Lỗi khi tải danh mục giao dịch';
 
   @override
   String get transactionListCategoriesFilterViewTitle => 'Danh mục giao dịch';
 
   @override
-  String get transactionListCategoriesFilterViewSearchCategoriesHintText => 'Tìm kiếm danh mục';
+  String get transactionListCategoriesFilterViewSearchCategoriesHintText =>
+      'Tìm kiếm danh mục';
 
   @override
-  String get transactionListCategoriesFilterViewNoCategoriesFoundErrorMessage => 'Không tìm thấy danh mục';
+  String get transactionListCategoriesFilterViewNoCategoriesFoundErrorMessage =>
+      'Không tìm thấy danh mục';
 
   @override
   String get transactionListCategoriesFilterViewCancelButtonLabel => 'Hủy bỏ';
 
   @override
-  String get transactionListDateFilterViewTransactionDateAppBarTitle => 'Ngày giao dịch';
+  String get transactionListDateFilterViewTransactionDateAppBarTitle =>
+      'Ngày giao dịch';
 
   @override
   String get transactionListDateFilterViewSelectDateButtonText => 'Chọn ngày';
@@ -339,7 +359,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get transactionListTypesFilterViewTitle => 'Loại giao dịch';
 
   @override
-  String get transactionListTypesFilterViewNoTypesFoundErrorMessage => 'Không tìm thấy loại';
+  String get transactionListTypesFilterViewNoTypesFoundErrorMessage =>
+      'Không tìm thấy loại';
 
   @override
   String get transactionListTypesFilterViewCancelButtonLabel => 'Hủy bỏ';
@@ -360,31 +381,38 @@ class AppLocalizationsVi extends AppLocalizations {
   String get transactionListWalletsFilterViewTitle => 'Ví giao dịch';
 
   @override
-  String get transactionListWalletsFilterViewSearchWalletsHintText => 'Tìm kiếm ví';
+  String get transactionListWalletsFilterViewSearchWalletsHintText =>
+      'Tìm kiếm ví';
 
   @override
-  String get transactionListWalletsFilterViewFailedToLoadWalletsErrorMessage => 'Lỗi khi tải ví';
+  String get transactionListWalletsFilterViewFailedToLoadWalletsErrorMessage =>
+      'Lỗi khi tải ví';
 
   @override
-  String get transactionListWalletsFilterViewNoWalletsFoundErrorMessage => 'Không tìm thấy ví';
+  String get transactionListWalletsFilterViewNoWalletsFoundErrorMessage =>
+      'Không tìm thấy ví';
 
   @override
   String get transactionListWalletsFilterViewCancelButtonLabel => 'Hủy bỏ';
 
   @override
-  String get voiceTransactionPageNoSourceWalletFoundErrorMessage => 'Không tìm thấy ví nguồn';
+  String get voiceTransactionPageNoSourceWalletFoundErrorMessage =>
+      'Không tìm thấy ví nguồn';
 
   @override
-  String get transactionOnProcessingViewEditTransactionButtonLabel => 'Chỉnh sửa giao dịch';
+  String get transactionOnProcessingViewEditTransactionButtonLabel =>
+      'Chỉnh sửa giao dịch';
 
   @override
-  String get transactionOnProcessingViewCreateNextTransactionText => 'Chỉnh sửa hoặc tiếp tục nói để tạo giao dịch tiếp theo';
+  String get transactionOnProcessingViewCreateNextTransactionText =>
+      'Chỉnh sửa hoặc tiếp tục nói để tạo giao dịch tiếp theo';
 
   @override
   String get voiceTransactionOnHoldViewOnHoldTitle => 'Đang chờ';
 
   @override
-  String get voiceTransactionOnHoldViewOnHoldSubtitle => 'Để bật mic và tiếp tục, nhấn vào nút phát.';
+  String get voiceTransactionOnHoldViewOnHoldSubtitle =>
+      'Để bật mic và tiếp tục, nhấn vào nút phát.';
 
   @override
   String walletSelectorBalanceText(String balance) {
@@ -416,13 +444,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get walletCreationModalSavingsWalletTypeLabel => 'Savings';
 
   @override
-  String get walletCreationModalWalletCreatedSuccessfullyText => 'Ví đã được tạo thành công';
+  String get walletCreationModalWalletCreatedSuccessfullyText =>
+      'Ví đã được tạo thành công';
 
   @override
   String get walletCreationModalAreYouSureText => 'Bạn có chắc chắn?';
 
   @override
-  String get walletCreationModalThisActionCannotBeUndoneText => 'Hành động này không thể hoàn tác.';
+  String get walletCreationModalThisActionCannotBeUndoneText =>
+      'Hành động này không thể hoàn tác.';
 
   @override
   String get walletCreationModalCancelButtonText => 'Hủy bỏ';
@@ -445,19 +475,22 @@ class AppLocalizationsVi extends AppLocalizations {
   String get walletTypeSelectorModalBasicWalletTypeLabel => 'Ví cơ bản';
 
   @override
-  String get walletTypeSelectorModalBasicWalletTypeSubtitle => 'Ví cho việc tiêu dùng hàng ngày và thanh toán.';
+  String get walletTypeSelectorModalBasicWalletTypeSubtitle =>
+      'Ví cho việc tiêu dùng hàng ngày và thanh toán.';
 
   @override
   String get walletTypeSelectorModalCreditWalletTypeLabel => 'Ví tín dụng';
 
   @override
-  String get walletTypeSelectorModalCreditWalletTypeSubtitle => 'Ví cho việc sử dụng thẻ tín dụng và các nhu cầu tín dụng khác.';
+  String get walletTypeSelectorModalCreditWalletTypeSubtitle =>
+      'Ví cho việc sử dụng thẻ tín dụng và các nhu cầu tín dụng khác.';
 
   @override
   String get walletTypeSelectorModalSavingsWalletTypeLabel => 'Ví tiết kiệm';
 
   @override
-  String get walletTypeSelectorModalSavingsWalletTypeSubtitle => 'Ví cho việc tiết kiệm và đầu tư.';
+  String get walletTypeSelectorModalSavingsWalletTypeSubtitle =>
+      'Ví cho việc tiết kiệm và đầu tư.';
 
   @override
   String get walletCreationFormWalletNameFieldLabel => 'Tên ví';
@@ -472,82 +505,102 @@ class AppLocalizationsVi extends AppLocalizations {
   String get walletCreationFormWalletBalanceFieldLabel => 'Số dư';
 
   @override
-  String get walletCreationFormWalletCreditLimitFieldLabel => 'Giới hạn tín dụng';
+  String get walletCreationFormWalletCreditLimitFieldLabel =>
+      'Giới hạn tín dụng';
 
   @override
-  String get walletCreationFormWalletSavingsGoalFieldLabel => 'Mục tiêu tiết kiệm';
+  String get walletCreationFormWalletSavingsGoalFieldLabel =>
+      'Mục tiêu tiết kiệm';
 
   @override
   String get walletCreationFormWalletPickAnIconText => 'Chọn một biểu tượng';
 
   @override
-  String get walletCreationFormWalletWalletNameIsRequiredErrorMessage => 'Tên ví là bắt buộc';
+  String get walletCreationFormWalletWalletNameIsRequiredErrorMessage =>
+      'Tên ví là bắt buộc';
 
   @override
-  String get walletCreationFormWalletWalletNameIsTooLongErrorMessage => 'Tên ví quá dài';
+  String get walletCreationFormWalletWalletNameIsTooLongErrorMessage =>
+      'Tên ví quá dài';
 
   @override
   String get walletCreationFormWalletNameFieldHintText => 'Đặt tên cho ví';
 
   @override
-  String get walletCreationFormWalletDescriptionIsTooLongErrorMessage => 'Mô tả quá dài';
+  String get walletCreationFormWalletDescriptionIsTooLongErrorMessage =>
+      'Mô tả quá dài';
 
   @override
-  String get walletCreationFormWalletDescriptionFieldHintText => 'Mô tả ví cho việc dễ dàng nhận biết';
+  String get walletCreationFormWalletDescriptionFieldHintText =>
+      'Mô tả ví cho việc dễ dàng nhận biết';
 
   @override
-  String walletCreationFormWalletBalanceMustBeLessThanMaxErrorMessage(double maxAcceptedBalance) {
+  String walletCreationFormWalletBalanceMustBeLessThanMaxErrorMessage(
+      double maxAcceptedBalance) {
     return 'Số dư phải nhỏ hơn \$$maxAcceptedBalance';
   }
 
   @override
-  String walletCreationFormWalletBalanceMustBeGreaterThanMinErrorMessage(double minAcceptedBalance) {
+  String walletCreationFormWalletBalanceMustBeGreaterThanMinErrorMessage(
+      double minAcceptedBalance) {
     return 'Số dư phải lớn hơn \$$minAcceptedBalance';
   }
 
   @override
-  String get walletCreationFormWalletBalanceFieldHintText => 'Đặt số dư hiện tại';
+  String get walletCreationFormWalletBalanceFieldHintText =>
+      'Đặt số dư hiện tại';
 
   @override
-  String get walletCreationFormWalletExcludeFromTotalCheckboxLabel => 'Loại trừ khỏi tổng số dư';
+  String get walletCreationFormWalletExcludeFromTotalCheckboxLabel =>
+      'Loại trừ khỏi tổng số dư';
 
   @override
-  String walletCreationFormCreditLimitMustBeLessThanMaxErrorMessage(double maxAcceptedCreditLimit) {
+  String walletCreationFormCreditLimitMustBeLessThanMaxErrorMessage(
+      double maxAcceptedCreditLimit) {
     return 'Giới hạn tín dụng phải nhỏ hơn \$$maxAcceptedCreditLimit';
   }
 
   @override
-  String walletCreationFormCreditLimitMustBeGreaterThanMinErrorMessage(double minAcceptedCreditLimit) {
+  String walletCreationFormCreditLimitMustBeGreaterThanMinErrorMessage(
+      double minAcceptedCreditLimit) {
     return 'Giới hạn tín dụng phải lớn hơn \$$minAcceptedCreditLimit';
   }
 
   @override
-  String get walletCreationFormCreditLimitMustBeGreaterThanZeroErrorMessage => 'Giới hạn tín dụng phải lớn hơn 0';
+  String get walletCreationFormCreditLimitMustBeGreaterThanZeroErrorMessage =>
+      'Giới hạn tín dụng phải lớn hơn 0';
 
   @override
-  String get walletCreationFormCreditLimitFieldHintText => 'Đặt giới hạn tín dụng';
+  String get walletCreationFormCreditLimitFieldHintText =>
+      'Đặt giới hạn tín dụng';
 
   @override
-  String get walletCreationFormCreditWalletDayOfMonthText => 'Ngày của tháng sao kê';
+  String get walletCreationFormCreditWalletDayOfMonthText =>
+      'Ngày của tháng sao kê';
 
   @override
-  String get walletCreationFormCreditWalletPaymentDayOfMonthText => 'Ngày thanh toán';
+  String get walletCreationFormCreditWalletPaymentDayOfMonthText =>
+      'Ngày thanh toán';
 
   @override
-  String get walletCreationFormSavingsGoalMustBeGreaterThanZeroErrorMessage => 'Mục tiêu tiết kiệm phải lớn hơn 0';
+  String get walletCreationFormSavingsGoalMustBeGreaterThanZeroErrorMessage =>
+      'Mục tiêu tiết kiệm phải lớn hơn 0';
 
   @override
-  String walletCreationFormSavingsGoalMustBeLessThanMaxErrorMessage(double maxAcceptedSavingsGoal) {
+  String walletCreationFormSavingsGoalMustBeLessThanMaxErrorMessage(
+      double maxAcceptedSavingsGoal) {
     return 'Mục tiêu tiết kiệm phải nhỏ hơn \$$maxAcceptedSavingsGoal';
   }
 
   @override
-  String walletCreationFormSavingsGoalMustBeGreaterThanMinErrorMessage(double minAcceptedSavingsGoal) {
+  String walletCreationFormSavingsGoalMustBeGreaterThanMinErrorMessage(
+      double minAcceptedSavingsGoal) {
     return 'Mục tiêu tiết kiệm phải lớn hơn \$$minAcceptedSavingsGoal';
   }
 
   @override
-  String get walletCreationFormSavingsGoalFieldHintText => 'Đặt mục tiêu tiết kiệm';
+  String get walletCreationFormSavingsGoalFieldHintText =>
+      'Đặt mục tiêu tiết kiệm';
 
   @override
   String get personalPageAppBarTitle => 'Cá nhân';

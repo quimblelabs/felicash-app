@@ -1,12 +1,15 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:felicash/l10n/l10n.dart';
+import 'package:felicash/wallet/bloc/wallets_bloc.dart';
 import 'package:felicash/wallet/models/wallet_view_model.dart';
+import 'package:felicash/wallet/view/wallet_selector/wallet_selector_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_models/shared_models.dart';
 
 typedef WalletPickerValueChanged = void Function(
-  WalletViewModel from,
-  WalletViewModel to,
+  WalletViewModel? from,
+  WalletViewModel? to,
 );
 
 /// Creates a new [WalletSelector] for selecting a wallet.
@@ -128,13 +131,7 @@ class _WalletSelectorState extends State<WalletSelector>
                 children: [
                   _WalletItem(
                     walletViewModel: wallet,
-                    onTap: () {
-                      if (widget.onPickWallet != null) {
-                        widget.onPickWallet?.call(wallet, toWallet, true);
-                      } else {
-                        // TODO(tuanhm): implement this
-                      }
-                    },
+                    onTap: () => _onWalletItemTap(isFromWallet: true),
                   ),
                   Visibility(
                     visible: isForwardOrCompletedOrAnimating,
@@ -168,17 +165,8 @@ class _WalletSelectorState extends State<WalletSelector>
                             const SizedBox(height: AppSpacing.xs),
                             _WalletItem(
                               walletViewModel: toWallet,
-                              onTap: () {
-                                if (widget.onPickWallet != null) {
-                                  widget.onPickWallet?.call(
-                                    toWallet,
-                                    wallet,
-                                    false,
-                                  );
-                                } else {
-                                  // TODO(tuanhm): Navigate to wallets picker
-                                }
-                              },
+                              onTap: () =>
+                                  _onWalletItemTap(isFromWallet: false),
                             ),
                           ],
                         ),
@@ -201,6 +189,61 @@ class _WalletSelectorState extends State<WalletSelector>
     final from = widget.wallet!;
     final to = widget.toWallet!;
     widget.onChanged?.call(to, from);
+  }
+
+  Future<void> _onWalletItemTap({required bool isFromWallet}) async {
+    final current = isFromWallet ? widget.wallet : widget.toWallet;
+    final otherWallet = isFromWallet ? widget.toWallet : widget.wallet;
+
+    if (widget.onPickWallet != null) {
+      widget.onPickWallet?.call(current, otherWallet, isFromWallet);
+      return;
+    }
+
+    final picked = await _showWalletSelectorModal(
+      current: current,
+      otherWallet: otherWallet,
+    );
+
+    if (!mounted || picked == null || picked == current) {
+      return;
+    }
+
+    if (isFromWallet) {
+      widget.onChanged?.call(picked, widget.toWallet);
+    } else {
+      widget.onChanged?.call(widget.wallet, picked);
+    }
+  }
+
+  Future<WalletViewModel?> _showWalletSelectorModal({
+    required WalletViewModel? current,
+    required WalletViewModel? otherWallet,
+  }) {
+    final state = context.read<WalletsBloc>().state;
+    if (state is! WalletLoadSuccess) {
+      return Future.value();
+    }
+
+    final l10n = context.l10n;
+    final wallets = state.wallets
+        .where((wallet) => wallet.wallet.id != otherWallet?.wallet.id)
+        .toList(growable: false);
+
+    if (wallets.isEmpty) {
+      return Future.value();
+    }
+
+    return showModalBottomSheet<WalletViewModel?>(
+      context: context,
+      isScrollControlled: true,
+      useRootNavigator: true,
+      builder: (_) => WalletSelectorModal(
+        title: l10n.inputBoxSelectorModalTitle,
+        wallets: wallets,
+        initialWallet: current,
+      ),
+    );
   }
 }
 

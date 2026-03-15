@@ -55,7 +55,19 @@ class _TransactionListState extends State<TransactionList> {
 
             final sections = sortedDates.map(
               (date) {
-                final transactions = groupedTransactions[date]!;
+                final transactions = groupedTransactions[date]!
+                  ..sort((a, b) {
+                    final byTransactionDate =
+                        b.transactionDate.compareTo(a.transactionDate);
+                    if (byTransactionDate != 0) {
+                      return byTransactionDate;
+                    }
+                    final byCreatedAt = b.createdAt.compareTo(a.createdAt);
+                    if (byCreatedAt != 0) {
+                      return byCreatedAt;
+                    }
+                    return b.id.compareTo(a.id);
+                  });
                 return _Section(
                   items: [
                     SliverPinnedHeader(
@@ -105,10 +117,11 @@ class _TransactionListState extends State<TransactionList> {
   ) {
     final groupedTransactions = <DateTime, List<TransactionModel>>{};
     for (final transaction in transactions) {
+      final localTransactionDate = transaction.transactionDate.toLocal();
       final date = DateTime(
-        transaction.createdAt.year,
-        transaction.createdAt.month,
-        transaction.createdAt.day,
+        localTransactionDate.year,
+        localTransactionDate.month,
+        localTransactionDate.day,
       );
       groupedTransactions.putIfAbsent(date, () => []).add(transaction);
     }
@@ -230,7 +243,6 @@ class _BottomLoader extends StatelessWidget {
 class _Section extends MultiSliver {
   _Section({
     required List<Widget> items,
-    super.key,
   }) : super(
           pushPinnedChildren: true,
           children: items,

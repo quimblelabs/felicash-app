@@ -27,12 +27,13 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
 
   final TransactionRepository _transactionRepository;
   final List<List<TransactionModel>> _pagedData = [];
-  DateTime? _lastCreatedAt;
+  TransactionListFilter _activeFilter = TransactionListFilter.empty;
 
   Future<void> _onInitialSubscriptionRequested(
     TransactionsInitialSubscriptionRequested event,
     Emitter<TransactionsState> emit,
   ) {
+    _activeFilter = event.filter;
     _pagedData.clear();
     emit(const TransactionsState.loading());
     final query = event.filter.toGetTransactionQuery(pageIndex: 0);
@@ -45,7 +46,6 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
         } else {
           _pagedData[0] = transactions;
         }
-        _updateLastCreatedAt();
         return _buildState();
       },
       onError: (error, stackTrace) {
@@ -66,13 +66,8 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
     }
 
     emit(state.copyWith(status: TransactionsStatus.loading));
-    final last = _lastCreatedAt;
-    if (last == null) {
-      return Future.value();
-    }
-
     final pageIndex = _pagedData.length;
-    final query = event.filter.toGetTransactionQuery(
+    final query = _activeFilter.toGetTransactionQuery(
       pageIndex: pageIndex,
     );
     return emit.forEach(
@@ -85,7 +80,6 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
         } else {
           _pagedData.add(transactions);
         }
-        _updateLastCreatedAt();
         return _buildState();
       },
       onError: (error, stackTrace) {
@@ -97,20 +91,35 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
     );
   }
 
-  /// Helper to update _lastCreatedAt based on the combined list
-  void _updateLastCreatedAt() {
-    final combined = _pagedData.expand((page) => page).toList();
-    _lastCreatedAt = combined.isNotEmpty ? combined.last.createdAt : null;
-  }
-
   /// Helper to build the current state based on the paged data
   TransactionsState _buildState() {
-    final combined = _pagedData.expand((page) => page).toList();
+    final combined = _pagedData.expand((page) => page).toList()
+      ..sort((a, b) {
+        final byTransactionDate =
+            b.transactionDate.compareTo(a.transactionDate);
+        if (byTransactionDate != 0) {
+          return byTransactionDate;
+        }
+        final byCreatedAt = b.createdAt.compareTo(a.createdAt);
+        if (byCreatedAt != 0) {
+          return byCreatedAt;
+        }
+        return b.id.compareTo(a.id);
+      });
+
+    final deduplicated = <TransactionModel>[];
+    final ids = <String>{};
+    for (final transaction in combined) {
+      if (ids.add(transaction.id)) {
+        deduplicated.add(transaction);
+      }
+    }
+
     final hasReachedEnd =
         _pagedData.isEmpty || _pagedData.last.length < _pageSize;
 
     return TransactionsState(
-      transactions: combined,
+      transactions: deduplicated,
       hasReachedEnd: hasReachedEnd,
       status: TransactionsStatus.success,
     );
